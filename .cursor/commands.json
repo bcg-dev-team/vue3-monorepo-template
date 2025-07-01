@@ -1,0 +1,84 @@
+{
+  "commands": [
+    {
+      "name": "vue:create-monorepo-component",
+      "description": "Create Vue 3 component with monorepo structure",
+      "prompt": "Create a Vue 3 component with TypeScript, performance optimizations, and Storybook integration. Follow the monorepo structure and include proper testing."
+    },
+    {
+      "name": "vue:create-monorepo-package",
+      "description": "Create a new package in monorepo",
+      "prompt": "Create a new package in the monorepo structure with proper TypeScript configuration, testing setup, and Storybook integration."
+    },
+    {
+      "name": "vue:create-api-service",
+      "description": "Create API service with WebSocket support",
+      "prompt": "Create an API service with WebSocket multiplexing, data batching, and proper error handling. Include TypeScript types and comprehensive testing."
+    },
+    {
+      "name": "vue:create-performance-component",
+      "description": "Create high-performance component",
+      "prompt": "Create a Vue 3 component optimized for performance with virtual scrolling, memory management, and real-time data handling."
+    },
+    {
+      "name": "vue:create-storybook-story",
+      "description": "Create Storybook story for component",
+      "prompt": "Create a comprehensive Storybook story for the current component with multiple variants, controls, and accessibility testing."
+    },
+    {
+      "name": "vue:setup-monorepo",
+      "description": "Setup monorepo structure",
+      "prompt": "Setup the complete monorepo structure with PNPM workspace, shared packages, and proper TypeScript configuration."
+    },
+    {
+      "name": "vue:add-performance-optimization",
+      "description": "Add performance optimization to component",
+      "prompt": "Add performance optimizations to the current component including virtual scrolling, memoization, and proper cleanup."
+    },
+    {
+      "name": "vue:create-test-suite",
+      "description": "Create comprehensive test suite",
+      "prompt": "Create a comprehensive test suite for the current file including unit tests, component tests, and performance tests."
+    },
+    {
+      "name": "vue:setup-git-hooks",
+      "description": "Setup Git hooks and Conventional Commits",
+      "prompt": "Setup Git hooks with Husky, Conventional Commits validation, and pre-commit linting/formatting."
+    },
+    {
+      "name": "vue:create-domain-config",
+      "description": "Create domain configuration",
+      "prompt": "Create a domain configuration file with API endpoints, UI theme, feature flags, and performance settings."
+    },
+    {
+      "name": "vue:create-pinia-store",
+      "description": "Create Pinia store with TypeScript",
+      "prompt": "Create a Pinia store with TypeScript, proper state management, getters, actions, and comprehensive testing."
+    },
+    {
+      "name": "vue:create-vuetify-component",
+      "description": "Create Vuetify component wrapper",
+      "prompt": "Create a Vuetify component wrapper with proper props, events, slots, and accessibility features."
+    },
+    {
+      "name": "vue:create-tailwind-component",
+      "description": "Create Tailwind CSS component",
+      "prompt": "Create a component using Tailwind CSS with responsive design, custom utilities, and proper styling patterns."
+    },
+    {
+      "name": "vue:create-e2e-test",
+      "description": "Create Cypress E2E test",
+      "prompt": "Create a comprehensive Cypress E2E test for user flows with proper selectors, assertions, and error handling."
+    },
+    {
+      "name": "vue:optimize-bundle",
+      "description": "Optimize bundle size and performance",
+      "prompt": "Analyze and optimize the current bundle size, implement code splitting, tree shaking, and performance improvements."
+    },
+    {
+      "name": "vue:create-documentation",
+      "description": "Create component documentation",
+      "prompt": "Create comprehensive documentation for the current component including JSDoc, README, and usage examples."
+    }
+  ]
+} 

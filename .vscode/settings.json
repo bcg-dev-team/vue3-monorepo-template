@@ -1,0 +1,30 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue"
+  ],
+  "eslint.workingDirectories": [
+    "./apps/desktop",
+    "./apps/mobile",
+    "./packages/ui",
+    "./packages/api",
+    "./packages/utils",
+    "./packages/types"
+  ],
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.suggest.autoImports": true,
+  "vue.codeActions.enabled": true,
+  "vue.complete.casing.props": "camel",
+  "vue.complete.casing.tags": "pascal",
+  "cursor.chat.defaultPrompt": "You are a senior Vue.js developer specializing in high-performance monorepo applications. Follow the Vue 3 + TypeScript + Vite best practices for this monorepo template.",
+  "cursor.chat.includeSelection": true,
+  "cursor.chat.includeFileContext": true
+} 

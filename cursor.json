@@ -1,0 +1,81 @@
+{
+  "projectType": "vue3-monorepo-template",
+  "aiAssistant": {
+    "role": "senior-vue-monorepo-developer",
+    "specializations": [
+      "vue3-composition-api",
+      "typescript-strict",
+      "monorepo-architecture",
+      "performance-optimization",
+      "real-time-data",
+      "responsive-design",
+      "testing-strategy",
+      "storybook-integration"
+    ],
+    "performanceFocus": {
+      "virtualScrolling": true,
+      "websocketMultiplexing": true,
+      "dataBatching": true,
+      "memoryOptimization": true,
+      "bundleOptimization": true
+    },
+    "monorepoFeatures": {
+      "pnpmWorkspace": true,
+      "sharedPackages": true,
+      "crossPackageImports": true,
+      "unifiedBuild": true
+    },
+    "testingStrategy": {
+      "unitTests": true,
+      "componentTests": true,
+      "e2eTests": true,
+      "storybook": true,
+      "performanceTests": true
+    }
+  },
+  "fileTemplates": {
+    "component": {
+      "template": "vue3-composition-ts-performance",
+      "include": ["props", "emits", "types", "performance", "tests", "storybook"]
+    },
+    "store": {
+      "template": "pinia-typed-performance",
+      "include": ["state", "getters", "actions", "real-time", "types", "tests"]
+    },
+    "service": {
+      "template": "api-service-with-websocket",
+      "include": ["types", "error-handling", "interceptors", "batching", "tests"]
+    },
+    "package": {
+      "template": "monorepo-package",
+      "include": ["package.json", "tsconfig.json", "index.ts", "tests", "storybook"]
+    }
+  },
+  "performance": {
+    "virtualScrolling": {
+      "enabled": true,
+      "threshold": 100
+    },
+    "realTime": {
+      "batching": 100,
+      "multiplexing": true,
+      "reconnection": true
+    },
+    "memory": {
+      "cleanup": true,
+      "garbageCollection": true
+    }
+  },
+  "monorepo": {
+    "structure": {
+      "apps": ["desktop", "mobile"],
+      "packages": ["ui", "api", "utils", "types"],
+      "shared": ["config", "scripts", "docs"]
+    },
+    "dependencies": {
+      "shared": ["vue", "typescript", "vite"],
+      "apps": ["@template/ui", "@template/api", "@template/utils", "@template/types"],
+      "dev": ["vitest", "cypress", "storybook", "eslint", "prettier"]
+    }
+  }
+} 

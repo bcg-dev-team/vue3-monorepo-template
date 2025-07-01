@@ -5,6 +5,21 @@ alwaysApply: false
 ---
 # Vue 3 베스트 프랙티스
 
+## Git 커밋 메시지 규칙
+
+Vue 관련 변경사항 커밋 시 다음 scope를 사용하세요 (scope는 선택사항):
+- `apps/desktop`: 데스크톱 Vue 앱 관련
+- `apps/mobile`: 모바일 Vue 앱 관련  
+- `packages/ui`: Vue UI 컴포넌트 관련
+- `packages/api`: Vue 앱의 API 통신 관련
+
+예시:
+```
+feat(apps/desktop): 사용자 프로필 컴포넌트 추가
+fix(packages/ui): 버튼 컴포넌트 이벤트 핸들링 버그 수정
+feat: Vue 3 Composition API 마이그레이션 (전체 프로젝트)
+```
+
 ## Composition API 사용
 - Composition API를 사용하여 더 나은 상태 관리와 재사용성을 구현하세요.
 - `<script setup>`을 사용하여 더 깔끔하고 간결한 컴포넌트 코드를 작성하세요.

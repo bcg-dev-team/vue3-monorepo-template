@@ -1,5 +1,456 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
+# Tailwind CSS 베스트 프랙티스
+
+## 스타일링 원칙
+- 빠른 스타일링과 레이아웃 조정을 위해 유틸리티 우선 클래스를 사용하세요.
+- 일관성을 위해 Tailwind의 구성을 확장하여 커스텀 테마를 생성하세요.
+- Tailwind의 반응형 유틸리티를 활용하여 반응형 디자인을 보장하세요.
+- 일반적인 스타일에 대해 컴포넌트 클래스를 사용하여 과도한 클래스명을 피하세요.
+
+## 모노레포 Tailwind 구조
+- **공통 설정**: shared/config에 Tailwind 설정을 관리하세요.
+- **컴포넌트 스타일**: packages/ui에 재사용 가능한 스타일을 정의하세요.
+- **테마 확장**: 브랜드에 맞는 커스텀 색상과 스페이싱을 정의하세요.
+- **성능 최적화**: 사용하지 않는 스타일을 제거하여 번들 크기를 최적화하세요.
+
+## 성능 최적화
+- **Purge CSS**: 프로덕션 빌드에서 사용하지 않는 스타일을 제거하세요.
+- **JIT 모드**: Just-In-Time 컴파일을 활용하여 빠른 빌드를 구현하세요.
+- **컴포넌트 추출**: 반복되는 스타일을 컴포넌트로 추출하세요.
+- **레이어 관리**: base, components, utilities 레이어를 적절히 활용하세요.
+
+## 예시 설정 파일
+
+```javascript
+// shared/config/tailwind.config.js
+const defaultTheme = require('tailwindcss/defaultTheme')
+
+module.exports = {
+  content: [
+    './apps/**/*.{vue,js,ts,jsx,tsx}',
+    './packages/**/*.{vue,js,ts,jsx,tsx}',
+    './shared/**/*.{vue,js,ts,jsx,tsx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
+        },
+        secondary: {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
+        },
+        success: {
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          200: '#bbf7d0',
+          300: '#86efac',
+          400: '#4ade80',
+          500: '#22c55e',
+          600: '#16a34a',
+          700: '#15803d',
+          800: '#166534',
+          900: '#14532d',
+        },
+        warning: {
+          50: '#fffbeb',
+          100: '#fef3c7',
+          200: '#fde68a',
+          300: '#fcd34d',
+          400: '#fbbf24',
+          500: '#f59e0b',
+          600: '#d97706',
+          700: '#b45309',
+          800: '#92400e',
+          900: '#78350f',
+        },
+        error: {
+          50: '#fef2f2',
+          100: '#fee2e2',
+          200: '#fecaca',
+          300: '#fca5a5',
+          400: '#f87171',
+          500: '#ef4444',
+          600: '#dc2626',
+          700: '#b91c1c',
+          800: '#991b1b',
+          900: '#7f1d1d',
+        },
+      },
+      fontFamily: {
+        sans: ['Inter', ...defaultTheme.fontFamily.sans],
+        mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
+      },
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
+        '128': '32rem',
+      },
+      borderRadius: {
+        '4xl': '2rem',
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'slide-up': 'slideUp 0.3s ease-out',
+        'slide-down': 'slideDown 0.3s ease-out',
+        'scale-in': 'scaleIn 0.2s ease-out',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(10px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        slideDown: {
+          '0%': { transform: 'translateY(-10px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        scaleIn: {
+          '0%': { transform: 'scale(0.95)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+      },
+      boxShadow: {
+        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+        'medium': '0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        'strong': '0 10px 40px -10px rgba(0, 0, 0, 0.15), 0 2px 10px -2px rgba(0, 0, 0, 0.05)',
+      },
+    },
+  },
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+    require('@tailwindcss/aspect-ratio'),
+  ],
+  variants: {
+    extend: {
+      opacity: ['disabled'],
+      cursor: ['disabled'],
+      backgroundColor: ['disabled'],
+      textColor: ['disabled'],
+    },
+  },
+}
+```
+
+## 컴포넌트 스타일 패턴
+
+```vue
+<!-- packages/ui/components/BaseCard.vue -->
+<script setup lang="ts">
+import { computed } from 'vue'
+
+interface Props {
+  variant?: 'default' | 'elevated' | 'outlined' | 'filled'
+  padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
+  rounded?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  shadow?: 'none' | 'soft' | 'medium' | 'strong'
+  hover?: boolean
+  interactive?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  variant: 'default',
+  padding: 'md',
+  rounded: 'lg',
+  shadow: 'soft',
+  hover: false,
+  interactive: false,
+})
+
+const cardClasses = computed(() => {
+  const baseClasses = 'transition-all duration-200'
+  
+  const variantClasses = {
+    default: 'bg-white border border-gray-200',
+    elevated: 'bg-white shadow-soft',
+    outlined: 'bg-transparent border-2 border-gray-300',
+    filled: 'bg-gray-50 border border-gray-200',
+  }
+  
+  const paddingClasses = {
+    none: 'p-0',
+    sm: 'p-3',
+    md: 'p-6',
+    lg: 'p-8',
+    xl: 'p-12',
+  }
+  
+  const roundedClasses = {
+    none: 'rounded-none',
+    sm: 'rounded-sm',
+    md: 'rounded-md',
+    lg: 'rounded-lg',
+    xl: 'rounded-xl',
+    full: 'rounded-full',
+  }
+  
+  const shadowClasses = {
+    none: '',
+    soft: 'shadow-soft',
+    medium: 'shadow-medium',
+    strong: 'shadow-strong',
+  }
+  
+  const hoverClasses = props.hover 
+    ? 'hover:shadow-medium hover:-translate-y-1' 
+    : ''
+  
+  const interactiveClasses = props.interactive 
+    ? 'cursor-pointer active:scale-95' 
+    : ''
+  
+  return [
+    baseClasses,
+    variantClasses[props.variant],
+    paddingClasses[props.padding],
+    roundedClasses[props.rounded],
+    shadowClasses[props.shadow],
+    hoverClasses,
+    interactiveClasses,
+  ].filter(Boolean).join(' ')
+})
+</script>
+
+<template>
+  <div :class="cardClasses">
+    <slot />
+  </div>
+</template>
+```
+
+## 유틸리티 클래스 컴포넌트
+
+```css
+/* packages/ui/styles/components.css */
+@layer components {
+  /* 버튼 스타일 */
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-primary {
+    @apply btn bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 active:bg-primary-800;
+  }
+  
+  .btn-secondary {
+    @apply btn bg-secondary-100 text-secondary-900 hover:bg-secondary-200 focus:ring-secondary-500 active:bg-secondary-300;
+  }
+  
+  .btn-success {
+    @apply btn bg-success-600 text-white hover:bg-success-700 focus:ring-success-500 active:bg-success-800;
+  }
+  
+  .btn-warning {
+    @apply btn bg-warning-600 text-white hover:bg-warning-700 focus:ring-warning-500 active:bg-warning-800;
+  }
+  
+  .btn-error {
+    @apply btn bg-error-600 text-white hover:bg-error-700 focus:ring-error-500 active:bg-error-800;
+  }
+  
+  .btn-outline {
+    @apply btn border-2 border-gray-300 bg-transparent text-gray-700 hover:bg-gray-50 focus:ring-gray-500 active:bg-gray-100;
+  }
+  
+  /* 입력 필드 스타일 */
+  .input {
+    @apply block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed;
+  }
+  
+  .input-error {
+    @apply input border-error-300 focus:ring-error-500 focus:border-error-500;
+  }
+  
+  /* 카드 스타일 */
+  .card {
+    @apply bg-white rounded-lg shadow-soft border border-gray-200 transition-all duration-200;
+  }
+  
+  .card-hover {
+    @apply card hover:shadow-medium hover:-translate-y-1;
+  }
+  
+  .card-interactive {
+    @apply card-hover cursor-pointer active:scale-95;
+  }
+  
+  /* 배지 스타일 */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  
+  .badge-primary {
+    @apply badge bg-primary-100 text-primary-800;
+  }
+  
+  .badge-secondary {
+    @apply badge bg-secondary-100 text-secondary-800;
+  }
+  
+  .badge-success {
+    @apply badge bg-success-100 text-success-800;
+  }
+  
+  .badge-warning {
+    @apply badge bg-warning-100 text-warning-800;
+  }
+  
+  .badge-error {
+    @apply badge bg-error-100 text-error-800;
+  }
+  
+  /* 애니메이션 클래스 */
+  .animate-fade-in {
+    @apply animate-fade-in;
+  }
+  
+  .animate-slide-up {
+    @apply animate-slide-up;
+  }
+  
+  .animate-slide-down {
+    @apply animate-slide-down;
+  }
+  
+  .animate-scale-in {
+    @apply animate-scale-in;
+  }
+  
+  /* 반응형 유틸리티 */
+  .container-responsive {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+  }
+  
+  .flex-responsive {
+    @apply flex flex-col sm:flex-row items-start sm:items-center gap-4;
+  }
+}
+```
+
+## 반응형 디자인 패턴
+
+```vue
+<!-- packages/ui/components/ResponsiveLayout.vue -->
+<script setup lang="ts">
+import { computed } from 'vue'
+
+interface Props {
+  sidebar?: boolean
+  sidebarCollapsed?: boolean
+  header?: boolean
+  footer?: boolean
+  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full'
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  sidebar: false,
+  sidebarCollapsed: false,
+  header: true,
+  footer: false,
+  maxWidth: 'full',
+})
+
+const layoutClasses = computed(() => {
+  const maxWidthClasses = {
+    sm: 'max-w-sm',
+    md: 'max-w-md',
+    lg: 'max-w-lg',
+    xl: 'max-w-xl',
+    '2xl': 'max-w-2xl',
+    full: 'max-w-full',
+  }
+  
+  return [
+    'min-h-screen bg-gray-50',
+    maxWidthClasses[props.maxWidth],
+    'mx-auto',
+  ].join(' ')
+})
+
+const mainClasses = computed(() => {
+  const baseClasses = 'flex-1 transition-all duration-300'
+  
+  if (props.sidebar) {
+    return [
+      baseClasses,
+      'ml-0 lg:ml-64',
+      props.sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-64',
+    ].join(' ')
+  }
+  
+  return baseClasses
+})
+</script>
+
+<template>
+  <div :class="layoutClasses">
+    <!-- 헤더 -->
+    <header v-if="header" class="sticky top-0 z-40 bg-white shadow-soft border-b border-gray-200">
+      <div class="container-responsive">
+        <slot name="header" />
+      </div>
+    </header>
+
+    <div class="flex">
+      <!-- 사이드바 -->
+      <aside v-if="sidebar" class="fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-medium border-r border-gray-200 transform transition-transform duration-300 lg:translate-x-0" :class="{ '-translate-x-full': sidebarCollapsed }">
+        <slot name="sidebar" />
+      </aside>
+
+      <!-- 메인 콘텐츠 -->
+      <main :class="mainClasses">
+        <div class="container-responsive py-6">
+          <slot />
+        </div>
+      </main>
+    </div>
+
+    <!-- 푸터 -->
+    <footer v-if="footer" class="bg-white border-t border-gray-200">
+      <div class="container-responsive py-6">
+        <slot name="footer" />
+      </div>
+    </footer>
+  </div>
+</template>
+```
+
+## Tailwind CSS 베스트 프랙티스 체크리스트
+- [ ] 유틸리티 우선 접근법 적용
+- [ ] 커스텀 테마 구성
+- [ ] 반응형 유틸리티 활용
+- [ ] 컴포넌트 클래스 추출
+- [ ] Purge CSS 최적화
+- [ ] JIT 모드 활성화
+- [ ] 레이어 관리
+- [ ] 성능 최적화 적용

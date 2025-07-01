@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": false,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": false,
+    "jsx": "preserve",
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@template/types": ["packages/types/src"],
+      "@template/types/*": ["packages/types/src/*"],
+      "@template/ui": ["packages/ui/src"],
+      "@template/ui/*": ["packages/ui/src/*"],
+      "@template/api": ["packages/api/src"],
+      "@template/api/*": ["packages/api/src/*"],
+      "@template/utils": ["packages/utils/src"],
+      "@template/utils/*": ["packages/utils/src/*"],
+      "@shared/config": ["shared/config"],
+      "@shared/config/*": ["shared/config/*"],
+      "@shared/scripts": ["shared/scripts"],
+      "@shared/scripts/*": ["shared/scripts/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
+}

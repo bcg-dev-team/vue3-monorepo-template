@@ -1,30 +1,34 @@
 {
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-    "source.organizeImports": "explicit"
+    "source.fixAll.eslint": "always",
   },
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "vue"
-  ],
-  "eslint.workingDirectories": [
-    "./apps/desktop",
-    "./apps/mobile",
-    "./packages/ui",
-    "./packages/api",
-    "./packages/utils",
-    "./packages/types"
-  ],
+  "eslint.enable": true,
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "vue"],
+  "eslint.run": "onType",
+  "eslint.workingDirectories": ["."],
+  "eslint.options": {
+    "overrideConfigFile": "eslint.config.js"
+  },
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.suggest.autoImports": true,
   "vue.codeActions.enabled": true,
   "vue.complete.casing.props": "camel",
   "vue.complete.casing.tags": "pascal",
-  "cursor.chat.defaultPrompt": "You are a senior Vue.js developer specializing in high-performance monorepo applications. Follow the Vue 3 + TypeScript + Vite best practices for this monorepo template.",
-  "cursor.chat.includeSelection": true,
-  "cursor.chat.includeFileContext": true
-} 
+  // "cursor.chat.defaultPrompt": "You are a senior Vue.js developer specializing in high-performance monorepo applications. Follow the Vue 3 + TypeScript + Vite best practices for this monorepo template.",
+  // "cursor.chat.includeSelection": true,
+  // "cursor.chat.includeFileContext": true,
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
+ 

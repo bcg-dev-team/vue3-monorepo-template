@@ -203,7 +203,7 @@ pnpm build-storybook      # Storybook 빌드
 
 ```typescript
 const batchedMessages = useBatchedMessages(100);
-const ws = useWebSocket("ws://localhost:8080", {
+const ws = useWebSocket('ws://localhost:8080', {
   onMessage: (data) => batchedMessages.add(data),
 });
 ```
@@ -219,7 +219,7 @@ onUnmounted(() => {
   // 타이머 정리
   clearInterval(timer);
   // 이벤트 리스너 제거
-  window.removeEventListener("resize", handleResize);
+  window.removeEventListener('resize', handleResize);
 });
 ```
 
@@ -230,8 +230,8 @@ onUnmounted(() => {
 비즈니스 로직과 유틸리티 함수를 테스트합니다:
 
 ```typescript
-describe("User Store", () => {
-  it("should fetch users successfully", async () => {
+describe('User Store', () => {
+  it('should fetch users successfully', async () => {
     const store = useUserStore();
     await store.fetchUsers();
     expect(store.users).toHaveLength(2);
@@ -244,11 +244,11 @@ describe("User Store", () => {
 Vue 컴포넌트를 테스트합니다:
 
 ```typescript
-describe("BaseButton", () => {
-  it("should emit click event", async () => {
+describe('BaseButton', () => {
+  it('should emit click event', async () => {
     const wrapper = mount(BaseButton);
-    await wrapper.trigger("click");
-    expect(wrapper.emitted("click")).toBeTruthy();
+    await wrapper.trigger('click');
+    expect(wrapper.emitted('click')).toBeTruthy();
   });
 });
 ```
@@ -258,12 +258,12 @@ describe("BaseButton", () => {
 사용자 플로우를 테스트합니다:
 
 ```typescript
-describe("User Management", () => {
-  it("should create new user", () => {
-    cy.visit("/users");
+describe('User Management', () => {
+  it('should create new user', () => {
+    cy.visit('/users');
     cy.get('[data-testid="create-user-btn"]').click();
     // 폼 작성 및 제출
-    cy.get('[data-testid="success-message"]').should("be.visible");
+    cy.get('[data-testid="success-message"]').should('be.visible');
   });
 });
 ```
@@ -288,7 +288,7 @@ import { BaseButton, BaseCard, BaseDataTable } from '@template/ui'
 API 통신 모듈:
 
 ```typescript
-import { userApi } from "@template/api";
+import { userApi } from '@template/api';
 
 // 사용 예시
 const users = await userApi.getUsers({ page: 1, limit: 20 });
@@ -299,10 +299,10 @@ const users = await userApi.getUsers({ page: 1, limit: 20 });
 공통 유틸리티 함수:
 
 ```typescript
-import { formatDate, debounce } from "@template/utils";
+import { formatDate, debounce } from '@template/utils';
 
 // 사용 예시
-const formattedDate = formatDate(new Date(), "ko-KR");
+const formattedDate = formatDate(new Date(), 'ko-KR');
 const debouncedSearch = debounce(searchFunction, 300);
 ```
 
@@ -311,14 +311,14 @@ const debouncedSearch = debounce(searchFunction, 300);
 공통 타입 정의:
 
 ```typescript
-import type { User, ApiResponse } from "@template/types";
+import type { User, ApiResponse } from '@template/types';
 
 // 사용 예시
 const user: User = {
-  id: "1",
-  firstName: "John",
-  lastName: "Doe",
-  email: "john@example.com",
+  id: '1',
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'john@example.com',
 };
 ```
 
@@ -348,10 +348,10 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      "@template/ui": resolve(__dirname, "../../packages/ui"),
-      "@template/api": resolve(__dirname, "../../packages/api"),
-      "@template/utils": resolve(__dirname, "../../packages/utils"),
-      "@template/types": resolve(__dirname, "../../packages/types"),
+      '@template/ui': resolve(__dirname, '../../packages/ui'),
+      '@template/api': resolve(__dirname, '../../packages/api'),
+      '@template/utils': resolve(__dirname, '../../packages/utils'),
+      '@template/types': resolve(__dirname, '../../packages/types'),
     },
   },
 });
@@ -401,12 +401,12 @@ Vuetify 3와 TailwindCSS를 조합하여 일관된 디자인 시스템을 구축
 
 ```typescript
 export default {
-  title: "Components/BaseButton",
+  title: 'Components/BaseButton',
   component: BaseButton,
   argTypes: {
     variant: {
-      control: { type: "select" },
-      options: ["primary", "secondary", "success", "error"],
+      control: { type: 'select' },
+      options: ['primary', 'secondary', 'success', 'error'],
     },
   },
 };
@@ -423,7 +423,7 @@ export default {
  * @param locale - 로케일 (기본값: 'ko-KR')
  * @returns 포맷팅된 사용자 정보 문자열
  */
-export function formatUser(user: User, locale = "ko-KR"): string {
+export function formatUser(user: User, locale = 'ko-KR'): string {
   // 구현...
 }
 ```

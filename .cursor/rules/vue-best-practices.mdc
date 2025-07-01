@@ -1,8 +1,12 @@
 ---
 description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
+---
+rule_type: always
+---
+
 # Vue 3 베스트 프랙티스
 
 ## Git 커밋 메시지 규칙

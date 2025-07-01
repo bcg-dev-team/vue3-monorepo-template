@@ -3,6 +3,10 @@ description:
 globs: 
 alwaysApply: false
 ---
+---
+rule_type: always
+---
+
 # JSDoc 주석 작성 규칙
 
 ## 기본 원칙

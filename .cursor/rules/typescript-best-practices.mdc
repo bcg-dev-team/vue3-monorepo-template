@@ -3,6 +3,10 @@ description:
 globs: 
 alwaysApply: false
 ---
+---
+rule_type: always
+---
+
 # TypeScript 베스트 프랙티스
 
 ## 타입 안전성

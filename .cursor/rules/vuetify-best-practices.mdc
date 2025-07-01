@@ -3,6 +3,10 @@ description:
 globs: 
 alwaysApply: false
 ---
+---
+rule_type: manual
+---
+
 # Vuetify 베스트 프랙티스
 
 ## UI 컴포넌트 설계

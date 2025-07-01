@@ -3,6 +3,10 @@ description:
 globs: 
 alwaysApply: false
 ---
+---
+rule_type: manual
+---
+
 # Tailwind CSS 베스트 프랙티스
 
 ## 스타일링 원칙

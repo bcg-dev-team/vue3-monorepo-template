@@ -3,6 +3,10 @@ description:
 globs: 
 alwaysApply: false
 ---
+---
+rule_type: agent_requested
+---
+
 # Pinia 베스트 프랙티스
 
 ## 상태 관리 원칙

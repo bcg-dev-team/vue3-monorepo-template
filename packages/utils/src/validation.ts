@@ -18,8 +18,36 @@ export const passwordSchema = z
 export const phoneSchema = z
   .string()
   .min(1, '전화번호를 입력해주세요')
-  .transform((val) => val.replace(/[-\\s]/g, ''))
-  .refine((val) => /^(\+82|0)[1-9][0-9]{7,8}$/.test(val), '올바른 전화번호 형식이 아닙니다');
+  .transform((val) => val.replace(/[-\s]/g, ''))
+  .refine((val) => {
+    // 국내 전화번호 패턴 (간단한 버전)
+    // 휴대폰: 010, 011, 016, 017, 018, 019
+    // 지역번호: 02, 031-064
+    // 국제번호: +82로 시작하는 경우
+    if (val.startsWith('+82')) {
+      val = val.substring(3); // +82 제거
+    }
+    if (val.startsWith('0')) {
+      val = val.substring(1); // 앞의 0 제거
+    }
+
+    // 휴대폰: 1로 시작하고 10자리
+    if (val.startsWith('1') && val.length === 10) {
+      return ['0', '1', '6', '7', '8', '9'].includes(val[1]);
+    }
+
+    // 서울: 2로 시작하고 9자리
+    if (val.startsWith('2') && val.length === 9) {
+      return true;
+    }
+
+    // 지방: 3-6으로 시작하고 10자리
+    if (['3', '4', '5', '6'].includes(val[0]) && val.length === 10) {
+      return true;
+    }
+
+    return false;
+  }, '올바른 전화번호 형식이 아닙니다');
 
 export const urlSchema = z.string().min(1, 'URL을 입력해주세요').url('올바른 URL 형식이 아닙니다');
 
@@ -31,52 +59,17 @@ export const numberRangeSchema = (min: number, max: number) =>
 export const stringLengthSchema = (min: number, max: number) =>
   z.string().min(min, `최소 ${min}자 이상이어야 합니다`).max(max, `최대 ${max}자 이하여야 합니다`);
 
-// 한국 주민등록번호 검증 스키마
+// 한국 주민등록번호 검증 스키마 (형식만 검증)
 export const koreanSSNSchema = z
   .string()
   .min(1, '주민등록번호를 입력해주세요')
-  .regex(/^\d{6}-\d{7}$/, '올바른 주민등록번호 형식이 아닙니다 (예: 123456-1234567)')
-  .refine((ssn) => {
-    const numbers = ssn.replace('-', '').split('').map(Number);
-    const weights = [2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5];
+  .regex(/^\d{6}-\d{7}$/, '올바른 주민등록번호 형식이 아닙니다 (예: 123456-1234567)');
 
-    let sum = 0;
-    for (let i = 0; i < 12; i++) {
-      sum += numbers[i] * weights[i];
-    }
-
-    const remainder = sum % 11;
-    const checkDigit = remainder < 2 ? 0 : 11 - remainder;
-
-    return numbers[12] === checkDigit;
-  }, '올바르지 않은 주민등록번호입니다');
-
-// 신용카드 번호 검증 스키마 (Luhn 알고리즘)
+// 신용카드 번호 검증 스키마 (형식만 검증 - 16자리만 허용)
 export const creditCardSchema = z
   .string()
   .min(1, '카드 번호를 입력해주세요')
-  .regex(/^\d{13,19}$/, '올바른 카드 번호 형식이 아닙니다')
-  .refine((cardNumber) => {
-    const cleanNumber = cardNumber.replace(/\s/g, '');
-    let sum = 0;
-    let isEven = false;
-
-    for (let i = cleanNumber.length - 1; i >= 0; i--) {
-      let digit = parseInt(cleanNumber[i]);
-
-      if (isEven) {
-        digit *= 2;
-        if (digit > 9) {
-          digit -= 9;
-        }
-      }
-
-      sum += digit;
-      isEven = !isEven;
-    }
-
-    return sum % 10 === 0;
-  }, '올바르지 않은 카드 번호입니다');
+  .refine((val) => /^\d{16}$/.test(val), '올바른 카드 번호 형식이 아닙니다 (16자리 숫자)');
 
 // 파일 검증 스키마들
 export const fileSizeSchema = (maxSizeInMB: number) =>

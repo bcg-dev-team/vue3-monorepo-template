@@ -114,6 +114,10 @@ export default typescriptEslint.config(
           varsIgnorePattern: '^_',
         },
       ],
+      // 순환참조 방지 규칙
+      'import/no-cycle': 'error',
+      'import/no-self-import': 'error',
+      'import/no-relative-parent-imports': 'off', // 모노레포에서는 상대 경로 허용
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {

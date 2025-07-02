@@ -22,7 +22,9 @@
     "clean:all": "pnpm -r run clean && rm -rf node_modules pnpm-lock.yaml",
     "deps:check": "pnpm list --depth=10",
     "deps:circular": "npx madge --circular packages/",
-    "deps:tree": "pnpm list --depth=5 --json"
+    "deps:tree": "pnpm list --depth=5 --json",
+    "storybook": "pnpm --filter @template/ui storybook",
+    "build-storybook": "pnpm --filter @template/ui build-storybook"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.0",

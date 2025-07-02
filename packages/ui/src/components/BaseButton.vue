@@ -54,10 +54,11 @@ const handleClick = (event: MouseEvent) => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: var(--spacing-2);
   border: none;
-  border-radius: 0.375rem;
-  font-weight: 500;
+  border-radius: var(--spacing-1-5);
+  font-family: var(--typography-font-family-sans);
+  font-weight: var(--typography-font-weight-medium);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   position: relative;
@@ -74,79 +75,79 @@ const handleClick = (event: MouseEvent) => {
 
 /* Variants */
 .base-button--primary {
-  background-color: #3b82f6;
-  color: white;
+  background-color: var(--color-primary-500);
+  color: var(--color-neutral-white);
 }
 
 .base-button--primary:hover:not(:disabled) {
-  background-color: #2563eb;
+  background-color: var(--color-primary-600);
 }
 
 .base-button--secondary {
-  background-color: #6b7280;
-  color: white;
+  background-color: var(--color-secondary-500);
+  color: var(--color-neutral-white);
 }
 
 .base-button--secondary:hover:not(:disabled) {
-  background-color: #4b5563;
+  background-color: var(--color-secondary-600);
 }
 
 .base-button--success {
-  background-color: #10b981;
-  color: white;
+  background-color: var(--color-success-500);
+  color: var(--color-neutral-white);
 }
 
 .base-button--success:hover:not(:disabled) {
-  background-color: #059669;
+  background-color: var(--color-success-600);
 }
 
 .base-button--warning {
-  background-color: #f59e0b;
-  color: white;
+  background-color: var(--color-warning-500);
+  color: var(--color-neutral-white);
 }
 
 .base-button--warning:hover:not(:disabled) {
-  background-color: #d97706;
+  background-color: var(--color-warning-600);
 }
 
 .base-button--danger {
-  background-color: #ef4444;
-  color: white;
+  background-color: var(--color-error-500);
+  color: var(--color-neutral-white);
 }
 
 .base-button--danger:hover:not(:disabled) {
-  background-color: #dc2626;
+  background-color: var(--color-error-600);
 }
 
 .base-button--info {
-  background-color: #06b6d4;
-  color: white;
+  background-color: var(--color-primary-400);
+  color: var(--color-neutral-white);
 }
 
 .base-button--info:hover:not(:disabled) {
-  background-color: #0891b2;
+  background-color: var(--color-primary-500);
 }
 
 /* Sizes */
 .base-button--sm {
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
+  padding: var(--spacing-2) var(--spacing-4);
+  font-size: var(--typography-font-size-sm);
 }
 
 .base-button--md {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
+  padding: var(--spacing-3) var(--spacing-6);
+  font-size: var(--typography-font-size-base);
 }
 
 .base-button--lg {
-  padding: 1rem 2rem;
-  font-size: 1.125rem;
+  padding: var(--spacing-4) var(--spacing-8);
+  font-size: var(--typography-font-size-lg);
 }
 
 /* Loading spinner */
 .loading-spinner {
-  width: 1rem;
-  height: 1rem;
+  width: var(--spacing-4);
+  height: var(--spacing-4);
   border: 2px solid transparent;
   border-top: 2px solid currentColor;
   border-radius: 50%;

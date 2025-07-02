@@ -87,3 +87,6 @@ playwright/.cache/
 # 번들 분석 결과물
 bundle-analyzer-report.html
 stats.html
+
+*storybook.log
+storybook-static

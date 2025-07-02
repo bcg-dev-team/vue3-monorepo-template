@@ -3,6 +3,12 @@ export * from './components';
 export * from './composables';
 export * from './types';
 
+// 디자인 토큰 유틸리티 export
+export * from './utils/tokens';
+
+// 스타일 import
+import './style.css';
+
 // 기본 설치 함수
 import type { App } from 'vue';
 

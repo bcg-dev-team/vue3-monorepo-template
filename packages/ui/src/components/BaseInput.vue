@@ -60,61 +60,64 @@ const handleInput = (event: Event) => {
 .base-input {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--spacing-2);
   width: 100%;
 }
 
 .base-input__label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #374151;
+  font-family: var(--typography-font-family-sans);
+  font-size: var(--typography-font-size-sm);
+  font-weight: var(--typography-font-weight-medium);
+  color: var(--color-secondary-700);
 }
 
 .base-input__required {
-  color: #ef4444;
-  margin-left: 0.25rem;
+  color: var(--color-error-500);
+  margin-left: var(--spacing-1);
 }
 
 .base-input__field {
-  padding: 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
+  padding: var(--spacing-3);
+  border: 1px solid var(--color-secondary-300);
+  border-radius: var(--spacing-1-5);
+  font-family: var(--typography-font-family-sans);
+  font-size: var(--typography-font-size-sm);
   transition: border-color 0.15s ease-in-out;
 }
 
 .base-input__field:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
 }
 
 .base-input__field--error {
-  border-color: #ef4444;
+  border-color: var(--color-error-500);
 }
 
 .base-input__field--error:focus {
-  border-color: #ef4444;
+  border-color: var(--color-error-500);
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
 .base-input__field--valid {
-  border-color: #10b981;
+  border-color: var(--color-success-500);
 }
 
 .base-input__field--valid:focus {
-  border-color: #10b981;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  border-color: var(--color-success-500);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
 }
 
 .base-input__field:disabled {
-  background-color: #f9fafb;
+  background-color: var(--color-secondary-50);
   cursor: not-allowed;
 }
 
 .base-input__error {
-  font-size: 0.75rem;
-  color: #ef4444;
-  margin-top: 0.25rem;
+  font-family: var(--typography-font-family-sans);
+  font-size: var(--typography-font-size-xs);
+  color: var(--color-error-500);
+  margin-top: var(--spacing-1);
 }
 </style>

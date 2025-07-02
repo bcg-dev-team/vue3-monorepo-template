@@ -17,7 +17,7 @@ import {
   differenceInMinutes,
   differenceInSeconds,
 } from 'date-fns';
-import { formatInTimeZone, utcToZonedTime, zonedTimeToUtc, getTimezoneOffset } from 'date-fns-tz';
+import { formatInTimeZone, toZonedTime, getTimezoneOffset } from 'date-fns-tz';
 import { ko, enUS, ja, zhCN } from 'date-fns/locale';
 import type { Locale as DateFnsLocale } from 'date-fns';
 
@@ -142,11 +142,8 @@ export function convertTimezone(
 ): Date {
   const d = new Date(date);
 
-  // fromTimezone에서 UTC로 변환
-  const utcDate = zonedTimeToUtc(d, fromTimezone);
-
-  // UTC에서 toTimezone으로 변환
-  return utcToZonedTime(utcDate, toTimezone);
+  // fromTimezone에서 toTimezone으로 직접 변환
+  return toZonedTime(d, toTimezone);
 }
 
 /**
@@ -196,7 +193,7 @@ export function addYearsToDate(date: Date | string | number, years: number): Dat
  * 현재 시간을 특정 시간대에서 가져오기
  */
 export function nowInTimezone(timeZone = 'Asia/Seoul'): Date {
-  return utcToZonedTime(new Date(), timeZone);
+  return toZonedTime(new Date(), timeZone);
 }
 
 /**

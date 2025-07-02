@@ -1,5 +1,5 @@
 import { formatDistanceToNow, isToday, isYesterday, isThisWeek, isThisMonth, eachDayOfInterval, startOfMonth, endOfMonth, differenceInYears, addDays, addMonths, addYears, differenceInDays, differenceInHours, differenceInMinutes, differenceInSeconds, } from 'date-fns';
-import { formatInTimeZone, utcToZonedTime, zonedTimeToUtc, getTimezoneOffset } from 'date-fns-tz';
+import { formatInTimeZone, toZonedTime, getTimezoneOffset } from 'date-fns-tz';
 import { ko, enUS, ja, zhCN } from 'date-fns/locale';
 // 로케일 매핑
 const localeMap = {
@@ -92,10 +92,8 @@ export function calculateAge(birthDate) {
  */
 export function convertTimezone(date, fromTimezone, toTimezone) {
     const d = new Date(date);
-    // fromTimezone에서 UTC로 변환
-    const utcDate = zonedTimeToUtc(d, fromTimezone);
-    // UTC에서 toTimezone으로 변환
-    return utcToZonedTime(utcDate, toTimezone);
+    // fromTimezone에서 toTimezone으로 직접 변환
+    return toZonedTime(d, toTimezone);
 }
 /**
  * 두 날짜 간의 차이를 계산
@@ -135,7 +133,7 @@ export function addYearsToDate(date, years) {
  * 현재 시간을 특정 시간대에서 가져오기
  */
 export function nowInTimezone(timeZone = 'Asia/Seoul') {
-    return utcToZonedTime(new Date(), timeZone);
+    return toZonedTime(new Date(), timeZone);
 }
 /**
  * 시간대 오프셋 가져오기 (분 단위)

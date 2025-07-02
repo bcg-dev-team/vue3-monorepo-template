@@ -1,84 +1,83 @@
 // UI 관련 타입 정의
-export type ButtonVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
-export type ButtonSize = 'small' | 'medium' | 'large';
+export type ButtonVariant = 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
+export type ButtonSize = 'sm' | 'md' | 'lg';
 export type ButtonType = 'button' | 'submit' | 'reset';
 
-export interface ButtonProps {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  type?: ButtonType;
-  disabled?: boolean;
-  loading?: boolean;
-  fullWidth?: boolean;
-  icon?: string;
-  iconPosition?: 'left' | 'right';
-}
-
 export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search';
-export type InputSize = 'small' | 'medium' | 'large';
-
-export interface InputProps {
-  type?: InputType;
-  size?: InputSize;
-  placeholder?: string;
-  disabled?: boolean;
-  readonly?: boolean;
-  required?: boolean;
-  maxLength?: number;
-  minLength?: number;
-  pattern?: string;
-  autocomplete?: string;
-}
+export type InputSize = 'sm' | 'md' | 'lg';
 
 export type AlertVariant = 'success' | 'info' | 'warning' | 'error';
-export type AlertSize = 'small' | 'medium' | 'large';
-
-export interface AlertProps {
-  variant?: AlertVariant;
-  size?: AlertSize;
-  dismissible?: boolean;
-  autoDismiss?: boolean;
-  dismissDelay?: number;
-}
-
-export type ModalSize = 'small' | 'medium' | 'large' | 'fullscreen';
 
 export interface ModalProps {
-  size?: ModalSize;
+  isOpen: boolean;
+  title?: string;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   closeOnOverlayClick?: boolean;
   closeOnEscape?: boolean;
-  showCloseButton?: boolean;
-  persistent?: boolean;
 }
 
-export interface TableColumn<T = unknown> {
-  key: keyof T;
+export interface TableColumn<T = any> {
+  key: string;
   label: string;
   sortable?: boolean;
   width?: string | number;
   align?: 'left' | 'center' | 'right';
-
-  render?: (_value: unknown, _row: T) => string | unknown;
-}
-
-export interface TableProps<T = unknown> {
-  columns: TableColumn<T>[];
-  data: T[];
-  loading?: boolean;
-  sortable?: boolean;
-  selectable?: boolean;
-  pagination?: boolean;
-  pageSize?: number;
-  pageSizes?: number[];
+  render?: (value: any, row: T) => string | any;
 }
 
 export type Theme = 'light' | 'dark' | 'auto';
-export type ColorScheme = 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
 
-export interface ThemeConfig {
-  theme: Theme;
-  primaryColor: string;
-  borderRadius: number;
-  fontSize: number;
-  spacing: number;
+// 토스트/알림 타입
+export type ToastType = 'success' | 'error' | 'warning' | 'info';
+export interface ToastProps {
+  id: string;
+  type: ToastType;
+  title: string;
+  message?: string;
+  duration?: number;
+  closable?: boolean;
+}
+
+// 폼 타입
+export interface FormField {
+  name: string;
+  label: string;
+  type: InputType;
+  required?: boolean;
+  placeholder?: string;
+  validation?: {
+    min?: number;
+    max?: number;
+    pattern?: string;
+    message?: string;
+  };
+}
+
+// 드롭다운 타입
+export interface DropdownOption {
+  label: string;
+  value: string | number;
+  disabled?: boolean;
+  icon?: string;
+}
+
+// 카드 타입
+export interface CardProps {
+  title?: string;
+  subtitle?: string;
+  image?: string;
+  actions?: any[];
+  loading?: boolean;
+}
+
+// 로딩 상태 타입
+export type LoadingSpinnerSize = 'sm' | 'md' | 'lg';
+export type LoadingSpinnerColor = 'primary' | 'secondary' | 'white';
+
+// 아이콘 타입
+export interface IconProps {
+  name: string;
+  size?: number;
+  color?: string;
+  className?: string;
 }

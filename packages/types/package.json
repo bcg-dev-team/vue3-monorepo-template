@@ -1,9 +1,15 @@
 {
   "name": "@template/types",
-  "version": "1.0.0",
-  "description": "공통 TypeScript 타입 정의",
+  "version": "0.1.0",
+  "description": "공통 타입 정의",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
   "files": [
     "dist"
   ],
@@ -14,7 +20,7 @@
     "type-check": "tsc --noEmit"
   },
   "devDependencies": {
-    "typescript": "^5.3.3",
+    "typescript": "^5.3.0",
     "rimraf": "^5.0.0"
   },
   "publishConfig": {

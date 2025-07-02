@@ -21,9 +21,10 @@ export function toPascalCase(str: string): string {
  */
 export function toKebabCase(str: string): string {
   return str
-    .replace(/([a-z])([A-Z])/g, '$1-$2')
-    .replace(/[\s_]+/g, '-')
-    .toLowerCase();
+    .replace(/([A-Z])/g, '-$1')
+    .toLowerCase()
+    .replace(/^-/, '')
+    .replace(/[-_\s]+/g, '-');
 }
 
 /**
@@ -31,9 +32,21 @@ export function toKebabCase(str: string): string {
  */
 export function toSnakeCase(str: string): string {
   return str
-    .replace(/([a-z])([A-Z])/g, '$1_$2')
-    .replace(/[\s-]+/g, '_')
-    .toLowerCase();
+    .replace(/([A-Z])/g, '_$1')
+    .toLowerCase()
+    .replace(/^_/, '')
+    .replace(/[-_\s]+/g, '_');
+}
+
+/**
+ * 문자열을 제목 케이스로 변환
+ */
+export function toTitleCase(str: string): string {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 }
 
 /**
@@ -102,28 +115,10 @@ export function extractNumbers(str: string): string {
 /**
  * 문자열을 지정된 길이로 패딩
  */
-export function padString(
-  str: string,
-  length: number,
-  char = ' ',
-  side: 'left' | 'right' | 'both' = 'left'
-): string {
-  const padLength = length - str.length;
-  if (padLength <= 0) return str;
+export function padStart(str: string, length: number, char = ' '): string {
+  return str.padStart(length, char);
+}
 
-  const pad = char.repeat(padLength);
-
-  switch (side) {
-    case 'left':
-      return pad + str;
-    case 'right':
-      return str + pad;
-    case 'both': {
-      const leftPad = char.repeat(Math.floor(padLength / 2));
-      const rightPad = char.repeat(Math.ceil(padLength / 2));
-      return leftPad + str + rightPad;
-    }
-    default:
-      return str;
-  }
+export function padEnd(str: string, length: number, char = ' '): string {
+  return str.padEnd(length, char);
 }

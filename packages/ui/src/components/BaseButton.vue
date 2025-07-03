@@ -9,12 +9,31 @@
 import { computed } from 'vue';
 import type { ButtonVariant, ButtonSize, ButtonType } from '@template/types';
 
+/**
+ * BaseButton 컴포넌트
+ *
+ * 재사용 가능한 버튼 컴포넌트로, 다양한 스타일과 상태를 지원합니다.
+ *
+ * @props variant - 버튼 스타일 변형 (primary, secondary, success, warning, danger, info)
+ * @props size - 버튼 크기 (sm, md, lg)
+ * @props type - HTML button 타입 (button, submit, reset)
+ * @props disabled - 비활성화 상태
+ * @props loading - 로딩 상태 (스피너 표시)
+ * @props fullWidth - 전체 너비 사용 여부
+ * @emits click - 버튼 클릭 시 발생하는 이벤트
+ */
 interface Props {
+  /** 버튼 스타일 변형 */
   variant?: ButtonVariant;
+  /** 버튼 크기 */
   size?: ButtonSize;
+  /** HTML button 타입 */
   type?: ButtonType;
+  /** 비활성화 상태 */
   disabled?: boolean;
+  /** 로딩 상태 */
   loading?: boolean;
+  /** 전체 너비 사용 여부 */
   fullWidth?: boolean;
 }
 
@@ -27,10 +46,17 @@ const props = withDefaults(defineProps<Props>(), {
   fullWidth: false,
 });
 
-const emit = defineEmits<{
-  click: [event: MouseEvent];
-}>();
+interface Emits {
+  /** 버튼 클릭 이벤트 */
+  (e: 'click', event: MouseEvent): void;
+}
 
+const emit = defineEmits<Emits>();
+
+/**
+ * 버튼 CSS 클래스들을 계산합니다.
+ * variant, size, 상태에 따라 적절한 클래스를 조합합니다.
+ */
 const buttonClasses = computed(() => [
   'base-button',
   `base-button--${props.variant}`,
@@ -42,6 +68,11 @@ const buttonClasses = computed(() => [
   },
 ]);
 
+/**
+ * 버튼 클릭 이벤트를 처리합니다.
+ * disabled나 loading 상태가 아닐 때만 이벤트를 발생시킵니다.
+ * @param event - 마우스 클릭 이벤트
+ */
 const handleClick = (event: MouseEvent) => {
   if (!props.disabled && !props.loading) {
     emit('click', event);

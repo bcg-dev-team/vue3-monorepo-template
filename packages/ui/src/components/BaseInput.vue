@@ -28,14 +28,38 @@
 <script setup lang="ts">
 import { Field, ErrorMessage } from 'vee-validate';
 
+/**
+ * BaseInput 컴포넌트
+ *
+ * Vee-Validate와 통합된 재사용 가능한 입력 필드 컴포넌트입니다.
+ * 유효성 검증, 에러 표시, 성공 상태 등을 지원합니다.
+ *
+ * @props name - 필드 이름 (Vee-Validate에서 사용)
+ * @props modelValue - v-model 바인딩 값
+ * @props label - 입력 필드 라벨
+ * @props type - HTML input 타입
+ * @props placeholder - 플레이스홀더 텍스트
+ * @props required - 필수 입력 여부
+ * @props disabled - 비활성화 상태
+ * @props id - HTML id 속성
+ * @emits update:modelValue - 값 변경 시 발생하는 이벤트
+ */
 interface Props {
+  /** 필드 이름 (Vee-Validate에서 사용) */
   name: string;
+  /** v-model 바인딩 값 */
   modelValue?: string;
+  /** 입력 필드 라벨 */
   label?: string;
+  /** HTML input 타입 */
   type?: string;
+  /** 플레이스홀더 텍스트 */
   placeholder?: string;
+  /** 필수 입력 여부 */
   required?: boolean;
+  /** 비활성화 상태 */
   disabled?: boolean;
+  /** HTML id 속성 */
   id?: string;
 }
 
@@ -46,10 +70,17 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined,
 });
 
-const emit = defineEmits<{
-  'update:modelValue': [value: string];
-}>();
+interface Emits {
+  /** 값 변경 시 발생하는 이벤트 */
+  (e: 'update:modelValue', value: string): void;
+}
 
+const emit = defineEmits<Emits>();
+
+/**
+ * 입력 이벤트를 처리합니다.
+ * @param event - 입력 이벤트
+ */
 const handleInput = (event: Event) => {
   const target = event.target as HTMLInputElement;
   emit('update:modelValue', target.value);

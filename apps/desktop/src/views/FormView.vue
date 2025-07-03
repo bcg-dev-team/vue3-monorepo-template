@@ -105,13 +105,31 @@ import {
   userProfileValidationSchema,
 } from '@template/utils';
 
+/**
+ * 폼 검증 예시 페이지 컴포넌트
+ *
+ * Vee-Validate와 Zod를 사용한 다양한 폼 검증 예시를 제공합니다.
+ * 로그인, 회원가입, 프로필 수정 폼을 포함합니다.
+ *
+ * @example
+ * ```vue
+ * <FormView />
+ * ```
+ */
+
+/** 로딩 상태 */
 const loading = ref(false);
 
+/** 프로필 폼 데이터 */
 const profileForm = ref({
   bio: '',
 });
 
-const handleLoginSubmit = async (values: any) => {
+/**
+ * 로그인 폼 제출을 처리합니다.
+ * @param values - 폼 데이터
+ */
+const handleLoginSubmit = async (values: unknown) => {
   loading.value = true;
   try {
     console.log('로그인 데이터:', values);
@@ -126,7 +144,11 @@ const handleLoginSubmit = async (values: any) => {
   }
 };
 
-const handleRegisterSubmit = async (values: any) => {
+/**
+ * 회원가입 폼 제출을 처리합니다.
+ * @param values - 폼 데이터
+ */
+const handleRegisterSubmit = async (values: unknown) => {
   loading.value = true;
   try {
     console.log('회원가입 데이터:', values);
@@ -141,10 +163,17 @@ const handleRegisterSubmit = async (values: any) => {
   }
 };
 
-const handleProfileSubmit = async (values: any) => {
+/**
+ * 프로필 폼 제출을 처리합니다.
+ * @param values - 폼 데이터
+ */
+const handleProfileSubmit = async (values: unknown) => {
   loading.value = true;
   try {
-    const profileData = { ...values, bio: profileForm.value.bio };
+    const profileData = {
+      ...(values as Record<string, unknown>),
+      bio: profileForm.value.bio,
+    };
     console.log('프로필 데이터:', profileData);
     // 실제 프로필 저장 로직 구현
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -198,19 +227,18 @@ const handleProfileSubmit = async (values: any) => {
 }
 
 .form-label {
-  font-size: 0.875rem;
   font-weight: 500;
   color: #374151;
 }
 
 .form-textarea {
+  width: 100%;
+  min-height: 100px;
   padding: 0.75rem;
   border: 1px solid #d1d5db;
   border-radius: 0.375rem;
-  font-size: 0.875rem;
-  resize: vertical;
-  min-height: 100px;
   font-family: inherit;
+  resize: vertical;
 }
 
 .form-textarea:focus {
@@ -220,7 +248,7 @@ const handleProfileSubmit = async (values: any) => {
 }
 
 .char-count {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   color: #6b7280;
   text-align: right;
 }

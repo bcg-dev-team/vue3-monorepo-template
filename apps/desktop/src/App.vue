@@ -19,6 +19,17 @@
 </template>
 
 <script setup lang="ts">
+/**
+ * 메인 App 컴포넌트
+ *
+ * 애플리케이션의 루트 컴포넌트로, 전체 레이아웃과 네비게이션을 담당합니다.
+ * Vue Router를 통해 페이지 라우팅을 처리합니다.
+ *
+ * @example
+ * ```vue
+ * <App />
+ * ```
+ */
 // App 컴포넌트 로직
 </script>
 

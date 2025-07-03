@@ -1,4 +1,5 @@
-import tokens from '../styles/tokens';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const tokens = require('../styles/tokens.js');
 
 /**
  * 디자인 토큰 값을 가져오는 유틸리티 함수

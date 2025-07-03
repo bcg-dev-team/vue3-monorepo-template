@@ -8,10 +8,26 @@ import type {
 
 /**
  * API 클라이언트 클래스
+ * HTTP 요청을 처리하고 API 통신을 담당합니다.
+ *
+ * @example
+ * ```typescript
+ * const apiClient = new ApiClient({
+ *   baseURL: 'https://api.example.com',
+ *   timeout: 5000
+ * });
+ *
+ * const response = await apiClient.get<User>('/users/1');
+ * ```
  */
 export class ApiClient {
+  /** API 클라이언트 설정 */
   private config: ApiClientConfig;
 
+  /**
+   * API 클라이언트 생성자
+   * @param config - API 클라이언트 설정
+   */
   constructor(config: ApiClientConfig) {
     this.config = {
       timeout: 10000,
@@ -24,9 +40,13 @@ export class ApiClient {
   }
 
   /**
-   * GET 요청
+   * GET 요청을 수행합니다.
+   * @param url - 요청 URL
+   * @param params - 쿼리 파라미터
+   * @returns API 응답
+   * @template T - 응답 데이터 타입
    */
-  async get<T = any>(url: string, params?: Record<string, any>): Promise<ApiResponse<T>> {
+  async get<T = unknown>(url: string, params?: Record<string, unknown>): Promise<ApiResponse<T>> {
     return this.request<T>({
       method: 'GET',
       url,
@@ -35,9 +55,13 @@ export class ApiClient {
   }
 
   /**
-   * POST 요청
+   * POST 요청을 수행합니다.
+   * @param url - 요청 URL
+   * @param data - 요청 데이터
+   * @returns API 응답
+   * @template T - 응답 데이터 타입
    */
-  async post<T = any>(url: string, data?: any): Promise<ApiResponse<T>> {
+  async post<T = unknown>(url: string, data?: unknown): Promise<ApiResponse<T>> {
     return this.request<T>({
       method: 'POST',
       url,
@@ -46,9 +70,13 @@ export class ApiClient {
   }
 
   /**
-   * PUT 요청
+   * PUT 요청을 수행합니다.
+   * @param url - 요청 URL
+   * @param data - 요청 데이터
+   * @returns API 응답
+   * @template T - 응답 데이터 타입
    */
-  async put<T = any>(url: string, data?: any): Promise<ApiResponse<T>> {
+  async put<T = unknown>(url: string, data?: unknown): Promise<ApiResponse<T>> {
     return this.request<T>({
       method: 'PUT',
       url,
@@ -57,9 +85,13 @@ export class ApiClient {
   }
 
   /**
-   * PATCH 요청
+   * PATCH 요청을 수행합니다.
+   * @param url - 요청 URL
+   * @param data - 요청 데이터
+   * @returns API 응답
+   * @template T - 응답 데이터 타입
    */
-  async patch<T = any>(url: string, data?: any): Promise<ApiResponse<T>> {
+  async patch<T = unknown>(url: string, data?: unknown): Promise<ApiResponse<T>> {
     return this.request<T>({
       method: 'PATCH',
       url,
@@ -68,9 +100,12 @@ export class ApiClient {
   }
 
   /**
-   * DELETE 요청
+   * DELETE 요청을 수행합니다.
+   * @param url - 요청 URL
+   * @returns API 응답
+   * @template T - 응답 데이터 타입
    */
-  async delete<T = any>(url: string): Promise<ApiResponse<T>> {
+  async delete<T = unknown>(url: string): Promise<ApiResponse<T>> {
     return this.request<T>({
       method: 'DELETE',
       url,
@@ -79,8 +114,13 @@ export class ApiClient {
 
   /**
    * 공통 요청 메서드
+   * 모든 HTTP 요청의 기본 로직을 처리합니다.
+   * @param config - 요청 설정
+   * @returns API 응답
+   * @template T - 응답 데이터 타입
+   * @private
    */
-  private async request<T = any>(config: ApiRequestConfig): Promise<ApiResponse<T>> {
+  private async request<T = unknown>(config: ApiRequestConfig): Promise<ApiResponse<T>> {
     const { method, url, data, params, headers = {} } = config;
 
     try {
@@ -120,14 +160,18 @@ export class ApiClient {
         statusCode: response.status,
       };
     } catch (error) {
-      return this.handleError(error);
+      return this.handleError<T>(error);
     }
   }
 
   /**
-   * URL 빌드
+   * URL을 빌드합니다.
+   * @param url - 기본 URL
+   * @param params - 쿼리 파라미터
+   * @returns 완성된 URL
+   * @private
    */
-  private buildUrl(url: string, params?: Record<string, any>): string {
+  private buildUrl(url: string, params?: Record<string, unknown>): string {
     const fullUrl = url.startsWith('http') ? url : `${this.config.baseURL}${url}`;
 
     if (!params) return fullUrl;
@@ -144,7 +188,11 @@ export class ApiClient {
   }
 
   /**
-   * 응답 처리
+   * 응답을 처리합니다.
+   * @param response - Fetch API 응답 객체
+   * @returns 파싱된 응답 데이터
+   * @template T - 응답 데이터 타입
+   * @private
    */
   private async handleResponse<T>(response: Response): Promise<T | null> {
     const contentType = response.headers.get('content-type');
@@ -161,20 +209,25 @@ export class ApiClient {
   }
 
   /**
-   * 에러 처리
+   * 에러를 처리합니다.
+   * @param error - 발생한 에러
+   * @returns 에러 응답
+   * @private
    */
-  private handleError(error: any): ApiResponse<any> {
+  private handleError<T>(error: unknown): ApiResponse<T> {
     const apiError: ApiError = {
       status: 0,
       message: 'Network error',
     };
 
-    if (error.name === 'AbortError') {
-      apiError.message = 'Request timeout';
-    } else if (error instanceof TypeError) {
-      apiError.message = 'Network error';
-    } else {
-      apiError.message = error.message || 'Unknown error';
+    if (error instanceof Error) {
+      if (error.name === 'AbortError') {
+        apiError.message = 'Request timeout';
+      } else if (error instanceof TypeError) {
+        apiError.message = 'Network error';
+      } else {
+        apiError.message = error.message || 'Unknown error';
+      }
     }
 
     return {
@@ -185,23 +238,36 @@ export class ApiClient {
   }
 
   /**
-   * 설정 업데이트
+   * 클라이언트 설정을 업데이트합니다.
+   * @param newConfig - 새로운 설정
    */
   updateConfig(newConfig: Partial<ApiClientConfig>): void {
     this.config = { ...this.config, ...newConfig };
   }
 
   /**
-   * 헤더 설정
+   * 헤더를 설정합니다.
+   * @param key - 헤더 키
+   * @param value - 헤더 값
    */
   setHeader(key: string, value: string): void {
     this.config.headers = { ...this.config.headers, [key]: value };
   }
 
   /**
-   * 인증 토큰 설정
+   * 인증 토큰을 설정합니다.
+   * @param token - JWT 토큰
    */
   setAuthToken(token: string): void {
     this.setHeader('Authorization', `Bearer ${token}`);
+  }
+
+  /**
+   * 인증 토큰을 제거합니다.
+   */
+  removeAuthToken(): void {
+    const headers = { ...this.config.headers };
+    delete headers.Authorization;
+    this.config.headers = headers;
   }
 }

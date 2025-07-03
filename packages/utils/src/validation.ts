@@ -1,12 +1,24 @@
 import { z } from 'zod';
 import { toTypedSchema } from '@vee-validate/zod';
 
-// 기본 검증 스키마들
+/**
+ * 유효성 검증 스키마 및 유틸리티 함수들
+ * Zod를 기반으로 한 타입 안전한 유효성 검증을 제공합니다.
+ */
+
+/**
+ * 이메일 검증 스키마
+ * 필수 입력 및 올바른 이메일 형식을 검증합니다.
+ */
 export const emailSchema = z
   .string()
   .min(1, '이메일을 입력해주세요')
   .email('올바른 이메일 형식이 아닙니다');
 
+/**
+ * 비밀번호 검증 스키마
+ * 보안을 위한 복잡한 비밀번호 요구사항을 검증합니다.
+ */
 export const passwordSchema = z
   .string()
   .min(8, '비밀번호는 최소 8자 이상이어야 합니다')
@@ -15,6 +27,10 @@ export const passwordSchema = z
   .regex(/\d/, '숫자를 포함해야 합니다')
   .regex(/[!@#$%^&*(),.?":{}|<>]/, '특수문자를 포함해야 합니다');
 
+/**
+ * 전화번호 검증 스키마
+ * 한국 전화번호 형식을 검증합니다.
+ */
 export const phoneSchema = z
   .string()
   .min(1, '전화번호를 입력해주세요')
@@ -49,29 +65,58 @@ export const phoneSchema = z
     return false;
   }, '올바른 전화번호 형식이 아닙니다');
 
+/**
+ * URL 검증 스키마
+ * 필수 입력 및 올바른 URL 형식을 검증합니다.
+ */
 export const urlSchema = z.string().min(1, 'URL을 입력해주세요').url('올바른 URL 형식이 아닙니다');
 
+/**
+ * 필수 문자열 검증 스키마
+ * 빈 문자열이 아닌지 검증합니다.
+ */
 export const requiredStringSchema = z.string().min(1, '필수 입력 항목입니다');
 
+/**
+ * 숫자 범위 검증 스키마를 생성합니다.
+ * @param min - 최소값
+ * @param max - 최대값
+ * @returns 숫자 범위 검증 스키마
+ */
 export const numberRangeSchema = (min: number, max: number) =>
   z.number().min(min, `최소 ${min} 이상이어야 합니다`).max(max, `최대 ${max} 이하여야 합니다`);
 
+/**
+ * 문자열 길이 검증 스키마를 생성합니다.
+ * @param min - 최소 길이
+ * @param max - 최대 길이
+ * @returns 문자열 길이 검증 스키마
+ */
 export const stringLengthSchema = (min: number, max: number) =>
   z.string().min(min, `최소 ${min}자 이상이어야 합니다`).max(max, `최대 ${max}자 이하여야 합니다`);
 
-// 한국 주민등록번호 검증 스키마 (형식만 검증)
+/**
+ * 한국 주민등록번호 검증 스키마 (형식만 검증)
+ * 6자리-7자리 형식을 검증합니다.
+ */
 export const koreanSSNSchema = z
   .string()
   .min(1, '주민등록번호를 입력해주세요')
   .regex(/^\d{6}-\d{7}$/, '올바른 주민등록번호 형식이 아닙니다 (예: 123456-1234567)');
 
-// 신용카드 번호 검증 스키마 (형식만 검증 - 16자리만 허용)
+/**
+ * 신용카드 번호 검증 스키마 (형식만 검증 - 16자리만 허용)
+ */
 export const creditCardSchema = z
   .string()
   .min(1, '카드 번호를 입력해주세요')
   .refine((val) => /^\d{16}$/.test(val), '올바른 카드 번호 형식이 아닙니다 (16자리 숫자)');
 
-// 파일 검증 스키마들
+/**
+ * 파일 크기 검증 스키마를 생성합니다.
+ * @param maxSizeInMB - 최대 파일 크기 (MB)
+ * @returns 파일 크기 검증 스키마
+ */
 export const fileSizeSchema = (maxSizeInMB: number) =>
   z
     .instanceof(File)
@@ -80,6 +125,11 @@ export const fileSizeSchema = (maxSizeInMB: number) =>
       `파일 크기는 ${maxSizeInMB}MB 이하여야 합니다`
     );
 
+/**
+ * 파일 타입 검증 스키마를 생성합니다.
+ * @param allowedTypes - 허용된 파일 확장자 배열
+ * @returns 파일 타입 검증 스키마
+ */
 export const fileTypeSchema = (allowedTypes: string[]) =>
   z.instanceof(File).refine(
     (file) => {
@@ -89,12 +139,22 @@ export const fileTypeSchema = (allowedTypes: string[]) =>
     `허용되지 않는 파일 형식입니다. 허용 형식: ${allowedTypes.join(', ')}`
   );
 
-// 복합 스키마들
+/**
+ * 복합 스키마들
+ */
+
+/**
+ * 로그인 폼 검증 스키마
+ */
 export const loginSchema = z.object({
   email: emailSchema,
   password: requiredStringSchema,
 });
 
+/**
+ * 회원가입 폼 검증 스키마
+ * 비밀번호 확인 기능을 포함합니다.
+ */
 export const registerSchema = z
   .object({
     email: emailSchema,
@@ -108,6 +168,9 @@ export const registerSchema = z
     path: ['confirmPassword'],
   });
 
+/**
+ * 사용자 프로필 수정 검증 스키마
+ */
 export const userProfileSchema = z.object({
   firstName: requiredStringSchema,
   lastName: requiredStringSchema,
@@ -116,7 +179,10 @@ export const userProfileSchema = z.object({
   bio: z.string().max(500, '자기소개는 500자 이하여야 합니다').optional(),
 });
 
-// Vee-Validate용 스키마 변환 (타입 주석 추가)
+/**
+ * Vee-Validate용 스키마 변환
+ * Vee-Validate와 함께 사용하기 위한 타입 변환된 스키마들
+ */
 export const emailValidationSchema = toTypedSchema(emailSchema) as any;
 export const passwordValidationSchema = toTypedSchema(passwordSchema) as any;
 export const phoneValidationSchema = toTypedSchema(phoneSchema) as any;
@@ -125,7 +191,15 @@ export const loginValidationSchema = toTypedSchema(loginSchema) as any;
 export const registerValidationSchema = toTypedSchema(registerSchema) as any;
 export const userProfileValidationSchema = toTypedSchema(userProfileSchema) as any;
 
-// 유틸리티 함수들 (기존 함수들과의 호환성을 위해)
+/**
+ * 유틸리티 함수들
+ */
+
+/**
+ * 이메일 유효성을 검증합니다.
+ * @param email - 검증할 이메일 주소
+ * @returns 유효성 여부
+ */
 export function validateEmail(email: string): boolean {
   try {
     emailSchema.parse(email);
@@ -135,6 +209,11 @@ export function validateEmail(email: string): boolean {
   }
 }
 
+/**
+ * 비밀번호 유효성을 검증하고 보안 점수를 반환합니다.
+ * @param password - 검증할 비밀번호
+ * @returns 검증 결과와 보안 점수
+ */
 export function validatePassword(password: string): {
   isValid: boolean;
   score: number;
@@ -163,6 +242,11 @@ export function validatePassword(password: string): {
   }
 }
 
+/**
+ * 전화번호 유효성을 검증합니다.
+ * @param phone - 검증할 전화번호
+ * @returns 유효성 여부
+ */
 export function validatePhone(phone: string): boolean {
   try {
     phoneSchema.parse(phone);
@@ -172,6 +256,11 @@ export function validatePhone(phone: string): boolean {
   }
 }
 
+/**
+ * URL 유효성을 검증합니다.
+ * @param url - 검증할 URL
+ * @returns 유효성 여부
+ */
 export function validateUrl(url: string): boolean {
   try {
     urlSchema.parse(url);
@@ -181,6 +270,11 @@ export function validateUrl(url: string): boolean {
   }
 }
 
+/**
+ * 필수 값 유효성을 검증합니다.
+ * @param value - 검증할 값
+ * @returns 유효성 여부
+ */
 export function validateRequired(value: unknown): boolean {
   if (value === null || value === undefined) return false;
   if (typeof value === 'string') return value.trim().length > 0;

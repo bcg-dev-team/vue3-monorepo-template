@@ -8,6 +8,7 @@
 import { execSync } from 'child_process';
 import { existsSync } from 'fs';
 import { join } from 'path';
+import { fileURLToPath } from 'url';
 
 // 빌드 순서 정의 (의존성 순서)
 const BUILD_ORDER = [
@@ -29,11 +30,23 @@ const DEPENDENCY_GRAPH = {
   'apps/mobile': ['packages/types', 'packages/utils', 'packages/api', 'packages/ui'],
 } as const;
 
+// 타입 정의
+type PackagePath = (typeof BUILD_ORDER)[number];
+type DependencyGraph = typeof DEPENDENCY_GRAPH;
+
 /**
  * 패키지가 존재하는지 확인
  */
 function packageExists(packagePath: string): boolean {
   return existsSync(join(process.cwd(), packagePath, 'package.json'));
+}
+
+/**
+ * 패키지가 빌드되었는지 확인
+ */
+function isPackageBuilt(packagePath: string): boolean {
+  const distPath = join(process.cwd(), packagePath, 'dist');
+  return existsSync(distPath) && existsSync(join(distPath, 'index.js'));
 }
 
 /**
@@ -43,10 +56,22 @@ function checkCircularDependencies(): void {
   console.log('🔍 순환참조 검사 중...');
 
   try {
+    // madge가 설치되어 있는지 확인
+    try {
+      execSync('npx madge --version', { stdio: 'pipe' });
+    } catch {
+      console.log('📦 madge 설치 중...');
+      execSync('pnpm add -D madge', { stdio: 'inherit' });
+    }
+
     execSync('npx madge --circular packages/', { stdio: 'inherit' });
     console.log('✅ 순환참조 없음');
   } catch (error) {
     console.error('❌ 순환참조 발견!');
+    console.error('💡 해결 방법:');
+    console.error('   1. packages/ 디렉토리의 import 문을 확인하세요');
+    console.error('   2. 순환참조가 있는 패키지들을 분리하세요');
+    console.error('   3. 인터페이스를 통해 의존성을 역전시키세요');
     process.exit(1);
   }
 }
@@ -54,17 +79,37 @@ function checkCircularDependencies(): void {
 /**
  * 패키지 빌드
  */
-function buildPackage(packagePath: string): void {
+function buildPackage(packagePath: PackagePath): void {
   console.log(`📦 빌드 중: ${packagePath}`);
 
   try {
+    // 빌드 전 dist 폴더 정리
+    const distPath = join(process.cwd(), packagePath, 'dist');
+    if (existsSync(distPath)) {
+      execSync('rm -rf dist', {
+        cwd: join(process.cwd(), packagePath),
+        stdio: 'pipe',
+      });
+    }
+
     execSync('pnpm build', {
       cwd: join(process.cwd(), packagePath),
       stdio: 'inherit',
     });
+
+    // 빌드 결과 확인
+    if (!isPackageBuilt(packagePath)) {
+      throw new Error(`빌드 산출물이 생성되지 않았습니다: ${packagePath}/dist/index.js`);
+    }
+
     console.log(`✅ 빌드 완료: ${packagePath}`);
   } catch (error) {
     console.error(`❌ 빌드 실패: ${packagePath}`);
+    console.error(`💡 오류 내용: ${error instanceof Error ? error.message : '알 수 없는 오류'}`);
+    console.error('💡 해결 방법:');
+    console.error('   1. 해당 패키지의 의존성이 올바르게 설치되었는지 확인');
+    console.error('   2. TypeScript 설정을 확인');
+    console.error('   3. 빌드 스크립트가 올바르게 정의되었는지 확인');
     process.exit(1);
   }
 }
@@ -72,15 +117,30 @@ function buildPackage(packagePath: string): void {
 /**
  * 의존성 체크
  */
-function checkDependencies(packagePath: string): void {
-  const dependencies = DEPENDENCY_GRAPH[packagePath as keyof typeof DEPENDENCY_GRAPH];
+function checkDependencies(packagePath: PackagePath): void {
+  const dependencies = DEPENDENCY_GRAPH[packagePath];
 
   for (const dep of dependencies) {
     if (!packageExists(dep)) {
       console.error(`❌ 의존성 누락: ${packagePath} → ${dep}`);
+      console.error(`💡 해결 방법: ${dep} 패키지를 생성하거나 의존성에서 제거하세요`);
+      process.exit(1);
+    }
+
+    // 의존 패키지가 빌드되었는지 확인
+    if (!isPackageBuilt(dep)) {
+      console.error(`❌ 의존 패키지 미빌드: ${packagePath} → ${dep}`);
+      console.error(`💡 해결 방법: ${dep} 패키지를 먼저 빌드하세요`);
       process.exit(1);
     }
   }
+}
+
+/**
+ * 빌드 가능한 패키지 필터링
+ */
+function getBuildablePackages(): PackagePath[] {
+  return BUILD_ORDER.filter((packagePath) => packageExists(packagePath));
 }
 
 /**
@@ -89,16 +149,22 @@ function checkDependencies(packagePath: string): void {
 function main(): void {
   console.log('🚀 모노레포 빌드 시작...\n');
 
+  // 빌드 가능한 패키지 확인
+  const buildablePackages = getBuildablePackages();
+
+  if (buildablePackages.length === 0) {
+    console.error('❌ 빌드할 패키지가 없습니다.');
+    console.error('📦 packages/ 또는 apps/ 디렉토리에 package.json이 있는지 확인하세요');
+    process.exit(1);
+  }
+
+  console.log(`🎯 빌드 대상 패키지: ${buildablePackages.join(', ')}\n`);
+
   // 순환참조 검사
   checkCircularDependencies();
 
   // 순서대로 빌드
-  for (const packagePath of BUILD_ORDER) {
-    if (!packageExists(packagePath)) {
-      console.log(`⏭️  패키지 없음, 건너뜀: ${packagePath}`);
-      continue;
-    }
-
+  for (const packagePath of buildablePackages) {
     // 의존성 체크
     checkDependencies(packagePath);
 
@@ -107,7 +173,11 @@ function main(): void {
     console.log('');
   }
 
-  console.log('🎉 모든 패키지 빌드 완료!');
+  console.log('✅ 모든 패키지 빌드 완료!');
+  console.log('📊 빌드된 패키지:');
+  buildablePackages.forEach((pkg) => {
+    console.log(`   ✅ ${pkg}`);
+  });
 }
 
 // 스크립트 실행

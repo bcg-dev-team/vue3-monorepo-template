@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import type { Meta, StoryObj } from '@storybook/vue3';
 
 import { fn } from '@storybook/test';
 
 import Button from './ExampleButton.vue';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
-const meta = {
+const meta: Meta<typeof Button> = {
   title: 'Example/Button',
   component: Button,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/writing-docs/autodocs

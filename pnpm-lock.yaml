@@ -283,6 +283,9 @@ importers:
       date-fns-tz:
         specifier: ^3.2.0
         version: 3.2.0(date-fns@3.6.0)
+      vue:
+        specifier: ^3.4.0
+        version: 3.5.17(typescript@5.8.3)
     devDependencies:
       '@vitest/coverage-v8':
         specifier: ^1.0.0

@@ -17,6 +17,11 @@ const routes: RouteRecordRaw[] = [
     name: 'Form',
     component: () => import('../views/FormView.vue'),
   },
+  {
+    path: '/composables',
+    name: 'Composables',
+    component: () => import('../views/ComposablesExample.vue'),
+  },
 ];
 
 const router = createRouter({

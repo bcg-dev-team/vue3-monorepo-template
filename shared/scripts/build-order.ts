@@ -32,7 +32,6 @@ const DEPENDENCY_GRAPH = {
 
 // 타입 정의
 type PackagePath = (typeof BUILD_ORDER)[number];
-type DependencyGraph = typeof DEPENDENCY_GRAPH;
 
 /**
  * 패키지가 존재하는지 확인
@@ -46,7 +45,18 @@ function packageExists(packagePath: string): boolean {
  */
 function isPackageBuilt(packagePath: string): boolean {
   const distPath = join(process.cwd(), packagePath, 'dist');
-  return existsSync(distPath) && existsSync(join(distPath, 'index.js'));
+
+  if (!existsSync(distPath)) {
+    return false;
+  }
+
+  // 앱 패키지인 경우 index.html 확인
+  if (packagePath.startsWith('apps/')) {
+    return existsSync(join(distPath, 'index.html'));
+  }
+
+  // 라이브러리 패키지인 경우 index.js 확인
+  return existsSync(join(distPath, 'index.js'));
 }
 
 /**
@@ -83,13 +93,19 @@ function buildPackage(packagePath: PackagePath): void {
   console.log(`📦 빌드 중: ${packagePath}`);
 
   try {
-    // 빌드 전 dist 폴더 정리
-    const distPath = join(process.cwd(), packagePath, 'dist');
-    if (existsSync(distPath)) {
-      execSync('rm -rf dist', {
-        cwd: join(process.cwd(), packagePath),
-        stdio: 'pipe',
-      });
+    // 빌드 전 dist 폴더 정리 (types 패키지는 제외)
+    console.log(`🔍 ${packagePath} 빌드 전 dist 폴더 상태 확인...`);
+    if (packagePath !== 'packages/types') {
+      const distPath = join(process.cwd(), packagePath, 'dist');
+      if (existsSync(distPath)) {
+        console.log(`🗑️  ${packagePath} dist 폴더 삭제 중...`);
+        execSync('rm -rf dist', {
+          cwd: join(process.cwd(), packagePath),
+          stdio: 'pipe',
+        });
+      }
+    } else {
+      console.log(`✅ ${packagePath} dist 폴더 삭제 건너뜀`);
     }
 
     execSync('pnpm build', {
@@ -97,7 +113,16 @@ function buildPackage(packagePath: PackagePath): void {
       stdio: 'inherit',
     });
 
-    // 빌드 결과 확인
+    // 빌드 결과 확인 (파일 시스템 동기화 대기)
+    const maxRetries = 10;
+    let retryCount = 0;
+
+    while (!isPackageBuilt(packagePath) && retryCount < maxRetries) {
+      // 파일 시스템 동기화를 위한 짧은 대기
+      execSync('sleep 0.1', { stdio: 'pipe' });
+      retryCount++;
+    }
+
     if (!isPackageBuilt(packagePath)) {
       throw new Error(`빌드 산출물이 생성되지 않았습니다: ${packagePath}/dist/index.js`);
     }

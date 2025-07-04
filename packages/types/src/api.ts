@@ -35,8 +35,19 @@ export interface ApiError {
   status: number;
   message: string;
   code?: string;
-  details?: any;
+  details?: unknown;
 }
+
+// 안전한 API 응답 타입
+export interface SafeApiResponse<T = unknown> {
+  success: boolean;
+  data: T | null;
+  error?: string;
+  statusCode: number;
+}
+
+// 타입 가드 함수 타입
+export type TypeGuard<T> = (data: unknown) => data is T;
 
 // API 요청 상태
 export interface ApiState<T = any> {

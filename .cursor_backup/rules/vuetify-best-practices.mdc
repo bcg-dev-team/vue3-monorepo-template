@@ -1,0 +1,431 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+rule_type: manual
+---
+
+# Vuetify 베스트 프랙티스
+
+## UI 컴포넌트 설계
+- 반응형 레이아웃을 위해 Vuetify의 그리드 시스템을 활용하세요.
+- 일관된 UI 컴포넌트를 위해 Vuetify의 디자인 가이드라인을 따르세요.
+- 유연한 컴포넌트 설계를 위해 슬롯과 스코프 슬롯을 사용하세요.
+- ARIA 표준을 따라 접근성을 보장하세요.
+
+## 모노레포 Vuetify 구조
+- **공통 컴포넌트**: packages/ui에 재사용 가능한 Vuetify 컴포넌트를 배치하세요.
+- **테마 시스템**: shared/config에 통합 테마 설정을 관리하세요.
+- **컴포넌트 래퍼**: Vuetify 컴포넌트를 래핑하여 일관된 API를 제공하세요.
+- **Storybook 통합**: 모든 Vuetify 컴포넌트에 Storybook 스토리를 작성하세요.
+
+## 성능 최적화
+- **지연 로딩**: 대용량 컴포넌트는 지연 로딩을 구현하세요.
+- **메모이제이션**: 복잡한 렌더링 로직에는 메모이제이션을 활용하세요.
+- **가상 스크롤링**: 대용량 리스트에는 Vuetify의 가상 스크롤링을 사용하세요.
+- **번들 최적화**: 사용하지 않는 Vuetify 컴포넌트는 제외하세요.
+
+## 예시 컴포넌트 패턴
+
+```vue
+<!-- packages/ui/components/BaseDataTable.vue -->
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue'
+import type { TableColumn, PaginationState } from '@template/types'
+
+interface Props<T = Record<string, any>> {
+  items: T[]
+  columns: TableColumn<T>[]
+  loading?: boolean
+  pagination?: PaginationState
+  selectable?: boolean
+  searchable?: boolean
+  sortable?: boolean
+  dense?: boolean
+  height?: string | number
+  virtualScrolling?: boolean
+}
+
+interface Emits<T = Record<string, any>> {
+  (e: 'update:selected', items: T[]): void
+  (e: 'update:pagination', pagination: PaginationState): void
+  (e: 'sort', column: TableColumn<T>, direction: 'asc' | 'desc'): void
+  (e: 'search', query: string): void
+  (e: 'row-click', item: T): void
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  loading: false,
+  selectable: false,
+  searchable: false,
+  sortable: false,
+  dense: false,
+  virtualScrolling: false,
+})
+
+const emit = defineEmits<Emits>()
+
+// 반응형 상태
+const selected = ref<any[]>([])
+const searchQuery = ref('')
+const sortBy = ref<string[]>([])
+const sortDesc = ref<boolean[]>([])
+
+// Computed 속성
+const filteredItems = computed(() => {
+  let items = props.items
+
+  if (props.searchable && searchQuery.value) {
+    const query = searchQuery.value.toLowerCase()
+    items = items.filter(item => {
+      return props.columns.some(column => {
+        const value = item[column.key]
+        return String(value).toLowerCase().includes(query)
+      })
+    })
+  }
+
+  return items
+})
+
+const sortedItems = computed(() => {
+  if (!props.sortable || sortBy.value.length === 0) {
+    return filteredItems.value
+  }
+
+  return [...filteredItems.value].sort((a, b) => {
+    const column = props.columns.find(col => col.key === sortBy.value[0])
+    if (!column) return 0
+
+    const aValue = a[column.key]
+    const bValue = b[column.key]
+
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      return sortDesc.value[0] 
+        ? bValue.localeCompare(aValue)
+        : aValue.localeCompare(bValue)
+    }
+
+    if (typeof aValue === 'number' && typeof bValue === 'number') {
+      return sortDesc.value[0] ? bValue - aValue : aValue - bValue
+    }
+
+    return 0
+  })
+})
+
+// 메서드
+const handleSelectionChange = (items: any[]) => {
+  selected.value = items
+  emit('update:selected', items)
+}
+
+const handleSort = (column: TableColumn<any>) => {
+  const index = sortBy.value.indexOf(column.key as string)
+  
+  if (index === -1) {
+    sortBy.value = [column.key as string]
+    sortDesc.value = [false]
+  } else {
+    sortDesc.value[index] = !sortDesc.value[index]
+  }
+
+  emit('sort', column, sortDesc.value[index] ? 'desc' : 'asc')
+}
+
+const handleSearch = (query: string) => {
+  searchQuery.value = query
+  emit('search', query)
+}
+
+const handleRowClick = (item: any) => {
+  emit('row-click', item)
+}
+
+// Watchers
+watch(selected, (newSelected) => {
+  emit('update:selected', newSelected)
+}, { deep: true })
+</script>
+
+<template>
+  <div class="base-data-table">
+    <!-- 검색 필터 -->
+    <v-card-text v-if="searchable" class="pb-0">
+      <v-text-field
+        v-model="searchQuery"
+        prepend-inner-icon="mdi-magnify"
+        label="검색"
+        single-line
+        hide-details
+        clearable
+        @update:model-value="handleSearch"
+      />
+    </v-card-text>
+
+    <!-- 데이터 테이블 -->
+    <v-data-table
+      v-model="selected"
+      :headers="columns"
+      :items="sortedItems"
+      :loading="loading"
+      :server-items-length="pagination?.total || 0"
+      :items-per-page="pagination?.limit || 20"
+      :page="pagination?.page || 1"
+      :sort-by="sortBy"
+      :sort-desc="sortDesc"
+      :show-select="selectable"
+      :dense="dense"
+      :height="height"
+      :virtual-scrolling="virtualScrolling"
+      item-key="id"
+      class="elevation-1"
+      @update:options="$emit('update:pagination', $event)"
+      @click:row="handleRowClick"
+    >
+      <!-- 커스텀 헤더 -->
+      <template #header="{ props: headerProps }">
+        <th
+          v-for="header in headerProps.headers"
+          :key="header.key"
+          class="text-left"
+          :class="{ 'sortable': sortable && header.sortable !== false }"
+          @click="sortable && header.sortable !== false ? handleSort(header) : null"
+        >
+          <div class="d-flex align-center">
+            {{ header.title }}
+            <v-icon
+              v-if="sortable && header.sortable !== false"
+              class="ml-1"
+              :class="{ 'sort-active': sortBy.includes(header.key) }"
+            >
+              {{ sortBy.includes(header.key) && sortDesc[sortBy.indexOf(header.key)]
+                ? 'mdi-sort-descending'
+                : 'mdi-sort-ascending'
+              }}
+            </v-icon>
+          </div>
+        </th>
+      </template>
+
+      <!-- 커스텀 셀 렌더링 -->
+      <template
+        v-for="column in columns"
+        :key="column.key"
+        #[`item.${column.key}`]="{ item, value }"
+      >
+        <div v-if="column.render" v-html="column.render(value, item)" />
+        <div v-else>{{ value }}</div>
+      </template>
+
+      <!-- 로딩 상태 -->
+      <template #loading>
+        <v-skeleton-loader
+          v-for="i in 5"
+          :key="i"
+          type="table-row"
+          class="my-2"
+        />
+      </template>
+
+      <!-- 빈 상태 -->
+      <template #no-data>
+        <v-alert
+          type="info"
+          text
+          class="ma-4"
+        >
+          데이터가 없습니다.
+        </v-alert>
+      </template>
+    </v-data-table>
+  </div>
+</template>
+
+<style scoped>
+.base-data-table {
+  width: 100%;
+}
+
+.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sortable:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.sort-active {
+  color: var(--v-primary-base);
+}
+</style>
+```
+
+## 테마 시스템
+
+```typescript
+// shared/config/theme.ts
+import { createVuetify } from 'vuetify'
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
+import '@mdi/font/css/materialdesignicons.css'
+
+export const createTheme = () => {
+  return createVuetify({
+    theme: {
+      defaultTheme: 'light',
+      themes: {
+        light: {
+          dark: false,
+          colors: {
+            primary: '#1976D2',
+            secondary: '#424242',
+            accent: '#82B1FF',
+            error: '#FF5252',
+            info: '#2196F3',
+            success: '#4CAF50',
+            warning: '#FF9800',
+            background: '#FAFAFA',
+            surface: '#FFFFFF',
+          },
+        },
+        dark: {
+          dark: true,
+          colors: {
+            primary: '#2196F3',
+            secondary: '#424242',
+            accent: '#FF4081',
+            error: '#FF5252',
+            info: '#2196F3',
+            success: '#4CAF50',
+            warning: '#FF9800',
+            background: '#121212',
+            surface: '#1E1E1E',
+          },
+        },
+      },
+    },
+    icons: {
+      defaultSet: 'mdi',
+      aliases,
+      sets: {
+        mdi,
+      },
+    },
+    defaults: {
+      VBtn: {
+        variant: 'elevated',
+        rounded: 'lg',
+      },
+      VCard: {
+        rounded: 'lg',
+        elevation: 2,
+      },
+      VTextField: {
+        variant: 'outlined',
+        density: 'comfortable',
+      },
+      VSelect: {
+        variant: 'outlined',
+        density: 'comfortable',
+      },
+      VDataTable: {
+        density: 'comfortable',
+        hover: true,
+      },
+    },
+  })
+}
+```
+
+## 컴포넌트 래퍼
+
+```vue
+<!-- packages/ui/components/BaseButton.vue -->
+<script setup lang="ts">
+import { computed } from 'vue'
+
+interface Props {
+  variant?: 'text' | 'flat' | 'elevated' | 'tonal' | 'outlined' | 'plain'
+  color?: string
+  size?: 'x-small' | 'small' | 'default' | 'large' | 'x-large'
+  loading?: boolean
+  disabled?: boolean
+  icon?: string
+  iconStart?: string
+  iconEnd?: string
+  block?: boolean
+  rounded?: boolean | string
+  elevation?: number | string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  variant: 'elevated',
+  size: 'default',
+  loading: false,
+  disabled: false,
+  block: false,
+  rounded: 'lg',
+  elevation: 2,
+})
+
+const emit = defineEmits<{
+  (e: 'click', event: MouseEvent): void
+}>()
+
+const buttonProps = computed(() => ({
+  variant: props.variant,
+  color: props.color,
+  size: props.size,
+  loading: props.loading,
+  disabled: props.disabled,
+  block: props.block,
+  rounded: props.rounded,
+  elevation: props.elevation,
+}))
+
+const handleClick = (event: MouseEvent) => {
+  if (!props.disabled && !props.loading) {
+    emit('click', event)
+  }
+}
+</script>
+
+<template>
+  <v-btn
+    v-bind="buttonProps"
+    @click="handleClick"
+  >
+    <v-icon
+      v-if="iconStart"
+      :icon="iconStart"
+      class="me-2"
+    />
+    
+    <v-icon
+      v-if="icon"
+      :icon="icon"
+    />
+    
+    <slot />
+    
+    <v-icon
+      v-if="iconEnd"
+      :icon="iconEnd"
+      class="ms-2"
+    />
+  </v-btn>
+</template>
+```
+
+<!-- ## Vuetify 베스트 프랙티스 체크리스트
+- [ ] 그리드 시스템 활용
+- [ ] 디자인 가이드라인 준수
+- [ ] 슬롯과 스코프 슬롯 사용
+- [ ] ARIA 접근성 구현
+- [ ] 테마 시스템 구성
+- [ ] 컴포넌트 래퍼 구현
+- [ ] Storybook 통합
+- [ ] 성능 최적화 적용 -->

@@ -198,14 +198,40 @@ export class ApiClient {
     const contentType = response.headers.get('content-type');
 
     if (contentType?.includes('application/json')) {
-      return response.json();
+      try {
+        const data = await response.json();
+        return this.validateResponseData<T>(data);
+      } catch (error) {
+        console.warn('JSON 파싱 실패:', error);
+        return null;
+      }
     }
 
     if (contentType?.includes('text/')) {
-      return response.text() as T;
+      const text = await response.text();
+      return text as T;
     }
 
     return null;
+  }
+
+  /**
+   * 응답 데이터 유효성 검사
+   * @param data - 검사할 데이터
+   * @returns 검증된 데이터 또는 null
+   * @template T - 예상 데이터 타입
+   * @private
+   */
+  private validateResponseData<T>(data: unknown): T | null {
+    // 기본적인 유효성 검사
+    if (data === null || data === undefined) {
+      return null;
+    }
+
+    // 여기에 더 구체적인 타입 검증 로직을 추가할 수 있습니다
+    // 예: 스키마 검증, 필수 필드 확인 등
+
+    return data as T; // 여전히 타입 단언이 필요하지만, 검증 후 사용
   }
 
   /**

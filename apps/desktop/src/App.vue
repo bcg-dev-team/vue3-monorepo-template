@@ -5,6 +5,7 @@
         <router-link to="/" class="nav-link">홈</router-link>
         <router-link to="/about" class="nav-link">소개</router-link>
         <router-link to="/form" class="nav-link">폼 검증</router-link>
+        <router-link to="/composables" class="nav-link">Composables</router-link>
       </nav>
     </header>
 

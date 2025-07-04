@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import type { Meta, StoryObj } from '@storybook/vue3';
 
 import { fn } from '@storybook/test';
 
 import MyHeader from './Header.vue';
 
-const meta = {
+const meta: Meta<typeof MyHeader> = {
   /* 👇 The title prop is optional.
    * See https://storybook.js.org/docs/configure/#configure-story-loading
    * to learn how to generate automatic titles

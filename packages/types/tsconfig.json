@@ -6,7 +6,11 @@
     "rootDir": "./src",
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "noEmit": false,
+    "composite": true,
+    "emitDeclarationOnly": false,
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*"

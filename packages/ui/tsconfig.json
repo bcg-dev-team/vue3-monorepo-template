@@ -7,7 +7,11 @@
     "declarationMap": true,
     "sourceMap": true,
     "jsx": "preserve",
-    "jsxImportSource": "vue"
+    "jsxImportSource": "vue",
+    "baseUrl": "./src",
+    "paths": {
+      "@template/types": ["../../types/dist/index.d.ts"]
+    }
   },
   "include": [
     "src/**/*",

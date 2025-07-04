@@ -8,8 +8,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch",
     "clean": "rimraf dist",
     "type-check": "tsc --noEmit",
     "test": "vitest",
@@ -19,7 +19,8 @@
   "dependencies": {
     "@template/types": "workspace:*",
     "date-fns": "^3.0.0",
-    "date-fns-tz": "^3.2.0"
+    "date-fns-tz": "^3.2.0",
+    "vue": "^3.4.0"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^1.0.0",

@@ -2,8 +2,15 @@
   "name": "@template/utils",
   "version": "0.1.0",
   "description": "공통 유틸리티 함수",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "files": [
     "dist"
   ],

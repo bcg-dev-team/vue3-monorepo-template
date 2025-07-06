@@ -50,12 +50,27 @@ function isPackageBuilt(packagePath: string): boolean {
     return false;
   }
 
+  // types 패키지는 index.d.ts 체크
+  if (packagePath === 'packages/types') {
+    return existsSync(join(distPath, 'index.d.ts'));
+  }
+
+  // ui 패키지는 index.js 체크
+  if (packagePath === 'packages/ui') {
+    return existsSync(join(distPath, 'index.js'));
+  }
+
+  // utils, api 패키지는 index.js 체크
+  if (packagePath === 'packages/utils' || packagePath === 'packages/api') {
+    return existsSync(join(distPath, 'index.js'));
+  }
+
   // 앱 패키지인 경우 index.html 확인
   if (packagePath.startsWith('apps/')) {
     return existsSync(join(distPath, 'index.html'));
   }
 
-  // 라이브러리 패키지인 경우 index.js 확인
+  // 기본값: index.js
   return existsSync(join(distPath, 'index.js'));
 }
 
@@ -124,7 +139,7 @@ function buildPackage(packagePath: PackagePath): void {
     }
 
     if (!isPackageBuilt(packagePath)) {
-      throw new Error(`빌드 산출물이 생성되지 않았습니다: ${packagePath}/dist/index.js`);
+      throw new Error(`빌드 산출물이 생성되지 않았습니다: ${packagePath}/dist/index.mjs`);
     }
 
     console.log(`✅ 빌드 완료: ${packagePath}`);

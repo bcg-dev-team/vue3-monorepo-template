@@ -1,12 +1,19 @@
 <template>
   <div id="app">
     <header class="app-header">
-      <nav class="nav-menu">
-        <router-link to="/" class="nav-link">홈</router-link>
-        <router-link to="/about" class="nav-link">소개</router-link>
-        <router-link to="/form" class="nav-link">폼 검증</router-link>
-        <router-link to="/composables" class="nav-link">Composables</router-link>
-      </nav>
+      <div class="header-content">
+        <div class="logo">
+          <h1>Vue 3 Monorepo Template</h1>
+          <span class="version">v1.0.0</span>
+        </div>
+        <nav class="nav-menu">
+          <router-link to="/" class="nav-link">시작하기</router-link>
+          <router-link to="/packages" class="nav-link">패키지 구조</router-link>
+          <router-link to="/development" class="nav-link">개발 가이드</router-link>
+          <router-link to="/components" class="nav-link">컴포넌트</router-link>
+          <router-link to="/api-examples" class="nav-link">API 예제</router-link>
+        </nav>
+      </div>
     </header>
 
     <main class="app-main">
@@ -14,7 +21,19 @@
     </main>
 
     <footer class="app-footer">
-      <p>&copy; 2024 Vue 3 Monorepo Template</p>
+      <div class="footer-content">
+        <p>&copy; 2024 Vue 3 Monorepo Template - TypeScript, Vite, Performance Optimized</p>
+        <div class="footer-links">
+          <a
+            href="https://github.com/your-username/vue3-monorepo-template"
+            target="_blank"
+            rel="noopener"
+            >GitHub</a
+          >
+          <a href="https://vuejs.org" target="_blank" rel="noopener">Vue.js</a>
+          <a href="https://vitejs.dev" target="_blank" rel="noopener">Vite</a>
+        </div>
+      </div>
     </footer>
   </div>
 </template>
@@ -23,7 +42,7 @@
 /**
  * 메인 App 컴포넌트
  *
- * 애플리케이션의 루트 컴포넌트로, 전체 레이아웃과 네비게이션을 담당합니다.
+ * 템플릿 온보딩을 위한 메인 애플리케이션 컴포넌트입니다.
  * Vue Router를 통해 페이지 라우팅을 처리합니다.
  *
  * @example
@@ -39,34 +58,75 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
 }
 
 .app-header {
-  background-color: #2c3e50;
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.logo h1 {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.version {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .nav-menu {
   display: flex;
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  gap: 1.5rem;
 }
 
 .nav-link {
   color: white;
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
 }
 
 .nav-link:hover {
-  color: #42b883;
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
 }
 
 .nav-link.router-link-active {
-  color: #42b883;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
 }
 
 .app-main {
@@ -79,13 +139,57 @@
 
 .app-footer {
   background-color: #f8f9fa;
-  padding: 1rem 2rem;
-  text-align: center;
+  padding: 2rem 0;
   border-top: 1px solid #e9ecef;
+  margin-top: auto;
 }
 
-.app-footer p {
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-content p {
   margin: 0;
   color: #6c757d;
+  font-size: 0.875rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer-links a {
+  color: #6c757d;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: #495057;
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .nav-menu {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
 }
 </style>

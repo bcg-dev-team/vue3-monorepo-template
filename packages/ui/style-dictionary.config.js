@@ -34,20 +34,7 @@ module.exports = {
       files: [
         {
           destination: 'tokens.js',
-          format: 'javascript/module',
-          options: {
-            outputReferences: true,
-          },
-        },
-      ],
-    },
-    ts: {
-      transformGroup: 'js',
-      buildPath: 'src/styles/',
-      files: [
-        {
-          destination: 'tokens.ts',
-          format: 'typescript/module-declarations',
+          format: 'javascript/es6',
           options: {
             outputReferences: true,
           },

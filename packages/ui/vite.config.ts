@@ -16,7 +16,7 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'TemplateUI',
       fileName: 'index',
-      formats: ['es', 'cjs'],
+      formats: ['es'],
     },
     rollupOptions: {
       external: ['vue', '@template/types'],

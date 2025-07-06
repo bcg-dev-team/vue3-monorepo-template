@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "pnpm -r run dev",
+    "dev": "pnpm --filter @template/desktop dev",
     "dev:desktop": "pnpm --filter @template/desktop dev",
     "dev:mobile": "pnpm --filter @template/mobile dev",
     "build": "tsx shared/scripts/build-order.ts",

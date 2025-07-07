@@ -1,16 +1,14 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'node:path';
+import { commonAlias } from '../../shared/config/vite.common';
 
 export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
+      ...commonAlias,
       '@': resolve(__dirname, 'src'),
-      '@template/ui': resolve(__dirname, '../../packages/ui/src'),
-      '@template/types': resolve(__dirname, '../../packages/types/src'),
-      '@template/utils': resolve(__dirname, '../../packages/utils/src'),
-      '@template/api': resolve(__dirname, '../../packages/api/src'),
     },
   },
   server: {

@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
+import path from 'path';
 
 /**
  * 공통 Vite 설정
@@ -27,4 +28,11 @@ export const createCommonConfig = () => {
       },
     },
   };
+};
+
+export const commonAlias = {
+  '@template/ui': path.resolve(__dirname, '../../packages/ui/src'),
+  '@template/types': path.resolve(__dirname, '../../packages/types/src'),
+  '@template/utils': path.resolve(__dirname, '../../packages/utils/src'),
+  '@template/api': path.resolve(__dirname, '../../packages/api/src'),
 };

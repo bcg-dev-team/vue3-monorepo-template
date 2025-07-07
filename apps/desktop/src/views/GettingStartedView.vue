@@ -133,6 +133,11 @@ pnpm test</code></pre>
             <h3>🌐 API 예제</h3>
             <p>API 클라이언트 사용법과 예제를 확인하세요.</p>
           </router-link>
+
+          <router-link to="/utils-example" class="step-card">
+            <h3>🔧 유틸리티 예제</h3>
+            <p>유틸리티 함수들의 실제 사용 예시를 확인하세요.</p>
+          </router-link>
         </div>
       </div>
     </div>

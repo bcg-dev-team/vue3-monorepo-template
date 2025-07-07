@@ -27,6 +27,11 @@ const routes: RouteRecordRaw[] = [
     name: 'ApiExamples',
     component: () => import('../views/ApiExamplesView.vue'),
   },
+  {
+    path: '/utils-example',
+    name: 'UtilsExample',
+    component: () => import('../views/UtilsExample.vue'),
+  },
 ];
 
 const router = createRouter({

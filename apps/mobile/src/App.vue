@@ -33,9 +33,20 @@
       <section class="native-features" v-if="isNativeApp">
         <h2>🔧 네이티브 기능 테스트</h2>
         <div class="feature-buttons">
-          <button @click="testNativeAlert" class="feature-btn">📢 네이티브 알림</button>
-          <button @click="testNativeNavigation" class="feature-btn">🧭 네이티브 네비게이션</button>
-          <button @click="getDeviceInfo" class="feature-btn">📱 디바이스 정보</button>
+          <BaseButton @click="testNativeAlert" variant="primary" size="lg" class="feature-btn">
+            📢 네이티브 알림
+          </BaseButton>
+          <BaseButton
+            @click="testNativeNavigation"
+            variant="secondary"
+            size="lg"
+            class="feature-btn"
+          >
+            🧭 네이티브 네비게이션
+          </BaseButton>
+          <BaseButton @click="getDeviceInfo" variant="info" size="lg" class="feature-btn">
+            📱 디바이스 정보
+          </BaseButton>
         </div>
       </section>
 
@@ -49,7 +60,9 @@
             <span class="log-content">{{ message.content }}</span>
           </div>
         </div>
-        <button @click="clearLog" class="clear-btn">로그 지우기</button>
+        <BaseButton @click="clearLog" variant="secondary" size="sm" class="clear-btn">
+          로그 지우기
+        </BaseButton>
       </section>
     </main>
 
@@ -62,6 +75,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
+import { BaseButton } from '@template/ui';
+import { formatDate, formatRelativeTime, isValidEmail, toTitleCase } from '@template/utils';
 
 // 반응형 상태
 const isNativeApp = ref(false);
@@ -94,6 +109,11 @@ const packages = ref([
     icon: '🎨',
   },
 ]);
+
+// 유틸리티 함수 활용 예시
+const currentTime = ref(new Date());
+const sampleEmail = 'test@example.com';
+const sampleText = 'vue 3 monorepo template';
 
 // 네이티브 앱 감지
 const detectNativeApp = () => {
@@ -168,6 +188,11 @@ onMounted(() => {
 
   // 초기 로그
   addLog('info', '모바일 웹앱이 로드되었습니다.');
+
+  // 유틸리티 함수 활용 예시 로그
+  addLog('info', `현재 시간: ${formatDate(currentTime.value, 'yyyy년 MM월 dd일 HH:mm:ss')}`);
+  addLog('info', `이메일 유효성: ${isValidEmail(sampleEmail) ? '유효' : '유효하지 않음'}`);
+  addLog('info', `제목 케이스 변환: ${toTitleCase(sampleText)}`);
 
   // 네이티브 앱에 로드 완료 알림
   if (isNativeApp.value) {

@@ -40,7 +40,7 @@ export default function App() {
       <WebView
         key={webViewKey}
         source={{ 
-          uri: 'http://localhost:3001' // 개발 환경에서는 모바일 웹앱 URL
+          uri: 'http://localhost:5173' // 개발 환경에서는 모바일 웹앱 URL
           // uri: 'https://your-production-domain.com/mobile' // 프로덕션 환경
         }}
         style={styles.webview}

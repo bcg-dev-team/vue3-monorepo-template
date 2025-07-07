@@ -18,6 +18,7 @@ const BUILD_ORDER = [
   'packages/ui', // types에 의존
   'apps/desktop', // 모든 패키지 사용
   'apps/mobile', // 모든 패키지 사용
+  'apps/mobile-native', // React Native 앱 (WebView 기반)
 ] as const;
 
 // 의존성 그래프 정의
@@ -28,6 +29,7 @@ const DEPENDENCY_GRAPH = {
   'packages/ui': ['packages/types'],
   'apps/desktop': ['packages/types', 'packages/utils', 'packages/api', 'packages/ui'],
   'apps/mobile': ['packages/types', 'packages/utils', 'packages/api', 'packages/ui'],
+  'apps/mobile-native': ['packages/types', 'packages/utils', 'packages/api'],
 } as const;
 
 // 타입 정의
@@ -63,6 +65,11 @@ function isPackageBuilt(packagePath: string): boolean {
   // utils, api 패키지는 index.js 체크
   if (packagePath === 'packages/utils' || packagePath === 'packages/api') {
     return existsSync(join(distPath, 'index.js'));
+  }
+
+  // React Native 앱은 빌드 체크 제외 (Expo 빌드는 별도 프로세스)
+  if (packagePath === 'apps/mobile-native') {
+    return true; // React Native 앱은 별도 빌드 프로세스이므로 항상 성공으로 처리
   }
 
   // 앱 패키지인 경우 index.html 확인
@@ -121,6 +128,12 @@ function buildPackage(packagePath: PackagePath): void {
       }
     } else {
       console.log(`✅ ${packagePath} dist 폴더 삭제 건너뜀`);
+    }
+
+    // React Native 앱은 별도 빌드 프로세스
+    if (packagePath === 'apps/mobile-native') {
+      console.log(`✅ React Native 앱 빌드 건너뜀 (Expo 빌드는 별도 프로세스)`);
+      return;
     }
 
     execSync('pnpm build', {

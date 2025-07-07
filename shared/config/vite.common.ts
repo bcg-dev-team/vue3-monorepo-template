@@ -19,13 +19,23 @@ export const createCommonConfig = () => {
     },
     build: {
       sourcemap: true,
+      target: 'esnext',
+      minify: 'esbuild',
       rollupOptions: {
         output: {
           manualChunks: {
             vendor: ['vue', 'vue-router', 'pinia'],
+            'template-ui': ['@template/ui'],
+            'template-utils': ['@template/utils'],
+            'template-api': ['@template/api'],
+            'template-types': ['@template/types'],
           },
         },
       },
+    },
+    optimizeDeps: {
+      include: ['vue', 'vue-router', 'pinia'],
+      exclude: ['@template/ui', '@template/utils', '@template/api', '@template/types'],
     },
   };
 };

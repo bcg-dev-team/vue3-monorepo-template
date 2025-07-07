@@ -32,6 +32,11 @@ const routes: RouteRecordRaw[] = [
     name: 'UtilsExample',
     component: () => import('../views/UtilsExample.vue'),
   },
+  {
+    path: '/tree-shaking-test',
+    name: 'TreeShakingTest',
+    component: () => import('../views/TreeShakingTest.vue'),
+  },
 ];
 
 const router = createRouter({

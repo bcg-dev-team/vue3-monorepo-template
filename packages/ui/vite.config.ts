@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'node:path';
 import dts from 'vite-plugin-dts';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
   plugins: [
@@ -9,6 +10,12 @@ export default defineConfig({
     dts({
       insertTypesEntry: true,
       rollupTypes: true,
+    }),
+    visualizer({
+      filename: 'dist/bundle-analysis.html',
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
     }),
   ],
   build: {
@@ -18,6 +25,8 @@ export default defineConfig({
       fileName: 'index',
       formats: ['es'],
     },
+    target: 'esnext',
+    minify: 'esbuild',
     rollupOptions: {
       external: ['vue', '@template/types'],
       output: {
@@ -25,6 +34,8 @@ export default defineConfig({
           vue: 'Vue',
           '@template/types': 'TemplateTypes',
         },
+        exports: 'named',
+        preserveModules: true,
       },
     },
   },

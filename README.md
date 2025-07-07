@@ -1,6 +1,6 @@
 # 🚀 Vue3 Monorepo Template
 
-Vue 3 + TypeScript + Vite 기반의 고성능 모노레포 템플릿입니다. 성능 최적화, 실시간 데이터 처리, 그리고 포괄적인 테스팅 전략을 포함합니다.
+Vue 3 + TypeScript + Vite 기반의 모노레포 템플릿입니다. 성능 최적화, 실시간 데이터 처리, 그리고 포괄적인 테스팅 전략을 포함합니다.
 
 ## ✨ 주요 기능
 
@@ -436,14 +436,6 @@ export function formatUser(user: User, locale = 'ko-KR'): string {
 }
 ```
 
-## 🤝 기여하기
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
 ### 커밋 컨벤션
 
 Conventional Commits를 따릅니다:
@@ -456,19 +448,7 @@ Conventional Commits를 따릅니다:
 - `test:` 테스트 추가/수정
 - `chore:` 빌드 프로세스 또는 보조 도구 변경
 
-## 📄 라이선스
-
-이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
-
-## 🆘 지원
-
-문제가 발생하거나 질문이 있으시면:
-
-1. [Issues](../../issues)에서 검색
-2. 새로운 Issue 생성
-3. [Discussions](../../discussions)에서 토론
-
-## 🙏 감사의 말
+## Used Technology
 
 이 템플릿은 다음 기술들을 기반으로 합니다:
 
@@ -483,5 +463,3 @@ Conventional Commits를 따릅니다:
 - [Storybook](https://storybook.js.org/)
 
 ---
-
-**Happy Coding! 🎉**

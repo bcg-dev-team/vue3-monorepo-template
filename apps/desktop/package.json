@@ -4,7 +4,7 @@
   "description": "Vue 3 데스크톱 애플리케이션",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc -p tsconfig.build.json && vite build",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",

@@ -117,11 +117,35 @@ const sampleText = 'vue 3 monorepo template';
 
 // 네이티브 앱 감지
 const detectNativeApp = () => {
-  // WebView 환경 감지 (간단한 방법)
+  // WebView 환경 감지 (더 정확한 방법)
   const userAgent = navigator.userAgent.toLowerCase();
-  isNativeApp.value = userAgent.includes('wv') || userAgent.includes('webview');
 
-  addLog('info', `네이티브 앱 감지: ${isNativeApp.value}`);
+  // React Native WebView 브릿지 확인 (가장 확실한 방법)
+  const hasReactNativeBridge = typeof window.ReactNativeWebView !== 'undefined';
+
+  // User Agent에서 WebView 특정 키워드 확인
+  // 'wv'는 Android WebView의 고유 식별자
+  const hasWebViewIdentifier = userAgent.includes('wv');
+
+  // Expo 환경 확인
+  const isExpoEnvironment = userAgent.includes('expo') && userAgent.includes('react-native');
+
+  // 일반적인 모바일 키워드는 제외 (브라우저에서도 포함될 수 있음)
+  // 'mobile', 'android', 'ios'는 일반 브라우저에서도 나타날 수 있어 제외
+
+  // User Agent 상세 정보 로그
+  addLog('info', `User Agent: ${navigator.userAgent}`);
+  addLog('info', `WebView 식별자 (wv): ${hasWebViewIdentifier}`);
+  addLog('info', `Expo 환경: ${isExpoEnvironment}`);
+  addLog('info', `React Native Bridge: ${hasReactNativeBridge}`);
+
+  // 네이티브 앱 감지 조건을 더 엄격하게 설정
+  isNativeApp.value = hasReactNativeBridge || hasWebViewIdentifier || isExpoEnvironment;
+
+  addLog(
+    'info',
+    `네이티브 앱 감지: ${isNativeApp.value} (Bridge: ${hasReactNativeBridge}, WebView: ${hasWebViewIdentifier}, Expo: ${isExpoEnvironment})`
+  );
 };
 
 // 네이티브로 메시지 전송
@@ -137,8 +161,75 @@ const sendToNative = (message: any) => {
 // 네이티브에서 메시지 수신
 const handleNativeMessage = (event: MessageEvent) => {
   try {
-    const message = JSON.parse(event.data);
+    // React DevTools 메시지 필터링
+    if (event.data && typeof event.data === 'object') {
+      const data = event.data as any;
+      if (data.source && data.source.includes('react-devtools')) {
+        return; // DevTools 메시지는 무시
+      }
+    }
+
+    // event.data가 문자열인지 확인
+    let messageData = event.data;
+
+    // 이미 객체인 경우 JSON.stringify로 변환된 문자열로 처리
+    if (typeof messageData === 'object') {
+      messageData = JSON.stringify(messageData);
+    }
+
+    // 문자열이 아닌 경우 오류 처리
+    if (typeof messageData !== 'string') {
+      return;
+    }
+
+    const message = JSON.parse(messageData);
+
+    // 네이티브 앱 메시지인지 확인 (type 필드가 있는 경우만)
+    if (!message.type) {
+      return; // type이 없는 메시지는 무시
+    }
+
     addLog('receive', `네이티브에서 수신: ${JSON.stringify(message)}`);
+
+    // 메시지 타입에 따른 처리
+    switch (message.type) {
+      case 'welcome':
+        addLog('info', `환영 메시지: ${message.data.message}`);
+        break;
+      case 'test':
+        addLog('info', `테스트 메시지: ${message.data.message}`);
+        break;
+      case 'deviceInfoResponse':
+        addLog('info', `디바이스 정보: ${JSON.stringify(message.data.device)}`);
+        break;
+      default:
+        addLog('info', `알 수 없는 메시지 타입: ${message.type}`);
+    }
+  } catch (error) {
+    addLog('error', `메시지 파싱 오류: ${error}`);
+  }
+};
+
+// React Native WebView에서 직접 호출할 수 있는 전역 함수
+const receiveMessageFromNative = (messageString: string) => {
+  try {
+    const message = JSON.parse(messageString);
+    addLog('receive', `네이티브에서 수신: ${JSON.stringify(message)}`);
+
+    // 메시지 타입에 따른 처리
+    switch (message.type) {
+      case 'welcome':
+        addLog('info', `환영 메시지: ${message.data.message}`);
+        break;
+      case 'test':
+        addLog('info', `테스트 메시지: ${message.data.message}`);
+        break;
+      case 'deviceInfoResponse':
+        addLog('info', `디바이스 정보: ${JSON.stringify(message.data.device)}`);
+        break;
+      default:
+        addLog('info', `알 수 없는 메시지 타입: ${message.type}`);
+    }
   } catch (error) {
     addLog('error', `메시지 파싱 오류: ${error}`);
   }
@@ -184,7 +275,21 @@ const clearLog = () => {
 // 생명주기 훅
 onMounted(() => {
   detectNativeApp();
-  window.addEventListener('message', handleNativeMessage);
+
+  // React Native WebView 메시지 수신 설정
+  if (window.ReactNativeWebView) {
+    // React Native WebView에서 메시지를 받는 함수 등록
+    window.addEventListener('message', handleNativeMessage);
+  } else {
+    // 일반 브라우저에서 테스트용
+    window.addEventListener('message', handleNativeMessage);
+  }
+
+  // 전역 함수 등록 (React Native WebView에서 직접 호출 가능)
+  (window as any).receiveMessageFromNative = receiveMessageFromNative;
+
+  // 전역 함수 등록 (React Native WebView에서 직접 호출 가능)
+  (window as any).receiveMessageFromNative = receiveMessageFromNative;
 
   // 초기 로그
   addLog('info', '모바일 웹앱이 로드되었습니다.');
@@ -203,6 +308,13 @@ onMounted(() => {
       });
     }, 1000);
   }
+
+  // 디버깅을 위한 메시지 수신 확인
+  addLog('info', '메시지 리스너가 등록되었습니다.');
+  addLog(
+    'info',
+    `전역 함수 등록: receiveMessageFromNative=${typeof (window as any).receiveMessageFromNative}`
+  );
 });
 
 onUnmounted(() => {
@@ -215,6 +327,7 @@ declare global {
     ReactNativeWebView?: {
       postMessage: (message: string) => void;
     };
+    receiveMessageFromNative?: (messageString: string) => void;
   }
 }
 </script>

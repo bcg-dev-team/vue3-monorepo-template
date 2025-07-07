@@ -14,13 +14,15 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@template/api": "workspace:*",
     "@template/types": "workspace:*",
     "@template/utils": "workspace:*",
-    "@template/api": "workspace:*",
     "expo": "~53.0.17",
     "expo-status-bar": "~2.2.3",
     "react": "19.0.0",
     "react-native": "0.79.5",
+    "react-native-dotenv": "^3.4.11",
+    "react-native-web": "^0.20.0",
     "react-native-webview": "13.13.5"
   },
   "devDependencies": {

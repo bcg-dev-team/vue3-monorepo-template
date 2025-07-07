@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Alert } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useState } from 'react';
+import { WEBAPP_URL } from '@env';
 
 export default function App() {
   const [webViewKey, setWebViewKey] = useState(0);
@@ -40,8 +41,7 @@ export default function App() {
       <WebView
         key={webViewKey}
         source={{ 
-          uri: 'http://localhost:5173' // 개발 환경에서는 모바일 웹앱 URL
-          // uri: 'https://your-production-domain.com/mobile' // 프로덕션 환경
+          uri: WEBAPP_URL || 'http://localhost:5173' // 환경 변수에서 URL 가져오기
         }}
         style={styles.webview}
         onMessage={handleMessage}

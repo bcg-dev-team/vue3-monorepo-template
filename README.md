@@ -19,7 +19,8 @@ Vue 3 + TypeScript + Vite 기반의 고성능 모노레포 템플릿입니다. �
 vue3-monorepo-template/
 ├── apps/
 │   ├── desktop/         # 데스크톱 웹 애플리케이션
-│   └── mobile/          # 모바일 웹 애플리케이션
+│   ├── mobile/          # 모바일 웹 애플리케이션
+│   └── mobile-native/   # React Native 네이티브 앱
 ├── packages/
 │   ├── ui/              # 공통 UI 컴포넌트 라이브러리
 │   ├── api/             # API 통신 모듈
@@ -54,6 +55,9 @@ pnpm dev:desktop
 # 모바일 앱 개발 서버
 pnpm dev:mobile
 
+# 네이티브 앱 개발 서버
+pnpm mobile:start
+
 # UI 패키지 개발 서버
 pnpm dev:ui
 ```
@@ -68,6 +72,10 @@ pnpm build:all
 pnpm build:desktop
 pnpm build:mobile
 pnpm build:ui
+
+# 네이티브 앱 빌드
+pnpm mobile:build:android    # Android APK/AAB 빌드
+pnpm mobile:build:ios        # iOS 빌드
 ```
 
 ## 🛠️ 개발 도구

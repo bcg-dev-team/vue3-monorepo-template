@@ -24,7 +24,14 @@
     "deps:circular": "npx madge --circular packages/",
     "deps:tree": "pnpm list --depth=5 --json",
     "storybook": "pnpm --filter @template/ui storybook",
-    "build-storybook": "pnpm --filter @template/ui build-storybook"
+    "build-storybook": "pnpm --filter @template/ui build-storybook",
+    "mobile:start": "pnpm --filter @template/mobile-native start",
+    "mobile:android": "pnpm --filter @template/mobile-native android",
+    "mobile:ios": "pnpm --filter @template/mobile-native ios",
+    "mobile:build": "pnpm --filter @template/mobile-native eas:build",
+    "mobile:build:android": "pnpm --filter @template/mobile-native eas:build:android",
+    "mobile:build:ios": "pnpm --filter @template/mobile-native eas:build:ios",
+    "mobile:submit": "pnpm --filter @template/mobile-native eas:submit"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.0",

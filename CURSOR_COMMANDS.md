@@ -1,138 +1,345 @@
-# 🚀 Cursor AI 명령어 빠른 참조
+# Cursor AI 명령어 사용법
 
-## ⌨️ 키보드 단축키 (가장 빠른 방법)
+## 🚀 **실제 동작하는 방법들**
 
-| 단축키               | 기능              | 설명                                                  |
-| -------------------- | ----------------- | ----------------------------------------------------- |
-| `Cmd/Ctrl + Alt + C` | 컴포넌트 생성     | Vue 3 컴포넌트 + TypeScript + 성능 최적화 + Storybook |
-| `Cmd/Ctrl + Alt + P` | 패키지 생성       | 모노레포 패키지 + TypeScript 설정 + 테스팅            |
-| `Cmd/Ctrl + Alt + A` | API 서비스 생성   | WebSocket + 배칭 + 에러 처리 + 타입 정의              |
-| `Cmd/Ctrl + Alt + S` | Storybook 스토리  | 컴포넌트 스토리 + 변형 + 컨트롤 + 접근성              |
-| `Cmd/Ctrl + Alt + T` | 테스트 스위트     | 단위 테스트 + 컴포넌트 테스트 + 성능 테스트           |
-| `Cmd/Ctrl + Alt + O` | 성능 최적화       | Virtual Scrolling + 메모이제이션 + 정리 작업          |
-| `Cmd/Ctrl + Alt + U` | Pinia 스토어 생성 | TypeScript + 상태 관리 + getters + actions            |
-| `Cmd/Ctrl + Alt + V` | Vuetify 컴포넌트  | Props + Events + Slots + 접근성                       |
-| `Cmd/Ctrl + Alt + W` | Tailwind 컴포넌트 | 반응형 디자인 + 커스텀 유틸리티 + 스타일링 패턴       |
-| `Cmd/Ctrl + Alt + E` | E2E 테스트 생성   | Cypress + 사용자 플로우 + 선택자 + 검증               |
-| `Cmd/Ctrl + Alt + B` | 번들 최적화       | 코드 분할 + 트리 셰이킹 + 성능 개선                   |
-| `Cmd/Ctrl + Alt + D` | 문서화 생성       | JSDoc + README + 사용 예시                            |
+### ✅ **방법 1: Chat에서 직접 입력 (가장 확실한 방법)**
 
-## 💬 Chat 패널 프롬프트
+1. **Cmd + L** 또는 **Cmd + K** - Chat 열기
+2. 다음 중 하나를 **전체 입력**:
+   - `vue:create-component` - Vue 컴포넌트 생성
+   - `vue:create-test` - 테스트 생성
+   - `vue:create-storybook` - Storybook 생성
+   - `@commands` - 모든 명령어 목록 보기
 
-### 컴포넌트 개발
+### ✅ **방법 2: 간단한 키워드 사용 (추천)**
+
+Chat에서 다음 키워드들만 입력:
+
+- `vue component` - Vue 컴포넌트 생성
+- `vue package` - 패키지 생성
+- `vue api` - API 서비스 생성
+- `vue storybook` - Storybook 스토리 생성
+- `vue test` - 테스트 생성
+- `vue performance` - 성능 최적화
+- `vue pinia` - Pinia 스토어 생성
+- `vue vuetify` - Vuetify 컴포넌트 생성
+- `vue tailwind` - Tailwind 컴포넌트 생성
+- `vue e2e` - E2E 테스트 생성
+- `vue bundle` - 번들 최적화
+- `vue docs` - 문서화 생성
+
+### ✅ **방법 3: 명령어 팔레트에서 수동 검색**
+
+1. **Cmd + Shift + P** - 명령어 팔레트 열기
+2. `cursor` 입력
+3. 원하는 명령어 선택
+
+### ✅ **방법 4: 복사해서 붙여넣기**
+
+다음 명령어들을 복사해서 Chat에 붙여넣기:
 
 ```bash
-# Vue 3 컴포넌트 생성
-"Create a Vue 3 component with TypeScript, performance optimizations, and Storybook integration. Follow the monorepo structure and include proper testing."
+# Vue 컴포넌트 생성
+Create a Vue 3 component with TypeScript, performance optimizations, and Storybook integration. Follow the monorepo structure and include proper testing.
 
-# Pinia 스토어 생성
-"Create a Pinia store with TypeScript, proper state management, getters, actions, and comprehensive testing."
-
-# Vuetify 컴포넌트 래퍼
-"Create a Vuetify component wrapper with proper props, events, slots, and accessibility features."
-
-# Tailwind CSS 컴포넌트
-"Create a component using Tailwind CSS with responsive design, custom utilities, and proper styling patterns."
-```
-
-### 패키지 및 서비스
-
-```bash
-# 모노레포 패키지 생성
-"Create a new package in the monorepo structure with proper TypeScript configuration, testing setup, and Storybook integration."
+# 패키지 생성
+Create a new package in the monorepo structure with proper TypeScript configuration, testing setup, and Storybook integration.
 
 # API 서비스 생성
-"Create an API service with WebSocket multiplexing, data batching, and proper error handling. Include TypeScript types and comprehensive testing."
-
-# 도메인 설정 생성
-"Create a domain configuration file with API endpoints, UI theme, feature flags, and performance settings."
-```
-
-### 테스팅 및 문서화
-
-```bash
-# 테스트 스위트 생성
-"Create a comprehensive test suite for the current file including unit tests, component tests, and performance tests."
-
-# E2E 테스트 생성
-"Create a comprehensive Cypress E2E test for user flows with proper selectors, assertions, and error handling."
+Create an API service with WebSocket multiplexing, data batching, and proper error handling. Include TypeScript types and comprehensive testing.
 
 # Storybook 스토리 생성
-"Create a comprehensive Storybook story for the current component with multiple variants, controls, and accessibility testing."
+Create a comprehensive Storybook story for the current component with multiple variants, controls, and accessibility testing.
 
-# 문서화 생성
-"Create comprehensive documentation for the current component including JSDoc, README, and usage examples."
+# 테스트 생성
+Create a comprehensive test suite for the current file including unit tests, component tests, and performance tests.
 ```
 
-### 성능 및 최적화
+## 📋 **사용 가능한 명령어**
+
+### Vue 관련 명령어
+
+- `vue:create-component` - Vue 3 컴포넌트 생성 (TypeScript + Storybook)
+- `vue:create-package` - 새로운 패키지 생성
+- `vue:create-api-service` - API 서비스 생성 (WebSocket 지원)
+- `vue:create-storybook` - Storybook 스토리 생성
+- `vue:create-test` - 종합 테스트 스위트 생성
+- `vue:add-performance` - 성능 최적화 추가
+- `vue:create-pinia-store` - Pinia 스토어 생성
+- `vue:create-vuetify` - Vuetify 컴포넌트 래퍼 생성
+- `vue:create-tailwind` - Tailwind CSS 컴포넌트 생성
+- `vue:create-e2e` - Cypress E2E 테스트 생성
+- `vue:optimize-bundle` - 번들 크기 및 성능 최적화
+- `vue:create-docs` - 컴포넌트 문서 생성
+
+## 🎯 **명령어 사용 예시**
+
+### Vue 컴포넌트 생성
+
+#### 기본 사용법
 
 ```bash
-# 성능 최적화 적용
-"Add performance optimizations to the current component including virtual scrolling, memoization, and proper cleanup."
-
-# 번들 최적화
-"Analyze and optimize the current bundle size, implement code splitting, tree shaking, and performance improvements."
-
-# 모노레포 설정
-"Setup the complete monorepo structure with PNPM workspace, shared packages, and proper TypeScript configuration."
-
-# Git 훅 설정
-"Setup Git hooks with Husky, Conventional Commits validation, and pre-commit linting/formatting."
+vue:create-component
 ```
 
-## 🎯 사용 팁
-
-### 1. 컨텍스트 활용
-
-- 파일을 열고 해당 파일에서 명령어 실행
-- 선택한 코드가 있으면 자동으로 컨텍스트에 포함
-- Chat 패널에서 "현재 파일을 기반으로..." 추가
-
-### 2. 구체적인 요청
+#### 구체적인 요구사항과 함께 사용
 
 ```bash
-# 좋은 예시
-"Create a user profile component with avatar, name, email, and role display. Include loading states and error handling."
+vue:create-component
 
-# 나쁜 예시
-"Create a component"
+사용자 프로필 카드 컴포넌트를 만들어주세요.
+- 사용자 이름, 이메일, 아바타 이미지 표시
+- 편집 모드 지원 (인라인 편집)
+- 반응형 디자인 (모바일/데스크톱)
+- 다크모드 지원
+- 접근성 고려
 ```
 
-### 3. Rule 기반 프롬프트
+#### 간단한 키워드로 사용
 
 ```bash
-# Vue 베스트 프랙티스 적용
-"Following Vue best practices, create a..."
+vue component
 
-# TypeScript 엄격 모드 적용
-"With strict TypeScript, create a..."
-
-# 성능 최적화 포함
-"With performance optimization, create a..."
+사용자 프로필 카드 컴포넌트를 만들어주세요.
+- 사용자 이름, 이메일, 아바타 이미지 표시
+- 편집 모드 지원 (인라인 편집)
+- 반응형 디자인 (모바일/데스크톱)
+- 다크모드 지원
+- 접근성 고려
 ```
 
-## 🔧 문제 해결
+### 패키지 생성
 
-### 명령어가 작동하지 않는 경우
+#### 기본 사용법
 
-1. **Cursor 재시작**: Cursor를 완전히 종료하고 재시작
-2. **설정 확인**: `.vscode/settings.json` 파일이 올바른지 확인
-3. **키보드 단축키**: `Cmd/Ctrl + Shift + V` 조합 사용
-4. **Chat 패널**: 직접 프롬프트 입력
+```bash
+vue:create-package
+```
 
-### 성능 이슈
+#### 구체적인 요구사항과 함께 사용
 
-1. **파일 크기**: 너무 큰 파일은 청크로 나누어 요청
-2. **컨텍스트 제한**: 필요한 부분만 선택하여 요청
-3. **단계별 요청**: 복잡한 작업은 여러 단계로 나누어 요청
+```bash
+vue:create-package
 
-## 📚 추가 리소스
+차트 라이브러리 패키지를 만들어주세요.
+- 라인 차트, 바 차트, 파이 차트 지원
+- 실시간 데이터 업데이트
+- 커스터마이징 가능한 테마
+- TypeScript 타입 정의
+- Storybook 예시 포함
+```
 
-- [Cursor AI 공식 문서](https://cursor.sh/docs)
-- [Vue 3 공식 문서](https://vuejs.org/)
-- [TypeScript 핸드북](https://www.typescriptlang.org/docs/)
-- [Vite 가이드](https://vitejs.dev/guide/)
+### API 서비스 생성
+
+#### 기본 사용법
+
+```bash
+vue:create-api-service
+```
+
+#### 구체적인 요구사항과 함께 사용
+
+```bash
+vue:create-api-service
+
+사용자 관리 API 서비스를 만들어주세요.
+- 사용자 CRUD 작업
+- JWT 인증 토큰 관리
+- 실시간 알림 (WebSocket)
+- 에러 핸들링 및 재시도 로직
+- 요청/응답 인터셉터
+```
+
+### Storybook 스토리 생성
+
+#### 기본 사용법
+
+```bash
+vue:create-storybook
+```
+
+#### 구체적인 요구사항과 함께 사용
+
+```bash
+vue:create-storybook
+
+현재 컴포넌트의 Storybook 스토리를 만들어주세요.
+- 모든 props 조합에 대한 스토리
+- 다크모드/라이트모드 변형
+- 모바일/데스크톱 뷰포트
+- 접근성 테스트 케이스
+- 인터랙션 테스트
+```
+
+### 테스트 생성
+
+#### 기본 사용법
+
+```bash
+vue:create-test
+```
+
+#### 구체적인 요구사항과 함께 사용
+
+```bash
+vue:create-test
+
+현재 컴포넌트의 종합 테스트를 만들어주세요.
+- Props 검증 테스트
+- 이벤트 발생 테스트
+- 사용자 인터랙션 테스트
+- 에러 상태 테스트
+- 성능 테스트 (렌더링 시간)
+```
+
+### Pinia 스토어 생성
+
+#### 기본 사용법
+
+```bash
+vue:create-pinia-store
+```
+
+#### 구체적인 요구사항과 함께 사용
+
+```bash
+vue:create-pinia-store
+
+쇼핑 카트 스토어를 만들어주세요.
+- 상품 추가/제거/수량 변경
+- 할인 쿠폰 적용
+- 배송비 계산
+- 로컬 스토리지 동기화
+- 실시간 재고 확인
+```
+
+### 성능 최적화
+
+#### 기본 사용법
+
+```bash
+vue:add-performance
+```
+
+#### 구체적인 요구사항과 함께 사용
+
+```bash
+vue:add-performance
+
+현재 컴포넌트에 성능 최적화를 적용해주세요.
+- 가상 스크롤링 (1000개 이상 아이템)
+- 이미지 지연 로딩
+- 메모이제이션 (computed, watch)
+- 이벤트 디바운싱
+- 메모리 누수 방지
+```
+
+## 🎯 **권장 워크플로우**
+
+### Vue 컴포넌트 개발
+
+1. **Cmd + L** - Chat 열기
+2. `vue component` 입력 - 컴포넌트 생성 요청
+3. 구체적인 요구사항 설명 추가
+4. AI가 TypeScript, 성능 최적화, Storybook이 포함된 컴포넌트 생성
+5. `vue storybook` 입력 - Storybook 스토리 생성
+6. `vue test` 입력 - 테스트 생성
+
+### 패키지 개발
+
+1. **Cmd + L** - Chat 열기
+2. `vue package` 입력 - 패키지 생성
+3. 구체적인 요구사항 설명 추가
+4. AI가 모노레포 구조에 맞는 패키지 생성
+
+## ⚠️ **문제 해결**
+
+### 명령어가 보이지 않는 경우
+
+1. **Cursor AI IDE를 완전히 재시작** (Cmd + Q 후 다시 실행)
+2. **Cmd + L**로 Chat 열고 `@commands` 입력하여 명령어 목록 확인
+3. 명령어 팔레트에서 `cursor` 검색
+
+### Chat에서 포커스가 빠져나가는 경우
+
+- **Cmd + L** 또는 **Cmd + K**로 Chat을 다시 열고 명령어 입력
+- 간단한 키워드 사용 (예: `vue component`)
+
+### 명령어 실행이 안 되는 경우
+
+1. **Cursor AI IDE 완전 재시작**
+2. Chat에서 `@commands` 입력하여 명령어 목록 확인
+3. 명령어 팔레트에서 `cursor` 검색
+
+## 💡 **최고의 사용법**
+
+**가장 확실하고 빠른 방법:**
+
+1. **Cmd + L** - Chat 열기
+2. `vue component` 입력 (간단한 키워드)
+3. **Enter 키** - AI가 컴포넌트 생성
+4. **추가 요구사항 설명** - 구체적인 기능 요청
+
+**또는 전체 명령어 입력:**
+
+1. **Cmd + L** - Chat 열기
+2. `vue:create-component` 입력 (전체 명령어)
+3. **Enter 키** - AI가 컴포넌트 생성
+4. **추가 요구사항 설명** - 구체적인 기능 요청
+
+이 방법들이 가장 안정적이고 빠릅니다!
 
 ---
 
-**💡 팁**: 가장 효과적인 방법은 키보드 단축키를 사용하는 것입니다. 자주 사용하는 명령어는 단축키로 설정하여 빠르게 접근하세요!
+## 📝 **빠른 참조 - 복사해서 사용하세요**
+
+### 간단한 키워드 (추천)
+
+```
+vue component
+vue package
+vue api
+vue storybook
+vue test
+vue performance
+vue pinia
+vue vuetify
+vue tailwind
+vue e2e
+vue bundle
+vue docs
+```
+
+### 전체 명령어
+
+```
+vue:create-component
+vue:create-package
+vue:create-api-service
+vue:create-storybook
+vue:create-test
+vue:add-performance
+vue:create-pinia-store
+vue:create-vuetify
+vue:create-tailwind
+vue:create-e2e
+vue:optimize-bundle
+vue:create-docs
+```
+
+### 긴 프롬프트 (복사해서 붙여넣기)
+
+```
+Create a Vue 3 component with TypeScript, performance optimizations, and Storybook integration. Follow the monorepo structure and include proper testing.
+```
+
+### 구체적인 요구사항 예시
+
+```
+사용자 프로필 카드 컴포넌트를 만들어주세요.
+- 사용자 이름, 이메일, 아바타 이미지 표시
+- 편집 모드 지원 (인라인 편집)
+- 반응형 디자인 (모바일/데스크톱)
+- 다크모드 지원
+- 접근성 고려
+```

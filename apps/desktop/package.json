@@ -15,10 +15,12 @@
   },
   "dependencies": {
     "@template/api": "workspace:*",
+    "@template/theme": "workspace:*",
     "@template/types": "workspace:*",
     "@template/ui": "workspace:*",
     "@template/utils": "workspace:*",
     "@vee-validate/zod": "^4.15.1",
+    "naive-ui": "^2.42.0",
     "pinia": "^2.1.0",
     "vee-validate": "^4.15.1",
     "vue": "^3.4.0",

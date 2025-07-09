@@ -28,11 +28,12 @@ export default defineConfig({
     target: 'esnext',
     minify: 'esbuild',
     rollupOptions: {
-      external: ['vue', '@template/types'],
+      external: ['vue', '@template/types', 'naive-ui'],
       output: {
         globals: {
           vue: 'Vue',
           '@template/types': 'TemplateTypes',
+          'naive-ui': 'naive',
         },
         exports: 'named',
         preserveModules: true,

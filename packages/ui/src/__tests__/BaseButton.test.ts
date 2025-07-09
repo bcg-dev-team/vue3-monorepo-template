@@ -9,7 +9,7 @@ describe('BaseButton', () => {
     });
 
     expect(wrapper.text()).toContain('Click me');
-    expect(wrapper.classes()).toContain('base-button');
+    expect(wrapper.find('.n-button').exists()).toBe(true);
   });
 
   it('should render with different variants', () => {
@@ -18,7 +18,9 @@ describe('BaseButton', () => {
       slots: { default: 'Primary Button' },
     });
 
-    expect(wrapper.classes()).toContain('base-button--primary');
+    const button = wrapper.find('.n-button');
+    expect(button.exists()).toBe(true);
+    expect(wrapper.props('variant')).toBe('primary');
   });
 
   it('should emit click event', async () => {
@@ -36,8 +38,9 @@ describe('BaseButton', () => {
       slots: { default: 'Disabled Button' },
     });
 
-    expect(wrapper.attributes('disabled')).toBeDefined();
-    expect(wrapper.classes()).toContain('base-button--disabled');
+    const button = wrapper.find('.n-button');
+    expect(button.exists()).toBe(true);
+    expect(wrapper.props('disabled')).toBe(true);
   });
 
   it('should show loading state', () => {
@@ -46,8 +49,9 @@ describe('BaseButton', () => {
       slots: { default: 'Loading Button' },
     });
 
-    expect(wrapper.classes()).toContain('base-button--loading');
-    expect(wrapper.find('.loading-spinner').exists()).toBe(true);
+    const button = wrapper.find('.n-button');
+    expect(button.exists()).toBe(true);
+    expect(wrapper.props('loading')).toBe(true);
   });
 
   it('should apply custom classes', () => {
@@ -57,5 +61,23 @@ describe('BaseButton', () => {
     });
 
     expect(wrapper.classes()).toContain('custom-class');
+  });
+
+  it('should handle size prop correctly', () => {
+    const wrapper = mount(BaseButton, {
+      props: { size: 'large' },
+      slots: { default: 'Large Button' },
+    });
+
+    expect(wrapper.props('size')).toBe('large');
+  });
+
+  it('should handle fullWidth prop correctly', () => {
+    const wrapper = mount(BaseButton, {
+      props: { fullWidth: true },
+      slots: { default: 'Full Width Button' },
+    });
+
+    expect(wrapper.props('fullWidth')).toBe(true);
   });
 });

@@ -1,49 +1,123 @@
 <template>
-  <button :class="buttonClasses" :type="type" :disabled="disabled || loading" @click="handleClick">
-    <span v-if="loading" class="loading-spinner"></span>
+  <NButton
+    :type="buttonType"
+    :size="buttonSize"
+    :loading="loading"
+    :disabled="disabled"
+    :block="fullWidth"
+    :round="round"
+    :circle="circle"
+    :ghost="ghost"
+    :secondary="secondary"
+    :tertiary="tertiary"
+    :quaternary="quaternary"
+    :color="color"
+    :text-color="textColor"
+    :border-color="borderColor"
+    @click="handleClick"
+  >
+    <template v-if="icon && iconPlacement === 'left'" #icon>
+      <component :is="icon" />
+    </template>
+
     <slot />
-  </button>
+
+    <template v-if="icon && iconPlacement === 'right'" #icon>
+      <component :is="icon" />
+    </template>
+  </NButton>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { ButtonVariant, ButtonSize, ButtonType } from '@template/types';
+import { NButton } from 'naive-ui';
+import type { ButtonProps } from 'naive-ui';
 
 /**
  * BaseButton 컴포넌트
  *
- * 재사용 가능한 버튼 컴포넌트로, 다양한 스타일과 상태를 지원합니다.
+ * Naive UI를 기반으로 한 재사용 가능한 버튼 컴포넌트입니다.
+ * 디자인 토큰을 활용하여 일관된 스타일을 제공합니다.
  *
  * @props variant - 버튼 스타일 변형 (primary, secondary, success, warning, danger, info)
  * @props size - 버튼 크기 (sm, md, lg)
  * @props type - HTML button 타입 (button, submit, reset)
  * @props disabled - 비활성화 상태
- * @props loading - 로딩 상태 (스피너 표시)
+ * @props loading - 로딩 상태
  * @props fullWidth - 전체 너비 사용 여부
+ * @props round - 둥근 모서리
+ * @props circle - 원형 버튼
+ * @props ghost - 고스트 스타일
+ * @props secondary - 보조 스타일
+ * @props tertiary - 3차 스타일
+ * @props quaternary - 4차 스타일
+ * @props color - 커스텀 색상
+ * @props textColor - 텍스트 색상
+ * @props borderColor - 테두리 색상
+ * @props icon - 아이콘 컴포넌트
+ * @props iconPlacement - 아이콘 위치 (left, right)
  * @emits click - 버튼 클릭 시 발생하는 이벤트
  */
 interface Props {
   /** 버튼 스타일 변형 */
-  variant?: ButtonVariant;
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'warning'
+    | 'danger'
+    | 'info'
+    | 'default'
+    | 'dashed'
+    | 'text';
   /** 버튼 크기 */
-  size?: ButtonSize;
+  size?: 'tiny' | 'small' | 'medium' | 'large' | 'huge';
   /** HTML button 타입 */
-  type?: ButtonType;
+  type?: 'button' | 'submit' | 'reset';
   /** 비활성화 상태 */
   disabled?: boolean;
   /** 로딩 상태 */
   loading?: boolean;
   /** 전체 너비 사용 여부 */
   fullWidth?: boolean;
+  /** 둥근 모서리 */
+  round?: boolean;
+  /** 원형 버튼 */
+  circle?: boolean;
+  /** 고스트 스타일 */
+  ghost?: boolean;
+  /** 보조 스타일 */
+  secondary?: boolean;
+  /** 3차 스타일 */
+  tertiary?: boolean;
+  /** 4차 스타일 */
+  quaternary?: boolean;
+  /** 커스텀 색상 */
+  color?: string;
+  /** 텍스트 색상 */
+  textColor?: string;
+  /** 테두리 색상 */
+  borderColor?: string;
+  /** 아이콘 컴포넌트 */
+  icon?: () => any;
+  /** 아이콘 위치 */
+  iconPlacement?: 'left' | 'right';
 }
 
 const props = withDefaults(defineProps<Props>(), {
   variant: 'primary',
-  size: 'md',
+  size: 'medium',
   type: 'button',
   disabled: false,
   loading: false,
   fullWidth: false,
+  round: false,
+  circle: false,
+  ghost: false,
+  secondary: false,
+  tertiary: false,
+  quaternary: false,
+  iconPlacement: 'left',
 });
 
 interface Emits {
@@ -54,19 +128,44 @@ interface Emits {
 const emit = defineEmits<Emits>();
 
 /**
- * 버튼 CSS 클래스들을 계산합니다.
- * variant, size, 상태에 따라 적절한 클래스를 조합합니다.
+ * Naive UI 버튼 타입으로 변환
  */
-const buttonClasses = computed(() => [
-  'base-button',
-  `base-button--${props.variant}`,
-  `base-button--${props.size}`,
-  {
-    'base-button--disabled': props.disabled,
-    'base-button--loading': props.loading,
-    'base-button--full-width': props.fullWidth,
-  },
-]);
+const buttonType = computed(() => {
+  switch (props.variant) {
+    case 'primary':
+      return 'primary';
+    case 'secondary':
+      return 'default';
+    case 'success':
+      return 'success';
+    case 'warning':
+      return 'warning';
+    case 'danger':
+      return 'error';
+    case 'info':
+      return 'info';
+    default:
+      return 'default';
+  }
+});
+
+/**
+ * Naive UI 버튼 크기로 변환
+ */
+const buttonSize = computed(() => {
+  switch (props.size) {
+    case 'tiny':
+      return 'tiny';
+    case 'small':
+      return 'small';
+    case 'medium':
+      return 'medium';
+    case 'large':
+      return 'large';
+    default:
+      return 'medium';
+  }
+});
 
 /**
  * 버튼 클릭 이벤트를 처리합니다.
@@ -79,115 +178,3 @@ const handleClick = (event: MouseEvent) => {
   }
 };
 </script>
-
-<style scoped>
-.base-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-2);
-  border: none;
-  border-radius: var(--spacing-1-5);
-  font-family: var(--typography-font-family-sans);
-  font-weight: var(--typography-font-weight-medium);
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  position: relative;
-}
-
-.base-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.base-button--full-width {
-  width: 100%;
-}
-
-/* Variants */
-.base-button--primary {
-  background-color: var(--color-primary-500);
-  color: var(--color-neutral-white);
-}
-
-.base-button--primary:hover:not(:disabled) {
-  background-color: var(--color-primary-600);
-}
-
-.base-button--secondary {
-  background-color: var(--color-secondary-500);
-  color: var(--color-neutral-white);
-}
-
-.base-button--secondary:hover:not(:disabled) {
-  background-color: var(--color-secondary-600);
-}
-
-.base-button--success {
-  background-color: var(--color-success-500);
-  color: var(--color-neutral-white);
-}
-
-.base-button--success:hover:not(:disabled) {
-  background-color: var(--color-success-600);
-}
-
-.base-button--warning {
-  background-color: var(--color-warning-500);
-  color: var(--color-neutral-white);
-}
-
-.base-button--warning:hover:not(:disabled) {
-  background-color: var(--color-warning-600);
-}
-
-.base-button--danger {
-  background-color: var(--color-error-500);
-  color: var(--color-neutral-white);
-}
-
-.base-button--danger:hover:not(:disabled) {
-  background-color: var(--color-error-600);
-}
-
-.base-button--info {
-  background-color: var(--color-primary-400);
-  color: var(--color-neutral-white);
-}
-
-.base-button--info:hover:not(:disabled) {
-  background-color: var(--color-primary-500);
-}
-
-/* Sizes */
-.base-button--sm {
-  padding: var(--spacing-2) var(--spacing-4);
-  font-size: var(--typography-font-size-sm);
-}
-
-.base-button--md {
-  padding: var(--spacing-3) var(--spacing-6);
-  font-size: var(--typography-font-size-base);
-}
-
-.base-button--lg {
-  padding: var(--spacing-4) var(--spacing-8);
-  font-size: var(--typography-font-size-lg);
-}
-
-/* Loading spinner */
-.loading-spinner {
-  width: var(--spacing-4);
-  height: var(--spacing-4);
-  border: 2px solid transparent;
-  border-top: 2px solid currentColor;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-</style>

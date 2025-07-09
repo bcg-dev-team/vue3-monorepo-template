@@ -12,6 +12,7 @@
           <router-link to="/development" class="nav-link">개발 가이드</router-link>
           <router-link to="/components" class="nav-link">컴포넌트</router-link>
           <router-link to="/api-examples" class="nav-link">API 예제</router-link>
+          <router-link to="/theme-test" class="nav-link">테마 테스트</router-link>
         </nav>
       </div>
     </header>
@@ -65,12 +66,15 @@
     'Segoe UI',
     Roboto,
     sans-serif;
+  background-color: var(--background-bg-default);
+  color: var(--font-color-default);
 }
 
 .app-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--background-bg-default);
+  border-bottom: 1px solid var(--background-divider);
   padding: 1rem 0;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -92,14 +96,14 @@
 }
 
 .logo h1 {
-  color: white;
+  color: var(--font-color-default);
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0;
 }
 
 .version {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--font-color-default-muted);
   font-size: 0.875rem;
   font-weight: 500;
 }
@@ -110,7 +114,7 @@
 }
 
 .nav-link {
-  color: white;
+  color: var(--font-color-default);
   text-decoration: none;
   font-weight: 500;
   padding: 0.5rem 1rem;
@@ -120,13 +124,13 @@
 }
 
 .nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--background-bg-surface);
   transform: translateY(-1px);
 }
 
 .nav-link.router-link-active {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
+  background-color: var(--background-primary-light);
+  color: var(--font-color-primary);
 }
 
 .app-main {
@@ -135,12 +139,13 @@
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  background-color: var(--background-bg-default);
 }
 
 .app-footer {
-  background-color: #f8f9fa;
+  background-color: var(--background-bg-surface);
+  border-top: 1px solid var(--background-divider);
   padding: 2rem 0;
-  border-top: 1px solid #e9ecef;
   margin-top: auto;
 }
 
@@ -155,7 +160,7 @@
 
 .footer-content p {
   margin: 0;
-  color: #6c757d;
+  color: var(--font-color-footer);
   font-size: 0.875rem;
 }
 
@@ -165,14 +170,14 @@
 }
 
 .footer-links a {
-  color: #6c757d;
+  color: var(--font-color-footer);
   text-decoration: none;
   font-size: 0.875rem;
   transition: color 0.2s ease;
 }
 
 .footer-links a:hover {
-  color: #495057;
+  color: var(--font-color-default);
 }
 
 @media (max-width: 768px) {

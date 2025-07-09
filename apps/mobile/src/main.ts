@@ -1,9 +1,26 @@
-import { createApp } from 'vue';
+import { createApp, h } from 'vue';
+import { createPinia } from 'pinia';
+import { NConfigProvider } from 'naive-ui';
+import { useTheme } from '@template/theme';
 import App from './App.vue';
-
-// 스타일
 import './style.css';
 
-const app = createApp(App);
+const pinia = createPinia();
 
+const app = createApp({
+  setup() {
+    const { currentTheme, themeOverrides } = useTheme();
+    return () =>
+      h(
+        NConfigProvider,
+        {
+          theme: currentTheme.value,
+          themeOverrides: themeOverrides.value,
+        },
+        { default: () => h(App) }
+      );
+  },
+});
+
+app.use(pinia);
 app.mount('#app');

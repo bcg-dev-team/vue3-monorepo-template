@@ -1,5 +1,8 @@
 /* Import design tokens */
-@import './styles/tokens.css';
+@import './styles/_tokens-light.css';
+
+/* Dark theme tokens - will be applied when dark theme is active */
+@import './styles/_tokens-dark.css';
 
 /* Base styles */
 * {
@@ -10,49 +13,49 @@ body {
   font-family: var(--typography-font-family-sans);
   font-size: var(--typography-font-size-base);
   line-height: var(--typography-line-height-normal);
-  color: var(--color-secondary-900);
-  background-color: var(--color-neutral-white);
+  color: var(--font-color-default);
+  background-color: var(--background-bg-default);
 }
 
 /* Utility classes */
 .text-primary {
-  color: var(--color-primary-500);
+  color: var(--font-color-primary);
 }
 
 .text-secondary {
-  color: var(--color-secondary-500);
+  color: var(--font-color-default-muted);
 }
 
 .text-success {
-  color: var(--color-success-500);
+  color: var(--font-color-green);
 }
 
 .text-warning {
-  color: var(--color-warning-500);
+  color: var(--font-color-red);
 }
 
 .text-error {
-  color: var(--color-error-500);
+  color: var(--font-color-red);
 }
 
 .bg-primary {
-  background-color: var(--color-primary-500);
+  background-color: var(--background-primary);
 }
 
 .bg-secondary {
-  background-color: var(--color-secondary-500);
+  background-color: var(--background-bg-surface);
 }
 
 .bg-success {
-  background-color: var(--color-success-500);
+  background-color: var(--background-primary-light);
 }
 
 .bg-warning {
-  background-color: var(--color-warning-500);
+  background-color: var(--trade-long-background);
 }
 
 .bg-error {
-  background-color: var(--color-error-500);
+  background-color: var(--trade-long-background);
 }
 
 .shadow-sm {

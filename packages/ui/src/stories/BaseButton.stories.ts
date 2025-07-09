@@ -20,7 +20,7 @@ const meta = {
     },
     size: {
       control: 'select',
-      options: ['sm', 'md', 'lg'],
+      options: ['small', 'medium', 'large'],
       description: '버튼의 크기',
     },
     type: {
@@ -47,7 +47,7 @@ const meta = {
   },
   args: {
     variant: 'primary',
-    size: 'md',
+    size: 'medium',
     type: 'button',
     disabled: false,
     loading: false,

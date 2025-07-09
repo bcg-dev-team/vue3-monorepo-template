@@ -1,9 +1,8 @@
-import { createApp, h, computed, watch } from 'vue';
+import { createApp, h } from 'vue';
 import { createPinia } from 'pinia';
 import { configure } from 'vee-validate';
-import { NConfigProvider, lightTheme, darkTheme } from 'naive-ui';
-import { lightThemeOverrides, darkThemeOverrides } from '@template/ui';
-import { useThemeStore } from './stores/theme';
+import { NConfigProvider } from 'naive-ui';
+import { useTheme } from '@template/theme';
 import App from './App.vue';
 import router from './router';
 
@@ -33,29 +32,14 @@ const pinia = createPinia();
 // Naive UI ConfigProvider로 앱을 래핑
 const app = createApp({
   setup() {
-    const themeStore = useThemeStore();
-
-    const currentTheme = computed(() => (themeStore.isDark ? darkTheme : lightTheme));
-
-    const currentThemeOverrides = computed(() =>
-      themeStore.isDark ? darkThemeOverrides : lightThemeOverrides
-    );
-
-    // 테마 변경 시 HTML 요소에 data-theme 속성 추가
-    watch(
-      () => themeStore.isDark,
-      (isDark) => {
-        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-      },
-      { immediate: true }
-    );
+    const { currentTheme, themeOverrides } = useTheme();
 
     return () =>
       h(
         NConfigProvider,
         {
           theme: currentTheme.value,
-          themeOverrides: currentThemeOverrides.value,
+          themeOverrides: themeOverrides.value,
         },
         { default: () => h(App) }
       );

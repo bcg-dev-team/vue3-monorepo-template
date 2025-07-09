@@ -13,9 +13,10 @@ import { fileURLToPath } from 'url';
 // 빌드 순서 정의 (의존성 순서)
 const BUILD_ORDER = [
   'packages/types', // 기반 패키지
+  'packages/theme', // types에 의존
   'packages/utils', // types에 의존
   'packages/api', // types, utils에 의존
-  'packages/ui', // types에 의존
+  'packages/ui', // types, theme에 의존
   'apps/desktop', // 모든 패키지 사용
   'apps/mobile', // 모든 패키지 사용
   'apps/mobile-native', // React Native 앱 (WebView 기반)
@@ -24,12 +25,25 @@ const BUILD_ORDER = [
 // 의존성 그래프 정의
 const DEPENDENCY_GRAPH = {
   'packages/types': [],
+  'packages/theme': ['packages/types'],
   'packages/utils': ['packages/types'],
   'packages/api': ['packages/types', 'packages/utils'],
-  'packages/ui': ['packages/types'],
-  'apps/desktop': ['packages/types', 'packages/utils', 'packages/api', 'packages/ui'],
-  'apps/mobile': ['packages/types', 'packages/utils', 'packages/api', 'packages/ui'],
-  'apps/mobile-native': ['packages/types', 'packages/utils', 'packages/api'],
+  'packages/ui': ['packages/types', 'packages/theme'],
+  'apps/desktop': [
+    'packages/types',
+    'packages/utils',
+    'packages/api',
+    'packages/ui',
+    'packages/theme',
+  ],
+  'apps/mobile': [
+    'packages/types',
+    'packages/utils',
+    'packages/api',
+    'packages/ui',
+    'packages/theme',
+  ],
+  'apps/mobile-native': ['packages/types', 'packages/utils', 'packages/api', 'packages/theme'],
 } as const;
 
 // 타입 정의
@@ -60,6 +74,11 @@ function isPackageBuilt(packagePath: string): boolean {
   // ui 패키지는 index.js 체크
   if (packagePath === 'packages/ui') {
     return existsSync(join(distPath, 'index.js'));
+  }
+
+  // theme 패키지는 ESM 기준: index.js, index.d.ts 모두 체크
+  if (packagePath === 'packages/theme') {
+    return existsSync(join(distPath, 'index.js')) && existsSync(join(distPath, 'index.d.ts'));
   }
 
   // utils, api 패키지는 index.js 체크
@@ -144,15 +163,23 @@ function buildPackage(packagePath: PackagePath): void {
     // 빌드 결과 확인 (파일 시스템 동기화 대기)
     const maxRetries = 10;
     let retryCount = 0;
-
     while (!isPackageBuilt(packagePath) && retryCount < maxRetries) {
-      // 파일 시스템 동기화를 위한 짧은 대기
       execSync('sleep 0.1', { stdio: 'pipe' });
       retryCount++;
     }
 
     if (!isPackageBuilt(packagePath)) {
-      throw new Error(`빌드 산출물이 생성되지 않았습니다: ${packagePath}/dist/index.mjs`);
+      // dist 폴더 내 실제 파일 목록 출력
+      const distPath = join(process.cwd(), packagePath, 'dist');
+      let fileList = '';
+      if (existsSync(distPath)) {
+        try {
+          fileList = execSync('ls -la', { cwd: distPath }).toString();
+        } catch {}
+      }
+      throw new Error(
+        `빌드 산출물이 생성되지 않았습니다: ${packagePath}/dist/index.js, index.d.ts\n실제 dist 폴더 파일 목록:\n${fileList}`
+      );
     }
 
     console.log(`✅ 빌드 완료: ${packagePath}`);

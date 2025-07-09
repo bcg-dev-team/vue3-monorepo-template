@@ -37,6 +37,11 @@ const routes: RouteRecordRaw[] = [
     name: 'TreeShakingTest',
     component: () => import('../views/TreeShakingTest.vue'),
   },
+  {
+    path: '/theme-test',
+    name: 'ThemeTest',
+    component: () => import('../views/ThemeTestView.vue'),
+  },
 ];
 
 const router = createRouter({

@@ -25,7 +25,7 @@ export const createCommonConfig = () => {
         output: {
           manualChunks: {
             vendor: ['vue', 'vue-router', 'pinia'],
-            'template-ui': ['@template/ui'],
+            'template-ui': ['@template/ui', 'naive-ui'],
             'template-utils': ['@template/utils'],
             'template-api': ['@template/api'],
             'template-types': ['@template/types'],
@@ -34,7 +34,7 @@ export const createCommonConfig = () => {
       },
     },
     optimizeDeps: {
-      include: ['vue', 'vue-router', 'pinia'],
+      include: ['vue', 'vue-router', 'pinia', 'naive-ui'],
       exclude: ['@template/ui', '@template/utils', '@template/api', '@template/types'],
     },
   };

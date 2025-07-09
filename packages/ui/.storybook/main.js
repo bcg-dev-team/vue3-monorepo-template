@@ -25,7 +25,7 @@ const config = {
     // TypeScript 지원
     config.optimizeDeps = {
       ...config.optimizeDeps,
-      include: ['vue', '@template/types'],
+      include: ['vue', '@template/types', '@template/theme'],
     };
 
     return config;

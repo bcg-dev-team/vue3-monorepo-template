@@ -1,0 +1,512 @@
+---
+rule_type: manual
+---
+
+# Naive UI 베스트 프랙티스
+
+## UI 컴포넌트 설계
+- Naive UI의 컴포넌트 시스템을 활용하여 일관된 UI를 구현하세요.
+- 디자인 토큰을 기반으로 한 테마 시스템을 활용하세요.
+- TypeScript를 활용하여 타입 안전성을 보장하세요.
+- 접근성(Accessibility)을 고려한 컴포넌트 설계를 하세요.
+
+## 모노레포 Naive UI 구조
+- **공통 컴포넌트**: packages/ui에 재사용 가능한 Naive UI 컴포넌트를 배치하세요.
+- **테마 시스템**: packages/ui/themes에서 디자인 토큰 기반 테마를 관리하세요.
+- **컴포넌트 래퍼**: Naive UI 컴포넌트를 래핑하여 일관된 API를 제공하세요.
+- **Storybook 통합**: 모든 Naive UI 컴포넌트에 Storybook 스토리를 작성하세요.
+
+## 성능 최적화
+- **지연 로딩**: 대용량 컴포넌트는 지연 로딩을 구현하세요.
+- **메모이제이션**: 복잡한 렌더링 로직에는 메모이제이션을 활용하세요.
+- **가상 스크롤링**: 대용량 리스트에는 Naive UI의 가상 스크롤링을 사용하세요.
+- **번들 최적화**: 사용하지 않는 Naive UI 컴포넌트는 제외하세요.
+
+## 예시 컴포넌트 패턴
+
+```vue
+<!-- packages/ui/components/BaseDataTable.vue -->
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue';
+import { NDataTable, NInput, NSpace, NButton, NIcon } from 'naive-ui';
+import { SearchOutline, RefreshOutline } from '@vicons/ionicons5';
+import type { TableColumn, PaginationState } from '@template/types';
+
+interface Props<T = Record<string, any>> {
+  items: T[];
+  columns: TableColumn<T>[];
+  loading?: boolean;
+  pagination?: PaginationState;
+  selectable?: boolean;
+  searchable?: boolean;
+  sortable?: boolean;
+  dense?: boolean;
+  height?: string | number;
+  virtualScrolling?: boolean;
+}
+
+interface Emits<T = Record<string, any>> {
+  (e: 'update:selected', items: T[]): void;
+  (e: 'update:pagination', pagination: PaginationState): void;
+  (e: 'sort', column: TableColumn<T>, direction: 'asc' | 'desc'): void;
+  (e: 'search', query: string): void;
+  (e: 'row-click', item: T): void;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  loading: false,
+  selectable: false,
+  searchable: false,
+  sortable: false,
+  dense: false,
+  virtualScrolling: false,
+});
+
+const emit = defineEmits<Emits>();
+
+// 반응형 상태
+const selectedRowKeys = ref<(string | number)[]>([]);
+const searchQuery = ref('');
+const sortBy = ref<string | null>(null);
+const sortOrder = ref<'ascend' | 'descend' | false>(false);
+
+// Computed 속성
+const filteredItems = computed(() => {
+  let items = props.items;
+
+  if (props.searchable && searchQuery.value) {
+    const query = searchQuery.value.toLowerCase();
+    items = items.filter(item => {
+      return props.columns.some(column => {
+        const value = item[column.key];
+        return String(value).toLowerCase().includes(query);
+      });
+    });
+  }
+
+  return items;
+});
+
+const sortedItems = computed(() => {
+  if (!props.sortable || !sortBy.value || !sortOrder.value) {
+    return filteredItems.value;
+  }
+
+  return [...filteredItems.value].sort((a, b) => {
+    const column = props.columns.find(col => col.key === sortBy.value);
+    if (!column) return 0;
+
+    const aValue = a[column.key];
+    const bValue = b[column.key];
+
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      return sortOrder.value === 'descend'
+        ? bValue.localeCompare(aValue)
+        : aValue.localeCompare(bValue);
+    }
+
+    if (typeof aValue === 'number' && typeof bValue === 'number') {
+      return sortOrder.value === 'descend' ? bValue - aValue : aValue - bValue;
+    }
+
+    return 0;
+  });
+});
+
+// 메서드
+const handleSelectionChange = (keys: (string | number)[]) => {
+  selectedRowKeys.value = keys;
+  const selectedItems = props.items.filter(item => 
+    keys.includes(item.id || item.key)
+  );
+  emit('update:selected', selectedItems);
+};
+
+const handleSort = (column: TableColumn<any>, order: 'ascend' | 'descend' | false) => {
+  sortBy.value = order ? column.key as string : null;
+  sortOrder.value = order;
+  
+  if (order) {
+    emit('sort', column, order === 'descend' ? 'desc' : 'asc');
+  }
+};
+
+const handleSearch = (query: string) => {
+  searchQuery.value = query;
+  emit('search', query);
+};
+
+const handleRowClick = (row: any) => {
+  emit('row-click', row);
+};
+
+const handleRefresh = () => {
+  searchQuery.value = '';
+  sortBy.value = null;
+  sortOrder.value = false;
+  selectedRowKeys.value = [];
+};
+
+// Watchers
+watch(selectedRowKeys, (newKeys) => {
+  const selectedItems = props.items.filter(item => 
+    newKeys.includes(item.id || item.key)
+  );
+  emit('update:selected', selectedItems);
+}, { deep: true });
+</script>
+
+<template>
+  <div class="base-data-table">
+    <!-- 검색 및 액션 영역 -->
+    <NSpace v-if="searchable" class="mb-4" justify="space-between">
+      <NInput
+        v-model:value="searchQuery"
+        placeholder="검색..."
+        clearable
+        @update:value="handleSearch"
+      >
+        <template #prefix>
+          <NIcon>
+            <SearchOutline />
+          </NIcon>
+        </template>
+      </NInput>
+      
+      <NButton @click="handleRefresh">
+        <template #icon>
+          <NIcon>
+            <RefreshOutline />
+          </NIcon>
+        </template>
+        새로고침
+      </NButton>
+    </NSpace>
+
+    <!-- 데이터 테이블 -->
+    <NDataTable
+      :columns="columns"
+      :data="sortedItems"
+      :loading="loading"
+      :pagination="pagination"
+      :row-key="(row) => row.id || row.key"
+      :row-class-name="() => 'cursor-pointer'"
+      :virtual-scrolling="virtualScrolling"
+      :height="height"
+      :size="dense ? 'small' : 'medium'"
+      :bordered="false"
+      :single-line="false"
+      :striped="true"
+      :row-selection="selectable ? 'multiple' : undefined"
+      :checked-row-keys="selectedRowKeys"
+      @update:checked-row-keys="handleSelectionChange"
+      @update:sorter="handleSort"
+      @update:page="(page) => emit('update:pagination', { ...pagination, page })"
+      @update:page-size="(pageSize) => emit('update:pagination', { ...pagination, limit: pageSize })"
+      @row-click="handleRowClick"
+    />
+  </div>
+</template>
+
+<style scoped>
+.base-data-table {
+  width: 100%;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  background-color: var(--n-table-td-color-hover);
+}
+</style>
+```
+
+## 테마 시스템
+
+```typescript
+// packages/ui/themes/naive-theme.ts
+import type { GlobalThemeOverrides } from 'naive-ui';
+import { getToken } from '../utils/tokens';
+
+/**
+ * Naive UI 테마 설정
+ * 기존 디자인 토큰을 기반으로 구성
+ */
+export const createNaiveTheme = (): GlobalThemeOverrides => {
+  return {
+    common: {
+      // 기본 색상
+      primaryColor: getToken('Base-Colors.Primary.primary800'),
+      primaryColorHover: getToken('Base-Colors.Primary.primary700'),
+      primaryColorPressed: getToken('Base-Colors.Primary.primary-deep'),
+      primaryColorSuppl: getToken('Base-Colors.Primary.primary100'),
+      
+      // 텍스트 색상
+      textColorBase: getToken('Font.Color.Default'),
+      textColor1: getToken('Font.Color.Default'),
+      textColor2: getToken('Font.Color.Default-muted'),
+      textColor3: getToken('Font.Color.Default-muted-dark'),
+      textColorDisabled: getToken('Input.Color.text-disable'),
+      
+      // 배경 색상
+      bodyColor: getToken('Background.bg-default'),
+      cardColor: getToken('Background.bg-default'),
+      modalColor: getToken('Background.bg-default'),
+      popoverColor: getToken('Background.bg-default'),
+      
+      // 테두리 색상
+      borderColor: getToken('Background.bg-outline'),
+      
+      // 그림자
+      boxShadow1: getToken('ShadowSm'),
+      boxShadow2: getToken('ShadowBase'),
+      boxShadow3: getToken('ShadowMd'),
+      
+      // 반지름
+      borderRadius: getToken('Radius.default'),
+      
+      // 간격
+      fontSize: getToken('Font.Size.font-16'),
+      fontSizeSmall: getToken('Font.Size.font-14'),
+      fontSizeMedium: getToken('Font.Size.font-16'),
+      fontSizeLarge: getToken('Font.Size.font-18'),
+      fontSizeHuge: getToken('Font.Size.font-20'),
+      
+      // 폰트
+      fontFamily: getToken('TypographyFontFamilySans'),
+      fontFamilyMono: getToken('TypographyFontFamilyMono'),
+      
+      // 높이
+      heightTiny: getToken('Base-Size.size-24'),
+      heightSmall: getToken('Base-Size.size-32'),
+      heightMedium: getToken('Base-Size.size-40'),
+      heightLarge: getToken('Base-Size.size-48'),
+      heightHuge: getToken('Base-Size.size-56'),
+    },
+    
+    Button: {
+      // 버튼 색상
+      colorPrimary: getToken('Button.Primary.background'),
+      colorPrimaryHover: getToken('Base-Colors.Primary.primary700'),
+      colorPrimaryPressed: getToken('Base-Colors.Primary.primary-deep'),
+      colorPrimarySuppl: getToken('Button.Primary.background'),
+      
+      // 텍스트 색상
+      textColorPrimary: getToken('Button.Primary.text'),
+      textColorDisabled: getToken('Button.Disabled.text'),
+      
+      // 테두리
+      borderPrimary: getToken('Button.Primary.border'),
+      borderDisabled: getToken('Button.Disabled.border'),
+      
+      // 높이
+      heightTiny: getToken('Base-Size.size-24'),
+      heightSmall: getToken('Base-Size.size-32'),
+      heightMedium: getToken('Base-Size.size-40'),
+      heightLarge: getToken('Base-Size.size-48'),
+      heightHuge: getToken('Base-Size.size-56'),
+      
+      // 폰트 크기
+      fontSizeTiny: getToken('Font.Size.font-12'),
+      fontSizeSmall: getToken('Font.Size.font-14'),
+      fontSizeMedium: getToken('Font.Size.font-16'),
+      fontSizeLarge: getToken('Font.Size.font-18'),
+      fontSizeHuge: getToken('Font.Size.font-20'),
+      
+      // 반지름
+      borderRadius: getToken('Radius.default'),
+    },
+    
+    Input: {
+      // 색상
+      color: getToken('Input.Color.surface'),
+      colorFocus: getToken('Input.Color.surface'),
+      colorDisabled: getToken('Input.Color.bg-disabled'),
+      
+      // 테두리
+      border: getToken('Input.Color.border-static'),
+      borderFocus: getToken('Input.Color.border-focus'),
+      borderError: getToken('Input.Color.border-error'),
+      borderDisabled: getToken('Input.Color.border-disabled'),
+      
+      // 텍스트
+      textColor: getToken('Input.Color.text-static'),
+      textColorDisabled: getToken('Input.Color.text-disable'),
+      placeholderColor: getToken('Input.Color.text-placeholder'),
+      
+      // 높이
+      heightTiny: getToken('Base-Size.size-24'),
+      heightSmall: getToken('Base-Size.size-32'),
+      heightMedium: getToken('Base-Size.size-40'),
+      heightLarge: getToken('Base-Size.size-48'),
+      heightHuge: getToken('Base-Size.size-56'),
+      
+      // 폰트 크기
+      fontSizeTiny: getToken('Font.Size.font-12'),
+      fontSizeSmall: getToken('Font.Size.font-14'),
+      fontSizeMedium: getToken('Font.Size.font-16'),
+      fontSizeLarge: getToken('Font.Size.font-18'),
+      fontSizeHuge: getToken('Font.Size.font-20'),
+      
+      // 반지름
+      borderRadius: getToken('Radius.default'),
+    },
+  };
+};
+```
+
+## 컴포넌트 래퍼
+
+```vue
+<!-- packages/ui/components/BaseButton.vue -->
+<script setup lang="ts">
+import { computed } from 'vue';
+import { NButton } from 'naive-ui';
+import type { ButtonProps } from 'naive-ui';
+
+interface Props {
+  type?: 'primary' | 'default' | 'dashed' | 'text' | 'info' | 'success' | 'warning' | 'error';
+  size?: 'tiny' | 'small' | 'medium' | 'large' | 'huge';
+  loading?: boolean;
+  disabled?: boolean;
+  block?: boolean;
+  round?: boolean;
+  circle?: boolean;
+  ghost?: boolean;
+  secondary?: boolean;
+  tertiary?: boolean;
+  quaternary?: boolean;
+  color?: string;
+  textColor?: string;
+  borderColor?: string;
+  icon?: () => any;
+  iconPlacement?: 'left' | 'right';
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  type: 'default',
+  size: 'medium',
+  loading: false,
+  disabled: false,
+  block: false,
+  round: false,
+  circle: false,
+  ghost: false,
+  secondary: false,
+  tertiary: false,
+  quaternary: false,
+  iconPlacement: 'left',
+});
+
+const emit = defineEmits<{
+  (e: 'click', event: MouseEvent): void;
+}>();
+
+const buttonProps = computed<ButtonProps>(() => ({
+  type: props.type,
+  size: props.size,
+  loading: props.loading,
+  disabled: props.disabled,
+  block: props.block,
+  round: props.round,
+  circle: props.circle,
+  ghost: props.ghost,
+  secondary: props.secondary,
+  tertiary: props.tertiary,
+  quaternary: props.quaternary,
+  color: props.color,
+  textColor: props.textColor,
+  borderColor: props.borderColor,
+}));
+
+const handleClick = (event: MouseEvent) => {
+  if (!props.disabled && !props.loading) {
+    emit('click', event);
+  }
+};
+</script>
+
+<template>
+  <NButton
+    v-bind="buttonProps"
+    @click="handleClick"
+  >
+    <template v-if="icon && iconPlacement === 'left'" #icon>
+      <component :is="icon" />
+    </template>
+    
+    <slot />
+    
+    <template v-if="icon && iconPlacement === 'right'" #icon>
+      <component :is="icon" />
+    </template>
+  </NButton>
+</template>
+```
+
+## 앱에서 테마 적용
+
+```typescript
+// apps/desktop/src/main.ts
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
+import { configure } from 'vee-validate';
+import { createDiscreteApi } from 'naive-ui';
+import App from './App.vue';
+import router from './router';
+import { createNaiveTheme } from '@template/ui/themes';
+
+// 스타일
+import './style.css';
+
+// Vee-Validate 설정
+configure({
+  validateOnBlur: true,
+  validateOnChange: true,
+  validateOnInput: false,
+  validateOnModelUpdate: true,
+});
+
+// Naive UI 테마 생성
+const theme = createNaiveTheme();
+
+// Naive UI Discrete API 생성
+const { message, notification, dialog, loadingBar } = createDiscreteApi(
+  ['message', 'notification', 'dialog', 'loadingBar'],
+  {
+    configProviderProps: {
+      themeOverrides: theme,
+    },
+  }
+);
+
+// 전역으로 사용할 수 있도록 설정
+window.$message = message;
+window.$notification = notification;
+window.$dialog = dialog;
+window.$loadingBar = loadingBar;
+
+const app = createApp(App);
+
+app.use(createPinia());
+app.use(router);
+
+app.mount('#app');
+```
+
+## Naive UI 베스트 프랙티스 체크리스트
+- [ ] 디자인 토큰 기반 테마 시스템 활용
+- [ ] TypeScript 타입 안전성 보장
+- [ ] 접근성(Accessibility) 구현
+- [ ] 컴포넌트 래퍼 구현
+- [ ] Storybook 통합
+- [ ] 성능 최적화 적용
+- [ ] 반응형 디자인 구현
+- [ ] 에러 처리 및 로딩 상태 관리
+description:
+globs:
+alwaysApply: false
+---
+ 

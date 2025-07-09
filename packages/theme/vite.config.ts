@@ -15,19 +15,19 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'TemplateUI',
+      name: 'TemplateTheme',
       formats: ['es'],
       fileName: () => 'index.js',
     },
     target: 'esnext',
     minify: 'esbuild',
     rollupOptions: {
-      external: ['vue', '@template/types', '@template/theme', 'naive-ui'],
+      external: ['vue', 'pinia', '@template/types', 'naive-ui'],
       output: {
         globals: {
           vue: 'Vue',
+          pinia: 'Pinia',
           '@template/types': 'TemplateTypes',
-          '@template/theme': 'TemplateTheme',
           'naive-ui': 'naive',
         },
         exports: 'named',

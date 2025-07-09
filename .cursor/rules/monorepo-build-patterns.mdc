@@ -38,51 +38,167 @@ alwaysApply: false
 }
 ```
 
-## 필수 설정
+## 빌드 도구 선택 전략
 
-### UI 패키지 (Vite 기반)
+### 패키지별 빌드 도구 매트릭스
+| 패키지 | 용도 | 빌드 도구 | 이유 |
+|--------|------|-----------|------|
+| `types` | 타입 정의 | **tsc** | `.d.ts`만 필요, 빠른 컴파일 |
+| `ui` | Vue 컴포넌트 | **Vite** | Vue SFC, CSS 처리, 번들링 |
+| `api` | API 클라이언트 | **Vite** | Tree shaking, 번들 최적화 |
+| `theme` | 테마 관리 | **Vite** | CSS, 디자인 토큰 처리 |
+| `utils` | 유틸리티 함수 | **Vite** | Tree shaking, Vue composables |
+
+### Types 패키지 (TypeScript 기반)
+```json
+// tsconfig.build.json
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "esnext",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "allowImportingTsExtensions": false,
+    "preserveConstEnums": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["dist", "node_modules", "src/**/__tests__/**/*"]
+}
+```
+
+### 나머지 패키지들 (Vite 기반)
 ```typescript
 // vite.config.ts
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import { resolve } from 'node:path';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
   plugins: [
-    vue(),
+    vue(), // Vue composables가 있는 경우
     dts({
       insertTypesEntry: true,
       rollupTypes: true,
+      outDir: 'dist',
     }),
   ],
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'TemplateUI',
-      fileName: 'index',
-      formats: ['es', 'cjs'],
+      name: 'TemplatePackage',
+      formats: ['es'],
+      fileName: () => 'index.js',
+    },
+    target: 'esnext',
+    minify: 'esbuild',
+    rollupOptions: {
+      external: ['vue', '@template/types', '@template/theme', 'naive-ui'],
+      output: {
+        globals: {
+          vue: 'Vue',
+          '@template/types': 'TemplateTypes',
+          '@template/theme': 'TemplateTheme',
+          'naive-ui': 'naive',
+        },
+        exports: 'named',
+        preserveModules: true,
+      },
+    },
+  },
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
     },
   },
 });
 ```
 
-### 타입 패키지 (TypeScript 기반)
-```json
-{
-  "compilerOptions": {
-    "outDir": "./dist",
-    "declarationDir": "./dist",
-    "declaration": true,
-    "declarationMap": true
-  }
-}
+## Import 패턴 가이드
+
+### Types 패키지 - 항상 type import 사용
+```typescript
+// ✅ 권장
+import type { User, ApiResponse } from '@template/types'
+
+// ❌ 피해야 함 (런타임 코드가 없어서 오류 발생)
+import { User, ApiResponse } from '@template/types'
 ```
+
+### 다른 패키지들 - 상황에 따라 선택
+```typescript
+// ✅ 타입만 필요한 경우
+import type { BaseButtonProps } from '@template/ui'
+import type { ApiClientConfig } from '@template/api'
+import type { ThemeConfig } from '@template/theme'
+import type { ValidationRule } from '@template/utils'
+
+// ✅ 실제 코드도 필요한 경우
+import { BaseButton } from '@template/ui'
+import { ApiClient } from '@template/api'
+import { createNaiveTheme } from '@template/theme'
+import { formatDate, useDebounce } from '@template/utils'
+
+// ✅ 타입과 코드를 함께 사용하는 경우
+import { BaseButton } from '@template/ui'
+import type { BaseButtonProps } from '@template/ui'
+
+// 또는
+import { BaseButton, type BaseButtonProps } from '@template/ui'
+```
+
+### 트리 쉐이킹 동작
+- **import type**: 컴파일 타임에만 사용, 런타임 번들에 포함되지 않음
+- **일반 import**: 트리 쉐이킹으로 미사용 코드 자동 제거
+- **Vite/Webpack**: 자동으로 최적화 처리
+
+### 실전에서 타입 import 구분하는 팁
+
+- **함수, 변수, 클래스, 컴포넌트**를 "실행"하거나 "참조"하면 → 일반 import
+- **interface, type, enum, 타입 유틸리티**만 쓰면 → import type
+- **import한 이름이 코드에서 타입 위치(콜론, 제네릭, as, extends 등)에만 등장** → import type
+
+#### 예시
+
+```typescript
+// 타입만 필요 (함수 시그니처, 변수 타입 등)
+import type { User } from '@template/types';
+const user: User = { ... };
+
+// 실제 코드 필요 (함수 호출, 컴포넌트 등록 등)
+import { formatDate } from '@template/utils';
+console.log(formatDate(new Date()));
+
+// 둘 다 필요
+import { BaseButton, type BaseButtonProps } from '@template/ui';
+```
+
+| 상황                              | import type | 일반 import |
+|-----------------------------------|:-----------:|:-----------:|
+| 타입 선언/타입 체크만 필요        |      ✅     |      ❌     |
+| 함수/컴포넌트/실제 값이 필요      |      ❌     |      ✅     |
+| 둘 다 필요                        |      ✅     |      ✅     |
 
 ## 빌드 순서
 1. `@template/types` (타입 정의)
 2. `@template/utils` (유틸리티)
 3. `@template/api` (API 클라이언트)
-4. `@template/ui` (UI 컴포넌트)
-5. `apps/desktop` (데스크톱 앱)
-6. `apps/mobile` (모바일 앱)
+4. `@template/theme` (테마 관리)
+5. `@template/ui` (UI 컴포넌트)
+6. `apps/desktop` (데스크톱 앱)
+7. `apps/mobile` (모바일 앱)
 
 ## 문제 해결 패턴
 
@@ -123,30 +239,7 @@ pnpm --filter @template/ui run build
 ## 예방 조치
 
 ### .gitignore 설정
-```
-# 빌드 산출물
-dist/
-*.d.ts
-*.js
-*.js.map
-*.d.ts.map
 
-# 테스트 파일 (src 내)
-src/**/__tests__/
-```
-
-### 빌드 전 정리 스크립트
-```json
-{
-  "scripts": {
-    "clean": "pnpm -r run clean",
-    "prebuild": "pnpm clean"
-  }
-}
-```
-
-## 자주 발생하는 오류 코드
-- `TS6059`: 파일이 모듈이 아님 (타입 충돌)
 - `TS6307`: 프로젝트 참조로 인한 파일 중복 포함  
 - `TS2307`: 모듈을 찾을 수 없음 (타입 선언 파일 누락)
 - `TS2554`: 인자 개수 불일치 (코드 로직 오류)

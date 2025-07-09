@@ -71,9 +71,9 @@ function isPackageBuilt(packagePath: string): boolean {
     return existsSync(join(distPath, 'index.d.ts'));
   }
 
-  // ui 패키지는 index.js 체크
+  // ui 패키지는 dist 기반: index.js, index.d.ts 모두 체크
   if (packagePath === 'packages/ui') {
-    return existsSync(join(distPath, 'index.js'));
+    return existsSync(join(distPath, 'index.js')) && existsSync(join(distPath, 'index.d.ts'));
   }
 
   // theme 패키지는 ESM 기준: index.js, index.d.ts 모두 체크
@@ -234,11 +234,11 @@ function main(): void {
 
   if (buildablePackages.length === 0) {
     console.error('❌ 빌드할 패키지가 없습니다.');
-    console.error('📦 packages/ 또는 apps/ 디렉토리에 package.json이 있는지 확인하세요');
+    console.error('💡 packages/ 또는 apps/ 디렉토리에 package.json이 있는지 확인하세요');
     process.exit(1);
   }
 
-  console.log(`🎯 빌드 대상 패키지: ${buildablePackages.join(', ')}\n`);
+  console.log(`💡 빌드 대상 패키지: ${buildablePackages.join(', ')}\n`);
 
   // 순환참조 검사
   checkCircularDependencies();

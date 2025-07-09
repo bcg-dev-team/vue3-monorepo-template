@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getColorTokens, getTypographyTokens, getSpacingTokens } from '../../utils/tokenUtils';
+import { getColorTokens, getTypographyTokens, getSpacingTokens } from '@template/theme';
 
 const colors = ref({});
 const typography = ref({});

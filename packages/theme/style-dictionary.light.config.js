@@ -4,7 +4,7 @@ import { register } from '@tokens-studio/sd-transforms';
 register(StyleDictionary);
 
 export default {
-  source: ['src/tokens/tokens.json'],
+  source: ['src/tokens/tokens-light.json'],
   platforms: {
     css: {
       transformGroup: 'tokens-studio',

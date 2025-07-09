@@ -1,10 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
 import { ref, onMounted, defineComponent, computed, onUnmounted, watch } from 'vue';
-import { getColorTokens, getTypographyTokens, getSpacingTokens } from '../../utils/tokenUtils';
-import { useTheme } from '../../composables/useTheme';
+import { getColorTokens, getTypographyTokens, getSpacingTokens } from '@template/theme';
+import { useTheme } from '@template/theme';
 import './design-tokens.css';
-import '../../styles/_tokens-light.css';
-import '../../styles/_tokens-dark.css';
 
 /**
  * 타이포그래피 토큰을 표시하는 컴포넌트
@@ -113,7 +111,7 @@ const DesignTokens = defineComponent({
     const typography = ref<Record<string, Record<string, string>>>({});
     const spacing = ref<Record<string, string>>({});
     const activeTab = ref('colors');
-    const { themeMode, toggleTheme } = useTheme();
+    const { isDark, toggleTheme } = useTheme();
 
     const loadTokens = () => {
       colors.value = getColorTokens();
@@ -127,7 +125,7 @@ const DesignTokens = defineComponent({
     };
 
     // 테마 변경 시 토큰 다시 로드
-    watch(themeMode, () => {
+    watch(isDark, () => {
       // CSS 변수가 적용될 시간을 주기 위해 약간의 지연
       setTimeout(loadTokens, 10);
     });
@@ -141,7 +139,7 @@ const DesignTokens = defineComponent({
       typography,
       spacing,
       activeTab,
-      theme: themeMode,
+      theme: isDark.value ? 'dark' : 'light',
       toggleTheme,
       formatGroupName,
     };

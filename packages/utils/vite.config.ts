@@ -15,20 +15,20 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'TemplateUI',
+      name: 'TemplateUtils',
       formats: ['es'],
       fileName: () => 'index.js',
     },
     target: 'esnext',
     minify: 'esbuild',
     rollupOptions: {
-      external: ['vue', '@template/types', '@template/theme', 'naive-ui'],
+      external: ['vue', '@template/types', 'date-fns', 'date-fns-tz'],
       output: {
         globals: {
           vue: 'Vue',
           '@template/types': 'TemplateTypes',
-          '@template/theme': 'TemplateTheme',
-          'naive-ui': 'naive',
+          'date-fns': 'dateFns',
+          'date-fns-tz': 'dateFnsTz',
         },
         exports: 'named',
         preserveModules: true,

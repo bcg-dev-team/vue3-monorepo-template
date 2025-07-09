@@ -20,7 +20,7 @@ describe('BaseButton', () => {
 
     const button = wrapper.find('.n-button');
     expect(button.exists()).toBe(true);
-    expect(wrapper.props('variant')).toBe('primary');
+    expect((wrapper.props() as any).variant).toBe('primary');
   });
 
   it('should emit click event', async () => {
@@ -40,7 +40,7 @@ describe('BaseButton', () => {
 
     const button = wrapper.find('.n-button');
     expect(button.exists()).toBe(true);
-    expect(wrapper.props('disabled')).toBe(true);
+    expect((wrapper.props() as any).disabled).toBe(true);
   });
 
   it('should show loading state', () => {
@@ -51,7 +51,7 @@ describe('BaseButton', () => {
 
     const button = wrapper.find('.n-button');
     expect(button.exists()).toBe(true);
-    expect(wrapper.props('loading')).toBe(true);
+    expect((wrapper.props() as any).loading).toBe(true);
   });
 
   it('should apply custom classes', () => {
@@ -69,7 +69,7 @@ describe('BaseButton', () => {
       slots: { default: 'Large Button' },
     });
 
-    expect(wrapper.props('size')).toBe('large');
+    expect((wrapper.props() as any).size).toBe('large');
   });
 
   it('should handle fullWidth prop correctly', () => {
@@ -78,6 +78,6 @@ describe('BaseButton', () => {
       slots: { default: 'Full Width Button' },
     });
 
-    expect(wrapper.props('fullWidth')).toBe(true);
+    expect((wrapper.props() as any).fullWidth).toBe(true);
   });
 });

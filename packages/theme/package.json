@@ -17,14 +17,29 @@
     "./composables": {
       "types": "./dist/composables.d.ts",
       "import": "./dist/composables.js"
+    },
+    "./naive": {
+      "types": "./dist/naive/index.d.ts",
+      "import": "./dist/naive/index.js"
+    },
+    "./tokens": {
+      "types": "./dist/tokens/index.d.ts",
+      "import": "./dist/tokens/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "import": "./dist/utils/index.js"
     }
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "dev": "tsc -p tsconfig.build.json --watch",
+    "build:tokens:light": "style-dictionary build --config style-dictionary.light.config.js && node scripts/process-tokens.js",
+    "build:tokens:dark": "style-dictionary build --config style-dictionary.dark.config.js && node scripts/process-tokens.js",
+    "build:tokens": "pnpm run build:tokens:light && pnpm run build:tokens:dark",
+    "build": "pnpm run build:tokens && vite build",
+    "dev": "vite build --watch",
     "clean": "rimraf dist",
     "type-check": "tsc --noEmit"
   },
@@ -35,8 +50,13 @@
   },
   "devDependencies": {
     "@template/types": "workspace:*",
+    "@tokens-studio/sd-transforms": "^2.0.1",
     "rimraf": "^5.0.0",
-    "typescript": "^5.3.0"
+    "style-dictionary": "^5.0.1",
+    "typescript": "^5.3.0",
+    "vite": "^5.0.0",
+    "vite-plugin-dts": "^3.0.0",
+    "@vitejs/plugin-vue": "^5.0.0"
   },
   "peerDependencies": {
     "vue": "^3.4.0",

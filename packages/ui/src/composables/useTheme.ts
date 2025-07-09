@@ -1,86 +1,132 @@
-import { ref, computed, watch, readonly } from 'vue';
+import { ref, computed, watch, readonly, type Ref } from 'vue';
+import { darkTheme, lightTheme, type GlobalThemeOverrides } from 'naive-ui';
+import { lightThemeOverrides, darkThemeOverrides } from '../themes';
 
 /**
  * 테마 타입 정의
  */
-export type Theme = 'light' | 'dark' | 'system';
+export type ThemeMode = 'light' | 'dark' | 'auto';
+
+export interface Theme {
+  themeMode: Readonly<Ref<ThemeMode>>;
+  currentTheme: Readonly<Ref<any>>;
+  themeOverrides: Readonly<Ref<GlobalThemeOverrides>>;
+  isSystemDark: Readonly<Ref<boolean>>;
+  setThemeMode: (mode: ThemeMode) => void;
+  toggleTheme: () => void;
+  updateHtmlClass: () => void;
+}
 
 /**
- * 테마 관리를 위한 composable
- *
- * @returns 테마 상태와 관련 메서드들
+ * Naive UI 테마 관리 컴포저블
  */
-export function useTheme() {
-  const theme = ref<Theme>('system');
-  const isDark = ref(false);
+export function useTheme(): Theme {
+  const themeMode = ref<ThemeMode>('light');
+  const isSystemDark = ref(false);
 
-  /**
-   * 시스템 테마 감지
-   */
-  const systemTheme = computed(() => {
-    if (typeof window === 'undefined') return 'light';
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  });
-
-  /**
-   * 실제 적용될 테마 계산
-   */
   const currentTheme = computed(() => {
-    if (theme.value === 'system') {
-      return systemTheme.value;
+    if (themeMode.value === 'auto') {
+      return isSystemDark.value ? darkTheme : lightTheme;
     }
-    return theme.value;
+    return themeMode.value === 'dark' ? darkTheme : lightTheme;
   });
 
-  /**
-   * 다크 모드 여부 계산
-   */
-  const isDarkMode = computed(() => currentTheme.value === 'dark');
+  const themeOverrides = computed<GlobalThemeOverrides>(() => {
+    if (themeMode.value === 'auto') {
+      return isSystemDark.value ? darkThemeOverrides : lightThemeOverrides;
+    }
+    return themeMode.value === 'dark' ? darkThemeOverrides : lightThemeOverrides;
+  });
 
-  /**
-   * 테마 변경
-   * @param newTheme - 새로운 테마
-   */
-  const setTheme = (newTheme: Theme) => {
-    theme.value = newTheme;
-    applyTheme();
+  const setThemeMode = (mode: ThemeMode) => {
+    themeMode.value = mode;
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('theme-mode', mode);
+    }
+    updateHtmlClass();
   };
 
-  /**
-   * 테마를 DOM에 적용
-   */
-  const applyTheme = () => {
+  const updateHtmlClass = () => {
     if (typeof document === 'undefined') return;
 
-    const root = document.documentElement;
-    const isDark = isDarkMode.value;
+    const html = window.document.documentElement;
+    const isDark = currentTheme.value === darkTheme;
+    const newTheme = isDark ? 'dark' : 'light';
 
-    root.classList.toggle('dark', isDark);
-    root.setAttribute('data-theme', currentTheme.value);
+    console.log('[useTheme] updateHtmlClass:', {
+      currentTheme: currentTheme.value,
+      isDark,
+      newTheme,
+      currentDataTheme: html.getAttribute('data-theme'),
+    });
+
+    html.setAttribute('data-theme', newTheme);
+
+    console.log('[useTheme] after update:', {
+      newDataTheme: html.getAttribute('data-theme'),
+    });
   };
 
-  /**
-   * 시스템 테마 변경 감지
-   */
-  const mediaQuery =
-    typeof window !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)') : null;
-
-  if (mediaQuery) {
-    mediaQuery.addEventListener('change', () => {
-      if (theme.value === 'system') {
-        applyTheme();
-      }
+  const detectSystemTheme = () => {
+    if (typeof window === 'undefined') return;
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    isSystemDark.value = mediaQuery.matches;
+    mediaQuery.addEventListener('change', (e) => {
+      isSystemDark.value = e.matches;
     });
+  };
+
+  const restoreThemeMode = () => {
+    if (typeof window === 'undefined') return;
+    const savedMode = localStorage.getItem('theme-mode') as ThemeMode;
+    if (savedMode && ['light', 'dark', 'auto'].includes(savedMode)) {
+      themeMode.value = savedMode;
+    }
+  };
+
+  const toggleTheme = () => {
+    const newMode = currentTheme.value === lightTheme ? 'dark' : 'light';
+    setThemeMode(newMode);
+  };
+
+  watch(
+    () => isSystemDark.value,
+    () => {
+      if (themeMode.value === 'auto') {
+        updateHtmlClass();
+      }
+    }
+  );
+
+  watch(
+    () => themeMode.value,
+    () => {
+      updateHtmlClass();
+    }
+  );
+
+  if (typeof window !== 'undefined') {
+    detectSystemTheme();
+    restoreThemeMode();
+    updateHtmlClass();
   }
 
-  // 초기 테마 적용
-  watch(currentTheme, applyTheme, { immediate: true });
-
   return {
-    theme: readonly(theme),
+    themeMode: readonly(themeMode),
     currentTheme: readonly(currentTheme),
-    isDarkMode: readonly(isDarkMode),
-    setTheme,
-    applyTheme,
+    themeOverrides: readonly(themeOverrides),
+    isSystemDark: readonly(isSystemDark),
+    setThemeMode,
+    toggleTheme,
+    updateHtmlClass,
   };
+}
+
+let globalThemeInstance: Theme | null = null;
+
+export function useGlobalTheme(): Theme {
+  if (!globalThemeInstance) {
+    globalThemeInstance = useTheme();
+  }
+  return globalThemeInstance;
 }

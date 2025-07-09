@@ -1,0 +1,46 @@
+{
+  "name": "@template/theme",
+  "version": "1.0.0",
+  "description": "Shared theme management for the monorepo",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./store": {
+      "types": "./dist/store.d.ts",
+      "import": "./dist/store.js"
+    },
+    "./composables": {
+      "types": "./dist/composables.d.ts",
+      "import": "./dist/composables.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch",
+    "clean": "rimraf dist",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "vue": "^3.4.0",
+    "pinia": "^2.1.0",
+    "naive-ui": "^2.37.0"
+  },
+  "devDependencies": {
+    "@template/types": "workspace:*",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.3.0"
+  },
+  "peerDependencies": {
+    "vue": "^3.4.0",
+    "pinia": "^2.1.0",
+    "naive-ui": "^2.37.0"
+  }
+}

@@ -323,6 +323,9 @@ importers:
       naive-ui:
         specifier: ^2.37.0
         version: 2.42.0(vue@3.5.17(typescript@5.8.3))
+      pinia:
+        specifier: ^2.1.0
+        version: 2.3.1(typescript@5.8.3)(vue@3.5.17(typescript@5.8.3))
       vue:
         specifier: ^3.4.0
         version: 3.5.17(typescript@5.8.3)
@@ -11091,7 +11094,7 @@ snapshots:
       std-env: 3.9.0
       strip-literal: 2.1.1
       test-exclude: 6.0.0
-      vitest: 1.6.1(@types/node@24.0.10)(@vitest/ui@1.6.1)(jsdom@24.1.3)(lightningcss@1.30.1)(terser@5.43.1)
+      vitest: 1.6.1(@types/node@20.19.4)(@vitest/ui@1.6.1)(jsdom@24.1.3)(lightningcss@1.30.1)(terser@5.43.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -11136,7 +11139,7 @@ snapshots:
       pathe: 1.1.2
       picocolors: 1.1.1
       sirv: 2.0.4
-      vitest: 1.6.1(@types/node@24.0.10)(@vitest/ui@1.6.1)(jsdom@24.1.3)(lightningcss@1.30.1)(terser@5.43.1)
+      vitest: 1.6.1(@types/node@20.19.4)(@vitest/ui@1.6.1)(jsdom@24.1.3)(lightningcss@1.30.1)(terser@5.43.1)
 
   '@vitest/utils@0.34.7':
     dependencies:

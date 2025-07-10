@@ -1,4 +1,6 @@
-const config = {
+import type { StorybookConfig } from '@storybook/vue3-vite';
+
+const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
     '@storybook/addon-essentials',
@@ -7,14 +9,7 @@ const config = {
   ],
   framework: {
     name: '@storybook/vue3-vite',
-    options: {
-      builder: {
-        useSWC: true,
-      },
-    },
-  },
-  docs: {
-    autodocs: true,
+    options: {},
   },
   viteFinal: async (config) => {
     // 모듈 해석 설정
@@ -30,6 +25,12 @@ const config = {
     config.optimizeDeps = {
       ...config.optimizeDeps,
       include: ['vue', '@template/types', '@template/theme', 'pinia'],
+    };
+
+    // 환경 변수 설정
+    config.define = {
+      ...config.define,
+      'process.env.NODE_ENV': '"development"',
     };
 
     return config;

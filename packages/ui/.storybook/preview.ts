@@ -1,4 +1,6 @@
 import type { Preview } from '@storybook/vue3';
+import '@template/theme/styles/_tokens-light.css';
+import '@template/theme/styles/_tokens-dark.css';
 import '../src/style.css';
 
 const preview: Preview = {

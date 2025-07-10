@@ -8,8 +8,16 @@ import { ref } from 'vue';
 export const useThemeStore = defineStore('theme', () => {
   const isDark = ref(false);
 
-  // localStorage에서 테마 설정 복원
-  const savedTheme = localStorage.getItem('theme-mode');
+  // localStorage에서 테마 설정 복원 (안전한 접근)
+  let savedTheme: string | null = null;
+  try {
+    if (typeof localStorage !== 'undefined') {
+      savedTheme = localStorage.getItem('theme-mode');
+    }
+  } catch {
+    // localStorage 접근 실패 시 기본값 사용
+  }
+
   if (savedTheme === 'dark') {
     isDark.value = true;
   }
@@ -19,7 +27,13 @@ export const useThemeStore = defineStore('theme', () => {
    */
   const toggleTheme = () => {
     isDark.value = !isDark.value;
-    localStorage.setItem('theme-mode', isDark.value ? 'dark' : 'light');
+    try {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('theme-mode', isDark.value ? 'dark' : 'light');
+      }
+    } catch {
+      // localStorage 접근 실패 시 무시
+    }
   };
 
   /**
@@ -28,7 +42,13 @@ export const useThemeStore = defineStore('theme', () => {
    */
   const setTheme = (dark: boolean) => {
     isDark.value = dark;
-    localStorage.setItem('theme-mode', dark ? 'dark' : 'light');
+    try {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('theme-mode', dark ? 'dark' : 'light');
+      }
+    } catch {
+      // localStorage 접근 실패 시 무시
+    }
   };
 
   /**
@@ -38,7 +58,13 @@ export const useThemeStore = defineStore('theme', () => {
     if (typeof window !== 'undefined') {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       isDark.value = mediaQuery.matches;
-      localStorage.setItem('theme-mode', isDark.value ? 'dark' : 'light');
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('theme-mode', isDark.value ? 'dark' : 'light');
+        }
+      } catch {
+        // localStorage 접근 실패 시 무시
+      }
     }
   };
 

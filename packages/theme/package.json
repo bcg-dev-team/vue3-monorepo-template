@@ -29,6 +29,12 @@
     "./utils": {
       "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.js"
+    },
+    "./styles/_tokens-light.css": {
+      "import": "./src/styles/_tokens-light.css"
+    },
+    "./styles/_tokens-dark.css": {
+      "import": "./src/styles/_tokens-dark.css"
     }
   },
   "files": [

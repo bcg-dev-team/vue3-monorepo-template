@@ -38,7 +38,8 @@
     "@template/types": "workspace:*",
     "@template/theme": "workspace:*",
     "vue": "^3.4.0",
-    "naive-ui": "^2.37.0"
+    "naive-ui": "^2.37.0",
+    "pinia": "^2.1.0"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.6.0",

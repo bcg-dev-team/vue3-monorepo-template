@@ -7,7 +7,11 @@ const config = {
   ],
   framework: {
     name: '@storybook/vue3-vite',
-    options: {},
+    options: {
+      builder: {
+        useSWC: true,
+      },
+    },
   },
   docs: {
     autodocs: true,
@@ -25,7 +29,7 @@ const config = {
     // TypeScript 지원
     config.optimizeDeps = {
       ...config.optimizeDeps,
-      include: ['vue', '@template/types', '@template/theme'],
+      include: ['vue', '@template/types', '@template/theme', 'pinia'],
     };
 
     return config;

@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import { ref, onMounted, defineComponent, computed, onUnmounted, watch } from 'vue';
+import { defineComponent, ref, computed, watch, onMounted } from 'vue';
 import { getColorTokens, getTypographyTokens, getSpacingTokens } from '@template/theme';
-import { useTheme } from '@template/theme';
+import '@template/theme/styles/_tokens-light.css';
+import '@template/theme/styles/_tokens-dark.css';
 import './design-tokens.css';
 
 /**
@@ -13,16 +14,33 @@ const TypographyToken = defineComponent({
     tokenValue: { type: String, required: true },
     tokenType: { type: String, required: true },
   },
-  computed: {
-    computedFontSize() {
-      return isNaN(Number(this.tokenValue)) ? this.tokenValue : `${this.tokenValue}px`;
-    },
-    computedLineHeight() {
-      return isNaN(Number(this.tokenValue)) ? this.tokenValue : `${this.tokenValue}px`;
-    },
-    computedLetterSpacing() {
-      return isNaN(Number(this.tokenValue)) ? this.tokenValue : `${this.tokenValue}px`;
-    },
+  setup(props) {
+    const computedFontSize = computed(() => {
+      if (props.tokenType === 'fontSize') {
+        return props.tokenValue;
+      }
+      return '16px';
+    });
+
+    const computedLineHeight = computed(() => {
+      if (props.tokenType === 'lineHeight') {
+        return props.tokenValue;
+      }
+      return '1.5';
+    });
+
+    const computedLetterSpacing = computed(() => {
+      if (props.tokenType === 'letterSpacing') {
+        return props.tokenValue;
+      }
+      return 'normal';
+    });
+
+    return {
+      computedFontSize,
+      computedLineHeight,
+      computedLetterSpacing,
+    };
   },
   template: `
     <div class="typography-token">
@@ -31,26 +49,14 @@ const TypographyToken = defineComponent({
         <div class="token-value">{{ tokenValue }}</div>
       </div>
       <div 
-        v-if="tokenType === 'fontSize'"
         class="typography-preview"
-        :style="{ fontSize: computedFontSize, lineHeight: '1.2', fontWeight: '400' }"
+        :style="{
+          fontSize: computedFontSize,
+          lineHeight: computedLineHeight,
+          letterSpacing: computedLetterSpacing,
+        }"
       >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      </div>
-      <div 
-        v-else-if="tokenType === 'lineHeight'"
-        class="typography-preview"
-        :style="{ lineHeight: computedLineHeight, fontSize: '16px', fontWeight: '400', maxHeight: '5.5em', overflow: 'hidden', whiteSpace: 'normal', textOverflow: 'ellipsis' }"
-      >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br>
-        Pellentesque euismod, nisi eu consectetur consectetur, nisl nisl aliquam nisl, eu aliquam nisl nisl eu nisl.
-      </div>
-      <div 
-        v-else-if="tokenType === 'letterSpacing'"
-        class="typography-preview"
-        :style="{ letterSpacing: computedLetterSpacing, fontSize: '16px', lineHeight: '1.2', fontWeight: '400' }"
-      >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
       </div>
     </div>
   `,
@@ -105,23 +111,43 @@ const SpacingToken = defineComponent({
  * 디자인 토큰을 동적으로 표시하는 메인 컴포넌트
  */
 const DesignTokens = defineComponent({
+  name: 'DesignTokens',
   components: { ColorToken, TypographyToken, SpacingToken },
   setup() {
     const colors = ref<Record<string, Record<string, string>>>({});
     const typography = ref<Record<string, Record<string, string>>>({});
     const spacing = ref<Record<string, string>>({});
     const activeTab = ref('colors');
-    const { isDark, toggleTheme } = useTheme();
+    const isDark = ref(false);
 
     const loadTokens = () => {
-      colors.value = getColorTokens();
-      typography.value = getTypographyTokens();
-      spacing.value = getSpacingTokens();
+      console.log('Loading tokens...');
+      const colorTokens = getColorTokens();
+      const typographyTokens = getTypographyTokens();
+      const spacingTokens = getSpacingTokens();
+
+      console.log('Color tokens:', colorTokens);
+      console.log('Typography tokens:', typographyTokens);
+      console.log('Spacing tokens:', spacingTokens);
+
+      colors.value = colorTokens;
+      typography.value = typographyTokens;
+      spacing.value = spacingTokens;
     };
 
     // 그룹명을 대문자로 변환하는 함수
     const formatGroupName = (name: string) => {
       return name.charAt(0).toUpperCase() + name.slice(1);
+    };
+
+    // 테마 토글 함수
+    const toggleTheme = () => {
+      isDark.value = !isDark.value;
+      if (typeof document !== 'undefined') {
+        document.documentElement.setAttribute('data-theme', isDark.value ? 'dark' : 'light');
+      }
+      // CSS 변수가 적용될 시간을 주기 위해 약간의 지연
+      setTimeout(loadTokens, 10);
     };
 
     // 테마 변경 시 토큰 다시 로드
@@ -131,15 +157,32 @@ const DesignTokens = defineComponent({
     });
 
     onMounted(() => {
-      loadTokens();
+      // 초기 테마 설정
+      if (typeof document !== 'undefined') {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        isDark.value = currentTheme === 'dark';
+
+        // data-theme이 설정되지 않은 경우 기본값으로 'light' 설정
+        if (!currentTheme) {
+          document.documentElement.setAttribute('data-theme', 'light');
+          isDark.value = false;
+        }
+      }
+
+      // CSS 변수가 적용될 시간을 주기 위해 약간의 지연
+      setTimeout(() => {
+        loadTokens();
+      }, 50);
     });
+
+    const theme = computed(() => (isDark.value ? 'dark' : 'light'));
 
     return {
       colors,
       typography,
       spacing,
       activeTab,
-      theme: isDark.value ? 'dark' : 'light',
+      theme,
       toggleTheme,
       formatGroupName,
     };
@@ -186,7 +229,7 @@ const DesignTokens = defineComponent({
         <!-- 색상 토큰 -->
         <div v-if="activeTab === 'colors'" class="colors-section">
           <div v-for="(colorGroup, groupName) in colors" :key="groupName" class="color-group">
-            <h3>{{ groupName.charAt(0).toUpperCase() }}{{ groupName.slice(1) }}</h3>
+            <h3>{{ formatGroupName(groupName) }}</h3>
             <div class="color-grid">
               <ColorToken
                 v-for="(colorValue, colorName) in colorGroup"
@@ -243,6 +286,12 @@ const meta: Meta<typeof DesignTokens> = {
       },
     },
   },
+  decorators: [
+    (story: any) => ({
+      components: { story },
+      template: '<story />',
+    }),
+  ],
 };
 
 export default meta;

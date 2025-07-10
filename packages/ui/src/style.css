@@ -1,8 +1,4 @@
-/* Import design tokens */
-@import './styles/_tokens-light.css';
-
-/* Dark theme tokens - will be applied when dark theme is active */
-@import './styles/_tokens-dark.css';
+/* Design tokens are imported from theme package */
 
 /* Base styles */
 * {

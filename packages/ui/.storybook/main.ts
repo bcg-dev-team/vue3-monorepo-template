@@ -11,6 +11,9 @@ const config: StorybookConfig = {
     name: '@storybook/vue3-vite',
     options: {},
   },
+  docs: {
+    autodocs: true,
+  },
   viteFinal: async (config) => {
     // 모듈 해석 설정
     config.resolve = {
@@ -24,7 +27,7 @@ const config: StorybookConfig = {
     // TypeScript 지원
     config.optimizeDeps = {
       ...config.optimizeDeps,
-      include: ['vue', '@template/types', '@template/theme', 'pinia'],
+      include: ['vue', '@template/types', '@template/theme', 'pinia', 'react', 'react-dom'],
     };
 
     // 환경 변수 설정

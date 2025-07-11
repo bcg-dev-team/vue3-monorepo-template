@@ -21,16 +21,26 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { getColorTokens, getTypographyTokens, getSpacingTokens } from '@template/theme';
+import {
+  getColorTokens,
+  getTypographyTokens,
+  getSpacingTokens,
+  getPaddingTokens,
+  getRadiusTokens,
+} from '@template/theme';
 
 const colors = ref({});
 const typography = ref({});
 const spacing = ref({});
+const padding = ref({});
+const radius = ref({});
 
 onMounted(() => {
   colors.value = getColorTokens();
   typography.value = getTypographyTokens();
   spacing.value = getSpacingTokens();
+  padding.value = getPaddingTokens();
+  radius.value = getRadiusTokens();
 });
 </script>
 

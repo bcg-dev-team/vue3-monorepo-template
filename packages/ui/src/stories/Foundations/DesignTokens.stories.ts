@@ -1,6 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
 import { defineComponent, ref, computed, watch, onMounted } from 'vue';
-import { getColorTokens, getTypographyTokens, getSpacingTokens } from '@template/theme';
+import {
+  getColorTokens,
+  getTypographyTokens,
+  getSpacingTokens,
+  getPaddingTokens,
+  getRadiusTokens,
+} from '@template/theme';
 import '@template/theme/styles/_tokens-light.css';
 import '@template/theme/styles/_tokens-dark.css';
 import './design-tokens.css';
@@ -94,15 +100,72 @@ const SpacingToken = defineComponent({
     tokenValue: { type: String, required: true },
   },
   template: `
-    <div class="spacing-token">
+    <div class="size-token">
       <div class="token-info">
         <div class="token-name">{{ tokenName }}</div>
         <div class="token-value">{{ tokenValue }}</div>
       </div>
       <div 
-        class="spacing-preview"
+        class="size-preview"
         :style="{ width: tokenValue, height: '20px' }"
       ></div>
+    </div>
+  `,
+});
+
+/**
+ * 패딩 토큰을 표시하는 컴포넌트
+ */
+const PaddingToken = defineComponent({
+  props: {
+    tokenName: { type: String, required: true },
+    tokenValue: { type: String, required: true },
+  },
+  template: `
+    <div class="size-token">
+      <div class="token-info">
+        <div class="token-name">{{ tokenName }}</div>
+        <div class="token-value">{{ tokenValue }}</div>
+      </div>
+      <div class="padding-preview-container" :style="{ padding: tokenValue, background: '#f1f5f9', border: '1px solid #e2e8f0', borderRadius: '4px', width: '100%' }">
+        <div class="padding-content" :style="{ 
+          width: '60px', 
+          height: '30px', 
+          background: '#3b82f6', 
+          borderRadius: '2px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+          fontSize: '0.75rem',
+          fontWeight: '500'
+        }">
+          Content
+        </div>
+      </div>
+    </div>
+  `,
+});
+
+/**
+ * 라운드(Radius) 토큰을 표시하는 컴포넌트
+ */
+const RadiusToken = defineComponent({
+  props: {
+    tokenName: { type: String, required: true },
+    tokenValue: { type: String, required: true },
+  },
+  template: `
+    <div class="size-token">
+      <div class="token-info">
+        <div class="token-name">{{ tokenName }}</div>
+        <div class="token-value">{{ tokenValue }}</div>
+      </div>
+      <div
+        class="size-preview radius-preview"
+        :style="{ width: '100%', maxWidth: '100px', height: '40px', background: '#f3f4f6', borderRadius: tokenValue, border: '1px solid #3b82f6', margin: '0 auto' }"
+      >
+      </div>
     </div>
   `,
 });
@@ -112,11 +175,13 @@ const SpacingToken = defineComponent({
  */
 const DesignTokens = defineComponent({
   name: 'DesignTokens',
-  components: { ColorToken, TypographyToken, SpacingToken },
+  components: { ColorToken, TypographyToken, SpacingToken, PaddingToken, RadiusToken },
   setup() {
     const colors = ref<Record<string, Record<string, string>>>({});
     const typography = ref<Record<string, Record<string, string>>>({});
     const spacing = ref<Record<string, string>>({});
+    const padding = ref<Record<string, string>>({});
+    const radius = ref<Record<string, string>>({});
     const activeTab = ref('colors');
     const isDark = ref(false);
 
@@ -125,14 +190,20 @@ const DesignTokens = defineComponent({
       const colorTokens = getColorTokens();
       const typographyTokens = getTypographyTokens();
       const spacingTokens = getSpacingTokens();
+      const paddingTokens = getPaddingTokens();
+      const radiusTokens = getRadiusTokens();
 
       console.log('Color tokens:', colorTokens);
       console.log('Typography tokens:', typographyTokens);
       console.log('Spacing tokens:', spacingTokens);
+      console.log('Padding tokens:', paddingTokens);
+      console.log('Radius tokens:', radiusTokens);
 
       colors.value = colorTokens;
       typography.value = typographyTokens;
       spacing.value = spacingTokens;
+      padding.value = paddingTokens;
+      radius.value = radiusTokens;
     };
 
     // 그룹명을 대문자로 변환하는 함수
@@ -181,6 +252,8 @@ const DesignTokens = defineComponent({
       colors,
       typography,
       spacing,
+      padding,
+      radius,
       activeTab,
       theme,
       toggleTheme,
@@ -206,23 +279,35 @@ const DesignTokens = defineComponent({
         </button>
       </div>
       <div class="tabs">
-        <button 
+        <button
           :class="{ active: activeTab === 'colors' }"
           @click="activeTab = 'colors'"
         >
-          색상
+          Colors
         </button>
-        <button 
+        <button
           :class="{ active: activeTab === 'typography' }"
           @click="activeTab = 'typography'"
         >
-          타이포그래피
+          Typography
         </button>
-        <button 
+        <button
           :class="{ active: activeTab === 'spacing' }"
           @click="activeTab = 'spacing'"
         >
-          간격
+          Spacing
+        </button>
+        <button
+          :class="{ active: activeTab === 'padding' }"
+          @click="activeTab = 'padding'"
+        >
+          Padding
+        </button>
+        <button
+          :class="{ active: activeTab === 'radius' }"
+          @click="activeTab = 'radius'"
+        >
+          Radius
         </button>
       </div>
       <div class="content">
@@ -240,7 +325,6 @@ const DesignTokens = defineComponent({
             </div>
           </div>
         </div>
-
         <!-- 타이포그래피 토큰 -->
         <div v-if="activeTab === 'typography'" class="typography-section">
           <div v-for="(typeGroup, typeName) in typography" :key="typeName" class="typography-group">
@@ -256,13 +340,36 @@ const DesignTokens = defineComponent({
             </div>
           </div>
         </div>
-
         <!-- 간격 토큰 -->
-        <div v-if="activeTab === 'spacing'" class="spacing-section">
+        <div v-if="activeTab === 'spacing'" class="size-section">
           <h3>Spacing</h3>
-          <div class="spacing-grid">
+          <div class="size-grid">
             <SpacingToken
               v-for="(tokenValue, tokenName) in spacing"
+              :key="tokenName"
+              :token-name="tokenName"
+              :token-value="tokenValue"
+            />
+          </div>
+        </div>
+        <!-- 패딩 토큰 -->
+        <div v-if="activeTab === 'padding'" class="size-section">
+          <h3>Padding</h3>
+          <div class="size-grid">
+            <PaddingToken
+              v-for="(tokenValue, tokenName) in padding"
+              :key="tokenName"
+              :token-name="tokenName"
+              :token-value="tokenValue"
+            />
+          </div>
+        </div>
+        <!-- 라운드 토큰 -->
+        <div v-if="activeTab === 'radius'" class="size-section">
+          <h3>Radius</h3>
+          <div class="size-grid">
+            <RadiusToken
+              v-for="(tokenValue, tokenName) in radius"
               :key="tokenName"
               :token-name="tokenName"
               :token-value="tokenValue"
@@ -279,12 +386,6 @@ const meta: Meta<typeof DesignTokens> = {
   component: DesignTokens,
   parameters: {
     layout: 'fullscreen',
-    docs: {
-      description: {
-        component:
-          '디자인 시스템의 모든 토큰을 동적으로 표시합니다. CSS 변수가 변경되면 자동으로 반영됩니다.',
-      },
-    },
   },
   decorators: [
     (story: any) => ({

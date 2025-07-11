@@ -12,7 +12,7 @@ const config: StorybookConfig = {
     options: {},
   },
   docs: {
-    autodocs: true,
+    autodocs: 'tag',
   },
   viteFinal: async (config) => {
     // 모듈 해석 설정
@@ -28,6 +28,7 @@ const config: StorybookConfig = {
     config.optimizeDeps = {
       ...config.optimizeDeps,
       include: ['vue', '@template/types', '@template/theme', 'pinia', 'react', 'react-dom'],
+      force: true,
     };
 
     // 환경 변수 설정

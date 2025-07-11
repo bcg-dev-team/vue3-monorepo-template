@@ -31,7 +31,6 @@ export default defineConfig({
           'date-fns-tz': 'dateFnsTz',
         },
         exports: 'named',
-        preserveModules: true,
       },
     },
   },

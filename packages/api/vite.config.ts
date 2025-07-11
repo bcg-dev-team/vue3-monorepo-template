@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import { resolve } from 'node:path';
+import { resolve } from 'path';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
@@ -27,7 +27,6 @@ export default defineConfig({
           '@template/utils': 'TemplateUtils',
         },
         exports: 'named',
-        preserveModules: true,
       },
     },
   },

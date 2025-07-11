@@ -3,10 +3,11 @@
 /**
  * 모노레포 빌드 순서 제어 스크립트
  * 순환참조를 방지하기 위해 의존성 순서대로 빌드
+ * Windows와 Mac에서 모두 동작하도록 cross-platform 구현
  */
 
 import { execSync } from 'child_process';
-import { existsSync } from 'fs';
+import { existsSync, rmSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -48,6 +49,85 @@ const DEPENDENCY_GRAPH = {
 
 // 타입 정의
 type PackagePath = (typeof BUILD_ORDER)[number];
+
+/**
+ * Cross-platform 대기 함수
+ */
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * Cross-platform 디렉토리 삭제
+ */
+function removeDirectory(dirPath: string): void {
+  try {
+    rmSync(dirPath, { recursive: true, force: true });
+  } catch (error) {
+    // 디렉토리가 이미 존재하지 않는 경우 무시
+    if (error instanceof Error && !error.message.includes('ENOENT')) {
+      throw error;
+    }
+  }
+}
+
+/**
+ * Cross-platform 파일 목록 가져오기
+ */
+function getDirectoryContents(dirPath: string): string {
+  try {
+    const files = readdirSync(dirPath, { withFileTypes: true });
+    return files
+      .map((dirent) => {
+        const type = dirent.isDirectory() ? 'd' : '-';
+        const name = dirent.name;
+        return `${type} ${name}`;
+      })
+      .join('\n');
+  } catch (error) {
+    return `Error reading directory: ${error instanceof Error ? error.message : 'Unknown error'}`;
+  }
+}
+
+/**
+ * Cross-platform 명령어 실행
+ */
+function executeCommand(command: string, options: { cwd?: string; stdio?: any } = {}): void {
+  const isWindows = process.platform === 'win32';
+
+  // Windows에서 명령어 처리
+  if (isWindows) {
+    // npx 명령어 처리
+    if (command.startsWith('npx ')) {
+      command = command.replace('npx ', 'npx.cmd ');
+    }
+    // pnpm 명령어 처리
+    if (command.startsWith('pnpm ')) {
+      command = command.replace('pnpm ', 'pnpm.cmd ');
+    }
+  }
+
+  try {
+    execSync(command, options);
+  } catch (error) {
+    if (isWindows && error instanceof Error) {
+      if (error.message.includes('ENOENT')) {
+        console.error(`❌ Windows에서 명령어를 찾을 수 없습니다: ${command}`);
+        console.error('💡 해결 방법:');
+        console.error('   1. Node.js가 올바르게 설치되었는지 확인');
+        console.error('   2. pnpm이 전역으로 설치되었는지 확인: npm install -g pnpm');
+        console.error('   3. PATH 환경변수에 Node.js와 pnpm이 포함되어 있는지 확인');
+      }
+      if (error.message.includes('EACCES')) {
+        console.error('❌ 권한 부족. 관리자 권한으로 실행해주세요.');
+      }
+      if (error.message.includes('ENAMETOOLONG')) {
+        console.error('❌ 경로가 너무 깁니다. 더 짧은 경로를 사용해주세요.');
+      }
+    }
+    throw error;
+  }
+}
 
 /**
  * 패키지가 존재하는지 확인
@@ -109,13 +189,15 @@ function checkCircularDependencies(): void {
   try {
     // madge가 설치되어 있는지 확인
     try {
-      execSync('npx madge --version', { stdio: 'pipe' });
+      executeCommand('npx madge --version', { stdio: 'pipe' });
     } catch {
       console.log('📦 madge 설치 중...');
-      execSync('pnpm add -D madge', { stdio: 'inherit' });
+      executeCommand('pnpm add -D madge', { stdio: 'inherit' });
     }
 
-    execSync('npx madge --circular packages/ --exclude "storybook-static"', { stdio: 'inherit' });
+    executeCommand('npx madge --circular packages/ --exclude "storybook-static"', {
+      stdio: 'inherit',
+    });
     console.log('✅ 순환참조 없음');
   } catch (error) {
     console.error('❌ 순환참조 발견!');
@@ -130,20 +212,22 @@ function checkCircularDependencies(): void {
 /**
  * 패키지 빌드
  */
-function buildPackage(packagePath: PackagePath): void {
+async function buildPackage(packagePath: PackagePath): Promise<void> {
   console.log(`📦 빌드 중: ${packagePath}`);
 
   try {
     // 빌드 전 dist 폴더 정리 (types 패키지는 제외)
     console.log(`🔍 ${packagePath} 빌드 전 dist 폴더 상태 확인...`);
+    const distPath = join(process.cwd(), packagePath, 'dist');
+    if (process.platform === 'win32' && distPath.length > 240) {
+      console.warn(
+        '⚠️  Windows 경로가 260자에 근접합니다. 경로가 너무 길면 빌드가 실패할 수 있습니다.'
+      );
+    }
     if (packagePath !== 'packages/types') {
-      const distPath = join(process.cwd(), packagePath, 'dist');
       if (existsSync(distPath)) {
         console.log(`🗑️  ${packagePath} dist 폴더 삭제 중...`);
-        execSync('rm -rf dist', {
-          cwd: join(process.cwd(), packagePath),
-          stdio: 'pipe',
-        });
+        removeDirectory(distPath);
       }
     } else {
       console.log(`✅ ${packagePath} dist 폴더 삭제 건너뜀`);
@@ -155,7 +239,7 @@ function buildPackage(packagePath: PackagePath): void {
       return;
     }
 
-    execSync('pnpm build', {
+    executeCommand('pnpm build', {
       cwd: join(process.cwd(), packagePath),
       stdio: 'inherit',
     });
@@ -163,8 +247,9 @@ function buildPackage(packagePath: PackagePath): void {
     // 빌드 결과 확인 (파일 시스템 동기화 대기)
     const maxRetries = 10;
     let retryCount = 0;
+    const waitTime = process.platform === 'win32' ? 200 : 100;
     while (!isPackageBuilt(packagePath) && retryCount < maxRetries) {
-      execSync('sleep 0.1', { stdio: 'pipe' });
+      await sleep(waitTime); // Windows에서 더 오래 대기
       retryCount++;
     }
 
@@ -173,9 +258,13 @@ function buildPackage(packagePath: PackagePath): void {
       const distPath = join(process.cwd(), packagePath, 'dist');
       let fileList = '';
       if (existsSync(distPath)) {
-        try {
-          fileList = execSync('ls -la', { cwd: distPath }).toString();
-        } catch {}
+        fileList = getDirectoryContents(distPath);
+      }
+      console.error('❌ 빌드 산출물이 생성되지 않았습니다.');
+      if (process.platform === 'win32' && distPath.length > 240) {
+        console.error(
+          '⚠️  Windows 경로가 260자에 근접합니다. 경로가 너무 길면 빌드가 실패할 수 있습니다.'
+        );
       }
       throw new Error(
         `빌드 산출물이 생성되지 않았습니다: ${packagePath}/dist/index.js, index.d.ts\n실제 dist 폴더 파일 목록:\n${fileList}`
@@ -184,6 +273,14 @@ function buildPackage(packagePath: PackagePath): void {
 
     console.log(`✅ 빌드 완료: ${packagePath}`);
   } catch (error) {
+    if (process.platform === 'win32' && error instanceof Error) {
+      if (error.message.includes('EACCES')) {
+        console.error('❌ 권한 부족. 관리자 권한으로 실행해주세요.');
+      }
+      if (error.message.includes('ENAMETOOLONG')) {
+        console.error('❌ 경로가 너무 깁니다. 더 짧은 경로를 사용해주세요.');
+      }
+    }
     console.error(`❌ 빌드 실패: ${packagePath}`);
     console.error(`💡 오류 내용: ${error instanceof Error ? error.message : '알 수 없는 오류'}`);
     console.error('💡 해결 방법:');
@@ -226,7 +323,7 @@ function getBuildablePackages(): PackagePath[] {
 /**
  * 메인 빌드 프로세스
  */
-function main(): void {
+async function main(): Promise<void> {
   console.log('🚀 모노레포 빌드 시작...\n');
 
   // 빌드 가능한 패키지 확인
@@ -249,7 +346,7 @@ function main(): void {
     checkDependencies(packagePath);
 
     // 패키지 빌드
-    buildPackage(packagePath);
+    await buildPackage(packagePath);
     console.log('');
   }
 
@@ -261,6 +358,12 @@ function main(): void {
 }
 
 // 스크립트 실행
-if (import.meta.url === `file://${process.argv[1]}`) {
-  main();
-}
+// tsx 환경에서 import.meta.url === `file://${process.argv[1]}` 가 false가 될 수 있으므로, 항상 main()을 실행하도록 수정
+(async () => {
+  try {
+    await main();
+  } catch (error) {
+    console.error('❌ 빌드 프로세스 실패:', error);
+    process.exit(1);
+  }
+})();

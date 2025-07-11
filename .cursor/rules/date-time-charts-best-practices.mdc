@@ -1,10 +1,5 @@
 ---
-description: 
-globs: 
-alwaysApply: false
----
----
-rule_type: always
+alwaysApply: true
 ---
 
 # 날짜/시간 및 차트 베스트 프랙티스

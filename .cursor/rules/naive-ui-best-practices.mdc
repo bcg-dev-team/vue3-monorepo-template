@@ -1,7 +1,6 @@
 ---
-rule_type: manual
+alwaysApply: true
 ---
-
 # Naive UI 베스트 프랙티스
 
 ## UI 컴포넌트 설계

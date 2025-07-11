@@ -1,10 +1,5 @@
 ---
-description: 
-globs: 
 alwaysApply: true
----
----
-rule_type: always
 ---
 
 # Git 커밋 메시지 규칙

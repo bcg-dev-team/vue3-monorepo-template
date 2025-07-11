@@ -276,26 +276,26 @@
   color: #f1f5f9;
 }
 
-/* 간격 섹션 */
-.spacing-section h3 {
+/* 크기 섹션 */
+.size-section h3 {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 1rem;
   color: #1e293b;
 }
 
-[data-theme="dark"] .spacing-section h3 {
+[data-theme="dark"] .size-section h3 {
   color: #f1f5f9;
 }
 
-.spacing-grid {
+.size-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1rem;
 }
 
 /* 간격 토큰 */
-.spacing-token {
+.size-token {
   padding: 1rem;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
@@ -303,20 +303,39 @@
   transition: all 0.2s ease;
 }
 
-[data-theme="dark"] .spacing-token {
+[data-theme="dark"] .size-token {
   border-color: #475569;
   background: #1e293b;
 }
 
-.spacing-token:hover {
+.size-token:hover {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.spacing-preview {
+.size-preview {
   background: #3b82f6;
   border-radius: 4px;
   margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+/* 패딩 프리뷰 컨테이너 */
+.padding-preview-container {
+  margin-top: 0.5rem;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 라디우스 프리뷰 */
+.radius-preview {
+  display: block !important;
+}
+
+
 
 /* 반응형 */
 @media (max-width: 768px) {
@@ -326,7 +345,7 @@
   
   .color-grid,
   .typography-grid,
-  .spacing-grid {
+  .size-grid {
     grid-template-columns: 1fr;
   }
   

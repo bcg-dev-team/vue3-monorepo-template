@@ -24,7 +24,3 @@ export * from './composables';
 export * from './store';
 export * from './naive/createNaiveTheme';
 export * from './utils';
-
-// CSS 파일들 export (타입스크립트에서 CSS import를 위한 더미 export)
-export const tokensLightCSS = '';
-export const tokensDarkCSS = '';

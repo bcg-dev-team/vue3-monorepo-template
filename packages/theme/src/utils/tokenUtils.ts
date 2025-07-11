@@ -228,6 +228,45 @@ export function getSpacingTokens() {
 }
 
 /**
+ * 패딩 토큰을 가져오는 함수
+ * @returns 패딩 토큰 객체
+ */
+export function getPaddingTokens() {
+  const paddings: Record<string, string> = {};
+  // 패딩 토큰들 (실제 CSS 변수명에 맞게 조정)
+  const paddingNames = ['64', '48', '36', '16', '24', '12', '4', '130', '8', 'z'];
+  paddingNames.forEach((name) => {
+    const tokenName = `--padding-padding-${name}`;
+    const value = getCSSVariable(tokenName);
+    if (value) {
+      paddings[`padding-${name}`] = value;
+    } else {
+      paddings[`padding-${name}`] = name + 'px'; // fallback
+    }
+  });
+  return paddings;
+}
+
+/**
+ * 라운드(Radius) 토큰을 가져오는 함수
+ * @returns 라운드 토큰 객체
+ */
+export function getRadiusTokens() {
+  const radii: Record<string, string> = {};
+  const radiusNames = ['xs', 'sm', 'md', 'lg', 'pill', 'default', 'none'];
+  radiusNames.forEach((name) => {
+    const tokenName = `--radius-${name}`;
+    const value = getCSSVariable(tokenName);
+    if (value) {
+      radii[`radius-${name}`] = value;
+    } else {
+      radii[`radius-${name}`] = name; // fallback
+    }
+  });
+  return radii;
+}
+
+/**
  * 모든 디자인 토큰을 가져오는 함수
  * @returns 모든 디자인 토큰 객체
  */
@@ -236,6 +275,8 @@ export function getAllDesignTokens() {
     colors: getColorTokens(),
     typography: getTypographyTokens(),
     spacing: getSpacingTokens(),
+    padding: getPaddingTokens(),
+    radius: getRadiusTokens(),
   };
 }
 

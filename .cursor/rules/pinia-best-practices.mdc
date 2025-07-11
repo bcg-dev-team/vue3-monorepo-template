@@ -1,10 +1,5 @@
 ---
-description: 
-globs: 
-alwaysApply: false
----
----
-rule_type: agent_requested
+alwaysApply: true
 ---
 
 # Pinia 베스트 프랙티스

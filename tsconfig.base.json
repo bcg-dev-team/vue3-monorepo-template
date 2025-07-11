@@ -33,6 +33,8 @@
       "@template/api/*": ["packages/api/src/*"],
       "@template/utils": ["packages/utils/src"],
       "@template/utils/*": ["packages/utils/src/*"],
+      "@template/theme": ["packages/theme/src"],
+      "@template/theme/*": ["packages/theme/src/*"],
       "@shared/config": ["shared/config"],
       "@shared/config/*": ["shared/config/*"],
       "@shared/scripts": ["shared/scripts"],

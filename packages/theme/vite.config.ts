@@ -31,7 +31,6 @@ export default defineConfig({
           'naive-ui': 'naive',
         },
         exports: 'named',
-        preserveModules: true,
       },
     },
   },

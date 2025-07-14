@@ -4,6 +4,12 @@
 
 피그마 MCP를 통해 컴포넌트를 제작할 때는 반드시 구축된 디자인 토큰 시스템을 활용해야 합니다.
 
+- **피그마에서 디자인토큰을 활용한 속성**은 코드에서도 반드시 토큰만 사용합니다.
+- **피그마에서 직접 값을 입력한 속성(토큰 미적용)**은 코드에서도 그 값을 그대로 사용하되, 해당 줄에 반드시
+  `// TODO) 디자인 토큰 적용 요청` 주석을 남깁니다.
+- **코드에서 토큰이 있으면 사용, 없으면 하드코딩** 식의 분기/조건문은 사용하지 않습니다.
+- 항상 피그마 기준 1:1로 구현하며, 토큰 미적용 속성만 주석으로 명확히 표시합니다.
+
 ## 디자인 토큰 시스템 구조
 
 ### 1. 토큰 패키지
@@ -20,7 +26,17 @@ import {
   getSpacingTokens,
   getPaddingTokens,
   getRadiusTokens,
-  getCSSVariable
+  getCSSVariable,
+  getButtonTokens,
+  getInputTokens,
+  getBackgroundTokens,
+  getFontTokens,
+  getTradeTokens,
+  getTableTokens,
+  getPopupTokens,
+  getNavTokens,
+  getSidebarTokens,
+  getAllDesignTokens
 } from '@template/theme';
 ```
 
@@ -30,16 +46,291 @@ import {
 - **Primary**: `#ffc300`, `#ffaa00` 등
 - **Neutral**: `#131313`, `#242424` 등  
 - **Semantic**: Success, Warning, Error 등
+- **Common**: `#ffffff`, `#f5f7f9` 등
 
 #### 타이포그래피 토큰
 - **Font Size**: `font-10`, `font-12`, `font-14`, `font-16` 등
 - **Line Height**: `line-height-0` ~ `line-height-8`
-- **Letter Spacing**: `letter-spacing-0` ~ `letter-spacing-5`
+- **Letter Spacing**: `letter-spacing-0` ~ `letter-spacing-8`
 
-#### 간격 토큰
-- **Spacing**: `spacing-4`, `spacing-8`, `spacing-16` 등
-- **Padding**: `padding-4`, `padding-8`, `padding-16` 등
-- **Radius**: `radius-sm`, `radius-md`, `radius-lg` 등
+#### 반경/패딩/간격 토큰
+- **Radius**: `radius-default`, `radius-sm`, `radius-3xl` 등
+- **Padding**: `padding-8`, `padding-12` 등
+
+#### 컴포넌트별 토큰
+- **Button**: `button-disabled-background`, `button-primary-text` 등
+- **Input**: `input-border-static`, `input-text-placeholder` 등
+- **Background**: `background-bg-default`, `background-bg-surface` 등
+- **Font**: `font-color-default`, `font-color-primary` 등
+- **Trade**: `trade-long-background`, `trade-correct-text` 등
+- **Table**: `table-type1-header-bg`, `table-type2-body-border` 등
+- **Popup**: `popup-background`, `popup-border` 등
+- **Nav**: `nav-on`, `nav-off` 등
+- **Sidebar**: `sidebar-bg-sidebar`, `sidebar-bg-topbar` 등
+
+## 토큰 활용 우선순위
+
+1. **피그마에서 토큰 사용** → 코드에서도 토큰만 사용
+2. **피그마에서 직접 값 입력** → 코드에서도 그 값 사용 + 반드시 `// TODO) 디자인 토큰 적용 요청` 주석
+3. **분기/조건문 사용 금지**
+
+## 토큰 사용 가이드
+
+### 1. 올바른 토큰 사용법
+
+#### ✅ 토큰이 있는 경우 (반드시 토큰 사용)
+```typescript
+// 색상 토큰
+const primaryBg = colorTokens.primary.primary800
+const neutralText = colorTokens.neutral.neutral900
+const disabledBg = buttonTokens['disabled-background']
+
+// 타이포그래피 토큰
+const fontSize = typographyTokens.fontSize['font-16']
+const lineHeight = typographyTokens.lineHeight['line-height-5']
+
+// 간격 토큰
+const padding = spacingTokens['spacing-16']
+const radius = radiusTokens['radius-default']
+```
+
+#### ❌ 잘못된 방법 (토큰이 있는데 하드코딩)
+```typescript
+// 토큰이 있는데 하드코딩 + TODO 주석 (잘못된 예시)
+const primaryBg = '#ffc300' // TODO) 디자인 토큰 적용 요청
+const fontSize = '16px' // TODO) 디자인 토큰 적용 요청
+```
+
+### 2. TODO 주석 사용 기준
+
+#### ✅ TODO 주석이 필요한 경우 (토큰이 없는 경우만)
+```typescript
+// 피그마에서 직접 입력한 값이고 토큰에 매핑되지 않은 경우
+const customHoverBg = '#f8f8f8' // TODO) 디자인 토큰 적용 요청
+const customShadow = '0 4px 12px rgba(0,0,0,0.1)' // TODO) 디자인 토큰 적용 요청
+```
+
+#### ❌ TODO 주석이 불필요한 경우
+```typescript
+// 토큰이 있는데 하드코딩하고 TODO 주석 (잘못된 예시)
+const primaryBg = '#ffc300' // TODO) 디자인 토큰 적용 요청
+```
+
+### 3. 토큰 사용 체크리스트
+
+컴포넌트 작성 시 다음 순서로 확인:
+
+1. **토큰 유틸리티 함수 import 확인**
+   ```typescript
+   import { getButtonTokens, getColorTokens, getTypographyTokens } from '@template/theme'
+   ```
+
+2. **토큰 객체 생성**
+   ```typescript
+   const buttonTokens = getButtonTokens()
+   const colorTokens = getColorTokens()
+   const typographyTokens = getTypographyTokens()
+   ```
+
+3. **토큰 사용 가능 여부 확인**
+   - `colorTokens.primary.primary800` → 사용 가능
+   - `buttonTokens['disabled-background']` → 사용 가능
+   - `typographyTokens.fontSize['font-16']` → 사용 가능
+
+4. **토큰이 있으면 반드시 토큰 사용**
+   ```typescript
+   // ✅ 올바른 방법
+   const bg = colorTokens.primary.primary800
+   
+   // ❌ 잘못된 방법
+   const bg = '#ffc300' // TODO) 디자인 토큰 적용 요청
+   ```
+
+5. **토큰이 없을 때만 TODO 주석**
+   ```typescript
+   // 토큰에 매핑되지 않은 피그마 값
+   const customValue = '#f8f8f8' // TODO) 디자인 토큰 적용 요청
+   ```
+
+## 예시
+
+```ts
+// 피그마에서 토큰 사용 (토큰이 있는 경우)
+backgroundColor: colorTokens.primary.primary800
+
+// 피그마에서 직접 색상 입력(토큰 미적용)
+backgroundColor: '#f8f8f8' // TODO) 디자인 토큰 적용 요청
+```
+
+## 테마 자동 적용 가이드
+
+### 1. CSS 변수 기반 토큰 시스템
+- 모든 토큰은 CSS 변수(`--button-disabled-background` 등)로 정의됨
+- 테마 전환 시 CSS 변수 값이 자동으로 변경됨
+- 컴포넌트에서 `getCSSVariable()` 또는 토큰 유틸리티 함수 사용 시 자동으로 현재 테마 값 반환
+
+### 2. 테마 전환 원리
+```typescript
+// 앱 전체에서 useTheme 사용
+import { useTheme } from '@template/theme'
+
+const { isDark, toggleTheme } = useTheme()
+
+// 테마 전환 시 CSS 변수가 자동으로 변경됨
+// --button-disabled-background: #ecedee (light) → #313335 (dark)
+```
+
+### 3. 컴포넌트 작성 시 유의사항
+
+#### ✅ 올바른 방법
+```vue
+<script setup lang="ts">
+import { getButtonTokens, getColorTokens } from '@template/theme'
+
+const buttonTokens = getButtonTokens()
+const colorTokens = getColorTokens()
+
+// CSS 변수 기반으로 자동 테마 적용
+const disabledBg = buttonTokens['disabled-background'] // 자동으로 light/dark 값 반환
+const primaryBg = colorTokens.primary.primary800 // 자동으로 light/dark 값 반환
+</script>
+```
+
+#### ❌ 잘못된 방법
+```vue
+<script setup lang="ts">
+// 토큰이 있는데 하드코딩 (테마 전환 시 변경되지 않음)
+const disabledBg = '#ecedee' // TODO) 디자인 토큰 적용 요청
+const primaryBg = '#ffc300' // TODO) 디자인 토큰 적용 요청
+</script>
+```
+
+### 4. 테마별 토큰 파일
+- **Light 테마**: `_tokens-light.ts` → CSS 변수로 변환
+- **Dark 테마**: `_tokens-dark.ts` → CSS 변수로 변환
+- **자동 전환**: `useTheme()` 사용 시 CSS 변수가 자동으로 light/dark 값으로 변경
+
+### 5. 컴포넌트에서 테마 활용
+```vue
+<script setup lang="ts">
+import { getButtonTokens, getColorTokens } from '@template/theme'
+
+// 토큰 유틸리티 함수 사용 (테마 자동 적용)
+const buttonTokens = getButtonTokens()
+const colorTokens = getColorTokens()
+
+// CSS 변수 기반으로 현재 테마 값 자동 반환
+const primaryBg = colorTokens.primary.primary800
+const disabledBg = buttonTokens['disabled-background']
+</script>
+```
+
+### 6. 앱 레벨 테마 설정
+```typescript
+// main.ts 또는 App.vue에서
+import { useTheme } from '@template/theme'
+
+const { updateHtmlClass } = useTheme()
+updateHtmlClass() // HTML에 data-theme 속성 설정
+```
+
+### 7. 테마 전환 시 자동 적용되는 속성들
+- **색상**: 배경색, 텍스트색, 테두리색, 호버색 등
+- **그림자**: 박스 섀도우, 드롭 섀도우 등
+- **투명도**: 배경 투명도, 오버레이 투명도 등
+- **CSS 변수**: 모든 토큰 기반 CSS 변수
+
+### 8. 테마 전환 시 수동 처리 필요한 속성들
+- **애니메이션**: 테마 전환 애니메이션
+- **복잡한 계산**: 토큰 값을 기반으로 한 복잡한 스타일 계산
+- **조건부 스타일**: 특정 조건에 따른 스타일 변경
+
+## 피그마 디자인 분석 체계적 가이드
+
+### 1. 컴포넌트 분석 단계별 체크리스트
+
+#### Step 1: 컴포넌트 구조 파악
+- [ ] **Variant 확인**: 모든 variant 종류 파악 (primary, secondary, outline 등)
+- [ ] **Size 확인**: 모든 size 종류 파악 (regular, small, small-inner, large 등)
+- [ ] **State 확인**: 모든 상태 파악 (default, hover, active, disabled, loading 등)
+- [ ] **Content 확인**: 텍스트, 아이콘, 서브텍스트 등 콘텐츠 요소 파악
+
+#### Step 2: 디자인 속성 분석
+- [ ] **색상 분석**: 배경색, 텍스트색, 테두리색, 호버색 등
+- [ ] **타이포그래피 분석**: 폰트 크기, 폰트 굵기, 라인 높이, 자간 등
+- [ ] **간격 분석**: 패딩, 마진, 높이, 너비 등
+- [ ] **보더 분석**: 테두리 두께, 반경, 스타일 등
+- [ ] **그림자 분석**: 박스 섀도우, 드롭 섀도우 등
+
+#### Step 3: 상호작용 분석
+- [ ] **호버 상태**: 마우스 오버 시 변화사항
+- [ ] **액티브 상태**: 클릭 시 변화사항
+- [ ] **포커스 상태**: 키보드 포커스 시 변화사항
+- [ ] **비활성화 상태**: disabled 시 변화사항
+
+### 2. Variant별 상세 분석 템플릿
+
+```markdown
+## [컴포넌트명] Variant 분석
+
+### Variant: [variant명]
+- **의미**: [이 variant의 용도/의미]
+- **사용 컨텍스트**: [언제 사용되는지]
+
+#### 피그마 정의값
+- **Size variants**: [피그마에서 정의된 모든 size]
+- **State variants**: [피그마에서 정의된 모든 상태]
+- **Content variants**: [피그마에서 정의된 모든 콘텐츠 타입]
+
+#### 디자인 토큰 매핑 현황
+- **적용된 토큰**: [디자인 토큰으로 매핑된 속성들]
+- **미적용 속성**: [하드코딩된 값들 - TODO 주석 필요]
+```
+
+### 3. 누락 방지 체크리스트
+
+#### 분석 완료 후 필수 확인사항
+- [ ] **모든 variant가 props로 정의되었는가?**
+- [ ] **모든 size가 props로 정의되었는가?**
+- [ ] **모든 상태가 스타일로 구현되었는가?**
+- [ ] **모든 색상이 토큰으로 매핑되었는가?**
+- [ ] **모든 간격이 토큰으로 매핑되었는가?**
+- [ ] **모든 타이포그래피가 토큰으로 매핑되었는가?**
+
+#### 구현 완료 후 필수 확인사항
+- [ ] **Props 타입에 모든 variant가 포함되었는가?**
+- [ ] **Props 타입에 모든 size가 포함되었는가?**
+- [ ] **스타일 로직에 모든 케이스가 처리되었는가?**
+- [ ] **JSDoc에 모든 props가 문서화되었는가?**
+- [ ] **Storybook에 모든 variant/size 조합이 포함되었는가?**
+
+### 4. 일반적인 누락 패턴 및 예방법
+
+#### 🚨 자주 누락되는 요소들
+1. **Size variants**: `small-inner`, `xsmall`, `xlarge` 등
+2. **State variants**: `loading`, `error`, `success` 등
+3. **Content variants**: `icon-only`, `with-subtext` 등
+4. **Interaction states**: `focus`, `active` 등
+
+#### ✅ 예방 방법
+1. **체계적 분석**: 위의 분석 템플릿 사용
+2. **피그마 레이어 확인**: 모든 레이어와 컴포넌트 인스턴스 확인
+3. **프로토타입 확인**: 인터랙션 프로토타입에서 모든 상태 확인
+4. **디자이너와 협의**: 누락된 요소가 있는지 확인
+
+### 5. 분석 도구 및 방법
+
+#### 피그마에서 확인할 위치
+1. **Components 패널**: 모든 컴포넌트 인스턴스 확인
+2. **Design 패널**: 모든 variant와 property 확인
+3. **Prototype 패널**: 모든 인터랙션 상태 확인
+4. **Inspect 패널**: 모든 스타일 속성 확인
+
+#### 분석 시 주의사항
+- **Nested variants**: variant 내부의 하위 variant 확인
+- **Conditional properties**: 조건부로 적용되는 속성 확인
+- **Overrides**: 컴포넌트 인스턴스에서 오버라이드된 속성 확인
+- **Auto-layout**: Auto-layout 설정과 간격 확인
 
 ## MCP 컴포넌트 제작 규칙
 
@@ -94,6 +385,10 @@ const tokenStyles = computed(() => ({
 // ✅ background: 'var(--base-colors-primary-primary800)'
 // ✅ background: tokens.colors.primary.primary800
 // ✅ class: 'bg-[#ffc300]' (TailwindCSS arbitrary value)
+
+// TODO) 디자인 토큰 적용 요청
+// ⚠️ 임시 하드코딩 (토큰 매핑 필요)
+// background: '#ffc300'
 ```
 
 ### 3. 타이포그래피 토큰 활용
@@ -106,6 +401,10 @@ const tokenStyles = computed(() => ({
 // 폰트 패밀리
 // ✅ class: 'font-[Pretendard_GOV]'
 // ✅ style: { fontFamily: 'Pretendard GOV, Pretendard, sans-serif' }
+
+// TODO) 디자인 토큰 적용 요청
+// ⚠️ 임시 하드코딩 (토큰 매핑 필요)
+// fontSize: '14px'
 ```
 
 ### 4. 간격 토큰 활용
@@ -119,6 +418,10 @@ const tokenStyles = computed(() => ({
 // 보더 반경
 // ✅ class: 'rounded-lg' (토큰 기반)
 // ✅ class: 'rounded-[8px]' (토큰 값 직접 사용)
+
+// TODO) 디자인 토큰 적용 요청
+// ⚠️ 임시 하드코딩 (토큰 매핑 필요)
+// padding: '8px 16px'
 ```
 
 ## 컴포넌트 제작 가이드라인
@@ -186,6 +489,10 @@ const styles = {
 const dynamicColor = computed(() => 
   tokens.value.colors.primary?.primary800 || '#ffc300'
 );
+
+// TODO) 디자인 토큰 적용 요청
+// ⚠️ 임시 하드코딩 (토큰 매핑 필요)
+const fallbackColor = '#ffc300';
 ```
 
 ## 피그마 디자인 분석 시 토큰 매핑
@@ -194,16 +501,19 @@ const dynamicColor = computed(() =>
 - Figma 색상 → 디자인 토큰 매핑
 - 시맨틱 색상 우선 사용
 - 하드코딩된 색상값 금지
+- **토큰 매핑 불가 시**: `// TODO) 디자인 토큰 적용 요청` 주석 추가
 
 ### 2. 타이포그래피 분석  
 - Figma 폰트 → Pretendard GOV 매핑
 - 폰트 크기 → 토큰 기반 크기 사용
 - 라인 높이 → 토큰 기반 값 사용
+- **토큰 매핑 불가 시**: `// TODO) 디자인 토큰 적용 요청` 주석 추가
 
 ### 3. 간격 분석
 - Figma 간격 → 토큰 기반 간격 사용
 - 4px 그리드 시스템 준수
 - 일관된 간격 체계 적용
+- **토큰 매핑 불가 시**: `// TODO) 디자인 토큰 적용 요청` 주석 추가
 
 ## 검증 체크리스트
 
@@ -216,12 +526,17 @@ const dynamicColor = computed(() =>
 - [ ] Pretendard GOV 폰트를 사용했는가?
 - [ ] JSDoc 주석(한국어)을 작성했는가?
 - [ ] 토큰 기반 반응형 디자인을 적용했는가?
+- [ ] **모든 variant가 props로 정의되었는가?**
+- [ ] **모든 size가 props로 정의되었는가?**
+- [ ] **모든 상태가 스타일로 구현되었는가?**
+- [ ] **TODO 주석이 적절히 추가되었는가?**
+- [ ] **테마 전환 시 자동으로 적용되는가?**
 
 ## 예외 상황
 
 ### 1. 토큰이 없는 경우
 - 새로운 토큰을 `@template/theme`에 추가
-- 임시로 하드코딩 후 TODO 주석 추가
+- 임시로 하드코딩 후 `// TODO) 디자인 토큰 적용 요청` 주석 추가
 - 토큰 추가 후 즉시 리팩토링
 
 ### 2. 성능 최적화가 필요한 경우
@@ -230,3 +545,21 @@ const dynamicColor = computed(() =>
 - 번들 크기 최적화 고려
 
 이 규칙을 준수하여 일관된 디자인 시스템을 유지하고, 피그마와 코드 간의 간극을 최소화하세요.
+
+## [2024-05-xx] BaseButton variant-UI 1:1 매핑 및 props 네이밍 규칙
+
+- 모든 UI 관련 props는 variant와 1:1 매핑되도록 작성해야 함
+- **props 이름은 Figma variant 이름과 동일하게 작성할 것**
+- variant별 UI 상태 예시:
+  - primary: 기본(노란색)
+  - outline: 외곽선
+  - red: 위험/경고
+  - blue: 정보/강조
+  - pill: pill 스타일(둥근)
+- 추가적으로 필요한 UI 상태/props는 주석으로 명확히 남길 것
+- 예시(추가 구현 필요):
+  - ghost: 투명 배경 스타일 (variant: 'ghost')
+  - link: 텍스트 링크 스타일 (variant: 'link')
+  - success, warning 등 시맨틱 확장
+  - loading indicator 커스텀
+  - icon-only 버튼 (아이콘만)

@@ -13,6 +13,27 @@ export function getCSSVariable(variableName: string): string {
 }
 
 /**
+ * 공통 색상(common) 토큰을 가져오는 함수
+ * @returns common 색상 토큰 객체
+ */
+function getCommonColorTokens() {
+  const common: Record<string, string> = {};
+  const style = getComputedStyle(
+    typeof window !== 'undefined' ? document.documentElement : ({} as HTMLElement)
+  );
+  for (const key in style) {
+    if (typeof key === 'string' && key.startsWith('--base-colors-common-')) {
+      const value = style.getPropertyValue(key).trim();
+      if (value) {
+        const name = key.replace('--base-colors-common-', '');
+        common[name] = value;
+      }
+    }
+  }
+  return common;
+}
+
+/**
  * 색상 토큰을 그룹별로 가져오는 함수
  * @returns 색상 토큰 객체
  */
@@ -24,6 +45,7 @@ export function getColorTokens() {
     red: {},
     blue: {},
     purple: {},
+    common: getCommonColorTokens(),
   };
 
   // Primary 색상 (실제 CSS 변수명 확인)
@@ -166,41 +188,40 @@ export function getColorTokens() {
  * @returns 타이포그래피 토큰 객체
  */
 export function getTypographyTokens() {
-  const typography: Record<string, Record<string, string>> = {
-    fontSize: {},
-    lineHeight: {},
-    letterSpacing: {},
+  return {
+    fontSize: {
+      'font-10': tokens.fontSizeFont10,
+      'font-12': tokens.fontSizeFont12,
+      'font-13': tokens.fontSizeFont13,
+      'font-14': tokens.fontSizeFont14,
+      'font-16': tokens.fontSizeFont16,
+      'font-18': tokens.fontSizeFont18,
+      'font-20': tokens.fontSizeFont20,
+      'font-24': tokens.fontSizeFont24,
+      'font-36': tokens.fontSizeFont36,
+      'font-48': tokens.fontSizeFont48,
+      'font-64': tokens.fontSizeFont64,
+    },
+    lineHeight: {
+      'line-height-0': tokens.fontLineHeights0,
+      'line-height-1': tokens.fontLineHeights1,
+      'line-height-2': tokens.fontLineHeights2,
+      'line-height-3': tokens.fontLineHeights3,
+      'line-height-4': tokens.fontLineHeights4,
+      'line-height-5': tokens.fontLineHeights5,
+      'line-height-6': tokens.fontLineHeights6,
+      'line-height-7': tokens.fontLineHeights7,
+      'line-height-8': tokens.fontLineHeights8,
+    },
+    letterSpacing: {
+      'letter-spacing-0': tokens.fontLetterSpacing0,
+      'letter-spacing-1': tokens.fontLetterSpacing1,
+      'letter-spacing-2': tokens.fontLetterSpacing2,
+      'letter-spacing-3': tokens.fontLetterSpacing3,
+      'letter-spacing-4': tokens.fontLetterSpacing4,
+      'letter-spacing-5': tokens.fontLetterSpacing5,
+    },
   };
-
-  // Font Size
-  const fontSizes = [10, 12, 13, 14, 16, 18, 20, 24, 36, 48, 64];
-  fontSizes.forEach((size) => {
-    const tokenName = `--font-size-font-${size}`;
-    const value = getCSSVariable(tokenName);
-    if (value) {
-      typography.fontSize[`font-${size}`] = value;
-    }
-  });
-
-  // Line Height
-  for (let i = 0; i <= 8; i++) {
-    const tokenName = `--font-line-heights-${i}`;
-    const value = getCSSVariable(tokenName);
-    if (value) {
-      typography.lineHeight[`line-height-${i}`] = value;
-    }
-  }
-
-  // Letter Spacing
-  for (let i = 0; i <= 5; i++) {
-    const tokenName = `--font-letter-spacing-${i}`;
-    const value = getCSSVariable(tokenName);
-    if (value) {
-      typography.letterSpacing[`letter-spacing-${i}`] = value;
-    }
-  }
-
-  return typography;
 }
 
 /**
@@ -208,23 +229,29 @@ export function getTypographyTokens() {
  * @returns 간격 토큰 객체
  */
 export function getSpacingTokens() {
-  const spacing: Record<string, string> = {};
-
-  // 간격 토큰들 (실제 CSS 변수명에 맞게 조정 필요)
-  const spacingValues = [4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96, 128, 160, 192, 224, 256];
-
-  spacingValues.forEach((value) => {
-    const tokenName = `--spacing-${value}`;
-    const cssValue = getCSSVariable(tokenName);
-    if (cssValue) {
-      spacing[`spacing-${value}`] = cssValue;
-    } else {
-      // CSS 변수가 없으면 기본값 사용
-      spacing[`spacing-${value}`] = `${value}px`;
-    }
-  });
-
-  return spacing;
+  return {
+    'spacing-4': tokens.baseSizeSize4,
+    'spacing-6': tokens.baseSizeSize6,
+    'spacing-8': tokens.baseSizeSize8,
+    'spacing-10': tokens.baseSizeSize10,
+    'spacing-12': tokens.baseSizeSize12,
+    'spacing-13': tokens.baseSizeSize13,
+    'spacing-14': tokens.baseSizeSize14,
+    'spacing-16': tokens.baseSizeSize16,
+    'spacing-18': tokens.baseSizeSize18,
+    'spacing-20': tokens.baseSizeSize20,
+    'spacing-24': tokens.baseSizeSize24,
+    'spacing-36': tokens.baseSizeSize36,
+    'spacing-40': tokens.baseSizeSize40,
+    'spacing-48': tokens.baseSizeSize48,
+    'spacing-50': tokens.baseSizeSize50,
+    'spacing-64': tokens.baseSizeSize64,
+    'spacing-100': tokens.baseSizeSize100,
+    'spacing-130': tokens.baseSizeSize130,
+    'spacing-140': tokens.baseSizeSize140,
+    'spacing-200': tokens.baseSizeSize200,
+    'spacing-300': tokens.baseSizeSize300,
+  };
 }
 
 /**
@@ -232,19 +259,18 @@ export function getSpacingTokens() {
  * @returns 패딩 토큰 객체
  */
 export function getPaddingTokens() {
-  const paddings: Record<string, string> = {};
-  // 패딩 토큰들 (실제 CSS 변수명에 맞게 조정)
-  const paddingNames = ['64', '48', '36', '16', '24', '12', '4', '130', '8', 'z'];
-  paddingNames.forEach((name) => {
-    const tokenName = `--padding-padding-${name}`;
-    const value = getCSSVariable(tokenName);
-    if (value) {
-      paddings[`padding-${name}`] = value;
-    } else {
-      paddings[`padding-${name}`] = name + 'px'; // fallback
-    }
-  });
-  return paddings;
+  return {
+    'padding-4': tokens.paddingPadding4,
+    'padding-8': tokens.paddingPadding8,
+    'padding-12': tokens.paddingPadding12,
+    'padding-16': tokens.paddingPadding16,
+    'padding-24': tokens.paddingPadding24,
+    'padding-36': tokens.paddingPadding36,
+    'padding-48': tokens.paddingPadding48,
+    'padding-64': tokens.paddingPadding64,
+    'padding-130': tokens.paddingPadding130,
+    'padding-z': tokens.paddingPaddingZ,
+  };
 }
 
 /**
@@ -252,18 +278,99 @@ export function getPaddingTokens() {
  * @returns 라운드 토큰 객체
  */
 export function getRadiusTokens() {
-  const radii: Record<string, string> = {};
-  const radiusNames = ['xs', 'sm', 'md', 'lg', 'pill', 'default', 'none'];
-  radiusNames.forEach((name) => {
-    const tokenName = `--radius-${name}`;
-    const value = getCSSVariable(tokenName);
-    if (value) {
-      radii[`radius-${name}`] = value;
-    } else {
-      radii[`radius-${name}`] = name; // fallback
+  return {
+    'radius-xs': tokens.radiusXs,
+    'radius-sm': tokens.radiusSm,
+    'radius-md': tokens.radiusMd,
+    'radius-lg': tokens.radiusLg,
+    'radius-pill': tokens.radiusPill,
+    'radius-default': tokens.radiusDefault,
+    'radius-none': tokens.radiusNone,
+  };
+}
+
+/**
+ * 카테고리별 토큰 getter 생성기
+ * @param {string} prefix - CSS 변수 prefix (예: '--button-')
+ * @param {string} groupName - 반환 객체의 그룹명
+ */
+function getCategoryTokens(prefix: string, groupName: string) {
+  const group: Record<string, string> = {};
+  const style = getComputedStyle(
+    typeof window !== 'undefined' ? document.documentElement : ({} as HTMLElement)
+  );
+  for (const key in style) {
+    if (typeof key === 'string' && key.startsWith(prefix)) {
+      const value = style.getPropertyValue(key).trim();
+      if (value) {
+        const name = key.replace(prefix, '');
+        group[name] = value;
+      }
     }
-  });
-  return radii;
+  }
+  return group;
+}
+
+import * as tokens from '../styles/_tokens-light';
+/**
+ * Button 디자인 토큰 반환 (Figma 1:1 매핑)
+ * @returns 버튼 관련 디자인 토큰 객체
+ */
+export function getButtonTokens() {
+  return {
+    'primary-background': tokens.buttonPrimaryBackground,
+    'primary-text': tokens.buttonPrimaryText,
+    'primary-border': tokens.buttonPrimaryBorder,
+    'disabled-background': tokens.buttonDisabledBackground,
+    'disabled-text': tokens.buttonDisabledText,
+    'disabled-border': tokens.buttonDisabledBorder,
+    'outline-background': tokens.buttonOutlineBackground,
+    'outline-text': tokens.buttonOutlineText,
+    'outline-border': tokens.buttonOutlineBorder,
+    'red-background': tokens.buttonRedBackground,
+    'red-text': tokens.buttonRedText,
+    'red-border': tokens.buttonRedBorder,
+    'blue-background': tokens.buttonBlueSolidBackground,
+    'blue-text': tokens.buttonBlueSolidText,
+    'blue-border': tokens.buttonBlueSolidBorder,
+    'blue-solid-hover': tokens.buttonBlueSolidHover,
+    'light-solid-background': tokens.buttonLightSolidBackground,
+    'light-solid-text': tokens.buttonLightSolidText,
+    'light-solid-border': tokens.buttonLightSolidBorder,
+    'red-solid-background': tokens.buttonRedSolidBackground,
+    'red-solid-text': tokens.buttonRedSolidText,
+    'red-solid-border': tokens.buttonRedSolidBorder,
+    'red-solid-hover': tokens.buttonRedSolidHover,
+    // TODO: pill 관련 토큰이 Figma에 정의되면 교체 필요
+    'pill-background': tokens.buttonPrimaryBackground, // 임시
+    'pill-text': tokens.buttonPrimaryText, // 임시
+    'pill-border': tokens.buttonPrimaryBorder, // 임시
+    'pill-hover-background': tokens.buttonPrimaryBackground, // 임시
+  };
+}
+export function getInputTokens() {
+  return getCategoryTokens('--input-', 'input');
+}
+export function getBackgroundTokens() {
+  return getCategoryTokens('--background-', 'background');
+}
+export function getFontTokens() {
+  return getCategoryTokens('--font-', 'font');
+}
+export function getTradeTokens() {
+  return getCategoryTokens('--trade-', 'trade');
+}
+export function getTableTokens() {
+  return getCategoryTokens('--table-', 'table');
+}
+export function getPopupTokens() {
+  return getCategoryTokens('--popup-', 'popup');
+}
+export function getNavTokens() {
+  return getCategoryTokens('--nav-', 'nav');
+}
+export function getSidebarTokens() {
+  return getCategoryTokens('--sidebar-', 'sidebar');
 }
 
 /**
@@ -273,10 +380,19 @@ export function getRadiusTokens() {
 export function getAllDesignTokens() {
   return {
     colors: getColorTokens(),
+    button: getButtonTokens(),
+    input: getInputTokens(),
+    background: getBackgroundTokens(),
+    font: getFontTokens(),
+    trade: getTradeTokens(),
+    table: getTableTokens(),
+    popup: getPopupTokens(),
+    nav: getNavTokens(),
+    sidebar: getSidebarTokens(),
+    radius: getRadiusTokens(),
+    padding: getPaddingTokens(),
     typography: getTypographyTokens(),
     spacing: getSpacingTokens(),
-    padding: getPaddingTokens(),
-    radius: getRadiusTokens(),
   };
 }
 

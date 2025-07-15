@@ -1,7 +1,7 @@
 {
   "name": "@template/theme",
   "version": "1.0.0",
-  "description": "Shared theme management for the monorepo",
+  "description": "Headless UI + Tailwind CSS 기반 디자인 토큰/테마 패키지 (Figma 연동)",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,10 +17,6 @@
     "./composables": {
       "types": "./dist/composables.d.ts",
       "import": "./dist/composables.js"
-    },
-    "./naive": {
-      "types": "./dist/naive/index.d.ts",
-      "import": "./dist/naive/index.js"
     },
     "./tokens": {
       "types": "./dist/tokens/index.d.ts",
@@ -51,8 +47,7 @@
   },
   "dependencies": {
     "vue": "^3.4.0",
-    "pinia": "^2.1.0",
-    "naive-ui": "^2.37.0"
+    "pinia": "^2.1.0"
   },
   "devDependencies": {
     "@template/types": "workspace:*",
@@ -61,7 +56,6 @@
   },
   "peerDependencies": {
     "vue": "^3.4.0",
-    "pinia": "^2.1.0",
-    "naive-ui": "^2.37.0"
+    "pinia": "^2.1.0"
   }
 }

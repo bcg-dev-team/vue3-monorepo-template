@@ -7,9 +7,24 @@
 - 이렇게 하면 컴포넌트와 스토리의 변경 이력을 함께 추적할 수 있고, 유지보수와 확장성이 뛰어납니다.
 - Storybook 설정(`main.ts`의 `stories` 필드 등)에서 이 경로가 포함되어 있는지 확인하세요.
 
+## Figma 링크 명시 규칙
+
+- 모든 스토리북 컴포넌트 description에는 해당 Figma 디자인 링크를 반드시 포함합니다.
+- 아래와 같이 'Figma 링크'라는 텍스트에 실제 Figma URL을 하이퍼링크로 작성하세요.
+- **무조건 새탭(새 창)에서 열리게 하려면 마크다운이 아닌 HTML `<a>` 태그로 작성해야 합니다.**
+- 예시:
+
+```js
+parameters: {
+  docs: {
+    description: {
+      component: '<a href="https://www.figma.com/design/xxxxxx?node-id=32-244" target="_blank" rel="noopener">Figma 링크</a>',
+    },
+  },
+},
+```
+
+- Storybook Docs에서는 이 링크를 클릭하면 항상 새 창(새 탭)으로 열립니다.
+
 ## 예시 구조
 ```
-globs: *.stories.ts
-alwaysApply: false
----
- 

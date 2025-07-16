@@ -31,16 +31,26 @@
     },
     "./styles/_tokens-dark.css": {
       "import": "./src/styles/_tokens-dark.css"
+    },
+    "./tailwind-preset-light": {
+      "import": "./src/presets/tailwind-preset-light.js"
+    },
+    "./tailwind-preset-dark": {
+      "import": "./src/presets/tailwind-preset-dark.js"
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "src/presets"
   ],
   "scripts": {
     "build:tokens:light": "style-dictionary build --config style-dictionary.light.config.js && node scripts/process-tokens.js",
     "build:tokens:dark": "style-dictionary build --config style-dictionary.dark.config.js && node scripts/process-tokens.js",
     "build:tokens": "pnpm run build:tokens:light && pnpm run build:tokens:dark",
-    "build": "pnpm run build:tokens && vite build",
+    "build:tailwind:light": "node scripts/generate-tailwind-preset-light.mjs",
+    "build:tailwind:dark": "node scripts/generate-tailwind-preset-dark.mjs",
+    "build:tailwind": "node scripts/build-tailwind-presets.mjs",
+    "build": "pnpm run build:tokens && pnpm run build:tailwind",
     "dev": "vite build --watch",
     "clean": "rimraf dist",
     "type-check": "tsc --noEmit"

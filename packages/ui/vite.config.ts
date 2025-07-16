@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'node:path';
 import dts from 'vite-plugin-dts';
+// import tailwindcss from '@tailwindcss/vite'; // 제거
 
 export default defineConfig({
   plugins: [

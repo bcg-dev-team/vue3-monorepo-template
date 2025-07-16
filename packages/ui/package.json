@@ -35,31 +35,30 @@
     "test:coverage": "vitest --coverage"
   },
   "dependencies": {
+    "@headlessui/vue": "^1.7.18",
     "@template/theme": "workspace:*",
     "@template/types": "workspace:*",
     "pinia": "^2.1.0",
-    "vue": "^3.4.0",
-    "@headlessui/vue": "^1.7.18",
-    "tailwindcss": "^3.4.0"
+    "vue": "^3.4.0"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^8.6.14",
     "@storybook/addon-interactions": "^8.6.14",
     "@storybook/addon-links": "^8.6.14",
+    "@storybook/addon-themes": "^8.6.14",
     "@storybook/blocks": "^8.6.14",
     "@storybook/test": "^8.6.14",
     "@storybook/vue3": "^8.6.14",
     "@storybook/vue3-vite": "^8.6.14",
-    "@types/react": "~19.1.8",
-    "@types/react-dom": "^19.1.6",
+    "@tailwindcss/vite": "^4.1.11",
     "@vitest/ui": "^1.0.0",
     "@vue/test-utils": "^2.4.0",
-    "autoprefixer": "^10.4.0",
+    "autoprefixer": "^10.4.21",
     "jsdom": "^24.0.0",
-    "postcss": "^8.4.0",
-    "react": "19.1.0",
-    "react-dom": "^19.1.0",
-    "storybook": "^8.6.14"
+    "postcss": "^8.5.6",
+    "storybook": "^8.6.14",
+    "tailwindcss": "^3.4.17",
+    "vue3": "link:@types/storybook/vue3"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

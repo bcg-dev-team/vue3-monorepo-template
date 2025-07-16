@@ -28,6 +28,9 @@
     "zod": "^3.25.67"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
     "vue-tsc": "^1.8.0"
   }
 }

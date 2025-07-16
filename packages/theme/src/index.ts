@@ -22,5 +22,4 @@ export { useTheme as default } from './composables';
 // 테마 관련 export
 export * from './composables';
 export * from './store';
-export * from './naive/createNaiveTheme';
 export * from './utils';

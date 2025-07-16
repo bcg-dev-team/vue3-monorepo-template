@@ -184,108 +184,108 @@ export function getColorTokens() {
 }
 
 /**
- * 타이포그래피 토큰을 가져오는 함수
+ * 타이포그래피 토큰을 가져오는 함수 (CSS 변수 기반)
  * @returns 타이포그래피 토큰 객체
  */
 export function getTypographyTokens() {
   return {
     fontSize: {
-      'font-10': tokens.fontSizeFont10,
-      'font-12': tokens.fontSizeFont12,
-      'font-13': tokens.fontSizeFont13,
-      'font-14': tokens.fontSizeFont14,
-      'font-16': tokens.fontSizeFont16,
-      'font-18': tokens.fontSizeFont18,
-      'font-20': tokens.fontSizeFont20,
-      'font-24': tokens.fontSizeFont24,
-      'font-36': tokens.fontSizeFont36,
-      'font-48': tokens.fontSizeFont48,
-      'font-64': tokens.fontSizeFont64,
+      'font-10': getCSSVariable('--font-size-font-10'),
+      'font-12': getCSSVariable('--font-size-font-12'),
+      'font-13': getCSSVariable('--font-size-font-13'),
+      'font-14': getCSSVariable('--font-size-font-14'),
+      'font-16': getCSSVariable('--font-size-font-16'),
+      'font-18': getCSSVariable('--font-size-font-18'),
+      'font-20': getCSSVariable('--font-size-font-20'),
+      'font-24': getCSSVariable('--font-size-font-24'),
+      'font-36': getCSSVariable('--font-size-font-36'),
+      'font-48': getCSSVariable('--font-size-font-48'),
+      'font-64': getCSSVariable('--font-size-font-64'),
     },
     lineHeight: {
-      'line-height-0': tokens.fontLineHeights0,
-      'line-height-1': tokens.fontLineHeights1,
-      'line-height-2': tokens.fontLineHeights2,
-      'line-height-3': tokens.fontLineHeights3,
-      'line-height-4': tokens.fontLineHeights4,
-      'line-height-5': tokens.fontLineHeights5,
-      'line-height-6': tokens.fontLineHeights6,
-      'line-height-7': tokens.fontLineHeights7,
-      'line-height-8': tokens.fontLineHeights8,
+      'line-height-0': getCSSVariable('--font-line-heights-0'),
+      'line-height-1': getCSSVariable('--font-line-heights-1'),
+      'line-height-2': getCSSVariable('--font-line-heights-2'),
+      'line-height-3': getCSSVariable('--font-line-heights-3'),
+      'line-height-4': getCSSVariable('--font-line-heights-4'),
+      'line-height-5': getCSSVariable('--font-line-heights-5'),
+      'line-height-6': getCSSVariable('--font-line-heights-6'),
+      'line-height-7': getCSSVariable('--font-line-heights-7'),
+      'line-height-8': getCSSVariable('--font-line-heights-8'),
     },
     letterSpacing: {
-      'letter-spacing-0': tokens.fontLetterSpacing0,
-      'letter-spacing-1': tokens.fontLetterSpacing1,
-      'letter-spacing-2': tokens.fontLetterSpacing2,
-      'letter-spacing-3': tokens.fontLetterSpacing3,
-      'letter-spacing-4': tokens.fontLetterSpacing4,
-      'letter-spacing-5': tokens.fontLetterSpacing5,
+      'letter-spacing-0': getCSSVariable('--font-letter-spacing-0'),
+      'letter-spacing-1': getCSSVariable('--font-letter-spacing-1'),
+      'letter-spacing-2': getCSSVariable('--font-letter-spacing-2'),
+      'letter-spacing-3': getCSSVariable('--font-letter-spacing-3'),
+      'letter-spacing-4': getCSSVariable('--font-letter-spacing-4'),
+      'letter-spacing-5': getCSSVariable('--font-letter-spacing-5'),
     },
   };
 }
 
 /**
- * 간격 토큰을 가져오는 함수
+ * 간격 토큰을 가져오는 함수 (CSS 변수 기반)
  * @returns 간격 토큰 객체
  */
 export function getSpacingTokens() {
   return {
-    'spacing-4': tokens.baseSizeSize4,
-    'spacing-6': tokens.baseSizeSize6,
-    'spacing-8': tokens.baseSizeSize8,
-    'spacing-10': tokens.baseSizeSize10,
-    'spacing-12': tokens.baseSizeSize12,
-    'spacing-13': tokens.baseSizeSize13,
-    'spacing-14': tokens.baseSizeSize14,
-    'spacing-16': tokens.baseSizeSize16,
-    'spacing-18': tokens.baseSizeSize18,
-    'spacing-20': tokens.baseSizeSize20,
-    'spacing-24': tokens.baseSizeSize24,
-    'spacing-36': tokens.baseSizeSize36,
-    'spacing-40': tokens.baseSizeSize40,
-    'spacing-48': tokens.baseSizeSize48,
-    'spacing-50': tokens.baseSizeSize50,
-    'spacing-64': tokens.baseSizeSize64,
-    'spacing-100': tokens.baseSizeSize100,
-    'spacing-130': tokens.baseSizeSize130,
-    'spacing-140': tokens.baseSizeSize140,
-    'spacing-200': tokens.baseSizeSize200,
-    'spacing-300': tokens.baseSizeSize300,
+    'spacing-4': getCSSVariable('--base-size-size-4'),
+    'spacing-6': getCSSVariable('--base-size-size-6'),
+    'spacing-8': getCSSVariable('--base-size-size-8'),
+    'spacing-10': getCSSVariable('--base-size-size-10'),
+    'spacing-12': getCSSVariable('--base-size-size-12'),
+    'spacing-13': getCSSVariable('--base-size-size-13'),
+    'spacing-14': getCSSVariable('--base-size-size-14'),
+    'spacing-16': getCSSVariable('--base-size-size-16'),
+    'spacing-18': getCSSVariable('--base-size-size-18'),
+    'spacing-20': getCSSVariable('--base-size-size-20'),
+    'spacing-24': getCSSVariable('--base-size-size-24'),
+    'spacing-36': getCSSVariable('--base-size-size-36'),
+    'spacing-40': getCSSVariable('--base-size-size-40'),
+    'spacing-48': getCSSVariable('--base-size-size-48'),
+    'spacing-50': getCSSVariable('--base-size-size-50'),
+    'spacing-64': getCSSVariable('--base-size-size-64'),
+    'spacing-100': getCSSVariable('--base-size-size-100'),
+    'spacing-130': getCSSVariable('--base-size-size-130'),
+    'spacing-140': getCSSVariable('--base-size-size-140'),
+    'spacing-200': getCSSVariable('--base-size-size-200'),
+    'spacing-300': getCSSVariable('--base-size-size-300'),
   };
 }
 
 /**
- * 패딩 토큰을 가져오는 함수
+ * 패딩 토큰을 가져오는 함수 (CSS 변수 기반)
  * @returns 패딩 토큰 객체
  */
 export function getPaddingTokens() {
   return {
-    'padding-4': tokens.paddingPadding4,
-    'padding-8': tokens.paddingPadding8,
-    'padding-12': tokens.paddingPadding12,
-    'padding-16': tokens.paddingPadding16,
-    'padding-24': tokens.paddingPadding24,
-    'padding-36': tokens.paddingPadding36,
-    'padding-48': tokens.paddingPadding48,
-    'padding-64': tokens.paddingPadding64,
-    'padding-130': tokens.paddingPadding130,
-    'padding-z': tokens.paddingPaddingZ,
+    'padding-4': getCSSVariable('--padding-padding-4'),
+    'padding-8': getCSSVariable('--padding-padding-8'),
+    'padding-12': getCSSVariable('--padding-padding-12'),
+    'padding-16': getCSSVariable('--padding-padding-16'),
+    'padding-24': getCSSVariable('--padding-padding-24'),
+    'padding-36': getCSSVariable('--padding-padding-36'),
+    'padding-48': getCSSVariable('--padding-padding-48'),
+    'padding-64': getCSSVariable('--padding-padding-64'),
+    'padding-130': getCSSVariable('--padding-padding-130'),
+    'padding-z': getCSSVariable('--padding-padding-z'),
   };
 }
 
 /**
- * 라운드(Radius) 토큰을 가져오는 함수
+ * 라운드(Radius) 토큰을 가져오는 함수 (CSS 변수 기반)
  * @returns 라운드 토큰 객체
  */
 export function getRadiusTokens() {
   return {
-    'radius-xs': tokens.radiusXs,
-    'radius-sm': tokens.radiusSm,
-    'radius-md': tokens.radiusMd,
-    'radius-lg': tokens.radiusLg,
-    'radius-pill': tokens.radiusPill,
-    'radius-default': tokens.radiusDefault,
-    'radius-none': tokens.radiusNone,
+    'radius-xs': getCSSVariable('--radius-xs'),
+    'radius-sm': getCSSVariable('--radius-sm'),
+    'radius-md': getCSSVariable('--radius-md'),
+    'radius-lg': getCSSVariable('--radius-lg'),
+    'radius-pill': getCSSVariable('--radius-pill'),
+    'radius-default': getCSSVariable('--radius-default'),
+    'radius-none': getCSSVariable('--radius-none'),
   };
 }
 
@@ -311,41 +311,40 @@ function getCategoryTokens(prefix: string, groupName: string) {
   return group;
 }
 
-import * as tokens from '../styles/_tokens-light';
 /**
  * Button 디자인 토큰 반환 (Figma 1:1 매핑)
  * @returns 버튼 관련 디자인 토큰 객체
  */
 export function getButtonTokens() {
   return {
-    'primary-background': tokens.buttonPrimaryBackground,
-    'primary-text': tokens.buttonPrimaryText,
-    'primary-border': tokens.buttonPrimaryBorder,
-    'disabled-background': tokens.buttonDisabledBackground,
-    'disabled-text': tokens.buttonDisabledText,
-    'disabled-border': tokens.buttonDisabledBorder,
-    'outline-background': tokens.buttonOutlineBackground,
-    'outline-text': tokens.buttonOutlineText,
-    'outline-border': tokens.buttonOutlineBorder,
-    'red-background': tokens.buttonRedBackground,
-    'red-text': tokens.buttonRedText,
-    'red-border': tokens.buttonRedBorder,
-    'blue-background': tokens.buttonBlueSolidBackground,
-    'blue-text': tokens.buttonBlueSolidText,
-    'blue-border': tokens.buttonBlueSolidBorder,
-    'blue-solid-hover': tokens.buttonBlueSolidHover,
-    'light-solid-background': tokens.buttonLightSolidBackground,
-    'light-solid-text': tokens.buttonLightSolidText,
-    'light-solid-border': tokens.buttonLightSolidBorder,
-    'red-solid-background': tokens.buttonRedSolidBackground,
-    'red-solid-text': tokens.buttonRedSolidText,
-    'red-solid-border': tokens.buttonRedSolidBorder,
-    'red-solid-hover': tokens.buttonRedSolidHover,
+    'primary-background': getCSSVariable('--button-primary-background'),
+    'primary-text': getCSSVariable('--button-primary-text'),
+    'primary-border': getCSSVariable('--button-primary-border'),
+    'disabled-background': getCSSVariable('--button-disabled-background'),
+    'disabled-text': getCSSVariable('--button-disabled-text'),
+    'disabled-border': getCSSVariable('--button-disabled-border'),
+    'outline-background': getCSSVariable('--button-outline-background'),
+    'outline-text': getCSSVariable('--button-outline-text'),
+    'outline-border': getCSSVariable('--button-outline-border'),
+    'red-background': getCSSVariable('--button-red-background'),
+    'red-text': getCSSVariable('--button-red-text'),
+    'red-border': getCSSVariable('--button-red-border'),
+    'blue-background': getCSSVariable('--button-blue-solid-background'),
+    'blue-text': getCSSVariable('--button-blue-solid-text'),
+    'blue-border': getCSSVariable('--button-blue-solid-border'),
+    'blue-solid-hover': getCSSVariable('--button-blue-solid-hover'),
+    'light-solid-background': getCSSVariable('--button-light-solid-background'),
+    'light-solid-text': getCSSVariable('--button-light-solid-text'),
+    'light-solid-border': getCSSVariable('--button-light-solid-border'),
+    'red-solid-background': getCSSVariable('--button-red-solid-background'),
+    'red-solid-text': getCSSVariable('--button-red-solid-text'),
+    'red-solid-border': getCSSVariable('--button-red-solid-border'),
+    'red-solid-hover': getCSSVariable('--button-red-solid-hover'),
     // TODO: pill 관련 토큰이 Figma에 정의되면 교체 필요
-    'pill-background': tokens.buttonPrimaryBackground, // 임시
-    'pill-text': tokens.buttonPrimaryText, // 임시
-    'pill-border': tokens.buttonPrimaryBorder, // 임시
-    'pill-hover-background': tokens.buttonPrimaryBackground, // 임시
+    'pill-background': getCSSVariable('--button-primary-background'), // 임시
+    'pill-text': getCSSVariable('--button-primary-text'), // 임시
+    'pill-border': getCSSVariable('--button-primary-border'), // 임시
+    'pill-hover-background': getCSSVariable('--button-primary-background'), // 임시
   };
 }
 export function getInputTokens() {

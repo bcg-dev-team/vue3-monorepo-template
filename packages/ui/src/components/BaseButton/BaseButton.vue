@@ -49,41 +49,43 @@ const emit = defineEmits<{
 }>();
 
 const base =
-  'inline-flex items-center justify-center font-sans font-semibold transition-all select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-primary800 disabled:opacity-50 disabled:cursor-not-allowed';
+  'inline-flex items-center justify-center font-sans font-semibold transition-all select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus disabled:opacity-50 disabled:cursor-not-allowed';
+
 const variantClass = computed(() => {
   switch (props.variant) {
     case 'primary':
-      return 'bg-primary800 text-neutral800 hover:bg-primary-deep';
+      return 'bg-button-primary-bg text-button-primary-text hover:bg-primary-deep';
     case 'outline':
-      return 'bg-neutral000 border border-outline text-neutral750 hover:bg-neutral050';
+      return 'bg-button-outline-bg border border-button-outline-border text-button-outline-text hover:bg-surface-muted';
     case 'red':
-      return 'bg-neutral000 border border-red800 text-red800 hover:bg-red050';
+      return 'bg-button-red-bg border border-button-red-border text-button-red-text hover:bg-bg-red';
     case 'red-solid':
-      return 'bg-red800 text-neutral000 hover:bg-red700';
+      return 'bg-button-red-solid-bg text-button-red-solid-text hover:bg-error';
     case 'blue':
-      return 'bg-neutral000 border border-blue800 text-blue800 hover:bg-blue050';
+      return 'bg-button-outline-bg border border-info text-info hover:bg-bg-blue';
     case 'blue-solid':
-      return 'bg-blue800 text-neutral000 hover:bg-blue700';
+      return 'bg-button-blue-solid-bg text-button-blue-solid-text hover:bg-info';
     case 'light-solid':
-      return 'bg-light-solid text-light-solid-text border border-light-solid-border';
+      return 'bg-button-light-solid-bg text-button-light-solid-text border border-primary';
     case 'pill':
-      return 'bg-primary800 text-neutral800 rounded-3xl';
+      return 'bg-primary text-button-primary-text rounded-full';
     case 'disabled':
-      return 'bg-disabled text-disabled-text border border-disabled-border cursor-not-allowed';
+      return 'bg-button-disabled-bg text-button-disabled-text border border-button-disabled-border cursor-not-allowed';
     default:
       return '';
   }
 });
+
 const sizeClass = computed(() => {
   switch (props.size) {
     case 'regular':
-      return 'px-4 py-3 text-[16px] rounded-lg';
+      return 'px-4 py-3 text-lg rounded-default';
     case 'small':
-      return 'px-5 py-1.5 text-[14px] rounded-md';
+      return 'px-5 py-1.5 text-md rounded-sm';
     case 'pill':
-      return 'px-4 py-2 text-[14px] rounded-3xl';
+      return 'px-4 py-2 text-md rounded-full';
     case 'small-inner':
-      return 'px-3 py-2.5 text-[13px] rounded-md';
+      return 'px-3 py-2.5 text-base rounded-sm';
     default:
       return '';
   }

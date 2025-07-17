@@ -35,26 +35,36 @@ interface TabItem {
 interface Props {
   /**
    * 탭 목록
+   *
+   * TabItem 객체 배열로, 각 탭의 value/label/disabled/content를 정의합니다.
    */
   tabs: TabItem[];
 
   /**
    * 현재 선택된 탭의 값
+   *
+   * 탭의 value와 일치하는 값이어야 합니다.
    */
   modelValue: string | number;
 
   /**
-   * 탭 그룹의 방향
+   * 탭 그룹의 방향 (horizontal, vertical)
+   *
+   * 기본값은 'horizontal'입니다.
    */
   direction?: 'horizontal' | 'vertical';
 
   /**
-   * 탭 그룹의 크기
+   * 탭 그룹의 크기 (sm, md, lg)
+   *
+   * 기본값은 'md'입니다.
    */
   size?: 'sm' | 'md' | 'lg';
 
   /**
    * 컨텐츠 영역 표시 여부
+   *
+   * 기본값은 true입니다.
    */
   showContent?: boolean;
 }

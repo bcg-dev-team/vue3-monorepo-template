@@ -12,9 +12,27 @@ import { computed } from 'vue';
 import * as Icons from './icons';
 
 interface Props {
+  /**
+   * 아이콘 이름 (필수)
+   */
   name: string;
+  /**
+   * 아이콘 크기 (sm, md, lg, xl)
+   *
+   * 기본값은 'md'입니다.
+   */
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  /**
+   * 아이콘 색상 (current, primary, error)
+   *
+   * 기본값은 'current'입니다.
+   */
   color?: 'current' | 'primary' | 'error';
+  /**
+   * 비활성화 여부
+   *
+   * 기본값은 false입니다.
+   */
   disabled?: boolean;
 }
 

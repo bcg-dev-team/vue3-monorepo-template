@@ -84,26 +84,22 @@ const tabColors = [
   {
     bg: 'bg-trade-long-bg',
     text: 'text-trade-long-text',
-    border: 'trade-long-border',
-    focus: 'trade-long-border',
+    border: 'border-trade-long-border',
   },
   {
     bg: 'bg-trade-short-bg',
     text: 'text-trade-short-text',
-    border: 'trade-short-border',
-    focus: 'trade-short-border',
+    border: 'border-trade-short-border',
   },
   {
     bg: 'bg-trade-correct-bg',
     text: 'text-trade-correct-text',
-    border: 'trade-correct-border',
-    focus: 'trade-correct-border',
+    border: 'border-trade-correct-border',
   },
   {
     bg: 'bg-trade-cancel-bg',
     text: 'text-trade-cancel-text',
-    border: 'trade-cancel-border',
-    focus: 'trade-cancel-border',
+    border: 'border-trade-cancel-border',
   },
 ];
 
@@ -185,7 +181,7 @@ const getTabClasses = computed(() => {
         tabColor.bg,
         tabColor.text,
         'border-t border-l border-r border-b-0 border-solid',
-        `border-${tabColor.border}`,
+        tabColor.border,
       ]
         .filter(Boolean)
         .join(' ');
@@ -198,7 +194,7 @@ const getTabClasses = computed(() => {
       'bg-bg-surface',
       'text-text-secondary',
       'border-b border-solid',
-      `border-${selectedTabColor.border}`,
+      selectedTabColor.border,
       'hover:bg-bg-surface-muted',
     ]
       .filter(Boolean)
@@ -216,7 +212,7 @@ const getPanelClasses = computed(() => {
     return [
       'p-6 rounded-b-default transition-all duration-200',
       'border-l border-r border-b',
-      `border-${tabColor.border}`,
+      tabColor.border,
       tabColor.bg,
       'text-text-primary',
     ].join(' ');

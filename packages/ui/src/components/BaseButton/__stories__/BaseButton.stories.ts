@@ -7,61 +7,6 @@ const meta: Meta<typeof BaseButton> = {
   title: 'Components/BaseButton',
   component: BaseButton,
   tags: ['autodocs'],
-  argTypes: {
-    variant: {
-      control: { type: 'select' },
-      options: [
-        'primary',
-        'outline',
-        'red',
-        'blue',
-        'pill',
-        'light-solid',
-        'red-solid',
-        'blue-solid',
-        'disabled',
-      ],
-    },
-    size: {
-      control: { type: 'select' },
-      options: ['regular', 'small', 'pill', 'small-inner'],
-    },
-    label: { control: 'text' },
-    subLabel: { control: 'text' },
-    disabled: { control: 'boolean' },
-    leftIcon: {
-      control: { type: 'select' },
-      options: iconOptions,
-      mapping: {
-        none: undefined,
-        plus: { name: 'plus', size: 'md', color: 'primary' },
-        home: { name: 'home', size: 'md', color: 'primary' },
-        user: { name: 'user', size: 'md', color: 'primary' },
-      },
-      labels: {
-        none: '없음',
-        plus: '플러스',
-        home: '홈',
-        user: '유저',
-      },
-    },
-    rightIcon: {
-      control: { type: 'select' },
-      options: iconOptions,
-      mapping: {
-        none: undefined,
-        plus: { name: 'plus', size: 'md', color: 'primary' },
-        home: { name: 'home', size: 'md', color: 'primary' },
-        user: { name: 'user', size: 'md', color: 'primary' },
-      },
-      labels: {
-        none: '없음',
-        plus: '플러스',
-        home: '홈',
-        user: '유저',
-      },
-    },
-  },
   parameters: {
     docs: {
       description: {
@@ -83,6 +28,13 @@ export const Primary: Story = {
     leftIcon: { name: 'plus', size: 'md', color: 'primary' },
     rightIcon: undefined,
   },
+  parameters: {
+    docs: {
+      description: {
+        story: '기본 스타일(Primary)과 레귤러 크기, 왼쪽 플러스 아이콘이 포함된 버튼 예시입니다.',
+      },
+    },
+  },
 };
 
 export const Outline: Story = {
@@ -90,6 +42,13 @@ export const Outline: Story = {
     variant: 'outline',
     size: 'regular',
     label: 'Button',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '외곽선(Outline) 스타일의 레귤러 크기 버튼 예시입니다.',
+      },
+    },
   },
 };
 
@@ -99,6 +58,13 @@ export const Red: Story = {
     size: 'regular',
     label: 'Button',
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Red 스타일의 레귤러 크기 버튼 예시입니다.',
+      },
+    },
+  },
 };
 
 export const Blue: Story = {
@@ -106,6 +72,13 @@ export const Blue: Story = {
     variant: 'blue',
     size: 'regular',
     label: 'Button',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Blue(Outline) 스타일의 레귤러 크기 버튼 예시입니다.',
+      },
+    },
   },
 };
 
@@ -115,6 +88,13 @@ export const Pill: Story = {
     size: 'pill',
     label: 'Button',
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Pill 스타일(완전 둥근 형태)의 버튼 예시입니다.',
+      },
+    },
+  },
 };
 
 export const LightSolid: Story = {
@@ -122,6 +102,13 @@ export const LightSolid: Story = {
     variant: 'light-solid',
     size: 'regular',
     label: 'Button',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '연한 노란색 배경의 Light Solid 스타일 버튼 예시입니다.',
+      },
+    },
   },
 };
 
@@ -131,6 +118,13 @@ export const RedSolid: Story = {
     size: 'regular',
     label: 'Button',
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Red Solid(실색) 스타일의 버튼 예시입니다.',
+      },
+    },
+  },
 };
 
 export const BlueSolid: Story = {
@@ -138,6 +132,13 @@ export const BlueSolid: Story = {
     variant: 'blue-solid',
     size: 'regular',
     label: 'Button',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Blue Solid(실색) 스타일의 버튼 예시입니다.',
+      },
+    },
   },
 };
 
@@ -148,6 +149,13 @@ export const Disabled: Story = {
     label: 'Button',
     disabled: true,
   },
+  parameters: {
+    docs: {
+      description: {
+        story: '비활성화(Disabled) 상태의 버튼 예시입니다.',
+      },
+    },
+  },
 };
 
 // props별 단독 확인 스토리 추가
@@ -157,6 +165,13 @@ export const SizeSmall: Story = {
     variant: 'primary',
     label: 'Button',
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Small(작은 크기) 버튼 예시입니다.',
+      },
+    },
+  },
 };
 
 export const SizePill: Story = {
@@ -165,6 +180,13 @@ export const SizePill: Story = {
     variant: 'primary',
     label: 'Button',
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Pill(완전 둥근) 크기의 버튼 예시입니다.',
+      },
+    },
+  },
 };
 
 export const SizeSmallInner: Story = {
@@ -172,6 +194,13 @@ export const SizeSmallInner: Story = {
     size: 'small-inner',
     variant: 'primary',
     label: 'Button',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Small Inner(내부 여백이 작은) 버튼 예시입니다.',
+      },
+    },
   },
 };
 
@@ -182,6 +211,13 @@ export const DisabledProp: Story = {
     size: 'regular',
     label: 'Button',
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'props로 disabled를 직접 지정한 버튼 예시입니다.',
+      },
+    },
+  },
 };
 
 export const WithSubLabel: Story = {
@@ -191,12 +227,26 @@ export const WithSubLabel: Story = {
     size: 'regular',
     label: 'Button',
   },
+  parameters: {
+    docs: {
+      description: {
+        story: '서브 텍스트가 포함된 버튼 예시입니다.',
+      },
+    },
+  },
 };
 
 export const WithLeftIcon: Story = {
   args: {
     label: 'Button',
     leftIcon: { name: 'plus', size: 'md', color: 'primary' },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '왼쪽에 아이콘이 있는 버튼 예시입니다.',
+      },
+    },
   },
 };
 
@@ -205,6 +255,13 @@ export const WithRightIcon: Story = {
     label: 'Button',
     rightIcon: { name: 'plus', size: 'md', color: 'primary' },
   },
+  parameters: {
+    docs: {
+      description: {
+        story: '오른쪽에 아이콘이 있는 버튼 예시입니다.',
+      },
+    },
+  },
 };
 
 export const WithBothIcons: Story = {
@@ -212,5 +269,12 @@ export const WithBothIcons: Story = {
     label: 'Button',
     leftIcon: { name: 'plus', size: 'md', color: 'primary' },
     rightIcon: { name: 'plus', size: 'md', color: 'primary' },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '양쪽에 아이콘이 모두 있는 버튼 예시입니다.',
+      },
+    },
   },
 };

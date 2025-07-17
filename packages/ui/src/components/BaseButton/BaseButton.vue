@@ -22,6 +22,11 @@ interface IconProps {
 }
 
 interface Props {
+  /**
+   * 버튼 스타일 (primary, outline, red, blue, pill, ...)]
+   *
+   * 기본값은 'primary'입니다.
+   */
   variant?:
     | 'primary'
     | 'outline'
@@ -32,11 +37,33 @@ interface Props {
     | 'red-solid'
     | 'blue-solid'
     | 'disabled';
+  /**
+   * 버튼 크기 (regular, small, pill, small-inner)
+   *
+   * 기본값은 'regular'입니다.
+   */
   size?: 'regular' | 'small' | 'pill' | 'small-inner';
+  /**
+   * 비활성화 여부
+   *
+   * 기본값은 false입니다.
+   */
   disabled?: boolean;
+  /**
+   * 좌측 아이콘 정보 (name, size, color)
+   */
   leftIcon?: IconProps;
+  /**
+   * 우측 아이콘 정보 (name, size, color)
+   */
   rightIcon?: IconProps;
+  /**
+   * 버튼 텍스트
+   */
   label: string;
+  /**
+   * 서브 텍스트 (optional)
+   */
   subLabel?: string;
 }
 const props = withDefaults(defineProps<Props>(), {

@@ -14,27 +14,6 @@ const meta: Meta<typeof BaseTabs> = {
     },
   },
   tags: ['autodocs'],
-  argTypes: {
-    modelValue: {
-      control: 'select',
-      options: ['tab1', 'tab2', 'tab3', 'tab4', 'tab5'],
-      description: '현재 선택된 탭의 값',
-    },
-    direction: {
-      control: 'select',
-      options: ['horizontal', 'vertical'],
-      description: '탭 그룹의 방향',
-    },
-    size: {
-      control: 'select',
-      options: ['sm', 'md', 'lg'],
-      description: '탭 그룹의 크기',
-    },
-    showContent: {
-      control: 'boolean',
-      description: '컨텐츠 영역 표시 여부',
-    },
-  },
 };
 
 export default meta;

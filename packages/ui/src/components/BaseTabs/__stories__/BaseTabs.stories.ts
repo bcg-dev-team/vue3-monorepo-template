@@ -42,28 +42,28 @@ type Story = StoryObj<typeof meta>;
 
 // 기본 탭 데이터 (4개)
 const defaultTabs = [
-  { value: 'tab1', label: '첫 번째 탭', content: '빨간색 탭의 컨텐츠입니다.' },
-  { value: 'tab2', label: '두 번째 탭', content: '파란색 탭의 컨텐츠입니다.' },
-  { value: 'tab3', label: '세 번째 탭', content: '초록색 탭의 컨텐츠입니다.' },
-  { value: 'tab4', label: '네 번째 탭', content: '보라색 탭의 컨텐츠입니다.' },
+  { value: 'tab1', label: '첫 번째 탭' },
+  { value: 'tab2', label: '두 번째 탭' },
+  { value: 'tab3', label: '세 번째 탭' },
+  { value: 'tab4', label: '네 번째 탭' },
 ];
 
 // 5개 이상 탭 데이터 (색상 순환 확인용)
 const extendedTabs = [
-  { value: 'tab1', label: '첫 번째 탭', content: '빨간색 탭의 컨텐츠입니다.' },
-  { value: 'tab2', label: '두 번째 탭', content: '파란색 탭의 컨텐츠입니다.' },
-  { value: 'tab3', label: '세 번째 탭', content: '초록색 탭의 컨텐츠입니다.' },
-  { value: 'tab4', label: '네 번째 탭', content: '보라색 탭의 컨텐츠입니다.' },
-  { value: 'tab5', label: '다섯 번째 탭', content: '다시 빨간색 탭의 컨텐츠입니다.' },
-  { value: 'tab6', label: '여섯 번째 탭', content: '다시 파란색 탭의 컨텐츠입니다.' },
+  { value: 'tab1', label: '첫 번째 탭' },
+  { value: 'tab2', label: '두 번째 탭' },
+  { value: 'tab3', label: '세 번째 탭' },
+  { value: 'tab4', label: '네 번째 탭' },
+  { value: 'tab5', label: '다섯 번째 탭' },
+  { value: 'tab6', label: '여섯 번째 탭' },
 ];
 
 // 비활성화된 탭이 포함된 데이터
 const disabledTabs = [
-  { value: 'tab1', label: '첫 번째 탭', content: '빨간색 탭의 컨텐츠입니다.' },
-  { value: 'tab2', label: '두 번째 탭', disabled: true, content: '비활성화된 탭입니다.' },
-  { value: 'tab3', label: '세 번째 탭', content: '초록색 탭의 컨텐츠입니다.' },
-  { value: 'tab4', label: '네 번째 탭', content: '보라색 탭의 컨텐츠입니다.' },
+  { value: 'tab1', label: '첫 번째 탭' },
+  { value: 'tab2', label: '두 번째 탭', disabled: true },
+  { value: 'tab3', label: '세 번째 탭' },
+  { value: 'tab4', label: '네 번째 탭' },
 ];
 
 // 기본 스토리 (Figma 디자인 기반)

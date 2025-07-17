@@ -4,6 +4,7 @@
   - 여러 탭을 관리하는 컨테이너 컴포넌트
   - 탭 순서에 따른 색상 변경: [빨간색, 파란색, 초록색, 보라색] 순환
   - 컨텐츠 영역도 선택된 탭과 같은 색상으로 변경
+  @figma Tab (node-id: 58-877)
 -->
 <script setup lang="ts">
 import { computed } from 'vue';
@@ -78,21 +79,31 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>();
 
-// 탭 순서에 따른 색상 정의 (semantic tokens 사용)
+// 탭 순서에 따른 색상 정의 (기존 semantic tokens 매핑)
 const tabColors = [
   {
-    bg: 'bg-trade-buy',
-    text: 'text-text-inverse',
-    hover: 'hover:bg-error',
-    content: 'bg-trade-buy',
+    bg: 'bg-trade-long-bg',
+    text: 'text-trade-long-text',
+    border: 'trade-long-border',
+    focus: 'trade-long-border',
   },
-  { bg: 'bg-info', text: 'text-text-inverse', hover: 'hover:bg-info', content: 'bg-info' },
-  { bg: 'bg-success', text: 'text-text-inverse', hover: 'hover:bg-success', content: 'bg-success' },
   {
-    bg: 'bg-favorite',
-    text: 'text-text-inverse',
-    hover: 'hover:bg-favorite',
-    content: 'bg-favorite',
+    bg: 'bg-trade-short-bg',
+    text: 'text-trade-short-text',
+    border: 'trade-short-border',
+    focus: 'trade-short-border',
+  },
+  {
+    bg: 'bg-trade-correct-bg',
+    text: 'text-trade-correct-text',
+    border: 'trade-correct-border',
+    focus: 'trade-correct-border',
+  },
+  {
+    bg: 'bg-trade-cancel-bg',
+    text: 'text-trade-cancel-text',
+    border: 'trade-cancel-border',
+    focus: 'trade-cancel-border',
   },
 ];
 
@@ -106,7 +117,7 @@ const getTabColor = (index: number) => {
 };
 
 const containerClasses = computed(() => {
-  const baseClasses = 'inline-flex bg-surface-muted rounded-default p-1';
+  const baseClasses = 'inline-flex rounded-default';
 
   const directionClasses = {
     horizontal: 'flex-row',
@@ -145,22 +156,53 @@ const selectedIndex = computed(() => {
  */
 const getTabClasses = computed(() => {
   return (index: number, disabled: boolean, selected: boolean) => {
+    const tabColor = getTabColor(index);
+    const selectedTabColor = getTabColor(selectedIndex.value);
     const baseClasses =
-      'px-4 py-2 text-sm font-medium transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-border-focus';
+      'px-4 py-2 text-sm font-medium transition-all duration-200 cursor-pointer focus:outline-none';
     const positionClasses = [
-      getTabPosition(index) === 'first' ? 'rounded-l-default' : '',
-      getTabPosition(index) === 'last' ? 'rounded-r-default' : '',
+      getTabPosition(index) === 'first' ? 'rounded-tl-default' : '',
+      getTabPosition(index) === 'last' ? 'rounded-tr-default' : '',
     ]
       .filter(Boolean)
       .join(' ');
 
-    const stateClasses = disabled
-      ? 'opacity-50 cursor-not-allowed bg-surface-disabled text-text-disabled'
-      : selected
-        ? `${getTabColor(index).bg} ${getTabColor(index).text} shadow-sm`
-        : 'bg-surface-default text-text-secondary hover:bg-surface-muted';
+    if (disabled) {
+      return [
+        baseClasses,
+        positionClasses,
+        'opacity-50 cursor-not-allowed bg-surface-disabled text-text-disabled border-b border-border-default',
+      ]
+        .filter(Boolean)
+        .join(' ');
+    }
 
-    return [baseClasses, positionClasses, stateClasses].filter(Boolean).join(' ');
+    if (selected) {
+      // active: border-t/l/r, border-b 없음
+      return [
+        baseClasses,
+        positionClasses,
+        tabColor.bg,
+        tabColor.text,
+        'border-t border-l border-r border-b-0 border-solid',
+        `border-${tabColor.border}`,
+      ]
+        .filter(Boolean)
+        .join(' ');
+    }
+
+    // inactive: border-b만, 현재 선택된 탭의 trade border 컬러 사용
+    return [
+      baseClasses,
+      positionClasses,
+      'bg-bg-surface',
+      'text-text-secondary',
+      'border-b border-solid',
+      `border-${selectedTabColor.border}`,
+      'hover:bg-bg-surface-muted',
+    ]
+      .filter(Boolean)
+      .join(' ');
   };
 });
 
@@ -169,18 +211,21 @@ const getTabClasses = computed(() => {
  */
 const getPanelClasses = computed(() => {
   return (index: number, isSelected: boolean) => {
-    const baseClasses = 'p-6 rounded-default transition-all duration-200';
-    const stateClasses = isSelected
-      ? `${getTabColor(index).content} text-text-inverse`
-      : 'bg-surface-disabled text-text-secondary';
-
-    return [baseClasses, stateClasses].join(' ');
+    const tabColor = getTabColor(index);
+    // content: border-l/r/b, border-t 없음, active tab과 연결, 음수마진 제거
+    return [
+      'p-6 rounded-b-default transition-all duration-200',
+      'border-l border-r border-b',
+      `border-${tabColor.border}`,
+      tabColor.bg,
+      'text-text-primary',
+    ].join(' ');
   };
 });
 </script>
 
 <template>
-  <div class="space-y-4">
+  <div>
     <TabGroup :selected-index="selectedIndex" @change="handleTabChange">
       <TabList :class="containerClasses" role="tablist">
         <Tab
@@ -197,7 +242,7 @@ const getPanelClasses = computed(() => {
       </TabList>
 
       <!-- 컨텐츠 영역 -->
-      <TabPanels v-if="showContent" class="mt-4">
+      <TabPanels v-if="showContent">
         <TabPanel
           v-for="(tab, index) in tabs"
           :key="tab.value"
@@ -205,10 +250,7 @@ const getPanelClasses = computed(() => {
         >
           <slot name="content" :tab="tab" :index="index" :is-selected="selectedIndex === index">
             <div v-if="tab.content" v-html="tab.content"></div>
-            <div v-else class="text-center">
-              <p class="text-lg font-medium">{{ tab.label }} 컨텐츠</p>
-              <p class="mt-2 opacity-80">이 영역에 {{ tab.label }}의 컨텐츠가 표시됩니다.</p>
-            </div>
+            <div v-else class="text-center"></div>
           </slot>
         </TabPanel>
       </TabPanels>

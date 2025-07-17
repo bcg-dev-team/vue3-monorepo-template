@@ -49,6 +49,21 @@ export default {
         // Trade Colors
         'trade-buy': '#f63338',
         'trade-sell': '#1775f0',
+        'trade-long-bg': '#fff1f2',
+        'trade-long-text': '#f63338',
+        'trade-long-border': '#f63338',
+        'trade-long-text2': '#333740',
+        'trade-short-bg': '#e8f0fa',
+        'trade-short-text': '#1775f0',
+        'trade-short-border': '#1775f0',
+        'trade-correct-bg': '#f1f9f3',
+        'trade-correct-text': '#00a22f',
+        'trade-correct-border': '#00a22f',
+        'trade-correct-bg-solid': '#28c053',
+        'trade-cancel-bg': '#f9f3ff',
+        'trade-cancel-text': '#892fe9',
+        'trade-cancel-border': '#892fe9',
+        'trade-cancel-bg-solid': '#a765ee',
 
         // === Component-Specific Semantic Tokens ===
 

@@ -12,7 +12,7 @@ import { computed } from 'vue';
  * @emits rowSelect - 행 선택 이벤트
  * @emits sort - 정렬 이벤트
  */
-interface TableHeader {
+export interface TableHeader {
   key: string;
   title: string;
   width?: string;
@@ -20,7 +20,7 @@ interface TableHeader {
   sortable?: boolean;
 }
 
-interface TableRow {
+export interface TableRow {
   id: string | number;
   [key: string]: any;
 }

@@ -50,7 +50,7 @@
     "build:tailwind:light": "node scripts/generate-tailwind-preset-light.mjs",
     "build:tailwind:dark": "node scripts/generate-tailwind-preset-dark.mjs",
     "build:tailwind": "node scripts/build-tailwind-presets.mjs",
-    "build": "pnpm run build:tokens && pnpm run build:tailwind",
+    "build": "pnpm run build:tokens && pnpm run build:tailwind && tsc -p tsconfig.build.json",
     "dev": "vite build --watch",
     "clean": "rimraf dist",
     "type-check": "tsc --noEmit"

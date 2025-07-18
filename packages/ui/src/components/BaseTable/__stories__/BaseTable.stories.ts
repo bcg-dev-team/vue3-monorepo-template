@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
 import { ref } from 'vue';
-import BaseTable from '../BaseTable.vue';
+import BaseTable, { TableHeader } from '../BaseTable.vue';
 
 const meta: Meta<typeof BaseTable> = {
   title: 'Components/BaseTable',
@@ -27,7 +27,7 @@ const meta: Meta<typeof BaseTable> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const sampleHeaders = [
+const sampleHeaders: TableHeader[] = [
   { key: 'name', title: '이름', width: '200px' },
   { key: 'age', title: '나이', width: '100px', align: 'center' },
   { key: 'job', title: '직업', width: '150px' },

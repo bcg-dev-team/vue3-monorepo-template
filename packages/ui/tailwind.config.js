@@ -1,4 +1,4 @@
-import { tailwindConfig } from '../theme/src/config/tailwind.config';
+import { tailwindConfig } from '../theme/dist/config/tailwind.config';
 
 export default {
   ...tailwindConfig,

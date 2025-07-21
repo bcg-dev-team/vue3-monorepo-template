@@ -25,11 +25,11 @@ export function useTheme(): ThemeComposable {
   const themeStore = useThemeStore();
 
   /**
-   * HTML 요소에 data-theme 속성을 설정합니다.
+   * body 요소에 data-theme 속성을 설정합니다.
    */
   const updateHtmlClass = () => {
     if (typeof document === 'undefined') return;
-    document.documentElement.setAttribute('data-theme', themeStore.isDark ? 'dark' : 'light');
+    document.body.setAttribute('data-theme', themeStore.isDark ? 'dark' : 'light');
   };
 
   // 테마 변경 시 HTML 클래스 업데이트

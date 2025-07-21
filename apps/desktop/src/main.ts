@@ -1,38 +1,27 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import { configure } from 'vee-validate';
-import { useTheme } from '@template/theme';
 import App from './App.vue';
 import router from './router';
 
-// LocatorJS 설정 (개발 환경에서만)
-import setupLocatorUI from '@locator/runtime';
+// Theme 패키지 import (CSS 변수 포함)
+import '@template/theme';
 
-if (process.env.NODE_ENV === 'development') {
-  setupLocatorUI({
-    adapter: 'vue',
-  });
-}
+// UI 패키지 import (스타일 포함)
+import '@template/ui';
 
-// 스타일
+// 전역 스타일
 import './style.css';
 
-// Vee-Validate 설정
-configure({
-  validateOnBlur: true,
-  validateOnChange: true,
-  validateOnInput: false,
-  validateOnModelUpdate: true,
-});
+// 테마 초기화
+import { useTheme } from '@template/theme';
 
-// Pinia 인스턴스 생성
-const pinia = createPinia();
-
-// 앱 생성
 const app = createApp(App);
 
-// 플러그인 등록
-app.use(pinia);
+app.use(createPinia());
 app.use(router);
+
+// 앱 마운트 전에 테마 초기화
+const theme = useTheme();
+theme.updateHtmlClass();
 
 app.mount('#app');

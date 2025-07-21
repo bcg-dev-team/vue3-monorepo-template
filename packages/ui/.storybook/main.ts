@@ -1,4 +1,5 @@
 import type { StorybookConfig } from '@storybook/vue3-vite';
+import { resolve } from 'path';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -21,14 +22,18 @@ const config: StorybookConfig = {
       ...config.resolve,
       alias: {
         ...config.resolve?.alias,
-        '@': '/src',
+        '@': resolve(__dirname, '../src'),
+        '@template/theme': resolve(__dirname, '../../theme/src'),
+        '@template/types': resolve(__dirname, '../../types/src'),
+        '@template/utils': resolve(__dirname, '../../utils/src'),
+        '@template/api': resolve(__dirname, '../../api/src'),
       },
     };
 
     // TypeScript 지원
     config.optimizeDeps = {
       ...config.optimizeDeps,
-      include: ['vue', '@template/types', '@template/theme', 'pinia', 'react', 'react-dom'],
+      include: ['vue', '@template/types', '@template/theme', 'pinia'],
       force: true,
     };
 

@@ -35,6 +35,74 @@ function resolveReference(ref, tokens, depth = 0) {
   return value.value || ref;
 }
 
+// 주석이 포함된 객체를 문자열로 변환
+function objectToStringWithComments(obj, indent = 2) {
+  const lines = [];
+
+  for (const [key, value] of Object.entries(obj)) {
+    if (typeof value === 'object' && value !== null) {
+      // 섹션 주석 추가
+      if (
+        key === 'primary' ||
+        key === 'text-primary' ||
+        key === 'surface-default' ||
+        key === 'border-default' ||
+        key === 'success' ||
+        key === 'trade-buy' ||
+        key === 'button-primary-bg' ||
+        key === 'input-bg' ||
+        key === 'checkbox-disabled-border' ||
+        key === 'icon-default' ||
+        key === 'menu-bg' ||
+        key === 'bg-default' ||
+        key === 'divider' ||
+        key === 'body-border'
+      ) {
+        lines.push('');
+      }
+
+      if (key === 'primary') lines.push('    // === Semantic Color Tokens ===');
+      if (key === 'text-primary') lines.push('');
+      if (key === 'text-primary') lines.push('    // Primary Colors');
+      if (key === 'text-secondary') lines.push('');
+      if (key === 'text-secondary') lines.push('    // Text Colors');
+      if (key === 'surface-default') lines.push('');
+      if (key === 'surface-default') lines.push('    // Surface Colors');
+      if (key === 'border-default') lines.push('');
+      if (key === 'border-default') lines.push('    // Border Colors');
+      if (key === 'success') lines.push('');
+      if (key === 'success') lines.push('    // Status Colors');
+      if (key === 'trade-buy') lines.push('');
+      if (key === 'trade-buy') lines.push('    // Trade Colors');
+      if (key === 'button-primary-bg') lines.push('');
+      if (key === 'button-primary-bg')
+        lines.push('    // === Component-Specific Semantic Tokens ===');
+      if (key === 'button-primary-bg') lines.push('');
+      if (key === 'button-primary-bg') lines.push('    // Button Tokens');
+      if (key === 'input-bg') lines.push('');
+      if (key === 'input-bg') lines.push('    // Input Tokens');
+      if (key === 'checkbox-disabled-border') lines.push('');
+      if (key === 'checkbox-disabled-border') lines.push('    // Check & Radio Tokens');
+      if (key === 'icon-default') lines.push('');
+      if (key === 'icon-default') lines.push('    // Icon Tokens');
+      if (key === 'menu-bg') lines.push('');
+      if (key === 'menu-bg') lines.push('    // Menu Tokens');
+      if (key === 'bg-default') lines.push('');
+      if (key === 'bg-default') lines.push('    // Background Tokens');
+      if (key === 'divider') lines.push('');
+      if (key === 'divider') lines.push('    // Divider Tokens');
+      if (key === 'body-border') lines.push('');
+      if (key === 'body-border') lines.push('    // Body Tokens');
+
+      lines.push(`  "${key}": ${JSON.stringify(value, null, indent + 2)}`);
+    } else {
+      lines.push(`  "${key}": ${JSON.stringify(value)}`);
+    }
+  }
+
+  return `{\n${lines.join(',\n')}\n}`;
+}
+
 // 의미 있는 semantic token들을 생성
 function generateSemanticTokens(tokens) {
   const semanticTokens = {
@@ -247,7 +315,7 @@ const outputPath = path.join(__dirname, '../src/presets/tailwind-preset-light.js
 const presetContent = `// Auto-generated from Figma tokens
 // Last updated: ${new Date().toISOString()}
 
-export const lightColors = ${JSON.stringify(semanticColors, null, 2)};
+export const lightColors = ${objectToStringWithComments(semanticColors)};
 
 export const lightTypography = ${JSON.stringify(typographyTokens, null, 2)};
 

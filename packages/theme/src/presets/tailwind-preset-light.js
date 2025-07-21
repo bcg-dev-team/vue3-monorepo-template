@@ -1,5 +1,5 @@
 // Auto-generated from Figma tokens
-// Last updated: 2025-07-18T07:46:58.596Z
+// Last updated: 2025-07-21T02:11:03.678Z
 
 export const lightColors = {
   "primary": "#ffc300",

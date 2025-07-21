@@ -187,23 +187,72 @@ const DesignTokens = defineComponent({
 
     const loadTokens = () => {
       console.log('Loading tokens...');
-      const colorTokens = getColorTokens();
-      const typographyTokens = getTypographyTokens();
-      const spacingTokens = getSpacingTokens();
-      const paddingTokens = getPaddingTokens();
-      const radiusTokens = getRadiusTokens();
+      try {
+        const colorTokens = getColorTokens();
+        const typographyTokens = getTypographyTokens();
+        const spacingTokens = getSpacingTokens();
+        const paddingTokens = getPaddingTokens();
+        const radiusTokens = getRadiusTokens();
 
-      console.log('Color tokens:', colorTokens);
-      console.log('Typography tokens:', typographyTokens);
-      console.log('Spacing tokens:', spacingTokens);
-      console.log('Padding tokens:', paddingTokens);
-      console.log('Radius tokens:', radiusTokens);
+        console.log('Color tokens:', colorTokens);
+        console.log('Typography tokens:', typographyTokens);
+        console.log('Spacing tokens:', spacingTokens);
+        console.log('Padding tokens:', paddingTokens);
+        console.log('Radius tokens:', radiusTokens);
 
-      colors.value = colorTokens;
-      typography.value = typographyTokens;
-      spacing.value = spacingTokens;
-      padding.value = paddingTokens;
-      radius.value = radiusTokens;
+        colors.value = colorTokens;
+        typography.value = typographyTokens;
+        spacing.value = spacingTokens;
+        padding.value = paddingTokens;
+        radius.value = radiusTokens;
+      } catch (error) {
+        console.error('Error loading tokens:', error);
+        // 폴백 데이터
+        colors.value = {
+          primary: {
+            'primary-500': '#ffc300',
+            'primary-600': '#ffaa00',
+            'primary-700': '#ff8c00',
+          },
+          neutral: {
+            'neutral-100': '#f5f6f6',
+            'neutral-200': '#ecedee',
+            'neutral-300': '#caccce',
+            'neutral-800': '#131313',
+          },
+        };
+        typography.value = {
+          fontSize: {
+            xs: '0.625rem',
+            sm: '0.75rem',
+            base: '0.812rem',
+            lg: '1rem',
+          },
+          lineHeight: {
+            tight: '1.25',
+            normal: '1.5',
+            relaxed: '1.75',
+          },
+        };
+        spacing.value = {
+          'spacing-1': '0.25rem',
+          'spacing-2': '0.5rem',
+          'spacing-4': '1rem',
+          'spacing-8': '2rem',
+        };
+        padding.value = {
+          'padding-1': '0.25rem',
+          'padding-2': '0.5rem',
+          'padding-4': '1rem',
+          'padding-8': '2rem',
+        };
+        radius.value = {
+          'radius-sm': '0.125rem',
+          'radius-md': '0.375rem',
+          'radius-lg': '0.5rem',
+          'radius-xl': '0.75rem',
+        };
+      }
     };
 
     // 그룹명을 대문자로 변환하는 함수

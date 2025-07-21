@@ -94,9 +94,9 @@ function objectToStringWithComments(obj, indent = 2) {
       if (key === 'body-border') lines.push('');
       if (key === 'body-border') lines.push('    // Body Tokens');
 
-      lines.push(`  ${key}: ${JSON.stringify(value, null, indent + 2)}`);
+      lines.push(`  "${key}": ${JSON.stringify(value, null, indent + 2)}`);
     } else {
-      lines.push(`  ${key}: ${JSON.stringify(value)}`);
+      lines.push(`  "${key}": ${JSON.stringify(value)}`);
     }
   }
 

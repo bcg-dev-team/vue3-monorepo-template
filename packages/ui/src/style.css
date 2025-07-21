@@ -1,3 +1,5 @@
+/* Theme 패키지의 CSS 변수는 main.ts에서 @template/theme import를 통해 로드됨 */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,12 +9,4 @@
 /* Base styles */
 * {
   box-sizing: border-box;
-}
-
-body {
-  font-family: var(--typography-font-family-sans);
-  font-size: var(--typography-font-size-base);
-  line-height: var(--typography-line-height-normal);
-  color: var(--font-color-default);
-  background-color: var(--background-bg-default);
 }

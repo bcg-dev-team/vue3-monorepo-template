@@ -1,232 +1,35 @@
-# Figma MCP 디자인 토큰 활용 규칙
+# Figma MCP 디자인 토큰 활용 규칙 (Tailwind 프리셋 기반)
 
 ## 기본 원칙
 
-피그마 MCP를 통해 컴포넌트를 제작할 때는 반드시 구축된 디자인 토큰 시스템을 활용해야 합니다.
+- Figma에서 정의된 디자인 토큰은 Tailwind 프리셋(tailwind-preset-light.js, tailwind-preset-dark.js)에 이미 반영되어 있습니다.
+- **컴포넌트에서는 Tailwind 유틸리티 클래스(`bg-primary800`, `text-red800`, `rounded-lg` 등)만 사용하면 Figma 토큰이 자동 적용**됩니다.
+- 별도의 토큰 유틸리티 함수(getButtonTokens 등)는 JS에서 동적으로 토큰 값을 써야 할 때만 사용합니다.
+- 토큰이 없는 값만 하드코딩하며, 반드시 `// TODO) 디자인 토큰 적용 요청` 주석을 남깁니다.
+- 조건문/분기 없이 Figma 상태별 1:1 매핑을 지향합니다.
 
-## 디자인 토큰 시스템 구조
-
-### 1. 토큰 패키지
-- **@template/theme**: 메인 디자인 토큰 패키지
-- **CSS 변수 기반**: 런타임에서 동적으로 토큰 값 접근 가능
-- **다중 테마 지원**: 라이트/다크 테마 자동 전환
-
-### 2. 주요 토큰 유틸리티 함수
-
-```typescript
-import {
-  getColorTokens,
-  getTypographyTokens, 
-  getSpacingTokens,
-  getPaddingTokens,
-  getRadiusTokens,
-  getCSSVariable
-} from '@template/theme';
-```
-
-### 3. 토큰 카테고리
-
-#### 색상 토큰
-- **Primary**: `#ffc300`, `#ffaa00` 등
-- **Neutral**: `#131313`, `#242424` 등  
-- **Semantic**: Success, Warning, Error 등
-
-#### 타이포그래피 토큰
-- **Font Size**: `font-10`, `font-12`, `font-14`, `font-16` 등
-- **Line Height**: `line-height-0` ~ `line-height-8`
-- **Letter Spacing**: `letter-spacing-0` ~ `letter-spacing-5`
-
-#### 간격 토큰
-- **Spacing**: `spacing-4`, `spacing-8`, `spacing-16` 등
-- **Padding**: `padding-4`, `padding-8`, `padding-16` 등
-- **Radius**: `radius-sm`, `radius-md`, `radius-lg` 등
-
-## MCP 컴포넌트 제작 규칙
-
-### 1. Naive UI 기반 컴포넌트 구조
+## 예시
 
 ```vue
 <template>
-  <NComponent
-    :class="tailwindClasses"
-    :style="tokenStyles"
-    @click="handleClick"
+  <button
+    class="bg-primary800 text-[#131313] rounded-lg px-4 py-3 text-[16px] font-semibold hover:bg-primary-deep"
   >
-    <slot />
-  </NComponent>
+    <span class="mr-2">
+      <PlusCircleIcon />
+    </span>
+    Button
+    <span class="ml-2">
+      <PlusCircleIcon />
+    </span>
+  </button>
 </template>
-
-<script setup lang="ts">
-import { computed } from 'vue';
-import { NComponent } from 'naive-ui';
-import { getColorTokens, getSpacingTokens } from '@template/theme';
-
-// 디자인 토큰 활용
-const tokens = computed(() => ({
-  colors: getColorTokens(),
-  spacing: getSpacingTokens(),
-}));
-
-// TailwindCSS 클래스 (토큰 기반)
-const tailwindClasses = computed(() => [
-  'font-[Pretendard_GOV]',
-  'font-semibold',
-  'tracking-tight',
-  // 토큰 기반 클래스들...
-]);
-
-// 인라인 스타일 (토큰 기반)
-const tokenStyles = computed(() => ({
-  '--token-color-primary': tokens.value.colors.primary?.primary800,
-  '--token-spacing-md': tokens.value.spacing['spacing-16'],
-}));
-</script>
 ```
 
-### 2. 색상 토큰 활용
+- 위 코드에서 `bg-primary800`, `rounded-lg`, `text-[16px]` 등은 모두 Figma 토큰이 Tailwind 프리셋에 반영된 결과입니다.
+- 토큰이 없는 값만 하드코딩 + 반드시 `// TODO) 디자인 토큰 적용 요청` 주석
 
-```typescript
-// 하드코딩 금지
-// ❌ background: '#ffc300'
-// ❌ color: '#131313'
+## 결론
 
-// 토큰 활용 (권장)
-// ✅ background: 'var(--base-colors-primary-primary800)'
-// ✅ background: tokens.colors.primary.primary800
-// ✅ class: 'bg-[#ffc300]' (TailwindCSS arbitrary value)
-```
-
-### 3. 타이포그래피 토큰 활용
-
-```typescript
-// 폰트 크기
-// ✅ class: 'text-[16px]' (토큰 값)
-// ✅ style: { fontSize: tokens.typography.fontSize['font-16'] }
-
-// 폰트 패밀리
-// ✅ class: 'font-[Pretendard_GOV]'
-// ✅ style: { fontFamily: 'Pretendard GOV, Pretendard, sans-serif' }
-```
-
-### 4. 간격 토큰 활용
-
-```typescript
-// 패딩/마진
-// ✅ class: 'p-4' (토큰 기반)
-// ✅ class: 'p-[16px]' (토큰 값 직접 사용)
-// ✅ style: { padding: tokens.spacing['spacing-16'] }
-
-// 보더 반경
-// ✅ class: 'rounded-lg' (토큰 기반)
-// ✅ class: 'rounded-[8px]' (토큰 값 직접 사용)
-```
-
-## 컴포넌트 제작 가이드라인
-
-### 1. 컴포넌트 생성 시 필수 요소
-
-```vue
-<script setup lang="ts">
-/**
- * [컴포넌트명] - [설명]
- * @props [프롭스 설명]
- * @emits [이벤트 설명]
- * @tokens [사용하는 토큰들]
- */
-import { computed } from 'vue';
-import { NComponent } from 'naive-ui';
-import { getColorTokens, getSpacingTokens } from '@template/theme';
-
-// 1. 디자인 토큰 가져오기
-const tokens = computed(() => ({
-  colors: getColorTokens(),
-  spacing: getSpacingTokens(),
-}));
-
-// 2. TailwindCSS 클래스 (토큰 기반)
-const componentClasses = computed(() => [
-  'font-[Pretendard_GOV]',
-  'transition-all',
-  'duration-200',
-  // 토큰 기반 클래스들...
-]);
-
-// 3. Naive UI props
-const naiveProps = computed(() => ({
-  // Naive UI 기본 props
-}));
-</script>
-```
-
-### 2. 스타일 우선순위
-
-1. **TailwindCSS 유틸리티 클래스** (최우선)
-2. **PostCSS @apply** (세부 커스터마이징)
-3. **CSS 변수 (토큰)** (동적 값)
-4. **SFC <style>** (최후 수단)
-
-### 3. 토큰 사용 패턴
-
-```typescript
-// 패턴 1: TailwindCSS arbitrary values
-const classes = [
-  'bg-[#ffc300]',           // 토큰 색상
-  'text-[#131313]',         // 토큰 색상
-  'p-[16px]',              // 토큰 간격
-  'rounded-[8px]',         // 토큰 반경
-];
-
-// 패턴 2: CSS 변수 활용
-const styles = {
-  '--token-primary': tokens.value.colors.primary?.primary800,
-  '--token-spacing': tokens.value.spacing['spacing-16'],
-};
-
-// 패턴 3: 동적 토큰 값
-const dynamicColor = computed(() => 
-  tokens.value.colors.primary?.primary800 || '#ffc300'
-);
-```
-
-## 피그마 디자인 분석 시 토큰 매핑
-
-### 1. 색상 분석
-- Figma 색상 → 디자인 토큰 매핑
-- 시맨틱 색상 우선 사용
-- 하드코딩된 색상값 금지
-
-### 2. 타이포그래피 분석  
-- Figma 폰트 → Pretendard GOV 매핑
-- 폰트 크기 → 토큰 기반 크기 사용
-- 라인 높이 → 토큰 기반 값 사용
-
-### 3. 간격 분석
-- Figma 간격 → 토큰 기반 간격 사용
-- 4px 그리드 시스템 준수
-- 일관된 간격 체계 적용
-
-## 검증 체크리스트
-
-컴포넌트 제작 완료 후 다음 사항을 확인하세요:
-
-- [ ] 하드코딩된 색상값이 없는가?
-- [ ] 디자인 토큰 함수를 import했는가?
-- [ ] TailwindCSS 클래스를 우선 사용했는가?
-- [ ] Naive UI의 props/slot/이벤트를 활용했는가?
-- [ ] Pretendard GOV 폰트를 사용했는가?
-- [ ] JSDoc 주석(한국어)을 작성했는가?
-- [ ] 토큰 기반 반응형 디자인을 적용했는가?
-
-## 예외 상황
-
-### 1. 토큰이 없는 경우
-- 새로운 토큰을 `@template/theme`에 추가
-- 임시로 하드코딩 후 TODO 주석 추가
-- 토큰 추가 후 즉시 리팩토링
-
-### 2. 성능 최적화가 필요한 경우
-- 토큰 값을 computed로 메모이제이션
-- 불필요한 토큰 로딩 방지
-- 번들 크기 최적화 고려
-
-이 규칙을 준수하여 일관된 디자인 시스템을 유지하고, 피그마와 코드 간의 간극을 최소화하세요.
+- **Tailwind 유틸리티 클래스만 사용하면 Figma 토큰이 자동 적용**됩니다.
+- 토큰 유틸리티 함수는 JS에서 동적으로 토큰 값을 써야 할 때만 사용하세요.

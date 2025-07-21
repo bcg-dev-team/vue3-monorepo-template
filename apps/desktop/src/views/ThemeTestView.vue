@@ -15,39 +15,30 @@
       <div class="example-section">
         <h3>버튼 컴포넌트</h3>
         <div class="button-examples">
-          <BaseButton variant="primary">Primary 버튼</BaseButton>
-          <BaseButton variant="secondary">Secondary 버튼</BaseButton>
-          <BaseButton variant="success">Success 버튼</BaseButton>
-          <BaseButton variant="warning">Warning 버튼</BaseButton>
-          <BaseButton variant="danger">Error 버튼</BaseButton>
+          <BaseButton variant="primary" label="Primary 버튼" />
+          <BaseButton variant="outline" label="Secondary 버튼" />
+          <BaseButton variant="blue" label="Blue 버튼" />
+          <BaseButton variant="red" label="Red 버튼" />
+          <BaseButton variant="pill" label="Pill 버튼" />
         </div>
       </div>
 
       <div class="example-section">
         <h3>입력 컴포넌트</h3>
         <div class="input-examples">
-          <BaseInput v-model="inputValue" placeholder="텍스트를 입력하세요" />
-          <BaseInput v-model="inputValue2" placeholder="비밀번호" type="password" />
+          <BaseInputText v-model="inputValue" placeholder="텍스트를 입력하세요" />
+          <BaseInputText v-model="inputValue2" placeholder="비밀번호" type="password" />
         </div>
       </div>
 
       <div class="example-section">
-        <h3>폼 컴포넌트</h3>
-        <BaseForm @submit="handleSubmit">
-          <BaseInput v-model="formData.name" placeholder="이름" />
-          <BaseInput v-model="formData.email" placeholder="이메일" />
-          <BaseButton variant="primary" type="submit">제출</BaseButton>
-        </BaseForm>
-      </div>
-
-      <div class="example-section">
-        <h3>Naive UI 기본 컴포넌트</h3>
+        <h3>BaseButton 컴포넌트</h3>
         <div class="naive-examples">
-          <NButton type="primary">Naive Primary</NButton>
-          <NButton type="info">Naive Info</NButton>
-          <NButton type="success">Naive Success</NButton>
-          <NButton type="warning">Naive Warning</NButton>
-          <NButton type="error">Naive Error</NButton>
+          <BaseButton variant="primary" label="Primary" />
+          <BaseButton variant="outline" label="Outline" />
+          <BaseButton variant="blue" label="Blue" />
+          <BaseButton variant="red" label="Red" />
+          <BaseButton variant="disabled" label="Disabled" />
         </div>
       </div>
     </div>
@@ -56,8 +47,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { NButton } from 'naive-ui';
-import { BaseButton, BaseInput, BaseForm } from '@template/ui';
+import { BaseButton, BaseInputText } from '@template/ui';
 import { useThemeStore } from '@template/theme';
 import ThemeToggle from '../components/ThemeToggle.vue';
 
@@ -65,15 +55,6 @@ const themeStore = useThemeStore();
 
 const inputValue = ref('');
 const inputValue2 = ref('');
-const formData = ref({
-  name: '',
-  email: '',
-});
-
-const handleSubmit = (data: any) => {
-  console.log('폼 제출:', data);
-  alert('폼이 제출되었습니다!');
-};
 </script>
 
 <style scoped>

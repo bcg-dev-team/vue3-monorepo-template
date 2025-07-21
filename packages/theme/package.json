@@ -1,14 +1,15 @@
 {
   "name": "@template/theme",
   "version": "1.0.0",
-  "description": "Shared theme management for the monorepo",
+  "description": "Headless UI + Tailwind CSS 기반 디자인 토큰/테마 패키지 (Figma 연동)",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
     "./store": {
       "types": "./dist/store.d.ts",
@@ -17,10 +18,6 @@
     "./composables": {
       "types": "./dist/composables.d.ts",
       "import": "./dist/composables.js"
-    },
-    "./naive": {
-      "types": "./dist/naive/index.d.ts",
-      "import": "./dist/naive/index.js"
     },
     "./tokens": {
       "types": "./dist/tokens/index.d.ts",
@@ -35,38 +32,41 @@
     },
     "./styles/_tokens-dark.css": {
       "import": "./src/styles/_tokens-dark.css"
+    },
+    "./tailwind-preset-light": {
+      "import": "./src/presets/tailwind-preset-light.js"
+    },
+    "./tailwind-preset-dark": {
+      "import": "./src/presets/tailwind-preset-dark.js"
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "src/presets"
   ],
   "scripts": {
     "build:tokens:light": "style-dictionary build --config style-dictionary.light.config.js && node scripts/process-tokens.js",
     "build:tokens:dark": "style-dictionary build --config style-dictionary.dark.config.js && node scripts/process-tokens.js",
     "build:tokens": "pnpm run build:tokens:light && pnpm run build:tokens:dark",
-    "build": "pnpm run build:tokens && vite build",
+    "build:tailwind:light": "node scripts/generate-tailwind-preset-light.mjs",
+    "build:tailwind:dark": "node scripts/generate-tailwind-preset-dark.mjs",
+    "build:tailwind": "node scripts/build-tailwind-presets.mjs",
+    "build": "pnpm run build:tokens && pnpm run build:tailwind && tsc -p tsconfig.build.json",
     "dev": "vite build --watch",
     "clean": "rimraf dist",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "vue": "^3.4.0",
-    "pinia": "^2.1.0",
-    "naive-ui": "^2.37.0"
+    "pinia": "^2.1.0"
   },
   "devDependencies": {
     "@template/types": "workspace:*",
     "@tokens-studio/sd-transforms": "^2.0.1",
-    "rimraf": "^5.0.0",
-    "style-dictionary": "^5.0.1",
-    "typescript": "^5.3.0",
-    "vite": "^5.0.0",
-    "vite-plugin-dts": "^3.0.0",
-    "@vitejs/plugin-vue": "^5.0.0"
+    "style-dictionary": "^5.0.1"
   },
   "peerDependencies": {
     "vue": "^3.4.0",
-    "pinia": "^2.1.0",
-    "naive-ui": "^2.37.0"
+    "pinia": "^2.1.0"
   }
 }

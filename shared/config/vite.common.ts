@@ -25,7 +25,7 @@ export const createCommonConfig = () => {
         output: {
           manualChunks: {
             vendor: ['vue', 'vue-router', 'pinia'],
-            'template-ui': ['@template/ui', 'naive-ui'],
+            'template-ui': ['@template/ui'],
             'template-utils': ['@template/utils'],
             'template-api': ['@template/api'],
             'template-types': ['@template/types'],
@@ -34,15 +34,16 @@ export const createCommonConfig = () => {
       },
     },
     optimizeDeps: {
-      include: ['vue', 'vue-router', 'pinia', 'naive-ui'],
+      include: ['vue', 'vue-router', 'pinia'],
       exclude: ['@template/ui', '@template/utils', '@template/api', '@template/types'],
     },
   };
 };
 
 export const commonAlias = {
-  '@template/ui': path.resolve(__dirname, '../../packages/ui/src'),
-  '@template/types': path.resolve(__dirname, '../../packages/types/src'),
-  '@template/utils': path.resolve(__dirname, '../../packages/utils/src'),
-  '@template/api': path.resolve(__dirname, '../../packages/api/src'),
+  '@template/ui': path.resolve(__dirname, '../../packages/ui/dist'),
+  '@template/types': path.resolve(__dirname, '../../packages/types/dist'),
+  '@template/theme': path.resolve(__dirname, '../../packages/theme/dist'),
+  '@template/utils': path.resolve(__dirname, '../../packages/utils/dist'),
+  '@template/api': path.resolve(__dirname, '../../packages/api/dist'),
 };

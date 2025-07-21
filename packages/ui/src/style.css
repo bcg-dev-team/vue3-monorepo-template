@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Design tokens are imported from theme package */
 
 /* Base styles */
@@ -12,60 +16,3 @@ body {
   color: var(--font-color-default);
   background-color: var(--background-bg-default);
 }
-
-/* Utility classes */
-.text-primary {
-  color: var(--font-color-primary);
-}
-
-.text-secondary {
-  color: var(--font-color-default-muted);
-}
-
-.text-success {
-  color: var(--font-color-green);
-}
-
-.text-warning {
-  color: var(--font-color-red);
-}
-
-.text-error {
-  color: var(--font-color-red);
-}
-
-.bg-primary {
-  background-color: var(--background-primary);
-}
-
-.bg-secondary {
-  background-color: var(--background-bg-surface);
-}
-
-.bg-success {
-  background-color: var(--background-primary-light);
-}
-
-.bg-warning {
-  background-color: var(--trade-long-background);
-}
-
-.bg-error {
-  background-color: var(--trade-long-background);
-}
-
-.shadow-sm {
-  box-shadow: var(--shadow-sm);
-}
-
-.shadow-md {
-  box-shadow: var(--shadow-md);
-}
-
-.shadow-lg {
-  box-shadow: var(--shadow-lg);
-}
-
-.shadow-xl {
-  box-shadow: var(--shadow-xl);
-} 

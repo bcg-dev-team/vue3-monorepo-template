@@ -1,4 +1,6 @@
-// UI 컴포넌트들을 export
-export { default as BaseButton } from './BaseButton.vue';
-export { default as BaseForm } from './BaseForm.vue';
-export { default as BaseInput } from './BaseInput.vue';
+export { default as BaseButton } from './BaseButton/BaseButton.vue';
+export { default as BaseTabs } from './BaseTabs/BaseTabs.vue';
+export { default as BaseInput } from './BaseInput/BaseInput.vue';
+export { default as BaseInputText } from './BaseInput/BaseInputText.vue';
+export * from './BasePagination';
+export * from './BaseTable';

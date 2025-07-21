@@ -195,9 +195,12 @@ function checkCircularDependencies(): void {
       executeCommand('pnpm add -D madge', { stdio: 'inherit' });
     }
 
-    executeCommand('npx madge --circular packages/ --exclude "storybook-static"', {
-      stdio: 'inherit',
-    });
+    executeCommand(
+      'npx madge --circular packages/ --exclude "storybook-static,dist,node_modules,coverage" --extensions js,ts,vue',
+      {
+        stdio: 'inherit',
+      }
+    );
     console.log('✅ 순환참조 없음');
   } catch (error) {
     console.error('❌ 순환참조 발견!');

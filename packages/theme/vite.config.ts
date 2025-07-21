@@ -22,16 +22,14 @@ export default defineConfig({
     target: 'esnext',
     minify: 'esbuild',
     rollupOptions: {
-      external: ['vue', 'pinia', '@template/types', 'naive-ui'],
+      external: ['vue', 'pinia', '@template/types'],
       output: {
         globals: {
           vue: 'Vue',
           pinia: 'Pinia',
           '@template/types': 'TemplateTypes',
-          'naive-ui': 'naive',
         },
         exports: 'named',
-        preserveModules: true,
       },
     },
   },

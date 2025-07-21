@@ -7,44 +7,29 @@
       <div class="component-card">
         <h3>BaseButton</h3>
         <div class="component-demo">
-          <BaseButton variant="primary">Primary Button</BaseButton>
-          <BaseButton variant="secondary">Secondary Button</BaseButton>
+          <BaseButton label="Primary Button" variant="primary" />
+          <BaseButton label="Outline Button" variant="outline" />
+          <BaseButton label="Red Button" variant="red" />
         </div>
         <div class="component-code">
-          <pre><code>&lt;BaseButton variant="primary"&gt;
-  Primary Button
-&lt;/BaseButton&gt;</code></pre>
-        </div>
-      </div>
-
-      <div class="component-card">
-        <h3>BaseInput</h3>
-        <div class="component-demo">
-          <BaseInput name="demo-input" v-model="inputValue" placeholder="입력하세요" />
-        </div>
-        <div class="component-code">
-          <pre><code>&lt;BaseInput 
-  name="input-name"
-  v-model="value" 
-  placeholder="입력하세요" 
+          <pre><code>&lt;BaseButton 
+  label="Primary Button" 
+  variant="primary" 
 /&gt;</code></pre>
         </div>
       </div>
 
       <div class="component-card">
-        <h3>BaseForm</h3>
+        <h3>BaseTabs</h3>
         <div class="component-demo">
-          <BaseForm @submit="handleSubmit">
-            <BaseInput name="name" v-model="formData.name" placeholder="이름" />
-            <BaseInput name="email" v-model="formData.email" placeholder="이메일" />
-            <BaseButton type="submit">제출</BaseButton>
-          </BaseForm>
+          <BaseTabs :tabs="tabs" v-model="selectedTab" :show-content="true" />
         </div>
         <div class="component-code">
-          <pre><code>&lt;BaseForm @submit="handleSubmit"&gt;
-  &lt;BaseInput name="name" v-model="name" /&gt;
-  &lt;BaseButton type="submit"&gt;제출&lt;/BaseButton&gt;
-&lt;/BaseForm&gt;</code></pre>
+          <pre><code>&lt;BaseTabs
+  :tabs="tabs"
+  v-model="selectedTab"
+  :show-content="true"
+/&gt;</code></pre>
         </div>
       </div>
     </div>
@@ -53,12 +38,26 @@
       <h2>사용법</h2>
       <div class="code-block">
         <pre><code>// 컴포넌트 임포트
-import { BaseButton, BaseInput, BaseForm } from '@template/ui'
+import { BaseButton, BaseTabs } from '@template/ui'
 
-// 사용
-&lt;BaseButton variant="primary" @click="handleClick"&gt;
-  클릭하세요
-&lt;/BaseButton&gt;</code></pre>
+// BaseButton 사용
+&lt;BaseButton 
+  label="클릭하세요" 
+  variant="primary" 
+  @click="handleClick" 
+/&gt;
+
+// BaseTabs 사용
+const tabs = [
+  { value: 'tab1', label: '첫 번째 탭', content: '컨텐츠' },
+  { value: 'tab2', label: '두 번째 탭', content: '컨텐츠' },
+];
+
+&lt;BaseTabs
+  :tabs="tabs"
+  v-model="selectedTab"
+  :show-content="true"
+/&gt;</code></pre>
       </div>
     </div>
   </div>
@@ -66,17 +65,16 @@ import { BaseButton, BaseInput, BaseForm } from '@template/ui'
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { BaseButton, BaseInput, BaseForm } from '@template/ui';
+import { BaseButton, BaseTabs } from '@template/ui';
 
-const inputValue = ref('');
-const formData = ref({
-  name: '',
-  email: '',
-});
-
-const handleSubmit = () => {
-  console.log('Form submitted:', formData.value);
-};
+// BaseTabs 관련 상태
+const selectedTab = ref('tab1');
+const tabs = [
+  { value: 'tab1', label: '첫 번째 탭', content: '빨간색 탭의 컨텐츠입니다.' },
+  { value: 'tab2', label: '두 번째 탭', content: '파란색 탭의 컨텐츠입니다.' },
+  { value: 'tab3', label: '세 번째 탭', content: '초록색 탭의 컨텐츠입니다.' },
+  { value: 'tab4', label: '네 번째 탭', content: '보라색 탭의 컨텐츠입니다.' },
+];
 </script>
 
 <style scoped>

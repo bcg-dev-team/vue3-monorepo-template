@@ -13,6 +13,27 @@ export function getCSSVariable(variableName: string): string {
 }
 
 /**
+ * 공통 색상(common) 토큰을 가져오는 함수
+ * @returns common 색상 토큰 객체
+ */
+function getCommonColorTokens() {
+  const common: Record<string, string> = {};
+  const style = getComputedStyle(
+    typeof window !== 'undefined' ? document.documentElement : ({} as HTMLElement)
+  );
+  for (const key in style) {
+    if (typeof key === 'string' && key.startsWith('--base-colors-common-')) {
+      const value = style.getPropertyValue(key).trim();
+      if (value) {
+        const name = key.replace('--base-colors-common-', '');
+        common[name] = value;
+      }
+    }
+  }
+  return common;
+}
+
+/**
  * 색상 토큰을 그룹별로 가져오는 함수
  * @returns 색상 토큰 객체
  */
@@ -24,6 +45,7 @@ export function getColorTokens() {
     red: {},
     blue: {},
     purple: {},
+    common: getCommonColorTokens(),
   };
 
   // Primary 색상 (실제 CSS 변수명 확인)
@@ -162,108 +184,192 @@ export function getColorTokens() {
 }
 
 /**
- * 타이포그래피 토큰을 가져오는 함수
+ * 타이포그래피 토큰을 가져오는 함수 (CSS 변수 기반)
  * @returns 타이포그래피 토큰 객체
  */
 export function getTypographyTokens() {
-  const typography: Record<string, Record<string, string>> = {
-    fontSize: {},
-    lineHeight: {},
-    letterSpacing: {},
+  return {
+    fontSize: {
+      'font-10': getCSSVariable('--font-size-font-10'),
+      'font-12': getCSSVariable('--font-size-font-12'),
+      'font-13': getCSSVariable('--font-size-font-13'),
+      'font-14': getCSSVariable('--font-size-font-14'),
+      'font-16': getCSSVariable('--font-size-font-16'),
+      'font-18': getCSSVariable('--font-size-font-18'),
+      'font-20': getCSSVariable('--font-size-font-20'),
+      'font-24': getCSSVariable('--font-size-font-24'),
+      'font-36': getCSSVariable('--font-size-font-36'),
+      'font-48': getCSSVariable('--font-size-font-48'),
+      'font-64': getCSSVariable('--font-size-font-64'),
+    },
+    lineHeight: {
+      'line-height-0': getCSSVariable('--font-line-heights-0'),
+      'line-height-1': getCSSVariable('--font-line-heights-1'),
+      'line-height-2': getCSSVariable('--font-line-heights-2'),
+      'line-height-3': getCSSVariable('--font-line-heights-3'),
+      'line-height-4': getCSSVariable('--font-line-heights-4'),
+      'line-height-5': getCSSVariable('--font-line-heights-5'),
+      'line-height-6': getCSSVariable('--font-line-heights-6'),
+      'line-height-7': getCSSVariable('--font-line-heights-7'),
+      'line-height-8': getCSSVariable('--font-line-heights-8'),
+    },
+    letterSpacing: {
+      'letter-spacing-0': getCSSVariable('--font-letter-spacing-0'),
+      'letter-spacing-1': getCSSVariable('--font-letter-spacing-1'),
+      'letter-spacing-2': getCSSVariable('--font-letter-spacing-2'),
+      'letter-spacing-3': getCSSVariable('--font-letter-spacing-3'),
+      'letter-spacing-4': getCSSVariable('--font-letter-spacing-4'),
+      'letter-spacing-5': getCSSVariable('--font-letter-spacing-5'),
+    },
   };
-
-  // Font Size
-  const fontSizes = [10, 12, 13, 14, 16, 18, 20, 24, 36, 48, 64];
-  fontSizes.forEach((size) => {
-    const tokenName = `--font-size-font-${size}`;
-    const value = getCSSVariable(tokenName);
-    if (value) {
-      typography.fontSize[`font-${size}`] = value;
-    }
-  });
-
-  // Line Height
-  for (let i = 0; i <= 8; i++) {
-    const tokenName = `--font-line-heights-${i}`;
-    const value = getCSSVariable(tokenName);
-    if (value) {
-      typography.lineHeight[`line-height-${i}`] = value;
-    }
-  }
-
-  // Letter Spacing
-  for (let i = 0; i <= 5; i++) {
-    const tokenName = `--font-letter-spacing-${i}`;
-    const value = getCSSVariable(tokenName);
-    if (value) {
-      typography.letterSpacing[`letter-spacing-${i}`] = value;
-    }
-  }
-
-  return typography;
 }
 
 /**
- * 간격 토큰을 가져오는 함수
+ * 간격 토큰을 가져오는 함수 (CSS 변수 기반)
  * @returns 간격 토큰 객체
  */
 export function getSpacingTokens() {
-  const spacing: Record<string, string> = {};
-
-  // 간격 토큰들 (실제 CSS 변수명에 맞게 조정 필요)
-  const spacingValues = [4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96, 128, 160, 192, 224, 256];
-
-  spacingValues.forEach((value) => {
-    const tokenName = `--spacing-${value}`;
-    const cssValue = getCSSVariable(tokenName);
-    if (cssValue) {
-      spacing[`spacing-${value}`] = cssValue;
-    } else {
-      // CSS 변수가 없으면 기본값 사용
-      spacing[`spacing-${value}`] = `${value}px`;
-    }
-  });
-
-  return spacing;
+  return {
+    'spacing-4': getCSSVariable('--base-size-size-4'),
+    'spacing-6': getCSSVariable('--base-size-size-6'),
+    'spacing-8': getCSSVariable('--base-size-size-8'),
+    'spacing-10': getCSSVariable('--base-size-size-10'),
+    'spacing-12': getCSSVariable('--base-size-size-12'),
+    'spacing-13': getCSSVariable('--base-size-size-13'),
+    'spacing-14': getCSSVariable('--base-size-size-14'),
+    'spacing-16': getCSSVariable('--base-size-size-16'),
+    'spacing-18': getCSSVariable('--base-size-size-18'),
+    'spacing-20': getCSSVariable('--base-size-size-20'),
+    'spacing-24': getCSSVariable('--base-size-size-24'),
+    'spacing-36': getCSSVariable('--base-size-size-36'),
+    'spacing-40': getCSSVariable('--base-size-size-40'),
+    'spacing-48': getCSSVariable('--base-size-size-48'),
+    'spacing-50': getCSSVariable('--base-size-size-50'),
+    'spacing-64': getCSSVariable('--base-size-size-64'),
+    'spacing-100': getCSSVariable('--base-size-size-100'),
+    'spacing-130': getCSSVariable('--base-size-size-130'),
+    'spacing-140': getCSSVariable('--base-size-size-140'),
+    'spacing-200': getCSSVariable('--base-size-size-200'),
+    'spacing-300': getCSSVariable('--base-size-size-300'),
+  };
 }
 
 /**
- * 패딩 토큰을 가져오는 함수
+ * 패딩 토큰을 가져오는 함수 (CSS 변수 기반)
  * @returns 패딩 토큰 객체
  */
 export function getPaddingTokens() {
-  const paddings: Record<string, string> = {};
-  // 패딩 토큰들 (실제 CSS 변수명에 맞게 조정)
-  const paddingNames = ['64', '48', '36', '16', '24', '12', '4', '130', '8', 'z'];
-  paddingNames.forEach((name) => {
-    const tokenName = `--padding-padding-${name}`;
-    const value = getCSSVariable(tokenName);
-    if (value) {
-      paddings[`padding-${name}`] = value;
-    } else {
-      paddings[`padding-${name}`] = name + 'px'; // fallback
-    }
-  });
-  return paddings;
+  return {
+    'padding-4': getCSSVariable('--padding-padding-4'),
+    'padding-8': getCSSVariable('--padding-padding-8'),
+    'padding-12': getCSSVariable('--padding-padding-12'),
+    'padding-16': getCSSVariable('--padding-padding-16'),
+    'padding-24': getCSSVariable('--padding-padding-24'),
+    'padding-36': getCSSVariable('--padding-padding-36'),
+    'padding-48': getCSSVariable('--padding-padding-48'),
+    'padding-64': getCSSVariable('--padding-padding-64'),
+    'padding-130': getCSSVariable('--padding-padding-130'),
+    'padding-z': getCSSVariable('--padding-padding-z'),
+  };
 }
 
 /**
- * 라운드(Radius) 토큰을 가져오는 함수
+ * 라운드(Radius) 토큰을 가져오는 함수 (CSS 변수 기반)
  * @returns 라운드 토큰 객체
  */
 export function getRadiusTokens() {
-  const radii: Record<string, string> = {};
-  const radiusNames = ['xs', 'sm', 'md', 'lg', 'pill', 'default', 'none'];
-  radiusNames.forEach((name) => {
-    const tokenName = `--radius-${name}`;
-    const value = getCSSVariable(tokenName);
-    if (value) {
-      radii[`radius-${name}`] = value;
-    } else {
-      radii[`radius-${name}`] = name; // fallback
+  return {
+    'radius-xs': getCSSVariable('--radius-xs'),
+    'radius-sm': getCSSVariable('--radius-sm'),
+    'radius-md': getCSSVariable('--radius-md'),
+    'radius-lg': getCSSVariable('--radius-lg'),
+    'radius-pill': getCSSVariable('--radius-pill'),
+    'radius-default': getCSSVariable('--radius-default'),
+    'radius-none': getCSSVariable('--radius-none'),
+  };
+}
+
+/**
+ * 카테고리별 토큰 getter 생성기
+ * @param {string} prefix - CSS 변수 prefix (예: '--button-')
+ * @param {string} groupName - 반환 객체의 그룹명
+ */
+function getCategoryTokens(prefix: string, groupName: string) {
+  const group: Record<string, string> = {};
+  const style = getComputedStyle(
+    typeof window !== 'undefined' ? document.documentElement : ({} as HTMLElement)
+  );
+  for (const key in style) {
+    if (typeof key === 'string' && key.startsWith(prefix)) {
+      const value = style.getPropertyValue(key).trim();
+      if (value) {
+        const name = key.replace(prefix, '');
+        group[name] = value;
+      }
     }
-  });
-  return radii;
+  }
+  return group;
+}
+
+/**
+ * Button 디자인 토큰 반환 (Figma 1:1 매핑)
+ * @returns 버튼 관련 디자인 토큰 객체
+ */
+export function getButtonTokens() {
+  return {
+    'primary-background': getCSSVariable('--button-primary-background'),
+    'primary-text': getCSSVariable('--button-primary-text'),
+    'primary-border': getCSSVariable('--button-primary-border'),
+    'disabled-background': getCSSVariable('--button-disabled-background'),
+    'disabled-text': getCSSVariable('--button-disabled-text'),
+    'disabled-border': getCSSVariable('--button-disabled-border'),
+    'outline-background': getCSSVariable('--button-outline-background'),
+    'outline-text': getCSSVariable('--button-outline-text'),
+    'outline-border': getCSSVariable('--button-outline-border'),
+    'red-background': getCSSVariable('--button-red-background'),
+    'red-text': getCSSVariable('--button-red-text'),
+    'red-border': getCSSVariable('--button-red-border'),
+    'blue-background': getCSSVariable('--button-blue-solid-background'),
+    'blue-text': getCSSVariable('--button-blue-solid-text'),
+    'blue-border': getCSSVariable('--button-blue-solid-border'),
+    'blue-solid-hover': getCSSVariable('--button-blue-solid-hover'),
+    'light-solid-background': getCSSVariable('--button-light-solid-background'),
+    'light-solid-text': getCSSVariable('--button-light-solid-text'),
+    'light-solid-border': getCSSVariable('--button-light-solid-border'),
+    'red-solid-background': getCSSVariable('--button-red-solid-background'),
+    'red-solid-text': getCSSVariable('--button-red-solid-text'),
+    'red-solid-border': getCSSVariable('--button-red-solid-border'),
+    'red-solid-hover': getCSSVariable('--button-red-solid-hover'),
+    // TODO: pill 관련 토큰이 Figma에 정의되면 교체 필요
+    'pill-background': getCSSVariable('--button-primary-background'), // 임시
+    'pill-text': getCSSVariable('--button-primary-text'), // 임시
+    'pill-border': getCSSVariable('--button-primary-border'), // 임시
+    'pill-hover-background': getCSSVariable('--button-primary-background'), // 임시
+  };
+}
+export function getInputTokens() {
+  return getCategoryTokens('--input-', 'input');
+}
+export function getBackgroundTokens() {
+  return getCategoryTokens('--background-', 'background');
+}
+export function getFontTokens() {
+  return getCategoryTokens('--font-', 'font');
+}
+export function getTradeTokens() {
+  return getCategoryTokens('--trade-', 'trade');
+}
+export function getTableTokens() {
+  return getCategoryTokens('--table-', 'table');
+}
+export function getPopupTokens() {
+  return getCategoryTokens('--popup-', 'popup');
+}
+export function getNavTokens() {
+  return getCategoryTokens('--nav-', 'nav');
+}
+export function getSidebarTokens() {
+  return getCategoryTokens('--sidebar-', 'sidebar');
 }
 
 /**
@@ -273,10 +379,19 @@ export function getRadiusTokens() {
 export function getAllDesignTokens() {
   return {
     colors: getColorTokens(),
+    button: getButtonTokens(),
+    input: getInputTokens(),
+    background: getBackgroundTokens(),
+    font: getFontTokens(),
+    trade: getTradeTokens(),
+    table: getTableTokens(),
+    popup: getPopupTokens(),
+    nav: getNavTokens(),
+    sidebar: getSidebarTokens(),
+    radius: getRadiusTokens(),
+    padding: getPaddingTokens(),
     typography: getTypographyTokens(),
     spacing: getSpacingTokens(),
-    padding: getPaddingTokens(),
-    radius: getRadiusTokens(),
   };
 }
 

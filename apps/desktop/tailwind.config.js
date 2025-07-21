@@ -1,10 +1,6 @@
-import { tailwindConfig } from '../../packages/theme/src/config/tailwind.config';
+import { tailwindConfig } from '../../packages/theme/dist/config/tailwind.config';
 
 export default {
   ...tailwindConfig,
-  content: [
-    './index.html',
-    './src/**/*.{vue,js,ts,jsx,tsx}',
-    '../../packages/ui/src/**/*.{vue,js,ts,jsx,tsx}',
-  ],
+  content: ['./src/**/*.{vue,js,ts,jsx,tsx}', './src/components/**/*.{vue,js,ts,jsx,tsx}'],
 };

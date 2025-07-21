@@ -1,6 +1,9 @@
 import type { Preview } from '@storybook/vue3';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
+
+// CSS 파일 import
 import '../src/style.css';
+
 import { defineComponent } from 'vue';
 
 // 중앙 정렬 데코레이터 (docs에서 제외)

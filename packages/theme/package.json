@@ -27,11 +27,11 @@
       "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.js"
     },
-    "./styles/_tokens-light.css": {
-      "import": "./src/styles/_tokens-light.css"
+    "./styles/tokens-light.css": {
+      "import": "./dist/styles/_tokens-light.css"
     },
-    "./styles/_tokens-dark.css": {
-      "import": "./src/styles/_tokens-dark.css"
+    "./styles/tokens-dark.css": {
+      "import": "./dist/styles/_tokens-dark.css"
     }
   },
   "files": [

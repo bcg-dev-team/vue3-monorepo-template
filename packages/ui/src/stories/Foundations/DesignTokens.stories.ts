@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
 import { defineComponent, ref, computed, watch, onMounted } from 'vue';
+import '@template/theme';
 import {
   getColorTokens,
   getTypographyTokens,
@@ -7,8 +8,7 @@ import {
   getPaddingTokens,
   getRadiusTokens,
 } from '@template/theme';
-import '@template/theme/styles/_tokens-light.css';
-import '@template/theme/styles/_tokens-dark.css';
+
 import './design-tokens.css';
 
 /**

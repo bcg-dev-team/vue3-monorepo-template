@@ -1,5 +1,7 @@
 import type { StorybookConfig } from '@storybook/vue3-vite';
 import { resolve } from 'path';
+import tailwindcss from 'tailwindcss';
+import autoprefixer from 'autoprefixer';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -23,18 +25,26 @@ const config: StorybookConfig = {
       alias: {
         ...config.resolve?.alias,
         '@': resolve(__dirname, '../src'),
-        '@template/theme': resolve(__dirname, '../../theme/src'),
-        '@template/types': resolve(__dirname, '../../types/src'),
-        '@template/utils': resolve(__dirname, '../../utils/src'),
-        '@template/api': resolve(__dirname, '../../api/src'),
+        '@template/theme': resolve(__dirname, '../../theme/dist'),
+        '@template/types': resolve(__dirname, '../../types/dist'),
+        '@template/utils': resolve(__dirname, '../../utils/dist'),
+        '@template/api': resolve(__dirname, '../../api/dist'),
       },
     };
 
     // TypeScript 지원
     config.optimizeDeps = {
       ...config.optimizeDeps,
-      include: ['vue', '@template/types', '@template/theme', 'pinia'],
+      include: ['vue', '@template/types', '@template/theme'],
       force: true,
+    };
+
+    // PostCSS 설정 추가
+    config.css = {
+      ...config.css,
+      postcss: {
+        plugins: [tailwindcss, autoprefixer],
+      },
     };
 
     // 환경 변수 설정

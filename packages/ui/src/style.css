@@ -1,4 +1,6 @@
-/* Theme 패키지의 CSS 변수는 main.ts에서 @template/theme import를 통해 로드됨 */
+/* Theme 패키지의 CSS 변수 직접 import */
+@import '../../theme/dist/styles/_tokens-light.css';
+@import '../../theme/dist/styles/_tokens-dark.css';
 
 @tailwind base;
 @tailwind components;

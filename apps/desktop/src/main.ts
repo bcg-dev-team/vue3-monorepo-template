@@ -1,7 +1,6 @@
-import { createApp, h } from 'vue';
+import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { configure } from 'vee-validate';
-import { NConfigProvider } from 'naive-ui';
 import { useTheme } from '@template/theme';
 import App from './App.vue';
 import router from './router';
@@ -29,22 +28,8 @@ configure({
 // Pinia 인스턴스 생성
 const pinia = createPinia();
 
-// Naive UI ConfigProvider로 앱을 래핑
-const app = createApp({
-  setup() {
-    const { currentTheme, themeOverrides } = useTheme();
-
-    return () =>
-      h(
-        NConfigProvider,
-        {
-          theme: currentTheme.value,
-          themeOverrides: themeOverrides.value,
-        },
-        { default: () => h(App) }
-      );
-  },
-});
+// 앱 생성
+const app = createApp(App);
 
 // 플러그인 등록
 app.use(pinia);

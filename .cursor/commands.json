@@ -36,11 +36,6 @@
       "prompt": "Create a Pinia store with TypeScript, proper state management, getters, actions, and comprehensive testing."
   },
   {
-      "name": "vue:create-naive-ui",
-      "description": "Create Naive UI component wrapper",
-      "prompt": "Create a Naive UI component wrapper with proper props, events, slots, and accessibility features."
-  },
-  {
       "name": "vue:create-tailwind",
       "description": "Create Tailwind CSS component",
       "prompt": "Create a component using Tailwind CSS with responsive design, custom utilities, and proper styling patterns."

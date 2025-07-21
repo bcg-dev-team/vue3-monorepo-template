@@ -35,7 +35,6 @@
     "test:coverage": "vitest --coverage"
   },
   "dependencies": {
-    "@headlessui/vue": "^1.7.18",
     "@template/theme": "workspace:*",
     "@template/types": "workspace:*",
     "pinia": "^2.1.0",

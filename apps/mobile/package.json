@@ -19,15 +19,16 @@
     "@template/types": "workspace:*",
     "@template/ui": "workspace:*",
     "@template/utils": "workspace:*",
-    "naive-ui": "^2.42.0",
     "pinia": "^2.1.0",
     "vue": "^3.4.0",
     "vue-router": "^4.2.0"
   },
   "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.0",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
+    "vite": "^5.4.19",
     "vue-tsc": "^1.8.0"
   }
 }

@@ -1,0 +1,24 @@
+{
+  "name": "@template/moda-desktop",
+  "version": "0.1.0",
+  "description": "Vue 3 Moda 데스크톱 애플리케이션",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path ../../.gitignore",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage"
+  },
+  "dependencies": {
+    "@template/api": "workspace:*",
+    "@template/theme": "workspace:*",
+    "@template/types": "workspace:*",
+    "@template/ui": "workspace:*",
+    "@template/utils": "workspace:*"
+  },
+  "devDependencies": {}
+}

@@ -260,6 +260,24 @@ importers:
         specifier: ~19.1.0
         version: 19.1.8
 
+  apps/moda-desktop:
+    dependencies:
+      '@template/api':
+        specifier: workspace:*
+        version: link:../../packages/api
+      '@template/theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
+      '@template/types':
+        specifier: workspace:*
+        version: link:../../packages/types
+      '@template/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      '@template/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
+
   packages/api:
     dependencies:
       '@template/types':

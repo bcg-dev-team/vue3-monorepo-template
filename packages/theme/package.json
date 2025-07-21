@@ -57,14 +57,9 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "vue": "^3.4.0",
-    "pinia": "^2.1.0"
+    "@template/types": "workspace:*"
   },
-  "devDependencies": {
-    "@template/types": "workspace:*",
-    "@tokens-studio/sd-transforms": "^2.0.1",
-    "style-dictionary": "^5.0.1"
-  },
+  "devDependencies": {},
   "peerDependencies": {
     "vue": "^3.4.0",
     "pinia": "^2.1.0"

@@ -1,5 +1,5 @@
 // Auto-generated from Figma tokens
-// Last updated: 2025-07-21T02:04:26.969Z
+// Last updated: 2025-07-21T02:11:03.713Z
 
 export const darkColors = {
   "primary": "#ffc800",

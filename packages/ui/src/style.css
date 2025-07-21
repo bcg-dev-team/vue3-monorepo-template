@@ -1,3 +1,6 @@
+@import '../../theme/src/styles/_tokens-light.css';
+@import '../../theme/src/styles/_tokens-dark.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

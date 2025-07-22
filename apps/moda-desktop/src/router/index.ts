@@ -5,42 +5,32 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'GettingStarted',
-    component: () => import('../views/GettingStartedView.vue'),
+    component: () => import('@/views/home/Index.vue'),
   },
   {
-    path: '/packages',
-    name: 'Packages',
-    component: () => import('../views/PackagesView.vue'),
+    path: '/order',
+    name: 'Order',
+    component: () => import('@/views/order/Index.vue'),
   },
   {
-    path: '/development',
-    name: 'Development',
-    component: () => import('../views/DevelopmentView.vue'),
+    path: '/transaction',
+    name: 'Transaction',
+    component: () => import('@/views/transaction/Index.vue'),
   },
   {
-    path: '/components',
-    name: 'Components',
-    component: () => import('../views/ComponentsView.vue'),
+    path: '/assets',
+    name: 'Assets',
+    component: () => import('@/views/assets/Index.vue'),
   },
   {
-    path: '/api-examples',
-    name: 'ApiExamples',
-    component: () => import('../views/ApiExamplesView.vue'),
+    path: '/withdrawal',
+    name: 'Withdrawal',
+    component: () => import('@/views/withdrawal/Index.vue'),
   },
   {
-    path: '/utils-example',
-    name: 'UtilsExample',
-    component: () => import('../views/UtilsExample.vue'),
-  },
-  {
-    path: '/tree-shaking-test',
-    name: 'TreeShakingTest',
-    component: () => import('../views/TreeShakingTest.vue'),
-  },
-  {
-    path: '/theme-test',
-    name: 'ThemeTest',
-    component: () => import('../views/ThemeTestView.vue'),
+    path: '/service',
+    name: 'Service',
+    component: () => import('@/views/service/Index.vue'),
   },
 ];
 

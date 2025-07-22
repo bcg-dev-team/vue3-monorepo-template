@@ -21,10 +21,10 @@ interface NavMenu {
 
 const navMenus: NavMenu[] = [
   { id: 'home', text: '홈', to: '/' },
-  { id: 'order', text: '주문', to: '/packages' },
-  { id: 'trade', text: '거래', to: '/development' },
-  { id: 'assets', text: '자산', to: '/components' },
-  { id: 'withdrawal', text: '출금신청', to: '/api-examples' },
-  { id: 'support', text: '고객지원', to: '/theme-test' },
+  { id: 'order', text: '주문', to: '/order' },
+  { id: 'trade', text: '거래', to: '/transaction' },
+  { id: 'assets', text: '자산', to: '/assets' },
+  { id: 'withdrawal', text: '출금신청', to: '/withdrawal' },
+  { id: 'support', text: '고객지원', to: '/service' },
 ];
 </script>

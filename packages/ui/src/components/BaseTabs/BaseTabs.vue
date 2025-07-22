@@ -9,28 +9,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
-
-interface TabItem {
-  /**
-   * 탭의 고유 식별자
-   */
-  value: string | number;
-
-  /**
-   * 탭에 표시될 텍스트
-   */
-  label: string;
-
-  /**
-   * 탭이 비활성화되었는지 여부
-   */
-  disabled?: boolean;
-
-  /**
-   * 탭 패널에 표시될 컨텐츠
-   */
-  content?: string;
-}
+import type { TabItem } from '../../types/components';
 
 interface Props {
   /**

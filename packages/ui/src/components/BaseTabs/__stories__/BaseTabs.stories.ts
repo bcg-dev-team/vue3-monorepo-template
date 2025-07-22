@@ -47,7 +47,7 @@ const disabledTabs = [
 
 // 기본 스토리 (Figma 디자인 기반)
 export const Default: Story = {
-  render: (args) => ({
+  render: (args: any) => ({
     components: { BaseTabs },
     setup() {
       const selectedTab = ref(args.modelValue || 'tab1');
@@ -94,7 +94,7 @@ export const Default: Story = {
 
 // 5개 이상 탭 스토리 (색상 순환 확인)
 export const ExtendedTabs: Story = {
-  render: (args) => ({
+  render: (args: any) => ({
     components: { BaseTabs },
     setup() {
       const selectedTab = ref(args.modelValue || 'tab1');
@@ -141,7 +141,7 @@ export const ExtendedTabs: Story = {
 
 // 비활성화된 탭이 있는 스토리
 export const WithDisabledTabs: Story = {
-  render: (args) => ({
+  render: (args: any) => ({
     components: { BaseTabs },
     setup() {
       const selectedTab = ref(args.modelValue || 'tab1');
@@ -188,7 +188,7 @@ export const WithDisabledTabs: Story = {
 
 // 세로 방향 스토리
 export const Vertical: Story = {
-  render: (args) => ({
+  render: (args: any) => ({
     components: { BaseTabs },
     setup() {
       const selectedTab = ref(args.modelValue || 'tab1');
@@ -302,7 +302,7 @@ export const Sizes: Story = {
 
 // 컨텐츠 없이 탭만 표시
 export const TabsOnly: Story = {
-  render: (args) => ({
+  render: (args: any) => ({
     components: { BaseTabs },
     setup() {
       const selectedTab = ref(args.modelValue || 'tab1');

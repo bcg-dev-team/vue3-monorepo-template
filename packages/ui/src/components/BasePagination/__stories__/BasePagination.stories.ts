@@ -136,7 +136,7 @@ export const Interactive: Story = {
     maxVisiblePages: 5,
     showFirstLast: false,
   },
-  render: (args) => ({
+  render: (args: any) => ({
     components: { BasePagination },
     setup() {
       const currentPage = ref(args.currentPage);

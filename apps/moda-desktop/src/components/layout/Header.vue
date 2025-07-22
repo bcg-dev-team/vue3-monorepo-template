@@ -6,38 +6,22 @@
       <div class="mr-9">
         <img class="h-10 w-auto" src="../../assets/logo/moda_logo.svg" alt="logo" />
       </div>
-      <nav class="flex items-center gap-9">
-        <router-link
-          v-for="menu in navMenus"
-          :key="menu.id"
-          :to="menu.to"
-          class="text-white decoration-none text-lg font-semibold whitespace-nowrap"
-          :class="{ '!text-primary': $route.path === menu.to }"
-        >
-          {{ menu.text }}
-        </router-link>
-      </nav>
+      <NavBar />
     </div>
 
     <div class="header-right">
+      <StatusBarArea v-if="isLogin" />
+      <LoginButtonArea v-else />
       <slot name="header-right" />
     </div>
   </header>
 </template>
 
 <script setup lang="ts">
-interface NavMenu {
-  id: string;
-  text: string;
-  to: string;
-}
+import { ref } from 'vue';
+import NavBar from '@/components/layout/fragments/NavBar.vue';
+import StatusBarArea from '@/components/layout/fragments/StatusBarArea.vue';
+import LoginButtonArea from '@/components/layout/fragments/LoginButtonArea.vue';
 
-const navMenus: NavMenu[] = [
-  { id: 'home', text: '홈', to: '/' },
-  { id: 'order', text: '주문', to: '/packages' },
-  { id: 'trade', text: '거래', to: '/development' },
-  { id: 'assets', text: '자산', to: '/components' },
-  { id: 'withdrawal', text: '출금신청', to: '/api-examples' },
-  { id: 'support', text: '고객지원', to: '/theme-test' },
-];
+const isLogin = ref(true);
 </script>

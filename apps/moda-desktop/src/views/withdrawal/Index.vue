@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-6">
+  <CardLayoutVertical>
     <MainCardContent title="출금신청">
       <template #content>
         <div class="flex gap-3 items-center">
@@ -45,12 +45,18 @@
         />
       </template>
     </MainCardContent>
-  </div>
+    <CardLayoutHorizontal>
+      <MainCardContent title="신청내역"></MainCardContent>
+      <MainCardContent title="신청내역"></MainCardContent>
+    </CardLayoutHorizontal>
+  </CardLayoutVertical>
 </template>
 <script setup lang="ts">
 import { BaseButton, BaseTable, BaseInputText } from '@template/ui';
 import MainCardContent from '@/components/ui/cards/MainCardContent.vue';
 import SubCardContent from '@/components/ui/cards/SubCardContent.vue';
+import CardLayoutVertical from '@/components/layout/CardLayoutVertical.vue';
+import CardLayoutHorizontal from '@/components/layout/fragments/CardLayoutHorizontal.vue';
 import type { TableHeader, TableRow } from '@template/ui';
 import { ref } from 'vue';
 

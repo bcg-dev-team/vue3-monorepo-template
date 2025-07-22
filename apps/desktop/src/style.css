@@ -1,7 +1,5 @@
-/* Tailwind CSS 지시어 */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind CSS import */
+@import 'tailwindcss';
 
 /* 앱 전용 스타일 */
 @layer base {

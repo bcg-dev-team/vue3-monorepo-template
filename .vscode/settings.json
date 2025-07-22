@@ -24,11 +24,23 @@
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "tailwindCSS.experimental.configFile": "packages/ui/src/style.css",
   "files.associations": {
     "*.css": "tailwindcss"
   },
+  "tailwindCSS.experimental.configFile": {
+    "packages/ui/src/style.css": "packages/ui/src/**",
+    "apps/desktop/src/style.css": "apps/desktop/src/**",
+    "apps/mobile/src/style.css": "apps/mobile/src/**"
+  },
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html",
+    "vue": "html",
+    "vue-html": "html"
+  },
+  "tailwindCSS.emmetCompletions": true,
+  "editor.inlineSuggest.enabled": true,
   "editor.quickSuggestions": {
     "strings": "on"
-  }
+  },
+  "css.validate": false
 }

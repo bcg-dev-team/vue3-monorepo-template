@@ -43,13 +43,17 @@ const items = computed(() => Array.from({ length: props.count }));
     <template v-for="(_, idx) in items" :key="idx">
       <div
         v-if="idx === current"
-        class="bg-icon-on h-2 w-10 rounded-full shrink-0 transition-all duration-200"
-        style="min-height: 0.5rem; min-width: 2.5rem"
+        class="h-2 w-10 rounded-full shrink-0 transition-all duration-200"
+        style="min-height: 0.5rem; min-width: 2.5rem; background-color: var(--input-icon-on)"
       />
       <div
         v-else
-        class="bg-bg-surface-muted h-2 w-2 rounded-full shrink-0 transition-all duration-200"
-        style="min-height: 0.5rem; min-width: 0.5rem"
+        class="h-2 w-2 rounded-full shrink-0 transition-all duration-200"
+        style="
+          min-height: 0.5rem;
+          min-width: 0.5rem;
+          background-color: var(--background-bg-surface-muted);
+        "
       />
     </template>
   </div>

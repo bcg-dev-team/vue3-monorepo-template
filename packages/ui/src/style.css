@@ -2,9 +2,7 @@
 @import '../../theme/dist/styles/_tokens-light.css';
 @import '../../theme/dist/styles/_tokens-dark.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 /* Design tokens are imported from theme package */
 

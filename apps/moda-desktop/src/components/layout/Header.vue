@@ -4,7 +4,7 @@
   >
     <div class="flex items-center shrink-0">
       <div class="mr-9">
-        <img class="h-10 w-auto" src="../../assets/logo/moda_logo.svg" alt="logo" />
+        <img class="h-10 w-auto" src="@/assets/logo/moda_logo.svg" alt="logo" />
       </div>
       <NavBar />
     </div>

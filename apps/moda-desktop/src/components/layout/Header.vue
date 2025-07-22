@@ -1,6 +1,6 @@
 <template>
   <header
-    class="fixed flex justify-between items-center top-0 left-0 right-0 z-[100000] pl-3 pr-6 py-[10px] bg-black"
+    class="fixed flex justify-between items-center top-0 left-0 right-0 z-[100000] pl-3 pr-6 py-[10px] bg-black sticky"
   >
     <div class="flex items-center shrink-0">
       <div class="mr-9">

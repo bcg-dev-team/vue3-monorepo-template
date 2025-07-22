@@ -38,7 +38,9 @@
     "@template/theme": "workspace:*",
     "@template/types": "workspace:*"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "vite-svg-loader": "^5.1.0"
+  },
   "peerDependencies": {
     "vue": "^3.4.0"
   }

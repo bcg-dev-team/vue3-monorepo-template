@@ -2,11 +2,15 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'node:path';
 import dts from 'vite-plugin-dts';
-// import tailwindcss from '@tailwindcss/vite'; // 제거
+import svgLoader from 'vite-svg-loader';
 
 export default defineConfig({
   plugins: [
     vue(),
+    svgLoader({
+      svgo: false,
+      defaultImport: 'component',
+    }),
     dts({
       insertTypesEntry: true,
       rollupTypes: true,

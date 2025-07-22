@@ -1,82 +1,105 @@
+<!--
+  BaseIcon 컴포넌트
+  vite-svg-loader를 활용하여 SVG 아이콘을 Vue 컴포넌트로 렌더링합니다.
+  
+  Figma 컴포넌트: Icon (아이콘 컴포넌트)
+-->
 <script setup lang="ts">
-/**
- * BaseIcon - Figma 아이콘 컴포넌트 1:1 구현
- * @props name - 아이콘 이름
- * @props size - 아이콘 크기 (sm, md, lg, xl)
- * @props color - 아이콘 색상 (current, primary, error)
- * @props disabled - 비활성화 여부
- * @emits click - 클릭 이벤트
- * @figma Icon (node-id: 32-245)
- */
-import { computed } from 'vue';
-import * as Icons from './icons';
+import { computed, ref, watch, onUnmounted } from 'vue';
+import type { Component } from 'vue';
+import type { IconName } from '../../types/icons';
+import { getIconType } from '../../types/icons';
 
 interface Props {
-  /**
-   * 아이콘 이름 (필수)
-   */
-  name: string;
-  /**
-   * 아이콘 크기 (sm, md, lg, xl)
-   *
-   * 기본값은 'md'입니다.
-   */
-  size?: 'sm' | 'md' | 'lg' | 'xl';
-  /**
-   * 아이콘 색상 (current, primary, error)
-   *
-   * 기본값은 'current'입니다.
-   */
-  color?: 'current' | 'primary' | 'error';
-  /**
-   * 비활성화 여부
-   *
-   * 기본값은 false입니다.
-   */
-  disabled?: boolean;
+  name: IconName;
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | number;
+  color?: string;
+  class?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 'md',
-  color: 'current',
-  disabled: false,
+  color: 'currentColor',
 });
 
-const emit = defineEmits<{
-  (e: 'click', event: MouseEvent): void;
-}>();
+// 타입 안전성 개선
+const iconComponent = ref<Component | null>(null);
 
-const sizeClass = computed(() => {
-  switch (props.size) {
-    case 'sm':
-      return 'w-4 h-4';
-    case 'md':
-      return 'w-5 h-5';
-    case 'lg':
-      return 'w-6 h-6';
-    case 'xl':
-      return 'w-8 h-8';
-    default:
-      return 'w-5 h-5';
+// 아이콘 로더 함수 (빌드 시점에 최적화됨)
+const loadIcon = async (name: string) => {
+  if (name.startsWith('flag-')) {
+    return import(`../../assets/icons/flags/${name}.svg`);
   }
-});
+  return import(`../../assets/icons/${name}.svg`);
+};
 
-const colorClass = computed(() => {
-  if (props.disabled) return 'text-disabled';
-  switch (props.color) {
-    case 'primary':
-      return 'text-primary800';
-    case 'error':
-      return 'text-red800';
-    case 'current':
-    default:
-      return 'text-current';
+// name이 변경될 때마다 컴포넌트를 다시 로드
+const loadIconComponent = async () => {
+  try {
+    const module = await loadIcon(props.name);
+    iconComponent.value = module.default;
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.warn(`Icon "${props.name}" not found. Please check the icon name.`);
+    }
+    iconComponent.value = null;
   }
+};
+
+// 초기 로드
+loadIconComponent();
+
+// name이 변경될 때마다 다시 로드
+watch(() => props.name, loadIconComponent);
+
+// 메모리 누수 방지
+onUnmounted(() => {
+  iconComponent.value = null;
 });
 
-const iconComponent = computed(() => {
-  const iconName = `${props.name.charAt(0).toUpperCase() + props.name.slice(1)}Icon`;
-  return (Icons as Record<string, any>)[iconName] || null;
+const iconClasses = computed(() => {
+  const baseClasses = ['inline-block'];
+
+  if (typeof props.size === 'string') {
+    const sizeMap = {
+      xs: 'w-3 h-3',
+      sm: 'w-4 h-4',
+      md: 'w-6 h-6',
+      lg: 'w-8 h-8',
+      xl: 'w-12 h-12',
+    };
+    baseClasses.push(sizeMap[props.size]);
+  }
+
+  if (props.class) {
+    baseClasses.push(props.class);
+  }
+
+  return baseClasses;
+});
+
+// CSS 변수 오버헤드 제거 - 직접 스타일 적용
+const iconStyles = computed(() => {
+  const styles: Record<string, string> = {};
+
+  if (typeof props.size === 'number') {
+    styles.width = `${props.size}px`;
+    styles.height = `${props.size}px`;
+  }
+
+  // 아이콘 타입에 따라 fill/stroke 적용
+  const iconType = getIconType(props.name);
+  const color = props.color || 'currentColor';
+
+  if (iconType === 'fill') {
+    styles.fill = color;
+    styles.stroke = 'none';
+  } else if (iconType === 'stroke') {
+    styles.stroke = color;
+    styles.fill = 'none';
+  }
+
+  return styles;
 });
 </script>
 
@@ -84,8 +107,13 @@ const iconComponent = computed(() => {
   <component
     v-if="iconComponent"
     :is="iconComponent"
-    :class="[sizeClass, colorClass, 'transition-colors duration-200']"
-    @click="emit('click', $event)"
+    :class="iconClasses"
+    :style="iconStyles"
+    aria-hidden="true"
   />
-  <span v-else class="text-red-500">Icon not found: {{ name }}</span>
+  <div
+    v-else
+    class="inline-block bg-gray-200 animate-pulse"
+    :style="{ width: '24px', height: '24px' }"
+  />
 </template>

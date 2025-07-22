@@ -1,6 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
 import { ref } from 'vue';
-import BaseTable, { TableHeader } from '../BaseTable.vue';
+import BaseTable from '../BaseTable.vue';
+
+// TableHeader 타입 정의
+interface TableHeader {
+  key: string;
+  title: string;
+  width?: string;
+  align?: 'left' | 'center' | 'right';
+  sortable?: boolean;
+}
 
 const meta: Meta<typeof BaseTable> = {
   title: 'Components/BaseTable',

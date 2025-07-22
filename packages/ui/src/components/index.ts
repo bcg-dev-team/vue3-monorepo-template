@@ -4,3 +4,4 @@ export { default as BaseInput } from './BaseInput/BaseInput.vue';
 export { default as BaseInputText } from './BaseInput/BaseInputText.vue';
 export * from './BasePagination';
 export * from './BaseTable';
+export * from './BaseIcon';

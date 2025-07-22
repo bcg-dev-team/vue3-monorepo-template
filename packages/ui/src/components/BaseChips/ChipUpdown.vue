@@ -31,7 +31,7 @@ const chipProps = computed(() => {
   if (props.status === 'Down') {
     return {
       label: props.value,
-      bg: 'bg-trade-short-bg',
+      bg: 'bg-trade-short-background',
       textColor: 'text-trade-short-text',
       rounded: 'rounded-[3px]',
       size: 'text-[11px]',
@@ -42,7 +42,7 @@ const chipProps = computed(() => {
   }
   return {
     label: props.value,
-    bg: 'bg-trade-long-bg',
+    bg: 'bg-trade-long-background',
     textColor: 'text-trade-long-text',
     rounded: 'rounded-[3px]',
     size: 'text-[11px]',

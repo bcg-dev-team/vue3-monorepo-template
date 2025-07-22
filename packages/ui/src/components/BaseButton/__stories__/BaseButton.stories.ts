@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
 import BaseButton from '../BaseButton.vue';
 
-const iconOptions = ['none', 'plus', 'home', 'user'];
+const iconOptions = ['none', 'plus', 'home', 'person'];
 
 const meta: Meta<typeof BaseButton> = {
   title: 'Components/BaseButton',
@@ -25,7 +25,7 @@ export const Primary: Story = {
     variant: 'primary',
     size: 'regular',
     label: 'Button',
-    leftIcon: { name: 'plus', size: 'md', color: 'primary' },
+    leftIcon: { name: 'plus', size: 'md', color: 'currentColor' },
     rightIcon: undefined,
   },
   parameters: {

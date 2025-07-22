@@ -13,12 +13,12 @@
  */
 import { computed } from 'vue';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
+import type { IconName } from '../../types/icons';
 
 interface IconProps {
-  name: string;
+  name: IconName;
   size?: 'sm' | 'md' | 'lg' | 'xl';
-  color?: 'current' | 'primary' | 'error';
-  disabled?: boolean;
+  color?: string;
 }
 
 interface Props {
@@ -127,7 +127,11 @@ const sizeClass = computed(() => {
     @click="emit('click', $event)"
   >
     <span v-if="props.leftIcon" class="mr-2">
-      <BaseIcon :name="props.leftIcon.name" :size="props.leftIcon.size" color="current" />
+      <BaseIcon
+        :name="props.leftIcon.name"
+        :size="props.leftIcon.size"
+        :color="props.leftIcon.color || 'currentColor'"
+      />
     </span>
     <span class="flex flex-col justify-center">
       {{ props.label }}
@@ -136,7 +140,11 @@ const sizeClass = computed(() => {
       }}</span>
     </span>
     <span v-if="props.rightIcon" class="ml-2">
-      <BaseIcon :name="props.rightIcon.name" :size="props.rightIcon.size" color="current" />
+      <BaseIcon
+        :name="props.rightIcon.name"
+        :size="props.rightIcon.size"
+        :color="props.rightIcon.color || 'currentColor'"
+      />
     </span>
     <slot />
   </button>

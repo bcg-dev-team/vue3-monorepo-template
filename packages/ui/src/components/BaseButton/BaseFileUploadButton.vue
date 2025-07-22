@@ -98,7 +98,7 @@ function handleChange(e: Event) {
       <span :class="['text-sm font-normal', textClass]">{{ label }}</span>
       <BaseIcon
         v-if="showIcon"
-        name="upload"
+        name="plus"
         size="md"
         :color="props.disabled ? 'primary' : 'current'"
       />

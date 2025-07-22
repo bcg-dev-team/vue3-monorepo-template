@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
+import type { InputStatus } from '../../types/components';
 
 /**
  * 텍스트 입력 컴포넌트 (중간 사이즈)
@@ -33,7 +34,7 @@ interface Props {
    * Static: 기본, Focus: 포커스, Error: 에러, Filled: 값 있음, Disabled: 비활성화
    * @default 'Static'
    */
-  status?: 'Static' | 'Focus' | 'Error' | 'Filled' | 'Disabled';
+  status?: InputStatus;
   /**
    * 아이콘 표시 여부
    * @default true

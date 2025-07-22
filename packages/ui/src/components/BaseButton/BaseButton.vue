@@ -13,13 +13,7 @@
  */
 import { computed } from 'vue';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
-import type { IconName } from '../../types/icons';
-
-interface IconProps {
-  name: IconName;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
-  color?: string;
-}
+import type { ButtonIconProps, ButtonVariant, ButtonSize } from '../../types/components';
 
 interface Props {
   /**
@@ -27,22 +21,13 @@ interface Props {
    *
    * 기본값은 'primary'입니다.
    */
-  variant?:
-    | 'primary'
-    | 'outline'
-    | 'red'
-    | 'blue'
-    | 'pill'
-    | 'light-solid'
-    | 'red-solid'
-    | 'blue-solid'
-    | 'disabled';
+  variant?: ButtonVariant;
   /**
    * 버튼 크기 (regular, small, pill, small-inner)
    *
    * 기본값은 'regular'입니다.
    */
-  size?: 'regular' | 'small' | 'pill' | 'small-inner';
+  size?: ButtonSize;
   /**
    * 비활성화 여부
    *
@@ -52,11 +37,11 @@ interface Props {
   /**
    * 좌측 아이콘 정보 (name, size, color)
    */
-  leftIcon?: IconProps;
+  leftIcon?: ButtonIconProps;
   /**
    * 우측 아이콘 정보 (name, size, color)
    */
-  rightIcon?: IconProps;
+  rightIcon?: ButtonIconProps;
   /**
    * 버튼 텍스트
    */

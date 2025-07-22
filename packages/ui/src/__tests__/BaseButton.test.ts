@@ -1,31 +1,30 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import BaseButton from '../components/BaseButton.vue';
+import BaseButton from '../components/BaseButton/BaseButton.vue';
 
 describe('BaseButton', () => {
   it('should render with default props', () => {
     const wrapper = mount(BaseButton, {
-      slots: { default: 'Click me' },
+      props: { label: 'Click me' },
     });
 
     expect(wrapper.text()).toContain('Click me');
-    expect(wrapper.find('.n-button').exists()).toBe(true);
+    expect(wrapper.find('button').exists()).toBe(true);
   });
 
   it('should render with different variants', () => {
     const wrapper = mount(BaseButton, {
-      props: { variant: 'primary' },
-      slots: { default: 'Primary Button' },
+      props: { variant: 'primary', label: 'Primary Button' },
     });
 
-    const button = wrapper.find('.n-button');
+    const button = wrapper.find('button');
     expect(button.exists()).toBe(true);
-    expect((wrapper.props() as any).variant).toBe('primary');
+    expect(wrapper.props('variant')).toBe('primary');
   });
 
   it('should emit click event', async () => {
     const wrapper = mount(BaseButton, {
-      slots: { default: 'Click me' },
+      props: { label: 'Click me' },
     });
 
     await wrapper.trigger('click');
@@ -34,30 +33,17 @@ describe('BaseButton', () => {
 
   it('should be disabled when disabled prop is true', () => {
     const wrapper = mount(BaseButton, {
-      props: { disabled: true },
-      slots: { default: 'Disabled Button' },
+      props: { disabled: true, label: 'Disabled Button' },
     });
 
-    const button = wrapper.find('.n-button');
+    const button = wrapper.find('button');
     expect(button.exists()).toBe(true);
-    expect((wrapper.props() as any).disabled).toBe(true);
-  });
-
-  it('should show loading state', () => {
-    const wrapper = mount(BaseButton, {
-      props: { loading: true },
-      slots: { default: 'Loading Button' },
-    });
-
-    const button = wrapper.find('.n-button');
-    expect(button.exists()).toBe(true);
-    expect((wrapper.props() as any).loading).toBe(true);
+    expect(wrapper.props('disabled')).toBe(true);
   });
 
   it('should apply custom classes', () => {
     const wrapper = mount(BaseButton, {
-      props: { class: 'custom-class' },
-      slots: { default: 'Custom Button' },
+      props: { label: 'Custom Button', class: 'custom-class' },
     });
 
     expect(wrapper.classes()).toContain('custom-class');
@@ -65,19 +51,33 @@ describe('BaseButton', () => {
 
   it('should handle size prop correctly', () => {
     const wrapper = mount(BaseButton, {
-      props: { size: 'large' },
-      slots: { default: 'Large Button' },
+      props: { size: 'small', label: 'Small Button' },
     });
 
-    expect((wrapper.props() as any).size).toBe('large');
+    expect(wrapper.props('size')).toBe('small');
   });
 
-  it('should handle fullWidth prop correctly', () => {
+  it('should render with left icon', () => {
     const wrapper = mount(BaseButton, {
-      props: { fullWidth: true },
-      slots: { default: 'Full Width Button' },
+      props: {
+        label: 'Button with Icon',
+        leftIcon: { name: 'plus', size: 'sm' },
+      },
     });
 
-    expect((wrapper.props() as any).fullWidth).toBe(true);
+    expect(wrapper.find('button').exists()).toBe(true);
+    expect(wrapper.props('leftIcon')).toEqual({ name: 'plus', size: 'sm' });
+  });
+
+  it('should render with sub label', () => {
+    const wrapper = mount(BaseButton, {
+      props: {
+        label: 'Main Label',
+        subLabel: 'Sub Label',
+      },
+    });
+
+    expect(wrapper.text()).toContain('Main Label');
+    expect(wrapper.text()).toContain('Sub Label');
   });
 });

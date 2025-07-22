@@ -1,6 +1,7 @@
 <!-- Figma: Table -->
 <script setup lang="ts">
 import { computed } from 'vue';
+import type { TableHeader, TableRow } from '../../types/components';
 
 /**
  * 테이블 컴포넌트
@@ -12,18 +13,6 @@ import { computed } from 'vue';
  * @emits rowSelect - 행 선택 이벤트
  * @emits sort - 정렬 이벤트
  */
-export interface TableHeader {
-  key: string;
-  title: string;
-  width?: string;
-  align?: 'left' | 'center' | 'right';
-  sortable?: boolean;
-}
-
-export interface TableRow {
-  id: string | number;
-  [key: string]: any;
-}
 
 interface Props {
   /** 헤더 데이터 배열 */

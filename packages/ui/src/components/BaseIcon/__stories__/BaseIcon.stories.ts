@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 import type { Meta, StoryObj } from '@storybook/vue3';
 import BaseIcon from '../BaseIcon.vue';
 import type { IconName } from '../../../types/icons';
@@ -15,26 +17,7 @@ const meta: Meta<typeof BaseIcon> = {
   parameters: {
     docs: {
       description: {
-        component: `
-BaseIcon 컴포넌트는 SVG 아이콘을 Vue 컴포넌트로 렌더링하는 범용 아이콘 컴포넌트입니다.
-
-## 주요 기능
-- **동적 로딩**: vite-svg-loader를 사용한 SVG 동적 import
-- **크기 조절**: 미리 정의된 크기 또는 커스텀 숫자 값 지원
-- **색상 커스터마이징**: 아이콘 타입 자동 감지 (fill/stroke)
-- **타입 안전성**: TypeScript로 아이콘 이름 검증
-
-## 사용법
-\`\`\`vue
-<BaseIcon name="heart" size="md" color="#ff0000" />
-<BaseIcon name="star" size="lg" color="#3b82f6" />
-\`\`\`
-
-## 아이콘 타입 자동 감지
-- **Fill 타입**: heart, plus, edit, home 등
-- **Stroke 타입**: star, eye, trade 등
-- **Flag 타입**: flag-au, flag-kr 등 (원본 색상 유지)
-        `,
+        component: `BaseIcon 컴포넌트는 SVG 아이콘을 Vue 컴포넌트로 렌더링하는 범용 아이콘 컴포넌트입니다.`,
       },
     },
   },

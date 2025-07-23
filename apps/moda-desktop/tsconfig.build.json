@@ -27,8 +27,8 @@
       "@template/utils/*": ["../../packages/utils/dist/*"],
       "@template/api": ["../../packages/api/dist"],
       "@template/api/*": ["../../packages/api/dist/*"],
-      "@template/ui": ["../../packages/ui/src"],
-      "@template/ui/*": ["../../packages/ui/src/*"]
+      "@template/ui": ["../../packages/ui/dist"],
+      "@template/ui/*": ["../../packages/ui/dist/*"]
     }
   },
   "include": [

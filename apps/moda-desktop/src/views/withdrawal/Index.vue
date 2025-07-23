@@ -1,55 +1,64 @@
 <template>
-  <CardLayoutVertical>
-    <MainCardContent title="출금신청">
-      <template #content>
-        <div class="flex gap-3 items-center">
-          <SubCardContent title="계좌번호">
-            <template #content> <> </template>
-          </SubCardContent>
-          <p>></p>
-          <SubCardContent title="받을 계좌번호">
-            <template #content>
-              <div class="flex gap-2 items-center">
-                <BaseInputText
-                  v-model="accountNumber"
-                  :showIcon="false"
-                  placeholder="계좌번호를 입력하세요"
-                  class="w-[240px]"
-                />
-              </div>
-            </template>
-          </SubCardContent>
-          <p>></p>
-          <SubCardContent title="신청금액">
-            <template #content>
-              <div class="flex gap-2 items-center">
-                <BaseInputText class="w-[140px]" type="number" v-model="amount" :showIcon="false" />
-                <BaseButton variant="outline" label="전액" class="whitespace-nowrap" />
-              </div>
-            </template>
-          </SubCardContent>
-          <p>></p>
-          <BaseButton class="px-[43px]" variant="primary" label="신청하기" />
-        </div>
-      </template>
-    </MainCardContent>
+  <div class="p-6">
+    <CardLayoutVertical :gap="6">
+      <MainCardContent title="출금신청" size="large">
+        <template #content>
+          <div class="flex gap-3 items-center">
+            <SubCardContent title="계좌번호">
+              <template #content> <> </template>
+            </SubCardContent>
+            <p>></p>
+            <SubCardContent title="받을 계좌번호">
+              <template #content>
+                <div class="flex gap-2 items-center">
+                  <BaseInputText
+                    v-model="accountNumber"
+                    :showIcon="false"
+                    placeholder="계좌번호를 입력하세요"
+                    class="w-[240px]"
+                  />
+                </div>
+              </template>
+            </SubCardContent>
+            <p>></p>
+            <SubCardContent title="신청금액">
+              <template #content>
+                <div class="flex gap-2 items-center">
+                  <BaseInputText
+                    class="w-[140px]"
+                    type="number"
+                    size="small"
+                    v-model="amount"
+                    :showIcon="false"
+                  />
+                  <BaseButton
+                    variant="outline"
+                    size="small"
+                    label="전액"
+                    class="whitespace-nowrap"
+                  />
+                </div>
+              </template>
+            </SubCardContent>
+            <p>></p>
+            <BaseButton class="px-[43px]" variant="primary" label="신청하기" />
+          </div>
+        </template>
+      </MainCardContent>
 
-    <MainCardContent title="신청내역">
-      <template #content>
-        <BaseTable
-          :headers="headers"
-          :data="data"
-          :selectable="selectable"
-          :sortable="sortable"
-          @sort="handleSort"
-        />
-      </template>
-    </MainCardContent>
-    <CardLayoutHorizontal>
-      <MainCardContent title="신청내역"></MainCardContent>
-      <MainCardContent title="신청내역"></MainCardContent>
-    </CardLayoutHorizontal>
-  </CardLayoutVertical>
+      <MainCardContent title="신청내역" size="large">
+        <template #content>
+          <BaseTable
+            :headers="headers"
+            :data="data"
+            :selectable="selectable"
+            :sortable="sortable"
+            @sort="handleSort"
+          />
+        </template>
+      </MainCardContent>
+    </CardLayoutVertical>
+  </div>
 </template>
 <script setup lang="ts">
 import { BaseButton, BaseTable, BaseInputText } from '@template/ui';

@@ -407,6 +407,9 @@ const reconnectWebSocket = () => {
   }
 };
 
+// 주기적으로 WebSocket 상태 업데이트 (5초마다)
+let wsStatusInterval: NodeJS.Timeout | null = null;
+
 // 컴포넌트 마운트 시 초기 테스트
 onMounted(async () => {
   addLog('info', 'TradingView 테스트 페이지 로드됨');
@@ -416,19 +419,21 @@ onMounted(async () => {
   updateWSStatus();
 
   // 주기적으로 WebSocket 상태 업데이트 (5초마다)
-  const wsStatusInterval = setInterval(() => {
+  wsStatusInterval = setInterval(() => {
     updateWSStatus();
   }, 5000);
-
-  // 컴포넌트 언마운트 시 인터벌 정리
-  onUnmounted(() => {
-    clearInterval(wsStatusInterval);
-  });
 
   // 자동으로 API 연결 테스트
   setTimeout(() => {
     testApiConnection();
   }, 1000);
+});
+
+// 컴포넌트 언마운트 시 인터벌 정리
+onUnmounted(() => {
+  if (wsStatusInterval) {
+    clearInterval(wsStatusInterval);
+  }
 });
 </script>
 

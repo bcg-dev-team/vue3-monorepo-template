@@ -3,10 +3,61 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 // @ts-ignore - JavaScript 파일이므로 타입 체크 무시
 import Datafeed from '../chart/datafeed.js';
 import { BrokerMinimal } from '../chart/broker';
+
+interface Props {
+  symbol?: string;
+  interval?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  symbol: 'ETH/EUR', // datafeed.js의 getAllSymbols()와 일치하도록 수정
+  interval: '1', // 1분 간격으로 변경 (지원되는 시간 간격 중 하나)
+});
+
+const tvWidget = ref<any>(null);
+const currentSymbol = ref<string>(props.symbol);
+const currentSubscriberUID = ref<string | null>(null);
+
+// 심볼 변경 감지 및 즉시 구독 해제
+watch(
+  () => props.symbol,
+  (newSymbol, oldSymbol) => {
+    console.log('[TradingView] 심볼 변경 감지:', { oldSymbol, newSymbol });
+
+    // 이전 심볼의 구독 즉시 해제
+    if (oldSymbol) {
+      console.log('[TradingView] 이전 심볼 구독 해제:', oldSymbol);
+      // streaming.js의 심볼별 구독 해제 함수 호출
+      if ((window as any).unsubscribeSymbol) {
+        (window as any).unsubscribeSymbol(oldSymbol);
+      }
+      currentSubscriberUID.value = null;
+    }
+
+    currentSymbol.value = newSymbol;
+  }
+);
+
+// 간격 변경 감지
+watch(
+  () => props.interval,
+  (newInterval) => {
+    if (tvWidget.value && tvWidget.value.chart) {
+      const chart = tvWidget.value.chart();
+      if (chart && typeof chart.timeScale === 'function') {
+        const timeScale = chart.timeScale();
+        if (timeScale) {
+          console.log('[TradingView] 간격 변경 감지:', newInterval);
+          timeScale.refresh();
+        }
+      }
+    }
+  }
+);
 
 onMounted(() => {
   function waitForTradingView(cb: () => void) {
@@ -19,9 +70,9 @@ onMounted(() => {
 
   waitForTradingView(() => {
     // TradingView 차트 설정
-    window.tvWidget = new window.TradingView.widget({
-      symbol: 'BTC/EUR',
-      interval: '1D',
+    tvWidget.value = new window.TradingView.widget({
+      symbol: props.symbol,
+      interval: props.interval,
       fullscreen: false,
       container: 'tv_chart_container',
       datafeed: Datafeed,
@@ -57,6 +108,28 @@ onMounted(() => {
         'scalesProperties.showSeriesLastValue': true,
         'scalesProperties.showStudyLastValue': true,
         'scalesProperties.fontSize': 12,
+        // 시간 축 표시 형식 설정
+        'timeScale.timeVisible': true,
+        'timeScale.secondsVisible': false,
+        'timeScale.rightOffset': 12,
+        'timeScale.barSpacing': 3,
+        'timeScale.fixLeftEdge': true,
+        'timeScale.fixRightEdge': true,
+        'timeScale.lockVisibleTimeRangeOnResize': true,
+        'timeScale.rightBarStaysOnScroll': true,
+        'timeScale.borderVisible': true,
+        'timeScale.visible': true,
+        'timeScale.tickMarkFormatter': {
+          '1': '%H:%M', // 1분: 시:분
+          '5': '%H:%M', // 5분: 시:분
+          '15': '%H:%M', // 15분: 시:분
+          '30': '%H:%M', // 30분: 시:분
+          '60': '%m-%d %H:%M', // 1시간: 월-일 시:분
+          '240': '%m-%d %H:%M', // 4시간: 월-일 시:분
+          '1D': '%Y-%m-%d', // 1일: 년-월-일
+          '1W': '%Y-%m-%d', // 1주: 년-월-일
+          '1M': '%Y-%m', // 1개월: 년-월
+        },
       },
       studies_overrides: {},
       // 차트 스타일
@@ -69,29 +142,101 @@ onMounted(() => {
     });
 
     // 차트 로드 완료 후 가격 스케일 설정 확인
-    window.tvWidget.onChartReady(() => {
-      console.log('[TradingView] 차트 로드 완료');
+    tvWidget.value.onChartReady(() => {
+      console.log('[TradingView] 차트 로드 완료 - 심볼:', props.symbol);
 
-      // 가격 스케일 표시 강제 설정
-      const chart = window.tvWidget.chart();
-      const priceScale = chart.getPanes()[0].getRightPriceScale();
-
-      if (priceScale) {
-        console.log('[TradingView] 가격 스케일 설정 적용');
-        priceScale.setAutoScale(true);
-        priceScale.setVisible(true);
-      }
-
-      // 심볼 정보 확인
-      const symbolInfo = chart.symbolExt();
-      console.log('[TradingView] 현재 심볼 정보:', symbolInfo);
-
-      // 차트 스타일 강제 새로고침
+      // 차트가 완전히 로드될 때까지 잠시 대기
       setTimeout(() => {
-        console.log('[TradingView] 차트 새로고침 실행');
-        chart.refresh();
-      }, 1000);
+        try {
+          const chart = tvWidget.value.chart();
+
+          // 차트와 패널이 존재하는지 확인
+          if (chart && chart.getPanes && chart.getPanes().length > 0) {
+            const panes = chart.getPanes();
+            const firstPane = panes[0];
+
+            // getRightPriceScale 메서드가 존재하는지 확인
+            if (firstPane && typeof firstPane.getRightPriceScale === 'function') {
+              const priceScale = firstPane.getRightPriceScale();
+
+              if (priceScale) {
+                console.log('[TradingView] 가격 스케일 설정 적용');
+                priceScale.setAutoScale(true);
+                priceScale.setVisible(true);
+              } else {
+                console.warn('[TradingView] 가격 스케일을 찾을 수 없습니다.');
+              }
+            } else {
+              console.warn('[TradingView] getRightPriceScale 메서드를 사용할 수 없습니다.');
+            }
+          } else {
+            console.warn('[TradingView] 차트 패널을 찾을 수 없습니다.');
+          }
+
+          // 심볼 정보 확인
+          if (chart && typeof chart.symbolExt === 'function') {
+            const symbolInfo = chart.symbolExt();
+            console.log('[TradingView] 현재 심볼 정보:', symbolInfo);
+          }
+
+          // 시간 축 설정 강제 적용
+          if (chart && typeof chart.timeScale === 'function') {
+            const timeScale = chart.timeScale();
+            if (timeScale) {
+              console.log('[TradingView] 시간 축 설정 적용');
+              timeScale.setVisible(true);
+              timeScale.setTimeVisible(true);
+              timeScale.setSecondsVisible(false);
+
+              // 현재 간격에 따른 시간 표시 형식 설정
+              const currentInterval = props.interval;
+              console.log('[TradingView] 현재 간격:', currentInterval);
+
+              // 시간 축 새로고침
+              timeScale.refresh();
+            }
+          }
+
+          // 차트 스타일 강제 새로고침
+          if (chart && typeof chart.refresh === 'function') {
+            console.log('[TradingView] 차트 새로고침 실행');
+            chart.refresh();
+          }
+        } catch (error) {
+          console.error('[TradingView] 차트 설정 중 오류 발생:', error);
+        }
+      }, 1000); // 1초 대기
     });
   });
 });
+
+// 심볼 변경 감시
+watch(
+  () => props.symbol,
+  (newSymbol) => {
+    if (tvWidget.value && tvWidget.value.chart && typeof tvWidget.value.setSymbol === 'function') {
+      try {
+        console.log('[TradingView] 심볼 변경:', newSymbol);
+        tvWidget.value.setSymbol(newSymbol, props.interval);
+      } catch (error) {
+        console.error('[TradingView] 심볼 변경 중 오류 발생:', error);
+      }
+    }
+  }
+);
+
+// 인터벌 변경 감시
+watch(
+  () => props.interval,
+  (newInterval) => {
+    if (tvWidget.value && tvWidget.value.chart && typeof tvWidget.value.setSymbol === 'function') {
+      try {
+        console.log('[TradingView] 인터벌 변경:', newInterval);
+        tvWidget.value.setSymbol(props.symbol, newInterval);
+      } catch (error) {
+        console.error('[TradingView] 인터벌 변경 중 오류 발생:', error);
+      }
+    }
+  }
+);
 </script>

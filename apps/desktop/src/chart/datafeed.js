@@ -54,10 +54,11 @@ export default {
       exchange: symbolItem.exchange,
       minmov: 1,
       pricescale: 100, // 소수점 2자리 (예: 50000.12)
-      has_intraday: false,
+      has_intraday: true, // ETH/EUR은 분 단위 데이터 지원
       visible_plots_set: 'ohlc',
       has_weekly_and_monthly: false,
-      supported_resolutions: configurationData.supported_resolutions,
+      // 심볼별 지원 시간 간격 설정
+      supported_resolutions: getSupportedResolutions(symbolItem.ticker),
       volume_precision: 2,
       data_status: 'streaming',
       format: 'price', // 가격 형식 명시
@@ -75,15 +76,42 @@ export default {
   getBars: async (symbolInfo, resolution, periodParams, onHistoryCallback, onErrorCallback) => {
     const { from, to, firstDataRequest } = periodParams;
     console.log('[getBars]: Method call', symbolInfo, resolution, from, to);
-    console.log('firstDataRequest: ', symbolInfo.full_name);
+    console.log('[getBars]: full_name:', symbolInfo.full_name);
+    console.log('[getBars]: resolution:', resolution);
     const parsedSymbol = parseFullSymbol(symbolInfo.full_name);
-    console.log('parsedSymbol: ', parsedSymbol);
+    console.log('[getBars]: parsedSymbol:', parsedSymbol);
+
+    if (!parsedSymbol) {
+      console.error('[getBars]: 심볼 파싱 실패:', symbolInfo.full_name);
+      onErrorCallback(new Error('Invalid symbol format'));
+      return;
+    }
+
+    // 시간 간격별 데이터 요청 파라미터 조정
+    let dataLimit = 2000;
+    let timeMultiplier = 1;
+
+    // 시간 간격에 따른 데이터 요청 조정
+    if (resolution === '60' || resolution === '240') {
+      // 1시간, 4시간 간격의 경우 더 많은 데이터 요청
+      dataLimit = 5000;
+      timeMultiplier = 1;
+    } else if (resolution === '1D' || resolution === '1W' || resolution === '1M') {
+      // 일/주/월 간격의 경우
+      dataLimit = 1000;
+      timeMultiplier = 1;
+    } else {
+      // 분 단위 간격의 경우
+      dataLimit = 2000;
+      timeMultiplier = 1;
+    }
     const urlParameters = {
       e: symbolInfo.exchange,
       fsym: parsedSymbol.fromSymbol,
       tsym: parsedSymbol.toSymbol,
       toTs: to,
-      limit: 2000,
+      limit: dataLimit,
+      resolution: resolution, // 해상도 정보 추가
     };
     const query = Object.keys(urlParameters)
       .map((name) => `${name}=${encodeURIComponent(urlParameters[name])}`)
@@ -160,7 +188,8 @@ export default {
 const configurationData = {
   // Represents the resolutions for bars supported by your datafeed
   // 데이터피드에서 지원하는 봉(resolution) 목록을 나타냅니다
-  supported_resolutions: ['1m', '5m', '15m', '30m', '1h', '4h', '1D', '1W', '1M'],
+  // 이미지 메시지와 일치하도록 설정: "1M, 5M, 15M, 30M, 60, 240, 1D, 1W, 1M"
+  supported_resolutions: ['1', '5', '15', '30', '60', '240', '1D', '1W', '1M'],
   // The `exchanges` arguments are used for the `searchSymbols` method if a user selects the exchange
   // 사용자가 거래소를 선택할 경우 searchSymbols 메서드에서 사용되는 거래소 목록입니다
   exchanges: [
@@ -177,6 +206,16 @@ const configurationData = {
   supports_search: true,
   supports_group_request: false,
 };
+
+// 시간 간격 매핑 함수
+function getSupportedResolutions(symbol) {
+  // ETH/EUR에 대해서는 이미지 메시지와 일치하는 시간 간격 설정
+  if (symbol === 'ETH/EUR') {
+    return ['1', '5', '15', '30', '60', '240', '1D', '1W', '1M'];
+  }
+  // 다른 심볼들은 기본 설정 사용
+  return configurationData.supported_resolutions;
+}
 
 // Obtains all symbols for all exchanges supported by CryptoCompare API
 // MSW 환경에서 사용할 심볼 목록 (모킹된 데이터)

@@ -34,8 +34,8 @@ export const mockHistoricalData: HttpResponseResolver<PathParams, any> = async (
 
   // 쿼리 파라미터 추출
   const exchange = searchParams.get('e') || 'Bitfinex';
-  const fromSymbol = searchParams.get('fsym') || 'BTC';
-  const toSymbol = searchParams.get('tsym') || 'USDT';
+  const fromSymbol = searchParams.get('fsym') || 'ETH'; // 기본값을 ETH로 변경
+  const toSymbol = searchParams.get('tsym') || 'EUR'; // 기본값을 EUR로 변경
   const toTs = parseInt(searchParams.get('toTs') || String(Math.floor(Date.now() / 1000)));
   const limit = parseInt(searchParams.get('limit') || '100');
 
@@ -47,8 +47,13 @@ export const mockHistoricalData: HttpResponseResolver<PathParams, any> = async (
     limit,
   });
 
+  // 시간 간격에 따른 데이터 생성
+  // resolution 파라미터가 있으면 사용, 없으면 기본값
+  const resolution = searchParams.get('resolution') || '1D';
+  console.log(`[MSW TradingView] 해상도: ${resolution}, 데이터 개수: ${limit}`);
+
   // 현재 시간부터 역순으로 OHLC 데이터 생성
-  const bars = generateOHLCData(toTs, limit);
+  const bars = generateOHLCData(toTs, limit, resolution);
 
   return HttpResponse.json({
     Response: 'Success',
@@ -70,13 +75,46 @@ export const mockHistoricalData: HttpResponseResolver<PathParams, any> = async (
 /**
  * OHLC 데이터 생성 함수
  */
-function generateOHLCData(endTime: number, count: number) {
+function generateOHLCData(endTime: number, count: number, resolution: string = '1D') {
   const bars = [];
-  const dayInSeconds = 24 * 60 * 60; // 1일 = 86400초
+  let timeInterval: number;
   let basePrice = 50000; // 시작 가격 (USDT)
 
+  // 해상도에 따른 시간 간격 설정
+  switch (resolution) {
+    case '1': // 1분
+      timeInterval = 60;
+      break;
+    case '5': // 5분
+      timeInterval = 5 * 60;
+      break;
+    case '15': // 15분
+      timeInterval = 15 * 60;
+      break;
+    case '30': // 30분
+      timeInterval = 30 * 60;
+      break;
+    case '60': // 1시간
+      timeInterval = 60 * 60;
+      break;
+    case '240': // 4시간
+      timeInterval = 4 * 60 * 60;
+      break;
+    case '1D': // 1일
+      timeInterval = 24 * 60 * 60;
+      break;
+    case '1W': // 1주
+      timeInterval = 7 * 24 * 60 * 60;
+      break;
+    case '1M': // 1개월 (30일로 근사)
+      timeInterval = 30 * 24 * 60 * 60;
+      break;
+    default:
+      timeInterval = 24 * 60 * 60; // 기본값: 1일
+  }
+
   for (let i = count - 1; i >= 0; i--) {
-    const time = endTime - i * dayInSeconds;
+    const time = endTime - i * timeInterval;
 
     // 가격 변동 시뮬레이션
     const volatility = 0.05; // 5% 변동성

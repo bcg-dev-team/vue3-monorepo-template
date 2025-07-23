@@ -70,36 +70,81 @@ function handleMSWMessage(data) {
       volume: data.volume || 1000,
     };
 
-    console.log('[MSW WebSocket] 변환된 Bar 데이터:', bar);
-
     // 모든 구독자에게 데이터 전송
     channelToSubscription.forEach((subscriptionItem, channelString) => {
-      // 심볼 매칭 (간단한 버전, 실제로는 더 정교해야 함)
+      console.log('[MSW WebSocket] 구독 확인:', { channelString, dataSymbol: data.symbol });
+
+      // 심볼 매칭 개선
+      const parts = channelString.split('~');
+      const channelSymbol = parts.length >= 4 ? `${parts[2]}${parts[3]}` : '';
       const symbolMatches =
-        data.symbol === 'BTCUSDT' || data.symbol === 'BTCEUR' || channelString.includes('BTC');
+        data.symbol === channelSymbol ||
+        channelString.includes(data.symbol) ||
+        (data.symbol === 'ETHEUR' && channelSymbol === 'ETHEUR') ||
+        (data.symbol === 'BTCEUR' && channelSymbol === 'BTCEUR');
 
       if (symbolMatches && subscriptionItem.lastDailyBar) {
-        // 현재 날의 Bar인지 새로운 날의 Bar인지 확인
-        const lastBarTime = subscriptionItem.lastDailyBar.time;
-        const currentDayStart = Math.floor(bar.time / 86400) * 86400; // 하루 시작 시간
-        const lastBarDayStart = Math.floor(lastBarTime / 86400) * 86400;
+        const resolution = subscriptionItem.resolution;
+        const lastBar = subscriptionItem.lastDailyBar;
+
+        // 해상도에 따른 시간 간격 계산
+        let timeInterval;
+        switch (resolution) {
+          case '1':
+            timeInterval = 60;
+            break; // 1분
+          case '5':
+            timeInterval = 5 * 60;
+            break; // 5분
+          case '15':
+            timeInterval = 15 * 60;
+            break; // 15분
+          case '30':
+            timeInterval = 30 * 60;
+            break; // 30분
+          case '60':
+            timeInterval = 60 * 60;
+            break; // 1시간
+          case '240':
+            timeInterval = 4 * 60 * 60;
+            break; // 4시간
+          case '1D':
+            timeInterval = 24 * 60 * 60;
+            break; // 1일
+          case '1W':
+            timeInterval = 7 * 24 * 60 * 60;
+            break; // 1주
+          case '1M':
+            timeInterval = 30 * 24 * 60 * 60;
+            break; // 1개월
+          default:
+            timeInterval = 24 * 60 * 60; // 기본값: 1일
+        }
+
+        // 현재 Bar의 시작 시간 계산
+        const currentBarStart = Math.floor(bar.time / timeInterval) * timeInterval;
+        const lastBarStart = Math.floor(lastBar.time / timeInterval) * timeInterval;
 
         let updatedBar;
-        if (currentDayStart > lastBarDayStart) {
-          // 새로운 날의 첫 Bar
+        if (currentBarStart > lastBarStart) {
+          // 새로운 Bar 생성
           updatedBar = {
-            ...bar,
-            time: currentDayStart,
+            time: currentBarStart,
+            open: bar.open || bar.close,
+            high: bar.high || bar.close,
+            low: bar.low || bar.close,
+            close: bar.close,
+            volume: bar.volume || 1000,
           };
-          console.log('[MSW WebSocket] 새로운 일일 Bar 생성:', updatedBar);
+          console.log('[MSW WebSocket] 새로운 Bar 생성:', updatedBar);
         } else {
           // 기존 Bar 업데이트
           updatedBar = {
-            ...subscriptionItem.lastDailyBar,
-            high: Math.max(subscriptionItem.lastDailyBar.high, bar.high),
-            low: Math.min(subscriptionItem.lastDailyBar.low, bar.low),
+            ...lastBar,
+            high: Math.max(lastBar.high, bar.high || bar.close),
+            low: Math.min(lastBar.low, bar.low || bar.close),
             close: bar.close,
-            volume: subscriptionItem.lastDailyBar.volume + bar.volume,
+            volume: lastBar.volume + (bar.volume || 1000),
           };
           console.log('[MSW WebSocket] 기존 Bar 업데이트:', updatedBar);
         }
@@ -108,11 +153,12 @@ function handleMSWMessage(data) {
         subscriptionItem.lastDailyBar = updatedBar;
 
         // 모든 핸들러에 데이터 전송
-        subscriptionItem.handlers.forEach((handler) => {
+        console.log('[MSW WebSocket] 핸들러 수:', subscriptionItem.handlers.length);
+        subscriptionItem.handlers.forEach((handler, index) => {
           try {
             handler.callback(updatedBar);
           } catch (error) {
-            console.error('[MSW WebSocket] 콜백 오류:', error);
+            console.error(`[MSW WebSocket] 핸들러 ${index} 콜백 오류:`, error);
           }
         });
       }
@@ -134,9 +180,13 @@ function resubscribeAll() {
 // 구독 메시지 전송
 function sendSubscribeMessage(channelString, subscriptionItem) {
   if (socket && socket.readyState === WebSocket.OPEN) {
+    // channelString에서 심볼 정보 추출 (예: "msw~BINANCE~ETH~EUR")
+    const parts = channelString.split('~');
+    const symbol = parts.length >= 4 ? `${parts[2]}${parts[3]}` : 'BTCUSDT'; // 기본값
+
     const subscribeMessage = {
       type: 'subscribe',
-      symbol: 'BTCUSDT', // 기본 심볼
+      symbol: symbol,
       interval: subscriptionItem.resolution || '1D',
       channel: channelString,
     };
@@ -149,8 +199,13 @@ function sendSubscribeMessage(channelString, subscriptionItem) {
 // 구독 해제 메시지 전송
 function sendUnsubscribeMessage(channelString) {
   if (socket && socket.readyState === WebSocket.OPEN) {
+    // channelString에서 심볼 정보 추출
+    const parts = channelString.split('~');
+    const symbol = parts.length >= 4 ? `${parts[2]}${parts[3]}` : 'BTCUSDT';
+
     const unsubscribeMessage = {
       type: 'unsubscribe',
+      symbol: symbol,
       channel: channelString,
     };
 
@@ -181,6 +236,9 @@ export function subscribeOnStream(
   const parsedSymbol = parseFullSymbol(symbolInfo.full_name);
   const channelString = `msw~${parsedSymbol.exchange}~${parsedSymbol.fromSymbol}~${parsedSymbol.toSymbol}`;
 
+  console.log('[subscribeOnStream] 파싱된 심볼:', parsedSymbol);
+  console.log('[subscribeOnStream] 채널 문자열:', channelString);
+
   const handler = {
     id: subscriberUID,
     callback: onRealtimeCallback,
@@ -191,23 +249,35 @@ export function subscribeOnStream(
     // 이미 구독된 채널이면 핸들러만 추가
     subscriptionItem.handlers.push(handler);
     console.log('[subscribeOnStream] 기존 구독에 핸들러 추가:', channelString);
+    console.log('[subscribeOnStream] 현재 핸들러 수:', subscriptionItem.handlers.length);
     return;
   }
 
   // 새로운 구독 생성
+  const currentTime = Math.floor(Date.now() / 1000);
+  const defaultPrice = parsedSymbol.fromSymbol === 'ETH' ? 2800 : 50000; // ETH는 2800, BTC는 50000
+
   subscriptionItem = {
     subscriberUID,
     resolution,
     lastDailyBar: lastDailyBar || {
-      time: Math.floor(Date.now() / 1000),
-      open: 50000,
-      high: 50000,
-      low: 50000,
-      close: 50000,
+      time: currentTime,
+      open: defaultPrice,
+      high: defaultPrice,
+      low: defaultPrice,
+      close: defaultPrice,
       volume: 1000,
     },
     handlers: [handler],
   };
+
+  console.log('[subscribeOnStream] 새 구독 생성:', {
+    channelString,
+    resolution,
+    defaultPrice,
+    currentTime,
+    handlerCount: subscriptionItem.handlers.length,
+  });
 
   channelToSubscription.set(channelString, subscriptionItem);
   console.log('[subscribeOnStream] 새 구독 생성:', channelString);
@@ -270,5 +340,27 @@ export function getSubscriptionStatus() {
       (total, sub) => total + sub.handlers.length,
       0
     ),
+    details: Array.from(channelToSubscription.entries()).map(([channel, sub]) => ({
+      channel,
+      resolution: sub.resolution,
+      handlerCount: sub.handlers.length,
+      lastBar: sub.lastDailyBar,
+    })),
+  };
+}
+
+// 브라우저 콘솔에서 사용할 수 있는 전역 디버깅 함수들
+if (typeof window !== 'undefined') {
+  window.debugTradingView = {
+    getSubscriptionStatus,
+    isConnected,
+    reconnect,
+    logSubscriptions: () => {
+      const status = getSubscriptionStatus();
+      console.log('=== TradingView 구독 상태 ===');
+      console.log('연결 상태:', status.connected);
+      console.log('총 구독자 수:', status.subscriberCount);
+      console.log('구독 상세:', status.details);
+    },
   };
 }

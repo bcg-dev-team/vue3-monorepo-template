@@ -1,20 +1,56 @@
 <template>
-  <div class="bg-bg-surface border-bg-outline rounded-md border border-solid p-6">
-    <div v-if="title">
-      <span class="text-3xl font-semibold leading-snug tracking-wide">{{ props.title }}</span>
+  <div
+    class="bg-bg-default border-bg-outline w-full rounded-md border border-solid py-6"
+    :class="[paddingClass]"
+  >
+    <div class="flex items-center justify-between" v-if="title">
+      <div>
+        <span class="leading-snug tracking-wide" :class="[titleSizeClass]">
+          {{ props.title }}
+        </span>
+      </div>
+      <div><slot name="title-right" /></div>
     </div>
-    <div class="mt-4">
+    <div :class="!title ? 'mt-0' : 'mt-4'">
       <slot name="content" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
 interface MainCardContentProps {
   title?: string;
+  size?: 'small' | 'medium' | 'large';
+  isLink?: boolean;
 }
 
 const props = withDefaults(defineProps<MainCardContentProps>(), {
   title: '',
+  size: 'medium',
+  isLink: false,
+});
+
+const titleSizeClass = computed(() => {
+  switch (props.size) {
+    case 'small':
+      return 'text-lg font-medium';
+    case 'medium':
+      return 'text-xl font-medium';
+    case 'large':
+      return 'text-3xl font-semibold';
+  }
+});
+
+const paddingClass = computed(() => {
+  switch (props.size) {
+    case 'small':
+      return 'px-3';
+    case 'medium':
+      return 'px-4';
+    case 'large':
+      return 'px-6';
+  }
 });
 </script>

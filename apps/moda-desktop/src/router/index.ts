@@ -32,6 +32,11 @@ const routes: RouteRecordRaw[] = [
     name: 'Service',
     component: () => import('@/views/service/Index.vue'),
   },
+  {
+    path: '/myPage',
+    name: 'MyPage',
+    component: () => import('@/views/myPage/Index.vue'),
+  },
 ];
 
 const router = createRouter({

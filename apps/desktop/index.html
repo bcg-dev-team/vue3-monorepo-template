@@ -1,13 +1,19 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- contains the code to create the chart -->
+    <script type="text/javascript" src="/charting_library/charting_library.standalone.js"></script>
+
+    <!-- contains a sample datafeed implementation we will use to load data -->
+    <script type="text/javascript" src="datafeeds/udf/dist/bundle.js"></script>
+    <script type="module" src="./src/main.ts"></script>
+
     <title>Vue 3 Desktop App</title>
   </head>
   <body>
     <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
   </body>
-</html> 
+</html>

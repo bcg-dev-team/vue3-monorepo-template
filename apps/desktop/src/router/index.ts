@@ -42,6 +42,21 @@ const routes: RouteRecordRaw[] = [
     name: 'ThemeTest',
     component: () => import('../views/ThemeTestView.vue'),
   },
+  {
+    path: '/msw-test',
+    name: 'MSWTest',
+    component: () => import('../views/TestMSWView.vue'),
+  },
+  {
+    path: '/websocket-test',
+    name: 'WebSocketTest',
+    component: () => import('../components/WebSocketTest.vue'),
+  },
+  {
+    path: '/trading-view-test',
+    name: 'TradingViewTest',
+    component: () => import('../views/TradingViewTestView.vue'),
+  },
 ];
 
 const router = createRouter({

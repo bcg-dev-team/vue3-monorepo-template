@@ -17,8 +17,8 @@
  */
 
 // CSS 변수 파일들 import
-import './styles/_tokens-light.css';
-import './styles/_tokens-dark.css';
+import './styles/__tokens-light.css';
+import './styles/__tokens-dark.css';
 
 // 기본 내보내기
 export { useTheme as default } from './composables';
@@ -29,4 +29,4 @@ export * from './store';
 export * from './utils';
 
 // Tailwind 설정 export
-export { tailwindConfig } from './config/tailwind.config';
+export { default as tailwindConfig } from './config/tailwind.config';

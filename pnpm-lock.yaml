@@ -304,6 +304,10 @@ importers:
       vue:
         specifier: ^3.4.0
         version: 3.5.17(typescript@5.8.3)
+    devDependencies:
+      style-dictionary:
+        specifier: ^5.0.1
+        version: 5.0.1
 
   packages/types: {}
 
@@ -2027,6 +2031,9 @@ packages:
 
   '@types/node@20.19.9':
     resolution: {integrity: sha512-cuVNgarYWZqxRJDQHEB58GEONhOK79QVR/qYx4S7kcUObQvUwvFnYxJuuHUKm2aieN9X3yZB4LZsuYNU1Qphsw==}
+
+  '@types/node@22.16.5':
+    resolution: {integrity: sha512-bJFoMATwIGaxxx8VJPeM8TonI8t579oRvgAuT8zFugJsJZgzqv0Fu8Mhp68iecjzG7cnN3mO2dJQ5uUM2EFrgQ==}
 
   '@types/react@19.1.8':
     resolution: {integrity: sha512-AwAfQ2Wa5bCx9WP8nZL2uMZWod7J7/JSplxbTmBQ5ms6QpqNYm672H0Vu9ZVKVngQ+ii4R/byguVEUZQyeg44g==}
@@ -5567,6 +5574,11 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
+  style-dictionary@5.0.1:
+    resolution: {integrity: sha512-j+yQ4hM7a52iUQg5LVC8bnRkem4sU+unIY2qsyjoikPVzaxjkHd4ER7bnK+znW/Rhha69t4Fi5O46UHg6w8jFQ==}
+    engines: {node: '>=22.0.0'}
+    hasBin: true
+
   styleq@0.1.3:
     resolution: {integrity: sha512-3ZUifmCDCQanjeej1f6kyl/BeP/Vae5EYkQ9iJfUm/QwZvlgnZzyflqAsAWYURdtea8Vkvswu2GrC57h3qffcA==}
 
@@ -8281,6 +8293,10 @@ snapshots:
   '@types/mdx@2.0.13': {}
 
   '@types/node@20.19.9':
+    dependencies:
+      undici-types: 6.21.0
+
+  '@types/node@22.16.5':
     dependencies:
       undici-types: 6.21.0
 
@@ -12269,6 +12285,23 @@ snapshots:
       '@bundled-es-modules/deepmerge': 4.3.1
       '@bundled-es-modules/glob': 10.4.2
       '@bundled-es-modules/memfs': 4.17.0
+      '@zip.js/zip.js': 2.7.64
+      chalk: 5.4.1
+      change-case: 5.4.4
+      commander: 12.1.0
+      is-plain-obj: 4.1.0
+      json5: 2.2.3
+      patch-package: 8.0.0
+      path-unified: 0.2.0
+      prettier: 3.6.2
+      tinycolor2: 1.6.0
+
+  style-dictionary@5.0.1:
+    dependencies:
+      '@bundled-es-modules/deepmerge': 4.3.1
+      '@bundled-es-modules/glob': 10.4.2
+      '@bundled-es-modules/memfs': 4.17.0
+      '@types/node': 22.16.5
       '@zip.js/zip.js': 2.7.64
       chalk: 5.4.1
       change-case: 5.4.4

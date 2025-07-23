@@ -28,10 +28,10 @@
       "import": "./dist/utils/index.js"
     },
     "./styles/tokens-light.css": {
-      "import": "./dist/styles/_tokens-light.css"
+      "import": "./dist/styles/__tokens-light.css"
     },
     "./styles/tokens-dark.css": {
-      "import": "./dist/styles/_tokens-dark.css"
+      "import": "./dist/styles/__tokens-dark.css"
     }
   },
   "files": [
@@ -39,11 +39,9 @@
     "src/presets"
   ],
   "scripts": {
-    "build:tokens:light": "style-dictionary build --config style-dictionary.light.config.js && node scripts/process-tokens.js",
-    "build:tokens:dark": "style-dictionary build --config style-dictionary.dark.config.js && node scripts/process-tokens.js",
-    "build:tokens": "pnpm run build:tokens:light && pnpm run build:tokens:dark",
+    "build:tokens": "node scripts/generate-tailwind-config.mjs",
     "build": "pnpm run build:tokens && tsc -p tsconfig.build.json && pnpm run copy-css",
-    "copy-css": "cp src/styles/_tokens-light.css dist/styles/ && cp src/styles/_tokens-dark.css dist/styles/",
+    "copy-css": "cp src/styles/__tokens-light.css dist/styles/ && cp src/styles/__tokens-dark.css dist/styles/",
     "dev": "vite build --watch",
     "clean": "rimraf dist",
     "type-check": "tsc --noEmit"
@@ -51,9 +49,11 @@
   "dependencies": {
     "@template/types": "workspace:*"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "style-dictionary": "^5.0.1"
+  },
   "peerDependencies": {
-    "vue": "^3.4.0",
-    "pinia": "^2.1.0"
+    "pinia": "^2.1.0",
+    "vue": "^3.4.0"
   }
 }

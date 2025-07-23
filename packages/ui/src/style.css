@@ -1,6 +1,6 @@
 /* Theme 패키지의 CSS 변수 직접 import */
-@import '../../theme/dist/styles/_tokens-light.css';
-@import '../../theme/dist/styles/_tokens-dark.css';
+@import '../../theme/dist/styles/__tokens-light.css';
+@import '../../theme/dist/styles/__tokens-dark.css';
 
 @import 'tailwindcss';
 

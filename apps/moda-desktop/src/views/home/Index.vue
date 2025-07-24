@@ -1,9 +1,9 @@
 <template>
   <div class="px-[240px]">
     <div class="p-4">
-      <CardLayoutVertical :gap="3">
+      <CardLayoutVertical class="gap-3">
         <MainCardContent></MainCardContent>
-        <CardLayoutHorizontal :gap="3" :rowNumber="3">
+        <CardLayoutHorizontal class="grid-cols-3 gap-3">
           <MainCardContent class="col-span-1" title="상위등락률">
             <template #title-right> :버튼: </template>
           </MainCardContent>
@@ -20,7 +20,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import CardLayoutVertical from '@/components/layout/CardLayoutVertical.vue';
+import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
 import MainCardContent from '@/components/ui/cards/MainCardContent.vue';
 import CardLayoutHorizontal from '@/components/layout/fragments/CardLayoutHorizontal.vue';
 </script>

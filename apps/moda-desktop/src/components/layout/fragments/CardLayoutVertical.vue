@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-flow-col">
+  <div class="grid grid-flow-row auto-rows-min">
     <slot />
   </div>
 </template>

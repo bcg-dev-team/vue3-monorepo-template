@@ -1,6 +1,6 @@
 <template>
   <div class="p-6">
-    <CardLayoutVertical :gap="6">
+    <CardLayoutVertical class="gap-6">
       <MainCardContent title="출금신청" size="large">
         <template #content>
           <div class="flex items-center gap-3">
@@ -62,8 +62,9 @@
 </template>
 
 <script setup lang="ts">
-import CardLayoutVertical from '@/components/layout/CardLayoutVertical.vue';
-import SubCardContent from '@/components/common/cards/SubCardContent.vue';
+import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
+import MainCardContent from '@/components/ui/cards/MainCardContent.vue';
+import SubCardContent from '@/components/ui/cards/SubCardContent.vue';
 import { BaseButton, BaseTable, BaseInputText } from '@template/ui';
 import type { TableHeader, TableRow } from '@template/ui';
 import { ref } from 'vue';

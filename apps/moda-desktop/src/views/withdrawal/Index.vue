@@ -1,14 +1,14 @@
 <template>
   <div class="p-6">
     <CardLayoutVertical class="gap-6">
-      <MainCardContent title="출금신청" size="large">
+      <MainCardContent class="p-6" title="출금신청" size="large">
         <template #content>
           <div class="flex items-center gap-3">
-            <SubCardContent title="계좌번호">
+            <SubCardContent title="계좌번호" class="p-6">
               <template #content> <> </template>
             </SubCardContent>
             <p>></p>
-            <SubCardContent title="받을 계좌번호">
+            <SubCardContent title="받을 계좌번호" class="p-6">
               <template #content>
                 <div class="flex items-center gap-2">
                   <BaseInputText
@@ -21,7 +21,7 @@
               </template>
             </SubCardContent>
             <p>></p>
-            <SubCardContent title="신청금액">
+            <SubCardContent title="신청금액" class="p-6">
               <template #content>
                 <div class="flex items-center gap-2">
                   <BaseInputText
@@ -46,7 +46,7 @@
         </template>
       </MainCardContent>
 
-      <MainCardContent title="신청내역" size="large">
+      <MainCardContent class="p-6" title="신청내역" size="large">
         <template #content>
           <BaseTable
             :headers="headers"

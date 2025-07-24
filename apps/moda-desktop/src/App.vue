@@ -1,31 +1,14 @@
 <template>
   <div id="app" class="flex min-h-screen flex-col">
-    <Header />
-
-    <main class="bg-bg-surface w-full min-w-[1920px] flex-1">
-      <div class="mx-auto w-[1920px]">
-        <router-view />
-      </div>
-    </main>
-
-    <Footer />
+    <component :is="route.meta.layout || NoneLayout">
+      <router-view />
+    </component>
   </div>
 </template>
 
 <script setup lang="ts">
-import Header from './components/layout/Header.vue';
-import Footer from './components/layout/Footer.vue';
+import NoneLayout from './components/layout/fragments/NoneLayout.vue';
+import { useRoute } from 'vue-router';
 
-/**
- * 메인 App 컴포넌트
- *
- * 템플릿 온보딩을 위한 메인 애플리케이션 컴포넌트입니다.
- * Vue Router를 통해 페이지 라우팅을 처리합니다.
- *
- * @example
- * ```vue
- * <App />
- * ```
- */
-// App 컴포넌트 로직
+const route = useRoute();
 </script>

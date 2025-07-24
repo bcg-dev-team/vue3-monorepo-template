@@ -1,9 +1,11 @@
 <template>
-  <div id="app" class="bg-bg-surface text-text-primary flex min-h-screen flex-col font-sans">
+  <div id="app" class="flex min-h-screen flex-col">
     <Header />
 
-    <main class="bg-bg-surface w-full flex-1">
-      <router-view />
+    <main class="bg-bg-surface w-full min-w-[1920px] flex-1">
+      <div class="mx-auto w-[1920px]">
+        <router-view />
+      </div>
     </main>
 
     <Footer />

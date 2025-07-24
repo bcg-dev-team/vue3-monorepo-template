@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="bg-bg-default border-bg-outline w-full rounded-md border border-solid py-6"
-    :class="[paddingClass]"
-  >
+  <div class="bg-bg-default border-bg-outline rounded-md border border-solid">
     <div class="flex items-center justify-between" v-if="title">
       <div>
         <span class="leading-snug tracking-wide" :class="[titleSizeClass]">
@@ -40,17 +37,6 @@ const titleSizeClass = computed(() => {
       return 'text-xl font-medium';
     case 'large':
       return 'text-3xl font-semibold';
-  }
-});
-
-const paddingClass = computed(() => {
-  switch (props.size) {
-    case 'small':
-      return 'px-3';
-    case 'medium':
-      return 'px-4';
-    case 'large':
-      return 'px-6';
   }
 });
 </script>

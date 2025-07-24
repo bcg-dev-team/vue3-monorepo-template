@@ -1202,6 +1202,1077 @@
         "$type": "dimension",
         "$value": "{Base-Size.size-0}"
       }
+    },
+    "shadow-flag": {
+      "$type": "boxShadow",
+      "$value": {
+        "color": "#00000066",
+        "type": "dropShadow",
+        "x": 1,
+        "y": 1,
+        "blur": 1,
+        "spread": 0
+      }
+    },
+    "shadow-box": {
+      "$type": "boxShadow",
+      "$value": {
+        "color": "#00000026",
+        "type": "dropShadow",
+        "x": 0,
+        "y": 0,
+        "blur": 10,
+        "spread": 0
+      }
+    },
+    "boxShadow": {
+      "default": {
+        "$type": "boxShadow",
+        "$value": [
+          {
+            "color": "#00000026",
+            "type": "dropShadow",
+            "x": 5,
+            "y": 5,
+            "blur": 5,
+            "spread": 3
+          },
+          {
+            "color": "#00000033",
+            "type": "dropShadow",
+            "x": 4,
+            "y": 4,
+            "blur": 5,
+            "spread": 6
+          }
+        ]
+      }
+    },
+    "fontFamilies": {
+      "pretendard-gov": {
+        "$type": "fontFamilies",
+        "$value": "Pretendard GOV"
+      },
+      "roboto": {
+        "$type": "fontFamilies",
+        "$value": "Roboto"
+      },
+      "inter": {
+        "$type": "fontFamilies",
+        "$value": "Inter"
+      }
+    },
+    "lineHeights": {
+      "0": {
+        "$type": "lineHeights",
+        "$value": "30"
+      },
+      "1": {
+        "$type": "lineHeights",
+        "$value": "30"
+      },
+      "2": {
+        "$type": "lineHeights",
+        "$value": "AUTO"
+      },
+      "3": {
+        "$type": "lineHeights",
+        "$value": "AUTO"
+      },
+      "4": {
+        "$type": "lineHeights",
+        "$value": "24"
+      },
+      "5": {
+        "$type": "lineHeights",
+        "$value": "24"
+      },
+      "6": {
+        "$type": "lineHeights",
+        "$value": "24"
+      },
+      "7": {
+        "$type": "lineHeights",
+        "$value": "24"
+      },
+      "8": {
+        "$type": "lineHeights",
+        "$value": "24"
+      },
+      "9": {
+        "$type": "lineHeights",
+        "$value": "24"
+      },
+      "10": {
+        "$type": "lineHeights",
+        "$value": "24"
+      },
+      "11": {
+        "$type": "lineHeights",
+        "$value": "24"
+      },
+      "12": {
+        "$type": "lineHeights",
+        "$value": "20"
+      },
+      "13": {
+        "$type": "lineHeights",
+        "$value": "20"
+      },
+      "14": {
+        "$type": "lineHeights",
+        "$value": "20"
+      },
+      "15": {
+        "$type": "lineHeights",
+        "$value": "20"
+      },
+      "16": {
+        "$type": "lineHeights",
+        "$value": "20"
+      },
+      "17": {
+        "$type": "lineHeights",
+        "$value": "20"
+      },
+      "18": {
+        "$type": "lineHeights",
+        "$value": "20"
+      },
+      "19": {
+        "$type": "lineHeights",
+        "$value": "20"
+      },
+      "20": {
+        "$type": "lineHeights",
+        "$value": "18"
+      },
+      "21": {
+        "$type": "lineHeights",
+        "$value": "24"
+      },
+      "22": {
+        "$type": "lineHeights",
+        "$value": "18"
+      },
+      "23": {
+        "$type": "lineHeights",
+        "$value": "18"
+      },
+      "24": {
+        "$type": "lineHeights",
+        "$value": "18"
+      },
+      "25": {
+        "$type": "lineHeights",
+        "$value": "18"
+      },
+      "26": {
+        "$type": "lineHeights",
+        "$value": "18"
+      },
+      "27": {
+        "$type": "lineHeights",
+        "$value": "18"
+      },
+      "28": {
+        "$type": "lineHeights",
+        "$value": "18"
+      },
+      "29": {
+        "$type": "lineHeights",
+        "$value": "16"
+      },
+      "30": {
+        "$type": "lineHeights",
+        "$value": "20"
+      },
+      "31": {
+        "$type": "lineHeights",
+        "$value": "16"
+      },
+      "32": {
+        "$type": "lineHeights",
+        "$value": "16"
+      },
+      "33": {
+        "$type": "lineHeights",
+        "$value": "16"
+      },
+      "34": {
+        "$type": "lineHeights",
+        "$value": "16"
+      },
+      "35": {
+        "$type": "lineHeights",
+        "$value": "16"
+      },
+      "36": {
+        "$type": "lineHeights",
+        "$value": "16"
+      },
+      "37": {
+        "$type": "lineHeights",
+        "$value": "16"
+      },
+      "38": {
+        "$type": "lineHeights",
+        "$value": "16"
+      },
+      "39": {
+        "$type": "lineHeights",
+        "$value": "16"
+      },
+      "40": {
+        "$type": "lineHeights",
+        "$value": "16"
+      },
+      "41": {
+        "$type": "lineHeights",
+        "$value": "16"
+      },
+      "42": {
+        "$type": "lineHeights",
+        "$value": "14"
+      },
+      "43": {
+        "$type": "lineHeights",
+        "$value": "14"
+      },
+      "44": {
+        "$type": "lineHeights",
+        "$value": "14"
+      },
+      "45": {
+        "$type": "lineHeights",
+        "$value": "14"
+      },
+      "46": {
+        "$type": "lineHeights",
+        "$value": "14"
+      },
+      "47": {
+        "$type": "lineHeights",
+        "$value": "14"
+      },
+      "48": {
+        "$type": "lineHeights",
+        "$value": "14"
+      },
+      "49": {
+        "$type": "lineHeights",
+        "$value": "14"
+      },
+      "50": {
+        "$type": "lineHeights",
+        "$value": "110%"
+      },
+      "51": {
+        "$type": "lineHeights",
+        "$value": "110%"
+      },
+      "52": {
+        "$type": "lineHeights",
+        "$value": "110%"
+      },
+      "53": {
+        "$type": "lineHeights",
+        "$value": "110%"
+      },
+      "54": {
+        "$type": "lineHeights",
+        "$value": "110%"
+      }
+    },
+    "fontWeights": {
+      "pretendard-gov-0": {
+        "$type": "fontWeights",
+        "$value": "SemiBold"
+      },
+      "pretendard-gov-1": {
+        "$type": "fontWeights",
+        "$value": "Medium"
+      },
+      "pretendard-gov-2": {
+        "$type": "fontWeights",
+        "$value": "Regular"
+      },
+      "pretendard-gov-3": {
+        "$type": "fontWeights",
+        "$value": "Bold"
+      },
+      "roboto-4": {
+        "$type": "fontWeights",
+        "$value": "Regular"
+      },
+      "inter-5": {
+        "$type": "fontWeights",
+        "$value": "Bold"
+      },
+      "inter-6": {
+        "$type": "fontWeights",
+        "$value": "Regular"
+      }
+    },
+    "fontSize": {
+      "0": {
+        "$type": "fontSizes",
+        "$value": "24"
+      },
+      "1": {
+        "$type": "fontSizes",
+        "$value": "20"
+      },
+      "2": {
+        "$type": "fontSizes",
+        "$value": "18"
+      },
+      "3": {
+        "$type": "fontSizes",
+        "$value": "16"
+      },
+      "4": {
+        "$type": "fontSizes",
+        "$value": "20"
+      },
+      "5": {
+        "$type": "fontSizes",
+        "$value": "20"
+      },
+      "6": {
+        "$type": "fontSizes",
+        "$value": "20"
+      },
+      "7": {
+        "$type": "fontSizes",
+        "$value": "20"
+      },
+      "8": {
+        "$type": "fontSizes",
+        "$value": "18"
+      },
+      "9": {
+        "$type": "fontSizes",
+        "$value": "18"
+      },
+      "10": {
+        "$type": "fontSizes",
+        "$value": "18"
+      },
+      "11": {
+        "$type": "fontSizes",
+        "$value": "18"
+      },
+      "12": {
+        "$type": "fontSizes",
+        "$value": "16"
+      },
+      "13": {
+        "$type": "fontSizes",
+        "$value": "16"
+      },
+      "14": {
+        "$type": "fontSizes",
+        "$value": "16"
+      },
+      "15": {
+        "$type": "fontSizes",
+        "$value": "16"
+      },
+      "16": {
+        "$type": "fontSizes",
+        "$value": "15"
+      },
+      "17": {
+        "$type": "fontSizes",
+        "$value": "15"
+      },
+      "18": {
+        "$type": "fontSizes",
+        "$value": "15"
+      },
+      "19": {
+        "$type": "fontSizes",
+        "$value": "15"
+      },
+      "20": {
+        "$type": "fontSizes",
+        "$value": "14"
+      },
+      "21": {
+        "$type": "fontSizes",
+        "$value": "14"
+      },
+      "22": {
+        "$type": "fontSizes",
+        "$value": "14"
+      },
+      "23": {
+        "$type": "fontSizes",
+        "$value": "14"
+      },
+      "24": {
+        "$type": "fontSizes",
+        "$value": "14"
+      },
+      "25": {
+        "$type": "fontSizes",
+        "$value": "14"
+      },
+      "26": {
+        "$type": "fontSizes",
+        "$value": "14"
+      },
+      "27": {
+        "$type": "fontSizes",
+        "$value": "14"
+      },
+      "28": {
+        "$type": "fontSizes",
+        "$value": "14"
+      },
+      "29": {
+        "$type": "fontSizes",
+        "$value": "13"
+      },
+      "30": {
+        "$type": "fontSizes",
+        "$value": "13"
+      },
+      "31": {
+        "$type": "fontSizes",
+        "$value": "13"
+      },
+      "32": {
+        "$type": "fontSizes",
+        "$value": "13"
+      },
+      "33": {
+        "$type": "fontSizes",
+        "$value": "13"
+      },
+      "34": {
+        "$type": "fontSizes",
+        "$value": "12"
+      },
+      "35": {
+        "$type": "fontSizes",
+        "$value": "12"
+      },
+      "36": {
+        "$type": "fontSizes",
+        "$value": "12"
+      },
+      "37": {
+        "$type": "fontSizes",
+        "$value": "12"
+      },
+      "38": {
+        "$type": "fontSizes",
+        "$value": "12"
+      },
+      "39": {
+        "$type": "fontSizes",
+        "$value": "12"
+      },
+      "40": {
+        "$type": "fontSizes",
+        "$value": "12"
+      },
+      "41": {
+        "$type": "fontSizes",
+        "$value": "12"
+      },
+      "42": {
+        "$type": "fontSizes",
+        "$value": "11"
+      },
+      "43": {
+        "$type": "fontSizes",
+        "$value": "11"
+      },
+      "44": {
+        "$type": "fontSizes",
+        "$value": "11"
+      },
+      "45": {
+        "$type": "fontSizes",
+        "$value": "11"
+      },
+      "46": {
+        "$type": "fontSizes",
+        "$value": "10"
+      },
+      "47": {
+        "$type": "fontSizes",
+        "$value": "10"
+      },
+      "48": {
+        "$type": "fontSizes",
+        "$value": "10"
+      },
+      "49": {
+        "$type": "fontSizes",
+        "$value": "10"
+      },
+      "50": {
+        "$type": "fontSizes",
+        "$value": "16"
+      },
+      "51": {
+        "$type": "fontSizes",
+        "$value": "49"
+      },
+      "52": {
+        "$type": "fontSizes",
+        "$value": "49"
+      },
+      "53": {
+        "$type": "fontSizes",
+        "$value": "39"
+      },
+      "54": {
+        "$type": "fontSizes",
+        "$value": "39"
+      }
+    },
+    "letterSpacing": {
+      "0": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "1": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "2": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "3": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "4": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "5": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "6": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "7": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "8": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "9": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "10": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "11": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "12": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "13": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "14": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "15": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "16": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "17": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "18": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "19": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "20": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "21": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "22": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "23": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "24": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "25": {
+        "$type": "letterSpacing",
+        "$value": "0"
+      },
+      "26": {
+        "$type": "letterSpacing",
+        "$value": "0"
+      },
+      "27": {
+        "$type": "letterSpacing",
+        "$value": "0"
+      },
+      "28": {
+        "$type": "letterSpacing",
+        "$value": "0"
+      },
+      "29": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "30": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "31": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "32": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "33": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "34": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "35": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "36": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "37": {
+        "$type": "letterSpacing",
+        "$value": "-0.35"
+      },
+      "38": {
+        "$type": "letterSpacing",
+        "$value": "0"
+      },
+      "39": {
+        "$type": "letterSpacing",
+        "$value": "0"
+      },
+      "40": {
+        "$type": "letterSpacing",
+        "$value": "0"
+      },
+      "41": {
+        "$type": "letterSpacing",
+        "$value": "0"
+      },
+      "42": {
+        "$type": "letterSpacing",
+        "$value": "-0.1"
+      },
+      "43": {
+        "$type": "letterSpacing",
+        "$value": "-0.1"
+      },
+      "44": {
+        "$type": "letterSpacing",
+        "$value": "-0.1"
+      },
+      "45": {
+        "$type": "letterSpacing",
+        "$value": "-0.1"
+      },
+      "46": {
+        "$type": "letterSpacing",
+        "$value": "-0.1"
+      },
+      "47": {
+        "$type": "letterSpacing",
+        "$value": "-0.1"
+      },
+      "48": {
+        "$type": "letterSpacing",
+        "$value": "-0.1"
+      },
+      "49": {
+        "$type": "letterSpacing",
+        "$value": "-0.1"
+      },
+      "50": {
+        "$type": "letterSpacing",
+        "$value": "0%"
+      },
+      "51": {
+        "$type": "letterSpacing",
+        "$value": "-5%"
+      },
+      "52": {
+        "$type": "letterSpacing",
+        "$value": "-5%"
+      },
+      "53": {
+        "$type": "letterSpacing",
+        "$value": "-5%"
+      },
+      "54": {
+        "$type": "letterSpacing",
+        "$value": "-5%"
+      }
+    },
+    "paragraphSpacing": {
+      "0": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "1": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "2": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "3": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "4": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "5": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "6": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "7": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "8": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "9": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "10": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "11": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "12": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "13": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "14": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "15": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "16": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "17": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "18": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "19": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "20": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "21": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "22": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "23": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "24": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "25": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "26": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "27": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "28": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "29": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "30": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "31": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "32": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "33": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "34": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "35": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "36": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "37": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "38": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "39": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "40": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "41": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "42": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "43": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "44": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "45": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "46": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "47": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "48": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "49": {
+        "$type": "paragraphSpacing",
+        "$value": "0"
+      },
+      "50": {
+        "$type": "paragraphSpacing",
+        "$value": "26"
+      },
+      "51": {
+        "$type": "paragraphSpacing",
+        "$value": "32"
+      },
+      "52": {
+        "$type": "paragraphSpacing",
+        "$value": "32"
+      },
+      "53": {
+        "$type": "paragraphSpacing",
+        "$value": "26"
+      },
+      "54": {
+        "$type": "paragraphSpacing",
+        "$value": "26"
+      }
+    },
+    "typography": {
+      "Body": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{fontFamilies.roboto}",
+          "fontWeight": "{fontWeights.roboto-4}",
+          "lineHeight": "{lineHeights.50}",
+          "fontSize": "{fontSize.3}",
+          "letterSpacing": "{letterSpacing.50}",
+          "paragraphSpacing": "{paragraphSpacing.50}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        }
+      },
+      "H1": {
+        "Bold": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "{fontFamilies.inter}",
+            "fontWeight": "{fontWeights.inter-5}",
+            "lineHeight": "{lineHeights.50}",
+            "fontSize": "{fontSize.51}",
+            "letterSpacing": "{letterSpacing.51}",
+            "paragraphSpacing": "{paragraphSpacing.51}",
+            "paragraphIndent": "{paragraphIndent.0}",
+            "textCase": "{textCase.none}",
+            "textDecoration": "{textDecoration.none}"
+          }
+        },
+        "Regular": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "{fontFamilies.inter}",
+            "fontWeight": "{fontWeights.inter-6}",
+            "lineHeight": "{lineHeights.50}",
+            "fontSize": "{fontSize.51}",
+            "letterSpacing": "{letterSpacing.51}",
+            "paragraphSpacing": "{paragraphSpacing.51}",
+            "paragraphIndent": "{paragraphIndent.0}",
+            "textCase": "{textCase.none}",
+            "textDecoration": "{textDecoration.none}"
+          }
+        }
+      },
+      "H2": {
+        "Bold": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "{fontFamilies.inter}",
+            "fontWeight": "{fontWeights.inter-5}",
+            "lineHeight": "{lineHeights.50}",
+            "fontSize": "{fontSize.53}",
+            "letterSpacing": "{letterSpacing.51}",
+            "paragraphSpacing": "{paragraphSpacing.50}",
+            "paragraphIndent": "{paragraphIndent.0}",
+            "textCase": "{textCase.none}",
+            "textDecoration": "{textDecoration.none}"
+          }
+        },
+        "Regular": {
+          "$type": "typography",
+          "$value": {
+            "fontFamily": "{fontFamilies.inter}",
+            "fontWeight": "{fontWeights.inter-6}",
+            "lineHeight": "{lineHeights.50}",
+            "fontSize": "{fontSize.53}",
+            "letterSpacing": "{letterSpacing.51}",
+            "paragraphSpacing": "{paragraphSpacing.50}",
+            "paragraphIndent": "{paragraphIndent.0}",
+            "textCase": "{textCase.none}",
+            "textDecoration": "{textDecoration.none}"
+          }
+        }
+      }
+    },
+    "textCase": {
+      "none": {
+        "$type": "textCase",
+        "$value": "none"
+      }
+    },
+    "textDecoration": {
+      "none": {
+        "$type": "textDecoration",
+        "$value": "none"
+      }
+    },
+    "paragraphIndent": {
+      "0": {
+        "$type": "dimension",
+        "$value": "0px"
+      }
     }
   },
   "Theme/Dark": {

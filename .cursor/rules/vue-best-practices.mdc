@@ -28,6 +28,72 @@ feat: Vue 3 Composition API 마이그레이션 (전체 프로젝트)
 - **Props 검증**: 모든 props에 대해 TypeScript 타입과 기본값을 정의하세요.
 - **이벤트 처리**: emit을 사용하여 부모 컴포넌트와 통신하세요.
 
+## TypeScript 타입 분리 기준
+
+### 타입 분리 원칙
+UI 컴포넌트의 props에서 union 타입을 별도 파일로 분리할 때는 다음 기준을 따르세요:
+
+#### ✅ 타입 분리 기준
+1. **도메인 공통성**: 여러 컴포넌트에서 실제로 사용되는 타입
+   ```typescript
+   // ✅ 분리: 여러 컴포넌트에서 사용
+   type TextAlign = 'left' | 'center' | 'right';
+   type ComponentSize = 'sm' | 'md' | 'lg';
+   ```
+
+2. **복잡성**: 3개 이상 + 의미적으로 복잡한 타입
+   ```typescript
+   // ✅ 분리: 복잡하고 의미가 명확함
+   type ChipVariant = 'surface' | 'primary' | 'secondary' | 'success' | 'warning' | 'error';
+   ```
+
+3. **유지보수성**: 변경 가능성이 높은 타입
+   ```typescript
+   // ✅ 분리: 디자인 시스템 변경 시 영향받을 수 있음
+   type ButtonVariant = 'primary' | 'outline' | 'red' | 'blue' | 'pill' | ...;
+   ```
+
+#### ❌ 타입 분리하지 않는 기준
+1. **단순한 2개 옵션**: 직관적이고 안정적인 타입
+   ```typescript
+   // ❌ 분리 안함: 단순하고 직관적
+   type Direction = 'left' | 'right';
+   type State = 'On' | 'Off';
+   type Type = 'type1' | 'type2';
+   ```
+
+2. **컴포넌트 특화**: 특정 컴포넌트에서만 사용되는 타입
+   ```typescript
+   // ❌ 분리 안함: 특정 컴포넌트에만 특화
+   type InputStatus = 'Static' | 'Focus' | 'Error' | 'Filled' | 'Disabled';
+   type CheckboxState = 'On' | 'Off';
+   ```
+
+3. **안정적인 기본 타입**: 변경 가능성이 낮은 타입
+   ```typescript
+   // ❌ 분리 안함: 안정적인 기본 타입
+   type TextAlign = 'left' | 'center' | 'right';
+   ```
+
+### 타입 분리 위치
+- **공통 타입**: `packages/ui/src/types/components.ts`
+- **컴포넌트 특화 타입**: 각 컴포넌트 파일 내에서 정의
+
+### 예시
+```typescript
+// packages/ui/src/types/components.ts
+export type TextAlign = 'left' | 'center' | 'right';
+export type ComponentSize = 'sm' | 'md' | 'lg';
+export type ChipVariant = 'surface' | 'primary' | 'secondary' | 'success' | 'warning' | 'error';
+
+// BaseButton.vue
+interface Props {
+  variant?: 'primary' | 'outline' | 'red' | 'blue'; // 컴포넌트 특화
+  size?: ComponentSize; // 공통 타입 사용
+  align?: TextAlign; // 공통 타입 사용
+}
+```
+
 ## 성능 최적화
 - **Virtual Scrolling**: 대용량 데이터셋에는 vue-virtual-scroller를 사용하세요.
 - **메모이제이션**: computed와 watch를 적절히 사용하여 불필요한 재계산을 방지하세요.

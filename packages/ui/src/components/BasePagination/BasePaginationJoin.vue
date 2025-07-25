@@ -40,12 +40,18 @@ const items = computed(() => Array.from({ length: props.count }));
 
 // 인디케이터 클래스
 const getIndicatorClasses = (idx: number) => {
-  const baseClasses = 'h-2 rounded-full shrink-0 transition-all duration-200';
+  const baseClasses = [
+    // 1. 크기
+    'h-2 rounded-full shrink-0',
+
+    // 2. 전환 효과
+    'transition-all duration-200',
+  ].join(' ');
 
   if (idx === props.current) {
     return `${baseClasses} w-10 pagination-join-indicator-active`;
   } else {
-    return `${baseClasses} w-2 pagination-join-indicator-inactive`;
+    return `${baseClasses} w-3 bg-bg-surface-muted`;
   }
 };
 </script>

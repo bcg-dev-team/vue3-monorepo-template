@@ -1,49 +1,55 @@
 // BaseInputText 컴포넌트 스타일
-// Figma 디자인 토큰을 기반으로 한 입력 필드 상태별 스타일 정의
+// Figma 디자인 토큰을 기반으로 한 입력 필드 스타일 정의
 
 // 컴포넌트별 토큰만 정의
 // Tailwind 클래스로 처리 가능한 스타일들은 Vue 파일에서 직접 사용
 
+// Static 상태 스타일
 .input-static {
   background-color: var(--input-color-surface);
   border-color: var(--input-color-border-static);
   color: var(--input-color-text-static);
 }
 
+// Focus 상태 스타일
 .input-focus {
   background-color: var(--input-color-surface);
   border-color: var(--input-color-border-focus);
   color: var(--input-color-text-static);
 }
 
+// Error 상태 스타일
 .input-error {
   background-color: var(--input-color-surface);
   border-color: var(--input-color-border-error);
   color: var(--input-color-text-static);
 }
 
+// Filled 상태 스타일
 .input-filled {
   background-color: var(--input-color-surface);
   border-color: var(--input-color-border-static);
   color: var(--input-color-text-static);
 }
 
+// Disabled 상태 스타일
 .input-disabled {
   background-color: var(--input-color-bg-disabled);
   border-color: var(--input-color-border-disabled);
   color: var(--input-color-text-disable);
 }
 
-// 테두리 에러 스타일
+// Error 테두리 스타일
 .input-border-error {
   border-color: var(--input-color-border-error);
 }
 
-// 플레이스홀더 스타일
-input::placeholder {
+// Placeholder 스타일
+.input::placeholder {
   color: var(--input-color-text-placeholder);
 }
 
-input:disabled::placeholder {
+// Disabled 텍스트 스타일
+.input:disabled {
   color: var(--input-color-text-disable);
 }

@@ -9,11 +9,7 @@
   background-color: var(--table-row-selected-bg);
 }
 
-// 호버 효과 스타일
+// 호버 상태 스타일
 .table-row-hover {
-  transition: background-color 0.2s ease;
-}
-
-.table-row-hover:hover {
-  background-color: rgb(249 250 251); // hover:bg-gray-50
+  background-color: var(--table-row-hover-bg);
 }

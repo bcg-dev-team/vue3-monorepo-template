@@ -1,61 +1,52 @@
 // BaseTabs 컴포넌트 스타일
-// Figma 디자인 토큰을 기반으로 한 탭 컴포넌트 스타일 정의
+// Figma 디자인 토큰을 기반으로 한 탭 스타일 정의
 
 // 컴포넌트별 토큰만 정의
 // Tailwind 클래스로 처리 가능한 스타일들은 Vue 파일에서 직접 사용
 
-// 탭 컨테이너 방향별 스타일
+// 컨테이너 스타일
 .tabs-container-horizontal {
+  display: flex;
   flex-direction: row;
 }
 
 .tabs-container-vertical {
+  display: flex;
   flex-direction: column;
 }
 
-// 탭 크기별 스타일
+// 크기별 스타일
 .tabs-sm {
-  font-size: 0.75rem; // text-xs
+  gap: 0.5rem;
 }
 
 .tabs-md {
-  font-size: 0.875rem; // text-sm
+  gap: 1rem;
 }
 
 .tabs-lg {
-  font-size: 1rem; // text-base
+  gap: 1.5rem;
 }
 
-// 탭 상태별 스타일
+// 기본 탭 스타일
 .tab-default {
-  background-color: var(--bg-surface);
-  color: var(--text-secondary);
-  border-bottom: 1px solid;
-  border-style: solid;
+  background-color: var(--background-bg-surface);
+  color: var(--font-color-secondary);
 }
 
-.tab-default:hover {
-  background-color: var(--bg-surface-muted);
-}
-
+// 선택된 탭 스타일
 .tab-selected {
-  border-top: 1px solid;
-  border-left: 1px solid;
-  border-right: 1px solid;
-  border-bottom: 0;
-  border-style: solid;
+  background-color: var(--background-bg-surface-muted);
 }
 
+// 비활성화된 탭 스타일
 .tab-disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  border-bottom: 1px solid;
   background-color: var(--surface-disabled);
-  color: var(--text-disabled);
+  color: var(--input-color-text-disable);
   border-color: var(--border-default);
 }
 
-// 탭 색상별 스타일 (순서에 따른 색상)
+// 색상별 탭 스타일
 .tab-color-0 {
   background-color: var(--trade-long-bg);
   color: var(--trade-long-text);
@@ -82,16 +73,9 @@
 
 // 탭 패널 스타일
 .tab-panel {
-  padding: 1.5rem; // p-6
-  border-bottom-left-radius: 0.5rem; // rounded-b-default
-  border-bottom-right-radius: 0.5rem; // rounded-b-default
-  transition: all 0.2s ease;
-  border-left: 1px solid;
-  border-right: 1px solid;
-  border-bottom: 1px solid;
+  padding: 1rem;
 }
 
-// 탭 패널 색상별 스타일
 .tab-panel-color-0 {
   background-color: var(--trade-long-bg);
   color: var(--trade-long-text);

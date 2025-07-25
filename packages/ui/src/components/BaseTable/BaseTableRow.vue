@@ -1,6 +1,7 @@
 <!-- Figma: Table Row -->
 <script setup lang="ts">
 import { computed } from 'vue';
+import './BaseTableRow.scss';
 
 /**
  * 테이블 행 컴포넌트

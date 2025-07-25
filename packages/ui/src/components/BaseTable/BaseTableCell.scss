@@ -4,17 +4,19 @@
 // 컴포넌트별 토큰만 정의
 // Tailwind 클래스로 처리 가능한 스타일들은 Vue 파일에서 직접 사용
 
-// 셀 타입별 스타일
+// Normal 셀 스타일
 .table-cell-normal {
   background-color: var(--table-type1-body-bg);
   border-color: var(--table-type1-body-border);
 }
 
+// Selected 셀 스타일
 .table-cell-selected {
   background-color: var(--table-type1-body-bg-select);
   border-color: var(--table-type1-body-border);
 }
 
+// Input 셀 스타일
 .table-cell-input {
   background-color: var(--table-type1-body-bg);
   border-color: var(--table-type1-body-border);

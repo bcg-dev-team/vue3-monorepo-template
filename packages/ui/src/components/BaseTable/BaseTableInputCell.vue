@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import BaseInputText from '../BaseInput/BaseInputText.vue';
 import BaseButton from '../BaseButton/BaseButton.vue';
+import './BaseTableInputCell.scss';
 import { computed } from 'vue';
 
 /**

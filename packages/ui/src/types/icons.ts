@@ -30,6 +30,7 @@ export type IconName =
   | 'eye'
   | 'fullscreen'
   | 'external-link'
+  | 'icn-delete'
 
   // 네비게이션 아이콘
   | 'home'
@@ -41,6 +42,10 @@ export type IconName =
   | 'order'
   | 'trade'
   | 'support'
+
+  // 테마 아이콘
+  | 'mode-dark'
+  | 'mode-light'
 
   // 기타 아이콘
   | 'asset'
@@ -109,6 +114,7 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   eye: 'stroke', // stroke="#333740"
   fullscreen: 'fill', // fill="#333740"
   'external-link': 'fill', // fill="#333740"
+  'icn-delete': 'fill', // fill="#b4b6bb"
 
   // 네비게이션 아이콘
   home: 'fill', // fill="#333740"
@@ -120,6 +126,10 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   order: 'fill', // fill="#333740"
   trade: 'stroke', // stroke="#333740"
   support: 'fill', // fill="#333740"
+
+  // 테마 아이콘
+  'mode-dark': 'fill', // fill="#333740"
+  'mode-light': 'fill', // fill="#333740"
 
   // 기타 아이콘
   asset: 'fill', // fill="#333740"

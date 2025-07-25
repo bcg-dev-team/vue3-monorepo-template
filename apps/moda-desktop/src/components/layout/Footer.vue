@@ -6,7 +6,7 @@
           <a
             :href="link.href"
             class="font-regular"
-            :class="{ '!font-medium text-[#131313]': index === footerLinks.length - 1 }"
+            :class="{ '!font-medium text-neutral-neutral800': index === footerLinks.length - 1 }"
             >{{ link.text }}</a
           >
           <span v-if="index < footerLinks.length - 1" class="separator">|</span>

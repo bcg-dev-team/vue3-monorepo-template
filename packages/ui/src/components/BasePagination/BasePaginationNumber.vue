@@ -40,9 +40,9 @@ const backgroundClasses = computed(() => {
 
   switch (props.status) {
     case 'selected':
-      return `${baseClasses} bg-[#fff9df]`;
+      return `${baseClasses} bg-primary-primary100`;
     case 'hover':
-      return `${baseClasses} bg-[#f5f7f9]`;
+      return `${baseClasses} bg-neutral-neutral100`;
     default:
       return baseClasses;
   }
@@ -50,16 +50,16 @@ const backgroundClasses = computed(() => {
 
 const textClasses = computed(() => {
   const baseClasses =
-    'absolute flex flex-col justify-center leading-[0] text-center text-nowrap not-italic tracking-[-0.63px]';
-  const sizeClasses = 'text-[14px]';
+    'absolute flex flex-col justify-center leading-0 text-center text-nowrap not-italic tracking-1';
+  const sizeClasses = 'text-font-14';
 
   switch (props.status) {
     case 'selected':
-      return `${baseClasses} ${sizeClasses} font-semibold text-[#131313] leading-[22px] bottom-[17.647%] left-[35.294%] right-[38.235%] top-[17.647%]`;
+      return `${baseClasses} ${sizeClasses} font-semibold text-neutral-neutral800 leading-2`;
     case 'hover':
-      return `${baseClasses} ${sizeClasses} font-normal text-[#717375] leading-[18px] bottom-[23.529%] left-[35.294%] right-[38.235%] top-[23.529%] tracking-[-0.35px]`;
+      return `${baseClasses} ${sizeClasses} font-normal text-neutral-neutral550 leading-6 tracking-3`;
     default:
-      return `${baseClasses} ${sizeClasses} font-normal text-[#717375] leading-[22px] bottom-[17.647%] left-[35.294%] right-[38.235%] top-[17.647%]`;
+      return `${baseClasses} ${sizeClasses} font-normal text-neutral-neutral550 leading-2`;
   }
 });
 </script>

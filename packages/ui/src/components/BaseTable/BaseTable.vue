@@ -56,7 +56,7 @@ const isRowSelected = (rowId: string | number) => {
 };
 
 const tableClasses = computed(() => {
-  return 'w-full border border-[#dadbdd] rounded-lg overflow-hidden';
+  return 'w-full border border-neutral-neutral200 rounded-lg overflow-hidden';
 });
 
 const tableHeaderClasses = computed(() => {
@@ -83,16 +83,16 @@ const tableBodyClasses = computed(() => {
             <div class="cursor-pointer" @click="handleSort(header.key)">
               <slot name="header-cell" :header="header">
                 <div class="h-12">
-                  <div class="bg-[#f5f6f6] relative w-full h-full">
+                  <div class="bg-neutral-neutral100 relative w-full h-full">
                     <div
-                      class="absolute border-[#dadbdd] border-[0px_0px_1px] border-solid inset-0 pointer-events-none"
+                      class="absolute border-neutral-neutral200 border-b border-solid inset-0 pointer-events-none"
                     />
                     <div class="flex flex-row items-center relative size-full">
                       <div
                         class="box-border content-stretch flex flex-row gap-2.5 items-center justify-start px-[15px] py-3 relative size-full"
                       >
                         <div
-                          class="flex flex-col font-medium justify-center leading-[0] not-italic relative shrink-0 text-[#131313] text-[14px] text-left text-nowrap tracking-[-0.63px]"
+                          class="flex flex-col font-medium justify-center leading-0 not-italic relative shrink-0 text-neutral-neutral800 text-font-14 text-left text-nowrap tracking-1"
                         >
                           <span class="block whitespace-pre">{{ header.title }}</span>
                         </div>
@@ -114,7 +114,7 @@ const tableBodyClasses = computed(() => {
           v-for="row in data"
           :key="row.id"
           class="flex w-full hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
-          :class="{ 'bg-[#e8f0fa]': isRowSelected(row.id) }"
+          :class="{ 'bg-blue-blue050': isRowSelected(row.id) }"
           @click="handleRowSelect(row.id)"
         >
           <div
@@ -125,16 +125,16 @@ const tableBodyClasses = computed(() => {
           >
             <slot name="body-cell" :row="row" :header="header" :value="row[header.key]">
               <div class="h-12">
-                <div class="bg-[#ffffff] relative w-full h-full">
+                <div class="bg-neutral-neutral000 relative w-full h-full">
                   <div
-                    class="absolute border-[#dadbdd] border-[1px_0px] border-solid inset-0 pointer-events-none"
+                    class="absolute border-neutral-neutral200 border-x border-solid inset-0 pointer-events-none"
                   />
                   <div class="flex flex-row items-center relative size-full">
                     <div
                       class="box-border content-stretch flex flex-row gap-2.5 items-center justify-start px-[15px] py-3 relative size-full"
                     >
                       <div
-                        class="font-regular leading-[0] not-italic relative shrink-0 text-[#131313] text-[14px] text-left text-nowrap tracking-[-0.35px]"
+                        class="font-regular leading-0 not-italic relative shrink-0 text-neutral-neutral800 text-font-14 text-left text-nowrap tracking-3"
                       >
                         <span class="block whitespace-pre">{{ row[header.key] }}</span>
                       </div>

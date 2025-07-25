@@ -1,6 +1,6 @@
 import type { StorybookConfig } from '@storybook/vue3-vite';
 import { resolve } from 'path';
-import tailwindPostcss from '@tailwindcss/postcss';
+import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
 
 const config: StorybookConfig = {
@@ -43,7 +43,7 @@ const config: StorybookConfig = {
     config.css = {
       ...config.css,
       postcss: {
-        plugins: [tailwindPostcss, autoprefixer],
+        plugins: [tailwindcss, autoprefixer],
       },
     };
 

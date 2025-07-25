@@ -52,16 +52,18 @@ const emit = defineEmits<{
 const inputRef = ref<HTMLInputElement | null>(null);
 const bgClass = computed(() =>
   props.disabled
-    ? 'bg-button-disabled-bg'
+    ? 'bg-[var(--button-disabled-background)]'
     : props.status === 'hover'
-      ? 'bg-bg-surface'
+      ? 'bg-[var(--base-colors-common-bg-surface-default)]'
       : 'bg-gray-100'
 );
 const borderClass = computed(() =>
-  props.disabled ? 'border-button-disabled-border' : 'border-bg-outline'
+  props.disabled
+    ? 'border-[var(--button-disabled-border)]'
+    : 'border-[var(--background-bg-outline)]'
 );
 const textClass = computed(() =>
-  props.disabled ? 'text-button-disabled-text' : 'text-input-text'
+  props.disabled ? 'text-[var(--button-disabled-text)]' : 'text-[var(--input-color-text-static)]'
 );
 
 function handleClick(e: MouseEvent) {

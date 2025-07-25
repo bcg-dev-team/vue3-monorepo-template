@@ -61,17 +61,23 @@ const isFocus = computed(() => props.status === 'Focus');
 const isFilled = computed(() => props.status === 'Filled');
 
 const borderClass = computed(() => {
-  if (isDisabled.value) return 'border-input-border-disabled';
-  if (isError.value) return 'border-input-border-error';
-  if (isFocus.value) return 'border-input-border-focus';
-  return 'border-input-border';
+  if (isDisabled.value) return 'border-[var(--input-color-border-disabled)]';
+  if (isError.value) return 'border-[var(--input-color-border-error)]';
+  if (isFocus.value) return 'border-[var(--input-color-border-focus)]';
+  return 'border-[var(--input-color-border-static)]';
 });
-const bgClass = computed(() => (isDisabled.value ? 'bg-input-bg-disabled' : 'bg-input-bg'));
+const bgClass = computed(() =>
+  isDisabled.value ? 'bg-[var(--input-color-bg-disabled)]' : 'bg-[var(--input-color-surface)]'
+);
 const textClass = computed(() =>
-  isDisabled.value ? 'text-input-text-disabled' : 'text-input-text'
+  isDisabled.value
+    ? 'text-[var(--input-color-text-disable)]'
+    : 'text-[var(--input-color-text-static)]'
 );
 const placeholderClass = computed(() =>
-  isDisabled.value ? 'text-input-text-disabled' : 'text-input-text-placeholder'
+  isDisabled.value
+    ? 'text-[var(--input-color-text-disable)]'
+    : 'text-[var(--input-color-text-placeholder)]'
 );
 </script>
 <template>

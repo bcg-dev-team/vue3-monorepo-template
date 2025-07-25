@@ -1,5 +1,5 @@
-// ../theme/tailwind.config.js의 설정을 불러와 확장
-const themeConfig = require('../theme/tailwind.config.js');
+// ../theme/tailwind.config.cjs의 설정을 불러와 확장
+const themeConfig = require('../theme/tailwind.config.cjs');
 
 module.exports = {
   ...themeConfig,

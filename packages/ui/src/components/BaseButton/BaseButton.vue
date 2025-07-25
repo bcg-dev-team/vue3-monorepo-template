@@ -13,7 +13,14 @@
  */
 import { computed } from 'vue';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
-import type { ButtonIconProps, ButtonVariant, ButtonSize } from '../../types/components';
+import type { ComponentSize, IconName } from '../../types/components';
+
+// 버튼 아이콘 props 타입 (BaseButton 전용)
+interface ButtonIconProps {
+  name: IconName;
+  size?: ComponentSize | 'xl';
+  color?: string;
+}
 
 interface Props {
   /**
@@ -21,13 +28,22 @@ interface Props {
    *
    * 기본값은 'primary'입니다.
    */
-  variant?: ButtonVariant;
+  variant?:
+    | 'primary'
+    | 'outline'
+    | 'red'
+    | 'blue'
+    | 'pill'
+    | 'light-solid'
+    | 'red-solid'
+    | 'blue-solid'
+    | 'disabled';
   /**
    * 버튼 크기 (regular, small, pill, small-inner)
    *
    * 기본값은 'regular'입니다.
    */
-  size?: ButtonSize;
+  size?: 'regular' | 'small' | 'pill' | 'small-inner';
   /**
    * 비활성화 여부
    *

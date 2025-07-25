@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
-import type { TabItem } from '../../types/components';
+import type { TabItem, ComponentSize } from '../../types/components';
 
 interface Props {
   /**
@@ -38,7 +38,7 @@ interface Props {
    *
    * 기본값은 'md'입니다.
    */
-  size?: 'sm' | 'md' | 'lg';
+  size?: ComponentSize;
 
   /**
    * 컨텐츠 영역 표시 여부

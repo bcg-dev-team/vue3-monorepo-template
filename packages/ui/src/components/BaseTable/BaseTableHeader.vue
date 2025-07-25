@@ -1,6 +1,7 @@
 <!-- Figma: Table/Header, Table/Header-Type2 -->
 <script setup lang="ts">
 import { computed } from 'vue';
+import type { TextAlign } from '../../types/components';
 
 /**
  * 테이블 헤더 컴포넌트
@@ -15,7 +16,7 @@ interface Props {
   /** 헤더 타입 */
   type?: 'type1' | 'type2';
   /** 텍스트 정렬 */
-  align?: 'left' | 'center' | 'right';
+  align?: TextAlign;
 }
 
 const props = withDefaults(defineProps<Props>(), {

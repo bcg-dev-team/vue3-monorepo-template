@@ -1,6 +1,7 @@
 <!-- Figma: Table/Body-Input, Table/Body-Input-bg, Table/Body-Type2 -->
 <script setup lang="ts">
 import { computed } from 'vue';
+import type { TextAlign } from '../../types/components';
 
 /**
  * 테이블 셀 컴포넌트
@@ -16,7 +17,7 @@ interface Props {
   /** 셀 타입 */
   type?: 'normal' | 'selected' | 'input';
   /** 텍스트 정렬 */
-  align?: 'left' | 'center' | 'right';
+  align?: TextAlign;
   /** 셀 너비 */
   width?: string;
 }

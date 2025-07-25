@@ -3,6 +3,7 @@
 -->
 <script setup lang="ts">
 import { computed } from 'vue';
+import type { ChipVariant, ComponentSize } from '../../types/components';
 
 /**
  * 칩(Chip) 최소 단위 컴포넌트
@@ -23,12 +24,12 @@ interface Props {
    * 칩 스타일 변형
    * @default 'surface'
    */
-  variant?: 'surface' | 'primary' | 'secondary' | 'success' | 'warning' | 'error';
+  variant?: ChipVariant;
   /**
    * 칩 크기
    * @default 'md'
    */
-  size?: 'sm' | 'md' | 'lg';
+  size?: ComponentSize;
   /**
    * border-radius 클래스
    * @default 'rounded-sm'

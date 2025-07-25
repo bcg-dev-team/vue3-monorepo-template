@@ -1,6 +1,7 @@
 <!-- Figma: Table/Header, Table/Header-Type2 -->
 <script setup lang="ts">
 import type { TextAlign } from '../../types/components';
+import './BaseTableHeader.scss';
 import { computed } from 'vue';
 
 /**

@@ -2,6 +2,7 @@
 <script setup lang="ts">
 import type { TextAlign } from '../../types/components';
 import { computed } from 'vue';
+import './BaseTableCell.scss';
 
 /**
  * 테이블 셀 컴포넌트

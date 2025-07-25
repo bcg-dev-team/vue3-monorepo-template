@@ -11,5 +11,7 @@
 
 // 비활성 인디케이터 스타일
 .pagination-join-indicator-inactive {
-  background-color: var(--bg-surface-muted);
+  background-color: var(--background-bg-surface-muted);
+  /* fallback 색상 추가 */
+  background-color: #dadbdd;
 }

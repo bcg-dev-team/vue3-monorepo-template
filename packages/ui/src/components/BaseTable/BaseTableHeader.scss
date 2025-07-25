@@ -4,53 +4,43 @@
 // 컴포넌트별 토큰만 정의
 // Tailwind 클래스로 처리 가능한 스타일들은 Vue 파일에서 직접 사용
 
-// 헤더 타입별 스타일
+// Type1 헤더 스타일
 .table-header-type1 {
   background-color: var(--table-type1-header-bg);
   border-bottom-color: var(--table-type1-header-underline);
 }
 
+// Type2 헤더 스타일
 .table-header-type2 {
   background-color: var(--table-type2-header-bg);
   border-bottom-color: var(--table-type2-header-underline);
 }
 
-// 테두리 타입별 스타일
-.table-header-border-type1 {
-  border-bottom-width: 2px;
-}
-
-.table-header-border-type2 {
-  border-bottom-width: 1px;
-}
-
-// 패딩 타입별 스타일
+// 패딩 스타일
 .table-header-padding-type1 {
-  padding: 0.5rem 0.625rem; // px-2.5 py-2
+  padding: 0.75rem 1rem;
 }
 
 .table-header-padding-type2 {
-  padding: 0.75rem 0.9375rem; // px-[15px] py-3
+  padding: 1rem 1.5rem;
 }
 
-// 텍스트 타입별 스타일
+// 테두리 스타일
+.table-header-border-type1 {
+  border-bottom: 1px solid var(--table-type1-header-underline);
+}
+
+.table-header-border-type2 {
+  border-bottom: 2px solid var(--table-type2-header-underline);
+}
+
+// 텍스트 스타일
 .table-header-text-type1 {
-  font-weight: 500; // font-medium
-  font-size: 0.75rem; // text-xs
-  line-height: 1.25; // leading-tight
   color: var(--input-color-text-static);
+  font-weight: 600;
 }
 
 .table-header-text-type2 {
-  font-weight: 500; // font-medium
-  font-size: 0.875rem; // text-sm
-  line-height: 1.25; // leading-tight
   color: var(--input-color-text-static);
-}
-
-.table-header-text-type2 {
-  font-weight: 500; // font-medium
-  font-size: 0.875rem; // text-sm
-  line-height: 1.375; // leading-snug
-  letter-spacing: 0.025em; // tracking-wide
+  font-weight: 700;
 }

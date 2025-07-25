@@ -11,6 +11,26 @@ const CenterDecorator = (storyFn: any, context: any) => {
   // docs 페이지인지 확인
   const isDocsPage = context.parameters?.docs?.page || context.viewMode === 'docs';
 
+  // Design Tokens 스토리에서는 중앙정렬 제외
+  const isDesignTokensStory = context.title === 'Foundations/Design Tokens';
+
+  if (isDesignTokensStory) {
+    // Design Tokens 스토리에서만 중앙정렬 제외
+    return defineComponent({
+      name: 'CenterDecorator',
+      template: `
+        <div style="width: 100%;">
+          <component :is="storyComponent" />
+        </div>
+      `,
+      setup() {
+        return {
+          storyComponent: storyFn(),
+        };
+      },
+    });
+  }
+
   if (isDocsPage) {
     // docs 페이지에서는 가로 중앙 정렬만 적용
     return defineComponent({

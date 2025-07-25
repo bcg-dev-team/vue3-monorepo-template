@@ -132,12 +132,6 @@ importers:
       prettier-plugin-sort-imports:
         specifier: ^1.8.8
         version: 1.8.8(typescript@5.8.3)
-      react:
-        specifier: 19.1.0
-        version: 19.1.0
-      react-dom:
-        specifier: 19.1.0
-        version: 19.1.0(react@19.1.0)
       rimraf:
         specifier: ^5.0.0
         version: 5.0.10

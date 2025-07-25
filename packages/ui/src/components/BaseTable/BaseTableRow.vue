@@ -24,6 +24,17 @@ const props = withDefaults(defineProps<Props>(), {
   hover: true,
 });
 
+// 색상은 CSS 변수로 처리
+const rowStyle = computed(() => {
+  if (props.selected) {
+    return {
+      backgroundColor: 'var(--table-row-selected-bg)',
+    };
+  }
+  return {};
+});
+
+// 레이아웃/간격/상태는 Tailwind class로 처리
 const rowClasses = computed(() => {
   const baseClasses = 'flex w-full';
   const hoverClasses =
@@ -33,7 +44,7 @@ const rowClasses = computed(() => {
 </script>
 
 <template>
-  <div :class="rowClasses" data-name="Table/Row">
+  <div :class="rowClasses" :style="rowStyle" data-name="Table/Row">
     <slot />
   </div>
 </template>

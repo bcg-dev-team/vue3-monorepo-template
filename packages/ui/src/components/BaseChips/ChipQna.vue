@@ -18,6 +18,7 @@ interface Props {
    */
   status?: '답변대기' | '답변완료';
 }
+
 const props = withDefaults(defineProps<Props>(), {
   status: '답변대기',
 });
@@ -26,27 +27,22 @@ const chipProps = computed(() => {
   if (props.status === '답변완료') {
     return {
       label: '답변완료',
-      bg: 'bg-error',
-      textColor: 'text-white',
+      variant: 'error' as const,
+      size: 'sm' as const,
       rounded: 'rounded-[3px]',
-      size: 'text-xs',
       fontWeight: 'font-normal',
-      px: 'px-2',
-      py: 'py-0.5',
     };
   }
   return {
     label: '답변대기',
-    bg: 'bg-bg-surface',
-    textColor: 'text-text-secondary',
+    variant: 'surface' as const,
+    size: 'sm' as const,
     rounded: 'rounded-[3px]',
-    size: 'text-xs',
     fontWeight: 'font-normal',
-    px: 'px-2',
-    py: 'py-0.5',
   };
 });
 </script>
+
 <template>
   <BaseChip v-bind="chipProps" />
 </template>

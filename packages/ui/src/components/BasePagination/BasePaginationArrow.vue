@@ -33,6 +33,7 @@ const handleClick = (event: MouseEvent) => {
   }
 };
 
+// 레이아웃/상태는 Tailwind class로 처리
 const arrowClasses = computed(() => {
   const baseClasses = 'relative w-6 h-6 cursor-pointer transition-colors duration-200';
   const disabledClasses = props.disabled ? 'cursor-not-allowed opacity-50' : 'hover:opacity-80';
@@ -45,8 +46,9 @@ const svgClasses = computed(() => {
   return `${baseClasses} ${rotationClasses}`;
 });
 
+// 색상은 CSS 변수로 처리
 const fillColor = computed(() => {
-  return props.disabled ? 'var(--fill-0, #B4B6BB)' : 'var(--fill-0, #333740)';
+  return props.disabled ? 'var(--text-disabled)' : 'var(--text-primary)';
 });
 </script>
 

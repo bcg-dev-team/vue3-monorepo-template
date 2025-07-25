@@ -55,8 +55,28 @@ const isRowSelected = (rowId: string | number) => {
   return props.selectedRows.includes(rowId);
 };
 
+// 색상/테마는 CSS 변수로 처리
+const tableStyle = computed(() => ({
+  borderColor: 'var(--neutral-neutral200)',
+}));
+
+const headerStyle = computed(() => ({
+  backgroundColor: 'var(--neutral-neutral100)',
+  borderBottomColor: 'var(--neutral-neutral200)',
+}));
+
+const bodyStyle = computed(() => ({
+  backgroundColor: 'var(--neutral-neutral000)',
+  borderColor: 'var(--neutral-neutral200)',
+}));
+
+const selectedRowStyle = computed(() => ({
+  backgroundColor: 'var(--blue-blue050)',
+}));
+
+// 레이아웃/간격/상태는 Tailwind class로 처리
 const tableClasses = computed(() => {
-  return 'w-full border border-neutral-neutral200 rounded-lg overflow-hidden';
+  return 'w-full border rounded-lg overflow-hidden';
 });
 
 const tableHeaderClasses = computed(() => {
@@ -66,10 +86,54 @@ const tableHeaderClasses = computed(() => {
 const tableBodyClasses = computed(() => {
   return 'w-full';
 });
+
+const headerCellClasses = computed(() => {
+  return 'relative w-full h-full';
+});
+
+const headerBorderClasses = computed(() => {
+  return 'absolute border-b border-solid inset-0 pointer-events-none';
+});
+
+const headerContentClasses = computed(() => {
+  return 'flex flex-row items-center relative size-full';
+});
+
+const headerPaddingClasses = computed(() => {
+  return 'box-border content-stretch flex flex-row gap-2.5 items-center justify-start px-[15px] py-3 relative size-full';
+});
+
+const headerTextClasses = computed(() => {
+  return 'flex flex-col font-medium justify-center leading-0 not-italic relative shrink-0 text-neutral-neutral800 text-font-14 text-left text-nowrap tracking-1';
+});
+
+const bodyCellClasses = computed(() => {
+  return 'relative w-full h-full';
+});
+
+const bodyBorderClasses = computed(() => {
+  return 'absolute border-x border-solid inset-0 pointer-events-none';
+});
+
+const bodyContentClasses = computed(() => {
+  return 'flex flex-row items-center relative size-full';
+});
+
+const bodyPaddingClasses = computed(() => {
+  return 'box-border content-stretch flex flex-row gap-2.5 items-center justify-start px-[15px] py-3 relative size-full';
+});
+
+const bodyTextClasses = computed(() => {
+  return 'font-regular leading-0 not-italic relative shrink-0 text-neutral-neutral800 text-font-14 text-left text-nowrap tracking-3';
+});
+
+const rowClasses = computed(() => {
+  return 'flex w-full hover:bg-gray-50 transition-colors duration-200 cursor-pointer';
+});
 </script>
 
 <template>
-  <div :class="tableClasses" data-name="Table">
+  <div :class="tableClasses" :style="tableStyle" data-name="Table">
     <!-- 헤더 -->
     <div :class="tableHeaderClasses">
       <slot name="header">
@@ -83,17 +147,11 @@ const tableBodyClasses = computed(() => {
             <div class="cursor-pointer" @click="handleSort(header.key)">
               <slot name="header-cell" :header="header">
                 <div class="h-12">
-                  <div class="bg-neutral-neutral100 relative w-full h-full">
-                    <div
-                      class="absolute border-neutral-neutral200 border-b border-solid inset-0 pointer-events-none"
-                    />
-                    <div class="flex flex-row items-center relative size-full">
-                      <div
-                        class="box-border content-stretch flex flex-row gap-2.5 items-center justify-start px-[15px] py-3 relative size-full"
-                      >
-                        <div
-                          class="flex flex-col font-medium justify-center leading-0 not-italic relative shrink-0 text-neutral-neutral800 text-font-14 text-left text-nowrap tracking-1"
-                        >
+                  <div :class="headerCellClasses" :style="headerStyle">
+                    <div :class="headerBorderClasses" />
+                    <div :class="headerContentClasses">
+                      <div :class="headerPaddingClasses">
+                        <div :class="headerTextClasses">
                           <span class="block whitespace-pre">{{ header.title }}</span>
                         </div>
                       </div>
@@ -113,8 +171,8 @@ const tableBodyClasses = computed(() => {
         <div
           v-for="row in data"
           :key="row.id"
-          class="flex w-full hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
-          :class="{ 'bg-blue-blue050': isRowSelected(row.id) }"
+          :class="rowClasses"
+          :style="isRowSelected(row.id) ? selectedRowStyle : {}"
           @click="handleRowSelect(row.id)"
         >
           <div
@@ -125,17 +183,11 @@ const tableBodyClasses = computed(() => {
           >
             <slot name="body-cell" :row="row" :header="header" :value="row[header.key]">
               <div class="h-12">
-                <div class="bg-neutral-neutral000 relative w-full h-full">
-                  <div
-                    class="absolute border-neutral-neutral200 border-x border-solid inset-0 pointer-events-none"
-                  />
-                  <div class="flex flex-row items-center relative size-full">
-                    <div
-                      class="box-border content-stretch flex flex-row gap-2.5 items-center justify-start px-[15px] py-3 relative size-full"
-                    >
-                      <div
-                        class="font-regular leading-0 not-italic relative shrink-0 text-neutral-neutral800 text-font-14 text-left text-nowrap tracking-3"
-                      >
+                <div :class="bodyCellClasses" :style="bodyStyle">
+                  <div :class="bodyBorderClasses" />
+                  <div :class="bodyContentClasses">
+                    <div :class="bodyPaddingClasses">
+                      <div :class="bodyTextClasses">
                         <span class="block whitespace-pre">{{ row[header.key] }}</span>
                       </div>
                     </div>

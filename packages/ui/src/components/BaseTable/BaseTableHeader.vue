@@ -23,20 +23,31 @@ const props = withDefaults(defineProps<Props>(), {
   align: 'left',
 });
 
+// 색상은 CSS 변수로 처리
+const headerStyle = computed(() => {
+  const bgColor =
+    props.type === 'type1' ? 'var(--table-type1-header-bg)' : 'var(--table-type2-header-bg)';
+
+  const borderColor =
+    props.type === 'type1'
+      ? 'var(--table-type1-header-underline)'
+      : 'var(--table-type2-header-underline)';
+
+  return {
+    backgroundColor: bgColor,
+    borderBottomColor: borderColor,
+  };
+});
+
+// 레이아웃/간격/상태는 Tailwind class로 처리
 const containerClasses = computed(() => {
-  const baseClasses = 'relative w-full h-full';
-  const bgClasses =
-    props.type === 'type1' ? 'bg-table-type1-header-bg' : 'bg-table-type2-header-bg';
-  return `${baseClasses} ${bgClasses}`;
+  return 'relative w-full h-full';
 });
 
 const borderClasses = computed(() => {
-  const baseClasses = 'absolute inset-0 pointer-events-none';
-  const borderClasses =
-    props.type === 'type1'
-      ? 'border-table-type1-header-underline border-[0px_0px_2px] border-solid'
-      : 'border-table-type2-header-underline border-[0px_0px_1px] border-solid';
-  return `${baseClasses} ${borderClasses}`;
+  const baseClasses = 'absolute inset-0 pointer-events-none border-b border-solid';
+  const borderWidth = props.type === 'type1' ? 'border-b-2' : 'border-b';
+  return `${baseClasses} ${borderWidth}`;
 });
 
 const contentClasses = computed(() => {
@@ -69,7 +80,7 @@ const textClasses = computed(() => {
 </script>
 
 <template>
-  <div :class="containerClasses" data-name="Table/Header">
+  <div :class="containerClasses" :style="headerStyle" data-name="Table/Header">
     <div :class="borderClasses" />
     <div :class="contentClasses">
       <div :class="paddingClasses">

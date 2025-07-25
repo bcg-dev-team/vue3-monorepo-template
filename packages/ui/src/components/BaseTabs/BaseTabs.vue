@@ -68,27 +68,27 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>();
 
-// 탭 순서에 따른 색상 정의 (기존 semantic tokens 매핑)
+// 탭 순서에 따른 색상 정의 (CSS 변수 사용)
 const tabColors = [
   {
-    bg: 'bg-trade-long-bg',
-    text: 'text-trade-long-text',
-    border: 'border-trade-long-border',
+    bg: 'var(--trade-long-bg)',
+    text: 'var(--trade-long-text)',
+    border: 'var(--trade-long-border)',
   },
   {
-    bg: 'bg-trade-short-bg',
-    text: 'text-trade-short-text',
-    border: 'border-trade-short-border',
+    bg: 'var(--trade-short-bg)',
+    text: 'var(--trade-short-text)',
+    border: 'var(--trade-short-border)',
   },
   {
-    bg: 'bg-trade-correct-bg',
-    text: 'text-trade-correct-text',
-    border: 'border-trade-correct-border',
+    bg: 'var(--trade-correct-bg)',
+    text: 'var(--trade-correct-text)',
+    border: 'var(--trade-correct-border)',
   },
   {
-    bg: 'bg-trade-cancel-bg',
-    text: 'text-trade-cancel-text',
-    border: 'border-trade-cancel-border',
+    bg: 'var(--trade-cancel-bg)',
+    text: 'var(--trade-cancel-text)',
+    border: 'var(--trade-cancel-border)',
   },
 ];
 
@@ -101,6 +101,7 @@ const getTabColor = (index: number) => {
   return tabColors[index % tabColors.length];
 };
 
+// 레이아웃/간격/상태는 Tailwind class로 처리
 const containerClasses = computed(() => {
   const baseClasses = 'inline-flex rounded-default';
 
@@ -137,12 +138,45 @@ const selectedIndex = computed(() => {
 });
 
 /**
- * 각 탭의 클래스 계산
+ * 각 탭의 스타일과 클래스 계산
  */
-const getTabClasses = computed(() => {
+const getTabStyles = computed(() => {
   return (index: number, disabled: boolean, selected: boolean) => {
     const tabColor = getTabColor(index);
     const selectedTabColor = getTabColor(selectedIndex.value);
+
+    if (disabled) {
+      return {
+        backgroundColor: 'var(--surface-disabled)',
+        color: 'var(--text-disabled)',
+        borderWidth: '1px',
+        borderStyle: 'solid',
+        borderColor: 'var(--border-default)',
+      };
+    }
+
+    if (selected) {
+      return {
+        backgroundColor: tabColor.bg,
+        color: tabColor.text,
+        borderWidth: '1px',
+        borderStyle: 'solid',
+        borderColor: tabColor.border,
+      };
+    }
+
+    return {
+      backgroundColor: 'var(--bg-surface)',
+      color: 'var(--text-secondary)',
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      borderColor: selectedTabColor.border,
+    };
+  };
+});
+
+const getTabClasses = computed(() => {
+  return (index: number, disabled: boolean, selected: boolean) => {
     const baseClasses =
       'px-4 py-2 text-sm font-medium transition-all duration-200 cursor-pointer focus:outline-none';
     const positionClasses = [
@@ -153,58 +187,42 @@ const getTabClasses = computed(() => {
       .join(' ');
 
     if (disabled) {
-      return [
-        baseClasses,
-        positionClasses,
-        'opacity-50 cursor-not-allowed bg-surface-disabled text-text-disabled border-b border-border-default',
-      ]
+      return [baseClasses, positionClasses, 'opacity-50 cursor-not-allowed border-b']
         .filter(Boolean)
         .join(' ');
     }
 
     if (selected) {
-      // active: border-t/l/r, border-b 없음
-      return [
-        baseClasses,
-        positionClasses,
-        tabColor.bg,
-        tabColor.text,
-        'border-t border-l border-r border-b-0 border-solid',
-        tabColor.border,
-      ]
+      return [baseClasses, positionClasses, 'border-t border-l border-r border-b-0 border-solid']
         .filter(Boolean)
         .join(' ');
     }
 
-    // inactive: border-b만, 현재 선택된 탭의 trade border 컬러 사용
-    return [
-      baseClasses,
-      positionClasses,
-      'bg-bg-surface',
-      'text-text-secondary',
-      'border-b border-solid',
-      selectedTabColor.border,
-      'hover:bg-bg-surface-muted',
-    ]
+    return [baseClasses, positionClasses, 'border-b border-solid hover:bg-bg-surface-muted']
       .filter(Boolean)
       .join(' ');
   };
 });
 
 /**
- * 각 탭 패널의 클래스 계산
+ * 각 탭 패널의 스타일과 클래스 계산
  */
-const getPanelClasses = computed(() => {
-  return (index: number, isSelected: boolean) => {
+const getPanelStyles = computed(() => {
+  return (index: number) => {
     const tabColor = getTabColor(index);
-    // content: border-l/r/b, border-t 없음, active tab과 연결, 음수마진 제거
-    return [
-      'p-6 rounded-b-default transition-all duration-200',
-      'border-l border-r border-b',
-      tabColor.border,
-      tabColor.bg,
-      'text-text-primary',
-    ].join(' ');
+    return {
+      backgroundColor: tabColor.bg,
+      color: tabColor.text,
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      borderColor: tabColor.border,
+    };
+  };
+});
+
+const getPanelClasses = computed(() => {
+  return () => {
+    return 'p-6 rounded-b-default transition-all duration-200 border-l border-r border-b';
   };
 });
 </script>
@@ -220,7 +238,10 @@ const getPanelClasses = computed(() => {
           as="template"
           v-slot="{ selected }"
         >
-          <button :class="getTabClasses(index, tab.disabled || false, selected)">
+          <button
+            :class="getTabClasses(index, tab.disabled || false, selected)"
+            :style="getTabStyles(index, tab.disabled || false, selected)"
+          >
             {{ tab.label }}
           </button>
         </Tab>
@@ -231,7 +252,8 @@ const getPanelClasses = computed(() => {
         <TabPanel
           v-for="(tab, index) in tabs"
           :key="tab.value"
-          :class="getPanelClasses(index, selectedIndex === index)"
+          :class="getPanelClasses()"
+          :style="getPanelStyles(index)"
         >
           <slot name="content" :tab="tab" :index="index" :is-selected="selectedIndex === index">
             <div v-if="tab.content" v-html="tab.content"></div>

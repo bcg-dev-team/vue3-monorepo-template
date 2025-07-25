@@ -18,21 +18,20 @@ interface Props {
    */
   label?: string;
 }
+
 const props = withDefaults(defineProps<Props>(), {
   label: '업무공지',
 });
 
 const chipProps = computed(() => ({
   label: props.label,
-  bg: 'bg-bg-surface',
-  textColor: 'text-text-footer',
+  variant: 'surface' as const,
+  size: 'md' as const,
   rounded: 'rounded-md',
-  size: 'text-sm',
   fontWeight: 'font-normal',
-  px: 'px-2',
-  py: 'py-1',
 }));
 </script>
+
 <template>
   <BaseChip v-bind="chipProps" />
 </template>

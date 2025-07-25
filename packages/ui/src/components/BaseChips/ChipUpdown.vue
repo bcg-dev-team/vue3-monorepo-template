@@ -23,6 +23,7 @@ interface Props {
    */
   value: string;
 }
+
 const props = withDefaults(defineProps<Props>(), {
   status: 'Up',
 });
@@ -31,27 +32,22 @@ const chipProps = computed(() => {
   if (props.status === 'Down') {
     return {
       label: props.value,
-      bg: 'bg-trade-short-background',
-      textColor: 'text-trade-short-text',
+      variant: 'error' as const, // trade-short 스타일을 error variant로 매핑
+      size: 'sm' as const,
       rounded: 'rounded-[3px]',
-      size: 'text-[11px]',
       fontWeight: 'font-medium',
-      px: 'px-1',
-      py: 'py-0.5',
     };
   }
   return {
     label: props.value,
-    bg: 'bg-trade-long-background',
-    textColor: 'text-trade-long-text',
+    variant: 'success' as const, // trade-long 스타일을 success variant로 매핑
+    size: 'sm' as const,
     rounded: 'rounded-[3px]',
-    size: 'text-[11px]',
     fontWeight: 'font-medium',
-    px: 'px-1',
-    py: 'py-0.5',
   };
 });
 </script>
+
 <template>
   <BaseChip v-bind="chipProps" />
 </template>

@@ -55,7 +55,7 @@ const bgClass = computed(() =>
     ? 'bg-button-disabled-bg'
     : props.status === 'hover'
       ? 'bg-bg-surface'
-      : 'bg-bg-default'
+      : 'bg-gray-100'
 );
 const borderClass = computed(() =>
   props.disabled ? 'border-button-disabled-border' : 'border-bg-outline'

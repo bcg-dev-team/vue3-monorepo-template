@@ -1,7 +1,5 @@
 /* Tailwind CSS 지시어 */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 /* 앱 전용 스타일 */
 @layer base {
@@ -16,7 +14,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: var(--font-color-default);
-    background-color: var(--background-bg-default);
+    background-color: #f3f4f6;
     transition:
       color 0.3s ease,
       background-color 0.3s ease;
@@ -24,7 +22,7 @@
 
   #app {
     min-height: 100vh;
-    background-color: var(--background-bg-default);
+    background-color: #f3f4f6;
     transition: background-color 0.3s ease;
   }
 
@@ -40,7 +38,7 @@
 /* 앱 전용 컴포넌트 스타일 */
 @layer components {
   .app-container {
-    @apply min-h-screen bg-bg-default;
+    @apply min-h-screen bg-bg-surface;
   }
 
   .app-header {
@@ -52,7 +50,7 @@
   }
 
   .app-main {
-    @apply bg-bg-default;
+    @apply bg-bg-surface;
   }
 
   .app-footer {

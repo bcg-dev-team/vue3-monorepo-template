@@ -45,7 +45,7 @@
     "dev": "vite build --watch",
     "clean": "rimraf dist",
     "type-check": "tsc --noEmit",
-    "prettier-tailwind": "prettier --write tailwind.config.js"
+    "prettier-tailwind": "prettier --write tailwind.config.cjs"
   },
   "dependencies": {
     "@template/types": "workspace:*",

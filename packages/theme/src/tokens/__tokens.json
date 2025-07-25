@@ -225,15 +225,15 @@
           "$type": "color",
           "$value": "{Base-Colors.Neutral.neutral000}"
         },
-        "light-gray(CA)": {
+        "light-gray-ca": {
           "$type": "color",
           "$value": "#caccce"
         },
-        "light-gray(F5)": {
+        "light-gray-f5": {
           "$type": "color",
           "$value": "#f5f7f9"
         },
-        "light-gray(EA)": {
+        "light-gray-ea": {
           "$type": "color",
           "$value": "#eaecee"
         },
@@ -705,7 +705,7 @@
         },
         "bg-disabled": {
           "$type": "color",
-          "$value": "{Base-Colors.Common.light-gray(F5)}"
+          "$value": "{Base-Colors.Common.light-gray-f5}"
         }
       },
       "Check & Radio": {
@@ -776,7 +776,7 @@
       },
       "bg-surface": {
         "$type": "color",
-        "$value": "{Base-Colors.Common.light-gray(EA)}"
+        "$value": "{Base-Colors.Common.light-gray-ea}"
       },
       "bg-outline": {
         "$type": "color",
@@ -796,7 +796,7 @@
       },
       "bg-innerframe": {
         "$type": "color",
-        "$value": "{Base-Colors.Common.light-gray(F5)}"
+        "$value": "{Base-Colors.Common.light-gray-f5}"
       },
       "primary": {
         "$type": "color",
@@ -919,7 +919,7 @@
         },
         "body-bg-row": {
           "$type": "color",
-          "$value": "{Base-Colors.Common.light-gray(F5)}"
+          "$value": "{Base-Colors.Common.light-gray-f5}"
         }
       },
       "Type2": {
@@ -954,7 +954,7 @@
       },
       "bg-inner": {
         "$type": "color",
-        "$value": "{Base-Colors.Common.light-gray(F5)}"
+        "$value": "{Base-Colors.Common.light-gray-f5}"
       },
       "Chip": {
         "background": {
@@ -970,7 +970,7 @@
       },
       "inner-background": {
         "$type": "color",
-        "$value": "{Base-Colors.Common.light-gray(F5)}"
+        "$value": "{Base-Colors.Common.light-gray-f5}"
       },
       "border": {
         "$type": "color",
@@ -1746,15 +1746,15 @@
           "$type": "color",
           "$value": "{Base-Colors.Neutral.neutral150}"
         },
-        "light-gray(CA)": {
+        "light-gray-ca": {
           "$type": "color",
           "$value": "{Base-Colors.Neutral.neutral400}"
         },
-        "light-gray(F5)": {
+        "light-gray-f5": {
           "$type": "color",
           "$value": "{Base-Colors.Neutral.neutral800}"
         },
-        "light-gray(EA)": {
+        "light-gray-ea": {
           "$type": "color",
           "$value": "{Base-Colors.Neutral.neutral800}"
         },

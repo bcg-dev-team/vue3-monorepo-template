@@ -262,7 +262,7 @@
   --input-color-text-placeholder: var(--base-colors-neutral-neutral500);
   --input-color-text-disable: var(--base-colors-neutral-neutral400);
   --input-color-text-static: var(--base-colors-neutral-neutral800);
-  --input-color-bg-disabled: {Base-Colors.Common.light-gray(F5)};
+  --input-color-bg-disabled: var(--base-colors-common-light-gray-f5);
   --input-check-radio-disable-border: var(--base-colors-neutral-neutral400);
   --input-check-radio-disable-bg: var(--base-colors-neutral-neutral300);
   --input-check-radio-active-bg: var(--base-colors-neutral-neutral000);
@@ -278,12 +278,12 @@
   --input-icon-success: var(--base-colors-green-green800);
   --input-icon-blue: var(--base-colors-blue-blue800);
   --background-bg-default: var(--base-colors-neutral-neutral000);
-  --background-bg-surface: {Base-Colors.Common.light-gray(EA)};
+  --background-bg-surface: var(--base-colors-common-light-gray-ea);
   --background-bg-outline: var(--base-colors-neutral-neutral250);
   --background-bg-surface-muted: var(--base-colors-neutral-neutral250);
   --background-divider: var(--base-colors-neutral-neutral250);
   --background-divider-muted: var(--base-colors-neutral-neutral600);
-  --background-bg-innerframe: {Base-Colors.Common.light-gray(F5)};
+  --background-bg-innerframe: var(--base-colors-common-light-gray-f5);
   --background-primary: var(--base-colors-primary-primary800);
   --background-primary-light: var(--base-colors-primary-primary100);
   --background-bg-surface-dark: var(--base-colors-common-bg-surface-dark);
@@ -310,7 +310,7 @@
   --table-type1-body-border: var(--base-colors-neutral-neutral250);
   --table-type1-body-bg: var(--base-colors-neutral-neutral000);
   --table-type1-body-bg-select: var(--base-colors-blue-blue050);
-  --table-type1-body-bg-row: {Base-Colors.Common.light-gray(F5)};
+  --table-type1-body-bg-row: var(--base-colors-common-light-gray-f5);
   --table-type2-body-border: var(--base-colors-neutral-neutral250);
   --table-type2-header-underline: var(--base-colors-neutral-neutral250);
   --table-type2-header-bg: var(--base-colors-neutral-neutral100);
@@ -318,9 +318,9 @@
   --table-type2-body-border-mid: var(--base-colors-neutral-neutral200);
   --table-bg-red: var(--base-colors-red-red050);
   --table-bg-blue: var(--base-colors-blue-blue050);
-  --table-bg-inner: {Base-Colors.Common.light-gray(F5)};
+  --table-bg-inner: var(--base-colors-common-light-gray-f5);
   --popup-background: var(--base-colors-neutral-neutral000);
-  --popup-inner-background: {Base-Colors.Common.light-gray(F5)};
+  --popup-inner-background: var(--base-colors-common-light-gray-f5);
   --popup-border: var(--base-colors-neutral-neutral300);
   --nav-on: var(--base-colors-primary-primary800);
   --nav-off: var(--base-colors-neutral-neutral400);

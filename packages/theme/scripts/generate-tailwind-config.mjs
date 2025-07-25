@@ -67,7 +67,7 @@ async function run() {
   const sdConfig = makeSdTailwindConfig({
     type: 'all',
     isVariables: true,
-    formatType: 'js',
+    formatType: 'cjs',
     source: ['__light-tokens-transformed.json'],
     buildPath: './',
     transforms: ['attribute/cti', 'name/kebab'],
@@ -89,7 +89,7 @@ async function run() {
 
   // 5. Tailwind config 후처리: 공식 분류만 남기고 재분류
   try {
-    const configPath = './tailwind.config.js';
+    const configPath = './tailwind.config.cjs';
     let content = await readFile(configPath, 'utf-8');
     // module.exports = ... 부분만 추출
     const configMatch = content.match(/module\.exports\s*=\s*(\{[\s\S]*\});?/);
@@ -112,7 +112,7 @@ async function run() {
       'base-size': 'spacing',
       radius: 'borderRadius',
       padding: 'spacing',
-      background: 'colors.background',
+      // background: 'colors.background', // 기존 매핑 제거
       'input.color': 'colors.input',
     };
     // 공식 분류
@@ -180,7 +180,22 @@ async function run() {
     for (const [flatKey, value] of Object.entries(flat)) {
       // 무시할 키
       if (ignoreKeys.some((k) => flatKey.startsWith(k))) continue;
-      // 매핑 규칙 찾기 (가장 긴 prefix 우선)
+      // flatKey가 background.으로 시작하면 flat하게 colors에 bg- 접두사로 매핑
+      if (flatKey.startsWith('background.')) {
+        const suffix = flatKey.slice('background.'.length);
+        const targetKey = `colors.bg-${suffix}`;
+        // 중첩 객체로 복원
+        const parts = targetKey.split('.');
+        let cur = merged;
+        for (let i = 0; i < parts.length - 1; i++) {
+          if (!cur[parts[i]]) cur[parts[i]] = {};
+          cur = cur[parts[i]];
+        }
+        const lastKey = parts[parts.length - 1];
+        cur[lastKey] = value;
+        continue;
+      }
+      // 기존 매핑 규칙 적용
       let matched = '';
       let mapped = '';
       for (const rule of Object.keys(mappingRules).sort((a, b) => b.length - a.length)) {

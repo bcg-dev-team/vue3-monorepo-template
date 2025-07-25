@@ -1,5 +1,7 @@
 /* Tailwind CSS import */
-@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* 앱 전용 스타일 */
 @layer base {
@@ -38,22 +40,22 @@
 /* 앱 전용 컴포넌트 스타일 */
 @layer components {
   .app-container {
-    @apply min-h-screen bg-bg-surface;
+    @apply min-h-screen bg-gray-50;
   }
 
   .app-header {
-    @apply bg-surface-default border-b border-border-default shadow-soft;
+    @apply bg-white border-b border-gray-200 shadow-sm;
   }
 
   .app-sidebar {
-    @apply bg-surface-default border-r border-border-default;
+    @apply bg-white border-r border-gray-200;
   }
 
   .app-main {
-    @apply bg-bg-surface;
+    @apply bg-gray-50;
   }
 
   .app-footer {
-    @apply bg-surface-default border-t border-border-default;
+    @apply bg-white border-t border-gray-200;
   }
 }

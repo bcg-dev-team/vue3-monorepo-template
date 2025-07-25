@@ -1,7 +1,7 @@
 {
   "name": "@template/ui",
   "version": "1.0.0",
-  "description": "Headless UI + Tailwind CSS 기반 UI 컴포넌트 패키지 (Figma 연동 디자인 토큰 기반)",
+  "description": "Headless UI + Tailwind CSS 기반 UI 컴포넌트 패키지",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -23,8 +23,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "vite build",
-    "dev": "vite build --watch",
+    "build": "pnpm run build:theme && vite build",
+    "build:theme": "cd ../theme && pnpm build",
+    "dev": "pnpm run build:theme && vite build --watch",
     "clean": "rimraf dist",
     "type-check": "tsc --noEmit",
     "storybook": "storybook dev -p 6006 --host 0.0.0.0",
@@ -39,8 +40,10 @@
     "@template/types": "workspace:*"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.11",
-    "vite-svg-loader": "^5.1.0"
+    "vite-svg-loader": "^5.1.0",
+    "tailwindcss": "^3.4.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

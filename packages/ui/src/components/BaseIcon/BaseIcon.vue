@@ -10,6 +10,7 @@ import type { IconName } from '../../types/icons';
 import { getIconComponent } from './iconRegistry';
 import { getIconType } from '../../types/icons';
 import { computed } from 'vue';
+import './BaseIcon.scss';
 
 interface Props {
   name: IconName;

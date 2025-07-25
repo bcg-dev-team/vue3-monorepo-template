@@ -18,8 +18,8 @@ import {
   differenceInSeconds,
 } from 'date-fns';
 import { formatInTimeZone, toZonedTime, getTimezoneOffset } from 'date-fns-tz';
-import { ko, enUS, ja, zhCN } from 'date-fns/locale';
 import type { Locale as DateFnsLocale } from 'date-fns';
+import { ko, enUS, ja, zhCN } from 'date-fns/locale';
 
 /**
  * 날짜 유틸리티 함수들

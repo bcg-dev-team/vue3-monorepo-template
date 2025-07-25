@@ -1,8 +1,8 @@
 // 1. Style Dictionary 및 변환기 등록
-import StyleDictionary from 'style-dictionary';
-import { register } from '@tokens-studio/sd-transforms';
 import { makeSdTailwindConfig } from 'sd-tailwindcss-transformer';
+import { register } from '@tokens-studio/sd-transforms';
 import { readFile, writeFile } from 'fs/promises';
+import StyleDictionary from 'style-dictionary';
 import { kebabCase } from 'change-case';
 
 register(StyleDictionary);

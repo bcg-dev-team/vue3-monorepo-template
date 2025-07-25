@@ -1,7 +1,7 @@
-import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import App from './App.vue';
+import { createApp } from 'vue';
 import router from './router';
+import App from './App.vue';
 
 // Theme 패키지 import (CSS 변수 포함)
 import '@template/theme';

@@ -3,9 +3,9 @@
   https://www.figma.com/design/5OJPsmnkEgZZnkHtNbk1wK/-MODA--Draft-250514-?node-id=74-1059&m=dev
 -->
 <script setup lang="ts">
-import { computed } from 'vue';
-import BaseButton from '../BaseButton/BaseButton.vue';
 import BaseInputText from '../BaseInput/BaseInputText.vue';
+import BaseButton from '../BaseButton/BaseButton.vue';
+import { computed } from 'vue';
 
 /**
  * 입력 필드가 포함된 테이블 셀 컴포넌트

@@ -35,7 +35,7 @@
   transition: background-color 0.3s ease;
 }
 
-[data-theme="dark"] .theme-switch-track {
+[data-theme='dark'] .theme-switch-track {
   background: #475569;
 }
 
@@ -71,7 +71,7 @@
   border-bottom: 1px solid #e2e8f0;
 }
 
-[data-theme="dark"] .tabs {
+[data-theme='dark'] .tabs {
   border-bottom-color: #475569;
 }
 
@@ -91,7 +91,7 @@
   color: #334155;
 }
 
-[data-theme="dark"] .tabs button:hover {
+[data-theme='dark'] .tabs button:hover {
   color: #e2e8f0;
 }
 
@@ -100,7 +100,7 @@
   border-bottom-color: #3b82f6;
 }
 
-[data-theme="dark"] .tabs button.active {
+[data-theme='dark'] .tabs button.active {
   color: #60a5fa;
   border-bottom-color: #60a5fa;
 }
@@ -124,7 +124,7 @@
   color: #1e293b;
 }
 
-[data-theme="dark"] .color-group h3 {
+[data-theme='dark'] .color-group h3 {
   color: #f1f5f9;
 }
 
@@ -146,7 +146,7 @@
   transition: all 0.2s ease;
 }
 
-[data-theme="dark"] .color-token {
+[data-theme='dark'] .color-token {
   border-color: #475569;
   background: #1e293b;
 }
@@ -163,7 +163,7 @@
   flex-shrink: 0;
 }
 
-[data-theme="dark"] .color-preview {
+[data-theme='dark'] .color-preview {
   border-color: #475569;
 }
 
@@ -179,7 +179,7 @@
   margin-bottom: 0.25rem;
 }
 
-[data-theme="dark"] .color-name {
+[data-theme='dark'] .color-name {
   color: #f1f5f9;
 }
 
@@ -189,7 +189,7 @@
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
 }
 
-[data-theme="dark"] .color-value {
+[data-theme='dark'] .color-value {
   color: #94a3b8;
 }
 
@@ -207,7 +207,7 @@
   color: #1e293b;
 }
 
-[data-theme="dark"] .typography-group h3 {
+[data-theme='dark'] .typography-group h3 {
   color: #f1f5f9;
 }
 
@@ -226,7 +226,7 @@
   transition: all 0.2s ease;
 }
 
-[data-theme="dark"] .typography-token {
+[data-theme='dark'] .typography-token {
   border-color: #475569;
   background: #1e293b;
 }
@@ -246,7 +246,7 @@
   margin-bottom: 0.25rem;
 }
 
-[data-theme="dark"] .token-name {
+[data-theme='dark'] .token-name {
   color: #f1f5f9;
 }
 
@@ -256,7 +256,7 @@
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
 }
 
-[data-theme="dark"] .token-value {
+[data-theme='dark'] .token-value {
   color: #94a3b8;
 }
 
@@ -271,7 +271,7 @@
   align-items: center;
 }
 
-[data-theme="dark"] .typography-preview {
+[data-theme='dark'] .typography-preview {
   background: #334155;
   color: #f1f5f9;
 }
@@ -284,7 +284,7 @@
   color: #1e293b;
 }
 
-[data-theme="dark"] .size-section h3 {
+[data-theme='dark'] .size-section h3 {
   color: #f1f5f9;
 }
 
@@ -303,7 +303,7 @@
   transition: all 0.2s ease;
 }
 
-[data-theme="dark"] .size-token {
+[data-theme='dark'] .size-token {
   border-color: #475569;
   background: #1e293b;
 }
@@ -335,31 +335,29 @@
   display: block !important;
 }
 
-
-
 /* 반응형 */
 @media (max-width: 768px) {
   .design-tokens-container {
     padding: 1rem;
   }
-  
+
   .color-grid,
   .typography-grid,
   .size-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .tabs {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .tabs button {
     text-align: left;
     border-bottom: 1px solid #e2e8f0;
   }
-  
-  [data-theme="dark"] .tabs button {
+
+  [data-theme='dark'] .tabs button {
     border-bottom-color: #475569;
   }
-} 
+}

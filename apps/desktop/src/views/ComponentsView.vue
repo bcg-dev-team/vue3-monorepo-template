@@ -64,8 +64,8 @@ const tabs = [
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import { BaseButton, BaseTabs } from '@template/ui';
+import { ref } from 'vue';
 
 // BaseTabs 관련 상태
 const selectedTab = ref('tab1');

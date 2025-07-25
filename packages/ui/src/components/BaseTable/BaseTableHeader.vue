@@ -1,7 +1,7 @@
 <!-- Figma: Table/Header, Table/Header-Type2 -->
 <script setup lang="ts">
-import { computed } from 'vue';
 import type { TextAlign } from '../../types/components';
+import { computed } from 'vue';
 
 /**
  * 테이블 헤더 컴포넌트

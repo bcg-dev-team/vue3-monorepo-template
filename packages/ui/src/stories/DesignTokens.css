@@ -155,11 +155,11 @@
   .design-tokens-visualizer {
     padding: 1rem;
   }
-  
+
   .token-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .theme-toggle {
     position: relative;
     top: auto;
@@ -170,12 +170,12 @@
 }
 
 /* 다크 모드 지원 */
-[data-theme="dark"] .theme-toggle {
+[data-theme='dark'] .theme-toggle {
   background: rgba(0, 0, 0, 0.8);
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="dark"] .theme-toggle-btn:hover {
+[data-theme='dark'] .theme-toggle-btn:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
@@ -193,4 +193,4 @@
     opacity: 1;
     transform: translateY(0);
   }
-} 
+}

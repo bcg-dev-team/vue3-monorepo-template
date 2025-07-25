@@ -11,9 +11,9 @@
  * @emits click - 클릭 이벤트
  * @figma Button (node-id: 32-244)
  */
-import { computed } from 'vue';
-import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import type { ComponentSize, IconName } from '../../types/components';
+import BaseIcon from '../BaseIcon/BaseIcon.vue';
+import { computed } from 'vue';
 
 // 버튼 아이콘 props 타입 (BaseButton 전용)
 interface ButtonIconProps {

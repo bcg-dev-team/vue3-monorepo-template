@@ -3,8 +3,8 @@
   https://www.figma.com/design/5OJPsmnkEgZZnkHtNbk1wK/-MODA--Draft-250514-?node-id=32-176&m=dev
 -->
 <script setup lang="ts">
-import { computed } from 'vue';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
+import { computed } from 'vue';
 
 /**
  * 텍스트 입력 컴포넌트 (중간 사이즈)

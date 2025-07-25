@@ -18,10 +18,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import NavBar from '@/components/layout/fragments/NavBar.vue';
-import StatusBarArea from '@/components/layout/fragments/StatusBarArea.vue';
 import LoginButtonArea from '@/components/layout/fragments/LoginButtonArea.vue';
+import StatusBarArea from '@/components/layout/fragments/StatusBarArea.vue';
+import NavBar from '@/components/layout/fragments/NavBar.vue';
+import { ref } from 'vue';
 
 const isLogin = ref(true);
 </script>

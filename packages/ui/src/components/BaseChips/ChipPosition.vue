@@ -3,8 +3,8 @@
   https://www.figma.com/design/5OJPsmnkEgZZnkHtNbk1wK/-MODA--Draft-250514-?node-id=1028-8538&m=dev
 -->
 <script setup lang="ts">
-import { computed } from 'vue';
 import BaseChip from './BaseChip.vue';
+import { computed } from 'vue';
 
 /**
  * 포지션(LONG/SHORT) 칩 컴포넌트

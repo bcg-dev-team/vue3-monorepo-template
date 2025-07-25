@@ -6,9 +6,9 @@
 -->
 <script setup lang="ts">
 import { computed, ref, watch, onUnmounted } from 'vue';
-import type { Component } from 'vue';
 import type { IconName } from '../../types/icons';
 import { getIconType } from '../../types/icons';
+import type { Component } from 'vue';
 
 interface Props {
   name: IconName;

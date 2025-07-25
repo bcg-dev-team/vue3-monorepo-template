@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="min-h-screen flex flex-col font-sans bg-bg-default text-text-primary">
+  <div id="app" class="min-h-screen flex flex-col font-sans bg-bg-surface text-primary">
     <header class="app-header sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-8 flex justify-between items-center">
         <div class="flex items-baseline gap-2">
@@ -53,7 +53,7 @@
       </div>
     </header>
 
-    <main class="flex-1 p-8 max-w-7xl mx-auto w-full bg-bg-default">
+    <main class="flex-1 p-8 max-w-7xl mx-auto w-full bg-bg-surface">
       <router-view />
     </main>
 

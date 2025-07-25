@@ -27,6 +27,4 @@ export { useTheme as default } from './composables';
 export * from './composables';
 export * from './store';
 export * from './utils';
-
 // Tailwind 설정 export
-export { default as tailwindConfig } from './config/tailwind.config';

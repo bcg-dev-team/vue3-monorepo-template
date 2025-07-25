@@ -298,6 +298,9 @@ importers:
       '@template/types':
         specifier: workspace:*
         version: link:../types
+      change-case:
+        specifier: ^5.4.4
+        version: 5.4.4
       pinia:
         specifier: ^2.1.0
         version: 2.3.1(typescript@5.8.3)(vue@3.5.17(typescript@5.8.3))
@@ -305,6 +308,9 @@ importers:
         specifier: ^3.4.0
         version: 3.5.17(typescript@5.8.3)
     devDependencies:
+      sd-tailwindcss-transformer:
+        specifier: ^2.1.0
+        version: 2.1.0(style-dictionary@5.0.1)
       style-dictionary:
         specifier: ^5.0.1
         version: 5.0.1
@@ -6052,8 +6058,8 @@ packages:
   vue-component-type-helpers@2.2.12:
     resolution: {integrity: sha512-YbGqHZ5/eW4SnkPNR44mKVc6ZKQoRs/Rux1sxC6rdwXb4qpbOSYfDr9DsTHolOTGmIKgM9j141mZbBeg05R1pw==}
 
-  vue-component-type-helpers@3.0.3:
-    resolution: {integrity: sha512-koiBu7lO8e6w/UlbZAAIW11qcFQocYIl7Nh/SVwGZ804ej5KrncU32bRxi2zfU2Kyf6HWuk1CeeVP2rhIL+vyQ==}
+  vue-component-type-helpers@3.0.4:
+    resolution: {integrity: sha512-WtR3kPk8vqKYfCK/HGyT47lK/T3FaVyWxaCNuosaHYE8h9/k0lYRZ/PI/+T/z2wP+uuNKmL6z30rOcBboOu/YA==}
 
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
@@ -8108,7 +8114,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.5.17(typescript@5.8.3)
-      vue-component-type-helpers: 3.0.3
+      vue-component-type-helpers: 3.0.4
 
   '@tailwindcss/node@4.1.11':
     dependencies:
@@ -12026,6 +12032,10 @@ snapshots:
     dependencies:
       style-dictionary: 4.4.0
 
+  sd-tailwindcss-transformer@2.1.0(style-dictionary@5.0.1):
+    dependencies:
+      style-dictionary: 5.0.1
+
   semver@6.3.1: {}
 
   semver@7.5.4:
@@ -12789,7 +12799,7 @@ snapshots:
 
   vue-component-type-helpers@2.2.12: {}
 
-  vue-component-type-helpers@3.0.3: {}
+  vue-component-type-helpers@3.0.4: {}
 
   vue-demi@0.14.10(vue@3.5.17(typescript@5.8.3)):
     dependencies:

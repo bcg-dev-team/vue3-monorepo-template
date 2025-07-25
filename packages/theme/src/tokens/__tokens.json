@@ -1202,6 +1202,323 @@
         "$type": "dimension",
         "$value": "{Base-Size.size-0}"
       }
+    },
+    "shadow-flag": {
+      "$type": "boxShadow",
+      "$value": {
+        "color": "#00000066",
+        "type": "dropShadow",
+        "x": 1,
+        "y": 1,
+        "blur": 1,
+        "spread": 0
+      }
+    },
+    "shadow-box": {
+      "$type": "boxShadow",
+      "$value": {
+        "color": "#00000026",
+        "type": "dropShadow",
+        "x": 0,
+        "y": 0,
+        "blur": 10,
+        "spread": 0
+      }
+    },
+    "boxShadow": {
+      "default": {
+        "$type": "boxShadow",
+        "$value": [
+          {
+            "color": "#00000026",
+            "type": "dropShadow",
+            "x": 5,
+            "y": 5,
+            "blur": 5,
+            "spread": 3
+          },
+          {
+            "color": "#00000033",
+            "type": "dropShadow",
+            "x": 4,
+            "y": 4,
+            "blur": 5,
+            "spread": 6
+          }
+        ]
+      }
+    },
+    "fontFamilies": {
+      "pretendard-gov": {
+        "$type": "fontFamilies",
+        "$value": "Pretendard GOV"
+      },
+      "roboto": {
+        "$type": "fontFamilies",
+        "$value": "Roboto"
+      },
+      "inter": {
+        "$type": "fontFamilies",
+        "$value": "Inter"
+      }
+    },
+    "fontWeights": {
+      "pretendard-gov-0": {
+        "$type": "fontWeights",
+        "$value": "SemiBold"
+      },
+      "pretendard-gov-1": {
+        "$type": "fontWeights",
+        "$value": "Medium"
+      },
+      "pretendard-gov-2": {
+        "$type": "fontWeights",
+        "$value": "Regular"
+      },
+      "pretendard-gov-3": {
+        "$type": "fontWeights",
+        "$value": "Bold"
+      },
+      "roboto-4": {
+        "$type": "fontWeights",
+        "$value": "Regular"
+      },
+      "inter-5": {
+        "$type": "fontWeights",
+        "$value": "Bold"
+      },
+      "inter-6": {
+        "$type": "fontWeights",
+        "$value": "Regular"
+      }
+    },
+    "fontSize": {
+      "0": {
+        "$type": "fontSizes",
+        "$value": "24"
+      },
+      "1": {
+        "$type": "fontSizes",
+        "$value": "20"
+      },
+      "2": {
+        "$type": "fontSizes",
+        "$value": "18"
+      },
+      "3": {
+        "$type": "fontSizes",
+        "$value": "16"
+      },
+      "4": {
+        "$type": "fontSizes",
+        "$value": "20"
+      },
+      "5": {
+        "$type": "fontSizes",
+        "$value": "20"
+      },
+      "6": {
+        "$type": "fontSizes",
+        "$value": "20"
+      },
+      "7": {
+        "$type": "fontSizes",
+        "$value": "20"
+      },
+      "8": {
+        "$type": "fontSizes",
+        "$value": "18"
+      },
+      "9": {
+        "$type": "fontSizes",
+        "$value": "18"
+      },
+      "10": {
+        "$type": "fontSizes",
+        "$value": "18"
+      },
+      "11": {
+        "$type": "fontSizes",
+        "$value": "18"
+      },
+      "12": {
+        "$type": "fontSizes",
+        "$value": "16"
+      },
+      "13": {
+        "$type": "fontSizes",
+        "$value": "16"
+      },
+      "14": {
+        "$type": "fontSizes",
+        "$value": "16"
+      },
+      "15": {
+        "$type": "fontSizes",
+        "$value": "16"
+      },
+      "16": {
+        "$type": "fontSizes",
+        "$value": "15"
+      },
+      "17": {
+        "$type": "fontSizes",
+        "$value": "15"
+      },
+      "18": {
+        "$type": "fontSizes",
+        "$value": "15"
+      },
+      "19": {
+        "$type": "fontSizes",
+        "$value": "15"
+      },
+      "20": {
+        "$type": "fontSizes",
+        "$value": "14"
+      },
+      "21": {
+        "$type": "fontSizes",
+        "$value": "14"
+      },
+      "22": {
+        "$type": "fontSizes",
+        "$value": "14"
+      },
+      "23": {
+        "$type": "fontSizes",
+        "$value": "14"
+      },
+      "24": {
+        "$type": "fontSizes",
+        "$value": "14"
+      },
+      "25": {
+        "$type": "fontSizes",
+        "$value": "14"
+      },
+      "26": {
+        "$type": "fontSizes",
+        "$value": "14"
+      },
+      "27": {
+        "$type": "fontSizes",
+        "$value": "14"
+      },
+      "28": {
+        "$type": "fontSizes",
+        "$value": "14"
+      },
+      "29": {
+        "$type": "fontSizes",
+        "$value": "13"
+      },
+      "30": {
+        "$type": "fontSizes",
+        "$value": "13"
+      },
+      "31": {
+        "$type": "fontSizes",
+        "$value": "13"
+      },
+      "32": {
+        "$type": "fontSizes",
+        "$value": "13"
+      },
+      "33": {
+        "$type": "fontSizes",
+        "$value": "13"
+      },
+      "34": {
+        "$type": "fontSizes",
+        "$value": "12"
+      },
+      "35": {
+        "$type": "fontSizes",
+        "$value": "12"
+      },
+      "36": {
+        "$type": "fontSizes",
+        "$value": "12"
+      },
+      "37": {
+        "$type": "fontSizes",
+        "$value": "12"
+      },
+      "38": {
+        "$type": "fontSizes",
+        "$value": "12"
+      },
+      "39": {
+        "$type": "fontSizes",
+        "$value": "12"
+      },
+      "40": {
+        "$type": "fontSizes",
+        "$value": "12"
+      },
+      "41": {
+        "$type": "fontSizes",
+        "$value": "12"
+      },
+      "42": {
+        "$type": "fontSizes",
+        "$value": "11"
+      },
+      "43": {
+        "$type": "fontSizes",
+        "$value": "11"
+      },
+      "44": {
+        "$type": "fontSizes",
+        "$value": "11"
+      },
+      "45": {
+        "$type": "fontSizes",
+        "$value": "11"
+      },
+      "46": {
+        "$type": "fontSizes",
+        "$value": "10"
+      },
+      "47": {
+        "$type": "fontSizes",
+        "$value": "10"
+      },
+      "48": {
+        "$type": "fontSizes",
+        "$value": "10"
+      },
+      "49": {
+        "$type": "fontSizes",
+        "$value": "10"
+      },
+      "50": {
+        "$type": "fontSizes",
+        "$value": "16"
+      },
+      "51": {
+        "$type": "fontSizes",
+        "$value": "49"
+      },
+      "52": {
+        "$type": "fontSizes",
+        "$value": "49"
+      },
+      "53": {
+        "$type": "fontSizes",
+        "$value": "39"
+      },
+      "54": {
+        "$type": "fontSizes",
+        "$value": "39"
+      }
+    },
+    "paragraphIndent": {
+      "0": {
+        "$type": "dimension",
+        "$value": "0px"
+      }
     }
   },
   "Theme/Dark": {

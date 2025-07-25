@@ -9,7 +9,15 @@
  */
 export function getCSSVariable(variableName: string): string {
   if (typeof window === 'undefined') return '';
-  return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
+
+  try {
+    const computedStyle = getComputedStyle(document.documentElement);
+    const value = computedStyle.getPropertyValue(variableName).trim();
+    return value;
+  } catch (error) {
+    console.error(`Error getting CSS variable ${variableName}:`, error);
+    return '';
+  }
 }
 
 /**
@@ -296,80 +304,219 @@ export function getRadiusTokens() {
  */
 function getCategoryTokens(prefix: string, groupName: string) {
   const group: Record<string, string> = {};
-  const style = getComputedStyle(
-    typeof window !== 'undefined' ? document.documentElement : ({} as HTMLElement)
-  );
-  for (const key in style) {
-    if (typeof key === 'string' && key.startsWith(prefix)) {
-      const value = style.getPropertyValue(key).trim();
-      if (value) {
-        const name = key.replace(prefix, '');
-        group[name] = value;
+
+  if (typeof window === 'undefined') return group;
+
+  try {
+    const style = getComputedStyle(document.documentElement);
+
+    // CSS 변수를 찾기 위해 모든 CSS 속성을 순회
+    for (let i = 0; i < style.length; i++) {
+      const propertyName = style[i];
+      if (propertyName.startsWith(prefix)) {
+        const value = style.getPropertyValue(propertyName).trim();
+        if (value) {
+          const name = propertyName.replace(prefix, '');
+          group[name] = value;
+        }
       }
     }
+  } catch (error) {
+    console.error(`Error in getCategoryTokens for ${groupName}:`, error);
   }
+
   return group;
 }
 
 /**
- * Button 디자인 토큰 반환 (Figma 1:1 매핑)
  * @returns 버튼 관련 디자인 토큰 객체
  */
 export function getButtonTokens() {
-  return {
+  const result = {
     'primary-background': getCSSVariable('--button-primary-background'),
     'primary-text': getCSSVariable('--button-primary-text'),
     'primary-border': getCSSVariable('--button-primary-border'),
+    'primary-background-deep': getCSSVariable('--button-primary-background-deep'),
     'disabled-background': getCSSVariable('--button-disabled-background'),
     'disabled-text': getCSSVariable('--button-disabled-text'),
     'disabled-border': getCSSVariable('--button-disabled-border'),
     'outline-background': getCSSVariable('--button-outline-background'),
     'outline-text': getCSSVariable('--button-outline-text'),
     'outline-border': getCSSVariable('--button-outline-border'),
+    'outline-gray-background': getCSSVariable('--button-outline-gray-background'),
+    'outline-gray-text': getCSSVariable('--button-outline-gray-text'),
+    'outline-gray-border': getCSSVariable('--button-outline-gray-border'),
     'red-background': getCSSVariable('--button-red-background'),
     'red-text': getCSSVariable('--button-red-text'),
     'red-border': getCSSVariable('--button-red-border'),
-    'blue-background': getCSSVariable('--button-blue-solid-background'),
-    'blue-text': getCSSVariable('--button-blue-solid-text'),
-    'blue-border': getCSSVariable('--button-blue-solid-border'),
-    'blue-solid-hover': getCSSVariable('--button-blue-solid-hover'),
-    'light-solid-background': getCSSVariable('--button-light-solid-background'),
-    'light-solid-text': getCSSVariable('--button-light-solid-text'),
-    'light-solid-border': getCSSVariable('--button-light-solid-border'),
+    'red-background-none': getCSSVariable('--button-red-background-none'),
+    'red-background-hover': getCSSVariable('--button-red-background-hover'),
+    'red-background-blank': getCSSVariable('--button-red-background-blank'),
     'red-solid-background': getCSSVariable('--button-red-solid-background'),
     'red-solid-text': getCSSVariable('--button-red-solid-text'),
     'red-solid-border': getCSSVariable('--button-red-solid-border'),
     'red-solid-hover': getCSSVariable('--button-red-solid-hover'),
-    // TODO: pill 관련 토큰이 Figma에 정의되면 교체 필요
-    'pill-background': getCSSVariable('--button-primary-background'), // 임시
-    'pill-text': getCSSVariable('--button-primary-text'), // 임시
-    'pill-border': getCSSVariable('--button-primary-border'), // 임시
-    'pill-hover-background': getCSSVariable('--button-primary-background'), // 임시
+    'blue-background': getCSSVariable('--button-blue-background'),
+    'blue-text': getCSSVariable('--button-blue-text'),
+    'blue-border': getCSSVariable('--button-blue-border'),
+    'blue-background-none': getCSSVariable('--button-blue-background-none'),
+    'blue-background-hover': getCSSVariable('--button-blue-background-hover'),
+    'blue-background-blank': getCSSVariable('--button-blue-background-blank'),
+    'blue-solid-background': getCSSVariable('--button-blue-solid-background'),
+    'blue-solid-text': getCSSVariable('--button-blue-solid-text'),
+    'blue-solid-border': getCSSVariable('--button-blue-solid-border'),
+    'blue-solid-hover': getCSSVariable('--button-blue-solid-hover'),
+    'light-solid-background': getCSSVariable('--button-light-solid-background'),
+    'light-solid-text': getCSSVariable('--button-light-solid-text'),
+    'light-solid-border': getCSSVariable('--button-light-solid-border'),
+    'tab-background': getCSSVariable('--button-tab-background'),
+    'tab-button-on': getCSSVariable('--button-tab-button-on'),
+    'tab-button-off': getCSSVariable('--button-tab-button-off'),
+    'tab-text-on': getCSSVariable('--button-tab-text-on'),
+    'tab-text-off': getCSSVariable('--button-tab-text-off'),
+    'tab-menu-background': getCSSVariable('--button-tab-menu-background'),
+    'tab-menu-border': getCSSVariable('--button-tab-menu-border'),
+    'tab-menu-off': getCSSVariable('--button-tab-menu-off'),
+    'tab-menu-on-long': getCSSVariable('--button-tab-menu-on-long'),
+    'tab-menu-on-short': getCSSVariable('--button-tab-menu-on-short'),
+    'tab-menu-on-correct': getCSSVariable('--button-tab-menu-on-correct'),
+    'tab-menu-text-off': getCSSVariable('--button-tab-menu-text-off'),
+    'tab-menu-on-cancel': getCSSVariable('--button-tab-menu-on-cancel'),
   };
+  return result;
 }
 export function getInputTokens() {
-  return getCategoryTokens('--input-', 'input');
+  const result = {
+    'color-surface': getCSSVariable('--input-color-surface'),
+    'color-border-static': getCSSVariable('--input-color-border-static'),
+    'color-border-focus': getCSSVariable('--input-color-border-focus'),
+    'color-border-error': getCSSVariable('--input-color-border-error'),
+    'color-border-disabled': getCSSVariable('--input-color-border-disabled'),
+    'color-text-placeholder': getCSSVariable('--input-color-text-placeholder'),
+    'color-text-disable': getCSSVariable('--input-color-text-disable'),
+    'color-text-static': getCSSVariable('--input-color-text-static'),
+    'color-bg-disabled': getCSSVariable('--input-color-bg-disabled'),
+    'check-radio-disable-border': getCSSVariable('--input-check-radio-disable-border'),
+    'check-radio-disable-bg': getCSSVariable('--input-check-radio-disable-bg'),
+    'check-radio-active-bg': getCSSVariable('--input-check-radio-active-bg'),
+    'check-radio-active-border': getCSSVariable('--input-check-radio-active-border'),
+    'check-radio-inactive-disable-bg': getCSSVariable('--input-check-radio-inactive-disable-bg'),
+    'check-radio-selected-bg': getCSSVariable('--input-check-radio-selected-bg'),
+    'icon-default': getCSSVariable('--input-icon-default'),
+    'icon-off': getCSSVariable('--input-icon-off'),
+    'icon-on': getCSSVariable('--input-icon-on'),
+    'icon-off-dark': getCSSVariable('--input-icon-off-dark'),
+    'icon-white': getCSSVariable('--input-icon-white'),
+    'icon-favorite': getCSSVariable('--input-icon-favorite'),
+    'icon-success': getCSSVariable('--input-icon-success'),
+    'icon-blue': getCSSVariable('--input-icon-blue'),
+  };
+  return result;
 }
 export function getBackgroundTokens() {
-  return getCategoryTokens('--background-', 'background');
+  return {
+    'bg-default': getCSSVariable('--background-bg-default'),
+    'bg-surface': getCSSVariable('--background-bg-surface'),
+    'bg-outline': getCSSVariable('--background-bg-outline'),
+    'bg-surface-muted': getCSSVariable('--background-bg-surface-muted'),
+    divider: getCSSVariable('--background-divider'),
+    'divider-muted': getCSSVariable('--background-divider-muted'),
+    'bg-innerframe': getCSSVariable('--background-bg-innerframe'),
+    primary: getCSSVariable('--background-primary'),
+    'primary-light': getCSSVariable('--background-primary-light'),
+    'bg-surface-dark': getCSSVariable('--background-bg-surface-dark'),
+  };
 }
 export function getFontTokens() {
-  return getCategoryTokens('--font-', 'font');
+  return {
+    'color-primary': getCSSVariable('--font-color-primary'),
+    'color-default': getCSSVariable('--font-color-default'),
+    'color-default-muted': getCSSVariable('--font-color-default-muted'),
+    'color-red': getCSSVariable('--font-color-red'),
+    'color-buy': getCSSVariable('--font-color-buy'),
+    'color-sell': getCSSVariable('--font-color-sell'),
+    'color-white': getCSSVariable('--font-color-white'),
+    'color-black': getCSSVariable('--font-color-black'),
+    'color-blue': getCSSVariable('--font-color-blue'),
+    'color-footer': getCSSVariable('--font-color-footer'),
+    'color-default-muted-dark': getCSSVariable('--font-color-default-muted-dark'),
+    'color-green': getCSSVariable('--font-color-green'),
+    'color-purple': getCSSVariable('--font-color-purple'),
+    'size-font-36': getCSSVariable('--font-size-font-36'),
+    'size-font-24': getCSSVariable('--font-size-font-24'),
+    'size-font-13': getCSSVariable('--font-size-font-13'),
+    'size-font-20': getCSSVariable('--font-size-font-20'),
+    'size-font-14': getCSSVariable('--font-size-font-14'),
+    'size-font-64': getCSSVariable('--font-size-font-64'),
+    'size-font-48': getCSSVariable('--font-size-font-48'),
+    'size-font-12': getCSSVariable('--font-size-font-12'),
+    'size-font-18': getCSSVariable('--font-size-font-18'),
+    'size-font-16': getCSSVariable('--font-size-font-16'),
+    'size-font-10': getCSSVariable('--font-size-font-10'),
+  };
 }
 export function getTradeTokens() {
-  return getCategoryTokens('--trade-', 'trade');
+  return {
+    'long-background': getCSSVariable('--trade-long-background'),
+    'long-text': getCSSVariable('--trade-long-text'),
+    'long-border': getCSSVariable('--trade-long-border'),
+    'short-background': getCSSVariable('--trade-short-background'),
+    'short-text': getCSSVariable('--trade-short-text'),
+    'short-border': getCSSVariable('--trade-short-border'),
+    'correct-background': getCSSVariable('--trade-correct-background'),
+    'correct-text': getCSSVariable('--trade-correct-text'),
+    'correct-border': getCSSVariable('--trade-correct-border'),
+    'correct-background-solid': getCSSVariable('--trade-correct-background-solid'),
+    'correct-text-solid': getCSSVariable('--trade-correct-text-solid'),
+    'cancel-background': getCSSVariable('--trade-cancel-background'),
+    'cancel-text': getCSSVariable('--trade-cancel-text'),
+    'cancel-border': getCSSVariable('--trade-cancel-border'),
+    'cancel-background-solid': getCSSVariable('--trade-cancel-background-solid'),
+    'cancel-text-solid': getCSSVariable('--trade-cancel-text-solid'),
+  };
 }
+
 export function getTableTokens() {
-  return getCategoryTokens('--table-', 'table');
+  return {
+    'type1-header-bg': getCSSVariable('--table-type1-header-bg'),
+    'type1-header-underline': getCSSVariable('--table-type1-header-underline'),
+    'type1-body-border': getCSSVariable('--table-type1-body-border'),
+    'type1-body-bg': getCSSVariable('--table-type1-body-bg'),
+    'type1-body-bg-select': getCSSVariable('--table-type1-body-bg-select'),
+    'type1-body-bg-row': getCSSVariable('--table-type1-body-bg-row'),
+    'type2-body-border': getCSSVariable('--table-type2-body-border'),
+    'type2-header-underline': getCSSVariable('--table-type2-header-underline'),
+    'type2-header-bg': getCSSVariable('--table-type2-header-bg'),
+    'type2-body-bg': getCSSVariable('--table-type2-body-bg'),
+    'type2-body-border-mid': getCSSVariable('--table-type2-body-border-mid'),
+    'bg-red': getCSSVariable('--table-bg-red'),
+    'bg-blue': getCSSVariable('--table-bg-blue'),
+    'bg-inner': getCSSVariable('--table-bg-inner'),
+    'chip-background': getCSSVariable('--table-chip-background'),
+  };
 }
+
 export function getPopupTokens() {
-  return getCategoryTokens('--popup-', 'popup');
+  return {
+    background: getCSSVariable('--popup-background'),
+    'inner-background': getCSSVariable('--popup-inner-background'),
+    border: getCSSVariable('--popup-border'),
+    text: getCSSVariable('--popup-text'),
+  };
 }
+
 export function getNavTokens() {
-  return getCategoryTokens('--nav-', 'nav');
+  return {
+    on: getCSSVariable('--nav-on'),
+    off: getCSSVariable('--nav-off'),
+  };
 }
+
 export function getSidebarTokens() {
-  return getCategoryTokens('--sidebar-', 'sidebar');
+  return {
+    'bg-sidebar': getCSSVariable('--sidebar-bg-sidebar'),
+    'bg-topbar': getCSSVariable('--sidebar-bg-topbar'),
+  };
 }
 
 /**

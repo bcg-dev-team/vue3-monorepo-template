@@ -24,11 +24,11 @@ const config: StorybookConfig = {
       ...config.resolve,
       alias: {
         ...config.resolve?.alias,
-        '@': resolve(__dirname, '../src'),
-        '@template/theme': resolve(__dirname, '../../theme/src'),
-        '@template/types': resolve(__dirname, '../../types/src'),
-        '@template/utils': resolve(__dirname, '../../utils/src'),
-        '@template/api': resolve(__dirname, '../../api/src'),
+        '@': resolve(__dirname, '../dist'),
+        '@template/theme': resolve(__dirname, '../../theme/dist'),
+        '@template/types': resolve(__dirname, '../../types/dist'),
+        '@template/utils': resolve(__dirname, '../../utils/dist'),
+        '@template/api': resolve(__dirname, '../../api/dist'),
       },
     };
 

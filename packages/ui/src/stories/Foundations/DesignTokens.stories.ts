@@ -4,8 +4,17 @@ import {
   getSpacingTokens,
   getPaddingTokens,
   getRadiusTokens,
+  getButtonTokens,
+  getInputTokens,
+  getBackgroundTokens,
+  getFontTokens,
+  getTradeTokens,
+  getTableTokens,
+  getPopupTokens,
+  getNavTokens,
+  getSidebarTokens,
 } from '@template/theme';
-import { defineComponent, ref, computed, watch, onMounted } from 'vue';
+import { defineComponent, ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
 import '@template/theme';
 
@@ -171,43 +180,156 @@ const RadiusToken = defineComponent({
 });
 
 /**
+ * 컴포넌트 토큰을 표시하는 컴포넌트 (Button, Input, Background 등)
+ */
+const ComponentToken = defineComponent({
+  props: {
+    tokenName: { type: String, required: true },
+    tokenValue: { type: String, required: true },
+    tokenType: { type: String, required: true },
+  },
+  setup(props) {
+    const isColorToken = computed(() => {
+      return (
+        props.tokenType === 'button' ||
+        props.tokenType === 'input' ||
+        props.tokenType === 'background' ||
+        props.tokenType === 'font' ||
+        props.tokenType === 'trade' ||
+        props.tokenType === 'table' ||
+        props.tokenType === 'popup' ||
+        props.tokenType === 'nav' ||
+        props.tokenType === 'sidebar'
+      );
+    });
+
+    const isBackgroundToken = computed(() => {
+      return (
+        props.tokenName.includes('background') ||
+        props.tokenName.includes('Background') ||
+        props.tokenName.includes('bg')
+      );
+    });
+
+    const isTextToken = computed(() => {
+      return (
+        props.tokenName.includes('text') ||
+        props.tokenName.includes('Text') ||
+        props.tokenName.includes('color')
+      );
+    });
+
+    const isBorderToken = computed(() => {
+      return props.tokenName.includes('border') || props.tokenName.includes('Border');
+    });
+
+    return {
+      isColorToken,
+      isBackgroundToken,
+      isTextToken,
+      isBorderToken,
+    };
+  },
+  template: `
+    <div class="component-token">
+      <div class="token-info">
+        <div class="token-name">{{ tokenName }}</div>
+        <div class="token-value">{{ tokenValue }}</div>
+      </div>
+      <div class="component-preview">
+        <div v-if="isColorToken && isBackgroundToken" 
+            class="color-preview" 
+            :style="{ backgroundColor: tokenValue }"
+            :title="tokenValue">
+        </div>
+        <div v-else-if="isColorToken && isTextToken" 
+            class="text-preview" 
+            :style="{ color: tokenValue }">
+          Text
+        </div>
+        <div v-else-if="isColorToken && isBorderToken" 
+            class="border-preview" 
+            :style="{ border: '2px solid ' + tokenValue }">
+        </div>
+        <div v-else-if="isColorToken" 
+            class="color-preview" 
+            :style="{ backgroundColor: tokenValue }"
+            :title="tokenValue">
+        </div>
+        <div v-else class="value-preview">
+          {{ tokenValue }}
+        </div>
+      </div>
+    </div>
+  `,
+});
+
+/**
  * 디자인 토큰을 동적으로 표시하는 메인 컴포넌트
  */
 const DesignTokens = defineComponent({
   name: 'DesignTokens',
-  components: { ColorToken, TypographyToken, SpacingToken, PaddingToken, RadiusToken },
+  components: {
+    ColorToken,
+    TypographyToken,
+    SpacingToken,
+    PaddingToken,
+    RadiusToken,
+    ComponentToken,
+  },
   setup() {
     const colors = ref<Record<string, Record<string, string>>>({});
     const typography = ref<Record<string, Record<string, string>>>({});
     const spacing = ref<Record<string, string>>({});
     const padding = ref<Record<string, string>>({});
     const radius = ref<Record<string, string>>({});
+    const button = ref<Record<string, string>>({});
+    const input = ref<Record<string, string>>({});
+    const background = ref<Record<string, string>>({});
+    const font = ref<Record<string, string>>({});
+    const trade = ref<Record<string, string>>({});
+    const table = ref<Record<string, string>>({});
+    const popup = ref<Record<string, string>>({});
+    const nav = ref<Record<string, string>>({});
+    const sidebar = ref<Record<string, string>>({});
+
     const activeTab = ref('colors');
     const isDark = ref(false);
 
     const loadTokens = () => {
-      console.log('Loading tokens...');
       try {
         const colorTokens = getColorTokens();
         const typographyTokens = getTypographyTokens();
         const spacingTokens = getSpacingTokens();
         const paddingTokens = getPaddingTokens();
         const radiusTokens = getRadiusTokens();
-
-        console.log('Color tokens:', colorTokens);
-        console.log('Typography tokens:', typographyTokens);
-        console.log('Spacing tokens:', spacingTokens);
-        console.log('Padding tokens:', paddingTokens);
-        console.log('Radius tokens:', radiusTokens);
+        const buttonTokens = getButtonTokens();
+        const inputTokens = getInputTokens();
+        const backgroundTokens = getBackgroundTokens();
+        const fontTokens = getFontTokens();
+        const tradeTokens = getTradeTokens();
+        const tableTokens = getTableTokens();
+        const popupTokens = getPopupTokens();
+        const navTokens = getNavTokens();
+        const sidebarTokens = getSidebarTokens();
 
         colors.value = colorTokens;
         typography.value = typographyTokens;
         spacing.value = spacingTokens;
         padding.value = paddingTokens;
         radius.value = radiusTokens;
+        button.value = buttonTokens;
+        input.value = inputTokens;
+        background.value = backgroundTokens;
+        font.value = fontTokens;
+        trade.value = tradeTokens;
+        table.value = tableTokens;
+        popup.value = popupTokens;
+        nav.value = navTokens;
+        sidebar.value = sidebarTokens;
       } catch (error) {
         console.error('Error loading tokens:', error);
-        // 폴백 데이터
+        // 폴백 데이터는 기존과 동일하게 유지
         colors.value = {
           primary: {
             'primary-500': '#ffc300',
@@ -266,15 +388,38 @@ const DesignTokens = defineComponent({
       if (typeof document !== 'undefined') {
         document.documentElement.setAttribute('data-theme', isDark.value ? 'dark' : 'light');
       }
-      // CSS 변수가 적용될 시간을 주기 위해 약간의 지연
-      setTimeout(loadTokens, 10);
+      // CSS 변수가 적용될 시간을 주기 위해 더 긴 지연
+      setTimeout(loadTokens, 100);
     };
 
     // 테마 변경 시 토큰 다시 로드
     watch(isDark, () => {
-      // CSS 변수가 적용될 시간을 주기 위해 약간의 지연
-      setTimeout(loadTokens, 10);
+      // CSS 변수가 적용될 시간을 주기 위해 더 긴 지연
+      setTimeout(loadTokens, 100);
     });
+
+    // 전역 테마 변경 감시 (상단 메뉴에서 테마 변경 시)
+    const watchGlobalTheme = () => {
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+            const newTheme = document.documentElement.getAttribute('data-theme');
+            const newIsDark = newTheme === 'dark';
+            if (isDark.value !== newIsDark) {
+              isDark.value = newIsDark;
+              setTimeout(loadTokens, 100);
+            }
+          }
+        });
+      });
+
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      });
+
+      return observer;
+    };
 
     onMounted(() => {
       // 초기 테마 설정
@@ -289,10 +434,20 @@ const DesignTokens = defineComponent({
         }
       }
 
+      // 전역 테마 변경 감시 시작
+      const themeObserver = watchGlobalTheme();
+
       // CSS 변수가 적용될 시간을 주기 위해 약간의 지연
       setTimeout(() => {
         loadTokens();
       }, 50);
+
+      // 컴포넌트 언마운트 시 observer 정리
+      onUnmounted(() => {
+        if (themeObserver) {
+          themeObserver.disconnect();
+        }
+      });
     });
 
     const theme = computed(() => (isDark.value ? 'dark' : 'light'));
@@ -303,6 +458,15 @@ const DesignTokens = defineComponent({
       spacing,
       padding,
       radius,
+      button,
+      input,
+      background,
+      font,
+      trade,
+      table,
+      popup,
+      nav,
+      sidebar,
       activeTab,
       theme,
       toggleTheme,
@@ -357,6 +521,60 @@ const DesignTokens = defineComponent({
           @click="activeTab = 'radius'"
         >
           Radius
+        </button>
+        <button
+          :class="{ active: activeTab === 'button' }"
+          @click="activeTab = 'button'"
+        >
+          Button
+        </button>
+        <button
+          :class="{ active: activeTab === 'input' }"
+          @click="activeTab = 'input'"
+        >
+          Input
+        </button>
+        <button
+          :class="{ active: activeTab === 'background' }"
+          @click="activeTab = 'background'"
+        >
+          Background
+        </button>
+        <button
+          :class="{ active: activeTab === 'font' }"
+          @click="activeTab = 'font'"
+        >
+          Font
+        </button>
+        <button
+          :class="{ active: activeTab === 'trade' }"
+          @click="activeTab = 'trade'"
+        >
+          Trade
+        </button>
+        <button
+          :class="{ active: activeTab === 'table' }"
+          @click="activeTab = 'table'"
+        >
+          Table
+        </button>
+        <button
+          :class="{ active: activeTab === 'popup' }"
+          @click="activeTab = 'popup'"
+        >
+          Popup
+        </button>
+        <button
+          :class="{ active: activeTab === 'nav' }"
+          @click="activeTab = 'nav'"
+        >
+          Nav
+        </button>
+        <button
+          :class="{ active: activeTab === 'sidebar' }"
+          @click="activeTab = 'sidebar'"
+        >
+          Sidebar
         </button>
       </div>
       <div class="content">
@@ -422,6 +640,123 @@ const DesignTokens = defineComponent({
               :key="tokenName"
               :token-name="tokenName"
               :token-value="tokenValue"
+            />
+          </div>
+        </div>
+        <!-- 버튼 토큰 -->
+        <div v-if="activeTab === 'button'" class="component-section">
+          <h3>Button Tokens</h3>
+          <div class="component-grid">
+            <ComponentToken
+              v-for="(tokenValue, tokenName) in button"
+              :key="tokenName"
+              :token-name="tokenName"
+              :token-value="tokenValue"
+              token-type="button"
+            />
+          </div>
+        </div>
+        <!-- 입력 토큰 -->
+        <div v-if="activeTab === 'input'" class="component-section">
+          <h3>Input Tokens</h3>
+          <div class="component-grid">
+            <ComponentToken
+              v-for="(tokenValue, tokenName) in input"
+              :key="tokenName"
+              :token-name="tokenName"
+              :token-value="tokenValue"
+              token-type="input"
+            />
+          </div>
+        </div>
+        <!-- 배경 토큰 -->
+        <div v-if="activeTab === 'background'" class="component-section">
+          <h3>Background Tokens</h3>
+          <div class="component-grid">
+            <ComponentToken
+              v-for="(tokenValue, tokenName) in background"
+              :key="tokenName"
+              :token-name="tokenName"
+              :token-value="tokenValue"
+              token-type="background"
+            />
+          </div>
+        </div>
+        <!-- 폰트 토큰 -->
+        <div v-if="activeTab === 'font'" class="component-section">
+          <h3>Font Tokens</h3>
+          <div class="component-grid">
+            <ComponentToken
+              v-for="(tokenValue, tokenName) in font"
+              :key="tokenName"
+              :token-name="tokenName"
+              :token-value="tokenValue"
+              token-type="font"
+            />
+          </div>
+        </div>
+        <!-- 거래 토큰 -->
+        <div v-if="activeTab === 'trade'" class="component-section">
+          <h3>Trade Tokens</h3>
+          <div class="component-grid">
+            <ComponentToken
+              v-for="(tokenValue, tokenName) in trade"
+              :key="tokenName"
+              :token-name="tokenName"
+              :token-value="tokenValue"
+              token-type="trade"
+            />
+          </div>
+        </div>
+        <!-- 테이블 토큰 -->
+        <div v-if="activeTab === 'table'" class="component-section">
+          <h3>Table Tokens</h3>
+          <div class="component-grid">
+            <ComponentToken
+              v-for="(tokenValue, tokenName) in table"
+              :key="tokenName"
+              :token-name="tokenName"
+              :token-value="tokenValue"
+              token-type="table"
+            />
+          </div>
+        </div>
+        <!-- 팝업 토큰 -->
+        <div v-if="activeTab === 'popup'" class="component-section">
+          <h3>Popup Tokens</h3>
+          <div class="component-grid">
+            <ComponentToken
+              v-for="(tokenValue, tokenName) in popup"
+              :key="tokenName"
+              :token-name="tokenName"
+              :token-value="tokenValue"
+              token-type="popup"
+            />
+          </div>
+        </div>
+        <!-- 네비게이션 토큰 -->
+        <div v-if="activeTab === 'nav'" class="component-section">
+          <h3>Navigation Tokens</h3>
+          <div class="component-grid">
+            <ComponentToken
+              v-for="(tokenValue, tokenName) in nav"
+              :key="tokenName"
+              :token-name="tokenName"
+              :token-value="tokenValue"
+              token-type="nav"
+            />
+          </div>
+        </div>
+        <!-- 사이드바 토큰 -->
+        <div v-if="activeTab === 'sidebar'" class="component-section">
+          <h3>Sidebar Tokens</h3>
+          <div class="component-grid">
+            <ComponentToken
+              v-for="(tokenValue, tokenName) in sidebar"
+              :key="tokenName"
+              :token-name="tokenName"
+              :token-value="tokenValue"
+              token-type="sidebar"
             />
           </div>
         </div>

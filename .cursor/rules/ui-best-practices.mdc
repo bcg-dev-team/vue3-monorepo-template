@@ -8,6 +8,32 @@
 - TypeScript로 props, emits, slots 타입을 엄격하게 정의하세요.
 - 컴포넌트는 최대한 단순하게, 상태/로직은 composable로 분리하세요.
 
+## CSS 클래스 방식 및 스타일 관리
+
+> **참고**: 자세한 CSS 클래스 방식 가이드는 [Tailwind CSS 베스트 프랙티스](./tailwindcss-best-practices.mdc)를 참조하세요.
+
+### 핵심 원칙
+- **미리 정의된 클래스 방식 사용**: 개발자 도구 가독성을 위해 동적 CSS 변수 클래스 대신 미리 정의된 클래스 사용
+- **SCSS 파일 분리**: 컴포넌트별로 별도의 SCSS 파일 생성
+- **클래스 매핑 패턴**: Vue 컴포넌트에서 variant별 클래스 매핑 사용
+
+### 간단한 예시
+```vue
+<!-- ❌ 피해야 할 방식 -->
+<button :class="`bg-[var(--button-${variant}-background)]`">
+
+<!-- ✅ 권장 방식 -->
+<button :class="`btn-${variant}`">
+```
+
+```scss
+/* BaseButton.scss */
+.btn-primary {
+  background-color: var(--button-primary-background);
+  color: var(--button-primary-text);
+}
+```
+
 ## Headless UI 사용 범위
 ### ✅ 사용해야 하는 경우 (복합 UI)
 - 드롭다운 메뉴 (Menu, Listbox, Combobox)
@@ -27,22 +53,34 @@
 - **디자인 토큰/테마**: packages/theme에서 Tailwind config 및 토큰 관리
 - **컴포저블/훅**: packages/ui/src/composables에 상태/로직 분리
 - **Storybook 통합**: 모든 컴포넌트에 스토리와 autoDocs 태그 작성
+- **스타일 파일**: 각 컴포넌트별로 .scss 파일 분리
 
 ## 성능 및 확장성
 - **JIT 모드**: Tailwind JIT 모드로 빌드 속도와 번들 크기 최적화
 - **반응형/다크모드**: Tailwind의 responsive, dark: 유틸리티 적극 활용
 - **컴포넌트 추출**: 반복되는 UI 패턴은 별도 컴포넌트로 분리
 - **접근성**: Headless UI의 a11y 보장 + 추가 ARIA 속성 필요시 직접 추가
+- **스타일 최적화**: 미리 정의된 클래스로 동적 스타일 생성 최소화
 
 ## 예시 컴포넌트 패턴
 
 ### 단순한 버튼 (Headless UI 불필요)
 ```vue
+<script setup lang="ts">
+import './BaseButton.scss';
+
+const variantClasses = {
+  primary: 'btn-primary',
+  outline: 'btn-outline',
+  // ... 기타 variant
+};
+</script>
+
 <template>
   <button
     :class="[
-      'px-4 py-2 rounded font-semibold transition',
-      'bg-primary-600 text-white hover:bg-primary-700'
+      'inline-flex items-center justify-center font-sans font-semibold transition-all',
+      variantClasses[variant] || 'btn-primary'
     ]"
     :disabled="disabled"
   >
@@ -55,16 +93,17 @@
 ```vue
 <script setup lang="ts">
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+import './BaseMenu.scss';
 </script>
 
 <template>
   <Menu as="div" class="relative">
-    <MenuButton class="px-4 py-2 rounded bg-primary-600 text-white">
+    <MenuButton class="btn-primary">
       Options
     </MenuButton>
-    <MenuItems class="absolute mt-2 bg-white shadow-lg rounded">
+    <MenuItems class="menu-items">
       <MenuItem v-slot="{ active }">
-        <a :class="{ 'bg-gray-100': active }" href="/settings">
+        <a :class="{ 'menu-item-active': active }" href="/settings">
           Settings
         </a>
       </MenuItem>
@@ -77,6 +116,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 - Tailwind config에서 디자인 토큰(색상, 폰트, 간격 등) 확장
 - theme 패키지에서 Figma 연동 토큰 자동화
 - 예시: shared/config/tailwind.config.js 참고
+- CSS 변수를 SCSS 파일에서 활용하여 디자인 토큰 적용
 
 ## Storybook/테스트
 - 모든 컴포넌트에 __stories__ 폴더에 base/variant 스토리 작성
@@ -92,3 +132,6 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 - [ ] Storybook/테스트/문서화
 - [ ] 접근성(a11y) 구현
 - [ ] 반응형/다크모드 지원
+- [ ] 미리 정의된 클래스 방식 사용
+- [ ] 컴포넌트별 SCSS 파일 분리
+- [ ] 동적 CSS 변수 클래스 생성 지양

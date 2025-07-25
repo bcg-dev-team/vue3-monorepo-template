@@ -4,6 +4,7 @@
 -->
 <script setup lang="ts">
 import { computed } from 'vue';
+import './BaseCheckbox.scss';
 
 /**
  * 체크박스 컴포넌트
@@ -46,42 +47,19 @@ const emit = defineEmits<{
 const isChecked = computed(() => props.state === 'On' || props.modelValue);
 const isDisabled = computed(() => props.style === 'Disabled');
 
-// 정적 색상은 Tailwind arbitrary value로 처리
+// 스타일별 클래스 매핑 (컴포넌트별 토큰)
+const styleClasses = {
+  Default: 'checkbox-default',
+  Disabled: 'checkbox-disabled',
+};
+
+// 정적 클래스 (기본 스타일)
 const staticClasses = computed(() => {
-  const classes = [
-    'relative flex items-center justify-center w-5 h-5 rounded-[3px] border transition-colors duration-150',
-    'bg-[var(--input-color-surface)]', // 기본 배경색
-    'border-[var(--input-color-border-static)]', // 기본 테두리 색상
-  ];
+  const baseClasses =
+    'relative flex items-center justify-center w-5 h-5 rounded-[3px] border border-solid transition-all duration-150';
+  const styleClass = styleClasses[props.style] || 'checkbox-default';
 
-  if (isDisabled.value) {
-    classes.push('cursor-not-allowed opacity-60');
-  }
-
-  return classes.join(' ');
-});
-
-// 동적 스타일 (조건부 변경이 필요한 경우만)
-const dynamicStyle = computed(() => {
-  const styles: Record<string, string> = {};
-
-  // 조건부 배경색
-  if (isDisabled.value && isChecked.value) {
-    styles.backgroundColor = 'var(--input-color-text-disable)';
-  } else if (isDisabled.value && !isChecked.value) {
-    styles.backgroundColor = 'var(--input-color-bg-disabled)';
-  } else if (!isDisabled.value && isChecked.value) {
-    styles.backgroundColor = 'var(--button-primary-background)';
-  }
-
-  // 조건부 테두리 색상
-  if (isDisabled.value) {
-    styles.borderColor = 'var(--input-color-border-disabled)';
-  } else if (isChecked.value) {
-    styles.borderColor = 'var(--button-primary-background)';
-  }
-
-  return styles;
+  return `${baseClasses} ${styleClass}`;
 });
 </script>
 
@@ -89,7 +67,6 @@ const dynamicStyle = computed(() => {
   <label class="inline-flex items-center cursor-pointer select-none">
     <span
       :class="staticClasses"
-      :style="dynamicStyle"
       @click.stop.prevent="!isDisabled && emit('update:modelValue', !isChecked)"
     >
       <svg v-if="isChecked" class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24">
@@ -101,7 +78,7 @@ const dynamicStyle = computed(() => {
     </span>
     <input
       type="checkbox"
-      class="sr-only"
+      class="absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0"
       :checked="isChecked"
       :disabled="isDisabled"
       @change="(e) => emit('update:modelValue', (e.target as HTMLInputElement).checked)"

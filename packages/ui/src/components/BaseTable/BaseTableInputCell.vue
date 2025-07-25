@@ -52,46 +52,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>();
 
-// 색상은 CSS 변수로 처리
-const cellStyle = computed(() => ({
-  backgroundColor: 'var(--table-type1-body-bg)',
-  borderBottomColor: 'var(--table-type1-body-border)',
-}));
-
-const checkboxStyle = computed(() => {
-  if (props.checked) {
-    return {
-      backgroundColor: 'var(--input-check-radio-selected-bg)',
-    };
-  }
-  return {
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'var(--input-color-border-static)',
-  };
-});
-
-// 레이아웃/간격/상태는 Tailwind class로 처리
-const containerClasses = computed(() => {
-  return 'relative w-full h-full';
-});
-
-const borderClasses = computed(() => {
-  return 'absolute border-b border-solid inset-0 pointer-events-none';
-});
-
-const contentClasses = computed(() => {
-  return 'flex flex-row items-center relative size-full';
-});
-
-const paddingClasses = computed(() => {
-  return 'box-border content-stretch flex flex-row gap-2.5 items-center justify-start px-[15px] py-2 relative size-full';
-});
-
-const labelClasses = computed(() => {
-  return 'font-regular leading-[0] not-italic relative shrink-0 text-input-color-text-static text-base leading-tight tracking-wide text-left text-nowrap';
-});
-
 const handleInputUpdate = (value: string) => {
   emit('update', value);
 };
@@ -106,12 +66,19 @@ const handleCheckboxChange = (checked: boolean) => {
 </script>
 
 <template>
-  <div :class="containerClasses" :style="cellStyle" data-name="Table/Body-Input">
-    <div :class="borderClasses" />
-    <div :class="contentClasses">
-      <div :class="paddingClasses">
+  <div class="relative w-full h-full table-input-cell" data-name="Table/Body-Input">
+    <div
+      class="absolute border-b border-solid inset-0 pointer-events-none table-input-cell-border"
+    />
+    <div class="flex flex-row items-center relative w-full h-full">
+      <div
+        class="flex flex-row items-center justify-start gap-2.5 relative w-full h-full table-input-cell-padding"
+      >
         <!-- 라벨 -->
-        <div v-if="label" :class="labelClasses">
+        <div
+          v-if="label"
+          class="flex flex-col justify-center leading-none font-normal relative flex-shrink-0 text-sm text-left whitespace-nowrap table-input-cell-label"
+        >
           <span class="block whitespace-pre">{{ label }}</span>
         </div>
 
@@ -124,7 +91,12 @@ const handleCheckboxChange = (checked: boolean) => {
           @click="handleButtonClick"
         >
           <template #icon>
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              class="table-input-button-icon"
+              fill="none"
+              viewBox="0 0 14 14"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                 d="M7 5V7M7 7V9M7 7H9M7 7H5M13 7C13 10.3137 10.3137 13 7 13C3.68629 13 1 10.3137 1 7C1 3.68629 3.68629 1 7 1C10.3137 1 13 3.68629 13 7Z"
                 stroke="currentColor"
@@ -139,16 +111,15 @@ const handleCheckboxChange = (checked: boolean) => {
         <!-- 체크박스 -->
         <div
           v-if="showCheckbox"
-          class="relative rounded-[3px] shrink-0 size-[22px] cursor-pointer"
+          class="relative flex items-center justify-center w-5 h-5 rounded-[3px] border border-solid transition-all duration-150 cursor-pointer table-input-checkbox"
           @click="handleCheckboxChange(!checked)"
         >
           <div
             v-if="checked"
-            class="absolute left-0.5 overflow-clip rounded-[3px] size-[18px] top-0.5"
-            :style="checkboxStyle"
+            class="relative flex items-center justify-center w-5 h-5 rounded-[3px] border border-solid transition-all duration-150 table-input-checkbox-inner-checked"
           >
             <svg
-              class="absolute left-[-2px] size-6 top-[-2px]"
+              class="w-4 h-4 text-white"
               fill="none"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
@@ -161,8 +132,7 @@ const handleCheckboxChange = (checked: boolean) => {
           </div>
           <div
             v-else
-            class="absolute border left-0.5 rounded-[3px] size-[18px] top-0.5"
-            :style="checkboxStyle"
+            class="relative flex items-center justify-center w-5 h-5 rounded-[3px] border border-solid transition-all duration-150 table-input-checkbox-inner-unchecked"
           />
         </div>
 

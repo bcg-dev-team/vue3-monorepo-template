@@ -1,0 +1,39 @@
+// BaseTableInputCell 컴포넌트 스타일
+// Figma 디자인 토큰을 기반으로 한 테이블 입력 셀 스타일 정의
+
+// 컴포넌트별 토큰만 정의
+// Tailwind 클래스로 처리 가능한 스타일들은 Vue 파일에서 직접 사용
+
+// 기본 입력 셀 스타일
+.table-input-cell {
+  background-color: var(--table-type1-body-bg);
+  border-bottom-color: var(--table-type1-body-border);
+}
+
+// 패딩 스타일
+.table-input-cell-padding {
+  padding: 0.5rem 0.9375rem; // px-[15px] py-2
+}
+
+// 라벨 스타일
+.table-input-cell-label {
+  color: var(--input-color-text-static);
+  font-size: 1rem; // text-base
+  line-height: 1.25; // leading-tight
+  letter-spacing: 0.025em; // tracking-wide
+}
+
+// 체크박스 스타일
+.table-input-checkbox-inner-checked {
+  background-color: var(--input-check-radio-selected-bg);
+}
+
+.table-input-checkbox-inner-unchecked {
+  border: 1px solid var(--input-color-border-static);
+}
+
+// 버튼 아이콘 스타일
+.table-input-button-icon {
+  width: 1rem; // w-4
+  height: 1rem; // h-4
+} 

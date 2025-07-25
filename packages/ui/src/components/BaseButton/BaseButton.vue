@@ -14,6 +14,7 @@
 import type { ComponentSize, IconName } from '../../types/components';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { computed } from 'vue';
+import './BaseButton.scss';
 
 // 버튼 아이콘 props 타입 (BaseButton 전용)
 interface ButtonIconProps {
@@ -86,40 +87,20 @@ const staticClasses = computed(() => {
     'disabled:opacity-50 disabled:cursor-not-allowed',
   ];
 
-  // 정적 색상 적용
-  classes.push(`bg-[var(--button-${props.variant}-background)]`);
-  classes.push(`text-[var(--button-${props.variant}-text)]`);
+  // variant별 클래스 매핑
+  const variantClasses = {
+    primary: 'btn-primary',
+    outline: 'btn-outline',
+    red: 'btn-red',
+    blue: 'btn-blue',
+    pill: 'btn-pill',
+    'light-solid': 'btn-light-solid',
+    'red-solid': 'btn-red-solid',
+    'blue-solid': 'btn-blue-solid',
+    disabled: 'btn-disabled',
+  };
 
-  // border가 필요한 variant들
-  const borderVariants = ['outline', 'red', 'blue', 'light-solid', 'disabled'];
-  if (borderVariants.includes(props.variant)) {
-    classes.push(`border-[var(--button-${props.variant}-border)]`);
-  }
-
-  // hover 효과 추가
-  switch (props.variant) {
-    case 'primary':
-      classes.push('hover:bg-[var(--button-primary-background-deep)]');
-      break;
-    case 'outline':
-      classes.push('hover:bg-[var(--button-outline-background)]');
-      break;
-    case 'red':
-      classes.push('hover:bg-[var(--button-red-background-hover)]');
-      break;
-    case 'red-solid':
-      classes.push('hover:bg-[var(--button-red-solid-hover)]');
-      break;
-    case 'blue':
-      classes.push('hover:bg-[var(--button-blue-background-hover)]');
-      break;
-    case 'blue-solid':
-      classes.push('hover:bg-[var(--button-blue-solid-hover)]');
-      break;
-    case 'disabled':
-      classes.push('cursor-not-allowed');
-      break;
-  }
+  classes.push(variantClasses[props.variant] || 'btn-primary');
 
   return classes.join(' ');
 });

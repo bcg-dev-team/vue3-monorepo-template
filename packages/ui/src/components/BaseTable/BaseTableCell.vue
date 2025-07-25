@@ -29,54 +29,66 @@ const props = withDefaults(defineProps<Props>(), {
   width: 'auto',
 });
 
-// 색상은 CSS 변수로 처리
-const cellStyle = computed(() => {
-  const bgColor =
-    props.type === 'selected' ? 'var(--table-type1-body-bg-select)' : 'var(--table-type1-body-bg)';
+// 타입별 클래스 매핑 (컴포넌트별 토큰)
+const typeClasses = {
+  normal: 'table-cell-normal',
+  selected: 'table-cell-selected',
+  input: 'table-cell-input',
+};
 
-  const borderColor = 'var(--table-type1-body-border)';
+// 정렬별 클래스 매핑
+const alignClasses = {
+  left: 'text-left',
+  center: 'text-center',
+  right: 'text-right',
+};
 
-  return {
-    backgroundColor: bgColor,
-    borderColor: borderColor,
-    width: props.width,
-  };
-});
-
-// 레이아웃/간격/상태는 Tailwind class로 처리
+// 컨테이너 클래스
 const containerClasses = computed(() => {
-  return 'relative w-full h-full';
+  const baseClasses = 'relative w-full h-full';
+  const typeClass = typeClasses[props.type];
+
+  return `${baseClasses} ${typeClass}`;
 });
 
+// 테두리 클래스
 const borderClasses = computed(() => {
-  const baseClasses = 'absolute inset-0 pointer-events-none border-solid';
-  const borderClasses = props.type === 'input' ? 'border-b' : 'border-x';
-  return `${baseClasses} ${borderClasses}`;
+  const baseClasses = 'absolute border-l border-r border-solid inset-0 pointer-events-none';
+  const typeClass = `table-cell-border-${props.type}`;
+
+  return `${baseClasses} ${typeClass}`;
 });
 
+// 컨텐츠 클래스
 const contentClasses = computed(() => {
-  const baseClasses = 'flex flex-row items-center relative size-full';
-  const justifyClasses =
-    props.align === 'center'
-      ? 'justify-center'
-      : props.align === 'right'
-        ? 'justify-end'
-        : 'justify-start';
-  return `${baseClasses} ${justifyClasses}`;
+  const baseClasses = 'flex flex-row items-center relative w-full h-full';
+  const alignClass = alignClasses[props.align];
+
+  return `${baseClasses} ${alignClass}`;
 });
 
+// 패딩 클래스
 const paddingClasses = computed(() => {
-  const baseClasses =
-    'box-border content-stretch flex flex-row gap-2.5 items-center relative size-full';
-  const paddingClasses = props.type === 'input' ? 'px-[15px] py-2' : 'px-[15px] py-3';
-  return `${baseClasses} ${paddingClasses}`;
+  const baseClasses = 'flex flex-row items-center justify-start relative w-full h-full';
+  const typeClass = `table-cell-padding-${props.type}`;
+
+  return `${baseClasses} ${typeClass}`;
 });
 
+// 텍스트 클래스
 const textClasses = computed(() => {
   const baseClasses =
-    'font-regular leading-[0] not-italic relative shrink-0 text-left text-nowrap tracking-wide text-input-color-text-static';
-  const fontClasses = props.type === 'input' ? 'text-base leading-tight' : 'text-sm leading-snug';
-  return `${baseClasses} ${fontClasses}`;
+    'flex flex-col justify-center leading-none font-normal relative flex-shrink-0 text-sm text-left whitespace-nowrap';
+  const typeClass = `table-cell-text-${props.type}`;
+
+  return `${baseClasses} ${typeClass}`;
+});
+
+// 동적 스타일 (너비만)
+const cellStyle = computed(() => {
+  return {
+    width: props.width,
+  };
 });
 </script>
 

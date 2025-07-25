@@ -6,6 +6,7 @@
   - 디자인 토큰: bg-surface-muted(#dadbdd), primary(#ffc300), radius-pill(rounded-full)
 -->
 <script setup lang="ts">
+import './BasePaginationJoin.scss';
 import { computed } from 'vue';
 
 interface Props {
@@ -37,22 +38,22 @@ const props = withDefaults(defineProps<Props>(), {
 
 const items = computed(() => Array.from({ length: props.count }));
 
-// 정적 색상은 Tailwind arbitrary value로 처리 (성능 최적화)
-const activeClasses = computed(
-  () =>
-    'h-2 w-10 rounded-full shrink-0 transition-all duration-200 bg-[var(--button-primary-background)]'
-);
+// 인디케이터 클래스
+const getIndicatorClasses = (idx: number) => {
+  const baseClasses = 'h-2 rounded-full shrink-0 transition-all duration-200';
 
-const inactiveClasses = computed(
-  () => 'h-2 w-2 rounded-full shrink-0 transition-all duration-200 bg-[var(--bg-surface-muted)]'
-);
+  if (idx === props.current) {
+    return `${baseClasses} w-10 pagination-join-indicator-active`;
+  } else {
+    return `${baseClasses} w-2 pagination-join-indicator-inactive`;
+  }
+};
 </script>
 
 <template>
   <div class="flex flex-row gap-2 items-center justify-start p-0 h-4 min-h-4">
     <template v-for="(_, idx) in items" :key="idx">
-      <div v-if="idx === current" :class="activeClasses" />
-      <div v-else :class="inactiveClasses" />
+      <div :class="getIndicatorClasses(idx)" />
     </template>
   </div>
 </template>

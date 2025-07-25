@@ -1,7 +1,7 @@
 import type { StorybookConfig } from '@storybook/vue3-vite';
-import { resolve } from 'path';
-import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
+import tailwindcss from 'tailwindcss';
+import { resolve } from 'path';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],

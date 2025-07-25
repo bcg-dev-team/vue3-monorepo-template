@@ -1,7 +1,7 @@
-import { optimize } from 'svgo';
-import fs from 'fs';
-import path from 'path';
 import kebabCase from 'kebab-case';
+import { optimize } from 'svgo';
+import path from 'path';
+import fs from 'fs';
 
 // 루트에서 실행되므로 packages/ui 기준으로 경로 설정
 const ICONS_DIR = path.resolve(process.cwd(), 'packages/ui/src/assets/icons');

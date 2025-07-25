@@ -3,8 +3,8 @@
   https://www.figma.com/design/5OJPsmnkEgZZnkHtNbk1wK/-MODA--Draft-250514-?node-id=1028-8543&m=dev
 -->
 <script setup lang="ts">
-import { computed } from 'vue';
 import BaseChip from './BaseChip.vue';
+import { computed } from 'vue';
 
 /**
  * Up/Down 상태 칩 컴포넌트

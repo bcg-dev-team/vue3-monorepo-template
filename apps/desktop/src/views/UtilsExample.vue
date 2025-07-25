@@ -177,8 +177,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
-import { BaseInput } from '@template/ui';
 import {
   // 문자열 유틸리티
   toCamelCase,
@@ -200,6 +198,8 @@ import {
   calculateAge,
   nowInTimezone,
 } from '@template/utils';
+import { ref, onMounted, onUnmounted } from 'vue';
+import { BaseInput } from '@template/ui';
 
 // 반응형 상태
 const caseInput = ref('hello world example');

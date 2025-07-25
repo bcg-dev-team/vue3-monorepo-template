@@ -7,9 +7,9 @@
   @figma Tab (node-id: 58-877)
 -->
 <script setup lang="ts">
-import { computed } from 'vue';
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
 import type { TabItem, ComponentSize } from '../../types/components';
+import { computed } from 'vue';
 
 interface Props {
   /**

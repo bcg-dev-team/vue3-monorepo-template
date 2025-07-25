@@ -45,8 +45,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import { BaseButton } from '@template/ui';
+import { ref } from 'vue';
 
 const showWelcome = ref(false);
 </script>

@@ -3,8 +3,8 @@
   https://www.figma.com/design/5OJPsmnkEgZZnkHtNbk1wK/-MODA--Draft-250514-?node-id=116-2609&t=agLJQOgDvtXTjTYA-4
 -->
 <script setup lang="ts">
-import { ref, computed } from 'vue';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
+import { ref, computed } from 'vue';
 
 /**
  * 파일 업로드 버튼 컴포넌트

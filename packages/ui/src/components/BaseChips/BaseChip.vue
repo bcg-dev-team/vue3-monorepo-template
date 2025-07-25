@@ -2,8 +2,8 @@
   Figma 공통 칩 최소 단위 컴포넌트
 -->
 <script setup lang="ts">
-import { computed } from 'vue';
 import type { ChipVariant, ComponentSize } from '../../types/components';
+import { computed } from 'vue';
 
 /**
  * 칩(Chip) 최소 단위 컴포넌트

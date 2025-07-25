@@ -48,9 +48,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import { BaseButton, BaseTable, BaseInputText } from '@template/ui';
 import MainCardContent from '@/components/ui/cards/MainCardContent.vue';
 import SubCardContent from '@/components/ui/cards/SubCardContent.vue';
+import { BaseButton, BaseTable, BaseInputText } from '@template/ui';
 import type { TableHeader, TableRow } from '@template/ui';
 import { ref } from 'vue';
 

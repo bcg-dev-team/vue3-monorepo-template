@@ -1,16 +1,16 @@
-import React, { useState, useRef } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  SafeAreaView, 
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
   StatusBar,
   TouchableOpacity,
   Alert,
-  Platform
+  Platform,
 } from 'react-native';
-import { WebView } from 'react-native-webview';
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
+import React, { useState, useRef } from 'react';
+import { WebView } from 'react-native-webview';
 
 export default function App() {
   const webViewRef = useRef<WebView>(null);
@@ -19,7 +19,7 @@ export default function App() {
   const [canGoForward, setCanGoForward] = useState(false);
 
   // 개발 환경에서는 로컬 서버 URL, 프로덕션에서는 빌드된 파일 경로
-  const webViewUrl = __DEV__ 
+  const webViewUrl = __DEV__
     ? 'http://192.168.50.187:5173' // mobile 앱 개발 서버 (실제 IP 주소 사용)
     : 'file:///android_asset/mobile-app/index.html'; // 빌드된 파일
 
@@ -58,7 +58,7 @@ export default function App() {
     try {
       const data = JSON.parse(event.nativeEvent.data);
       console.log('WebView message:', data);
-      
+
       // Vue 앱에서 보낸 메시지 처리
       if (data.type === 'navigate') {
         // 네비게이션 처리
@@ -106,21 +106,19 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <ExpoStatusBar style="auto" />
-      
+
       {/* 네비게이션 바 */}
       <View style={styles.navigationBar}>
-        <TouchableOpacity 
-          style={[styles.navButton, !canGoBack && styles.navButtonDisabled]} 
+        <TouchableOpacity
+          style={[styles.navButton, !canGoBack && styles.navButtonDisabled]}
           onPress={handleGoBack}
           disabled={!canGoBack}
         >
-          <Text style={[styles.navButtonText, !canGoBack && styles.navButtonTextDisabled]}>
-            ←
-          </Text>
+          <Text style={[styles.navButtonText, !canGoBack && styles.navButtonTextDisabled]}>←</Text>
         </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={[styles.navButton, !canGoForward && styles.navButtonDisabled]} 
+
+        <TouchableOpacity
+          style={[styles.navButton, !canGoForward && styles.navButtonDisabled]}
           onPress={handleGoForward}
           disabled={!canGoForward}
         >
@@ -128,13 +126,13 @@ export default function App() {
             →
           </Text>
         </TouchableOpacity>
-        
+
         <TouchableOpacity style={styles.navButton} onPress={handleRefresh}>
           <Text style={styles.navButtonText}>🔄</Text>
         </TouchableOpacity>
-        
+
         <View style={styles.spacer} />
-        
+
         <Text style={styles.title}>Vue3 Mobile App</Text>
       </View>
 
@@ -169,7 +167,7 @@ export default function App() {
             '앱을 로드하는 중 오류가 발생했습니다. 개발 서버가 실행 중인지 확인해주세요.',
             [
               { text: '다시 시도', onPress: handleRefresh },
-              { text: '취소', style: 'cancel' }
+              { text: '취소', style: 'cancel' },
             ]
           );
         }}

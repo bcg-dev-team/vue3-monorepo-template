@@ -96,14 +96,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Form } from 'vee-validate';
-import { BaseButton, BaseInput } from '@template/ui';
 import {
   loginValidationSchema,
   registerValidationSchema,
   userProfileValidationSchema,
 } from '@template/utils';
+import { BaseButton, BaseInput } from '@template/ui';
+import { Form } from 'vee-validate';
+import { ref } from 'vue';
 
 /**
  * 폼 검증 예시 페이지 컴포넌트

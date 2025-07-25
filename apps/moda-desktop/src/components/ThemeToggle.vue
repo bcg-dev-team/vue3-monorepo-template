@@ -15,8 +15,8 @@
 </template>
 
 <script setup lang="ts">
-import { BaseButton } from '@template/ui';
 import { useThemeStore } from '@template/theme';
+import { BaseButton } from '@template/ui';
 
 const themeStore = useThemeStore();
 </script>

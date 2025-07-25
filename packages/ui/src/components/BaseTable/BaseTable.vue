@@ -1,7 +1,7 @@
 <!-- Figma: Table -->
 <script setup lang="ts">
-import { computed } from 'vue';
 import type { TableHeader, TableRow } from '../../types/components';
+import { computed } from 'vue';
 
 /**
  * 테이블 컴포넌트

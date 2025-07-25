@@ -74,9 +74,9 @@
 </template>
 
 <script setup lang="ts">
+import { formatDate, formatRelativeTime, isValidEmail, toTitleCase } from '@template/utils';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { BaseButton } from '@template/ui';
-import { formatDate, formatRelativeTime, isValidEmail, toTitleCase } from '@template/utils';
 
 // 반응형 상태
 const isNativeApp = ref(false);

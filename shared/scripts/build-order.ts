@@ -6,10 +6,10 @@
  * Windows와 Mac에서 모두 동작하도록 cross-platform 구현
  */
 
-import { execSync } from 'child_process';
 import { existsSync, rmSync, readdirSync } from 'fs';
-import { join } from 'path';
+import { execSync } from 'child_process';
 import { fileURLToPath } from 'url';
+import { join } from 'path';
 
 // 빌드 순서 정의 (의존성 순서)
 const BUILD_ORDER = [

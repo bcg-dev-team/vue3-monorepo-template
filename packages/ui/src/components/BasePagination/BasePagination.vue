@@ -1,8 +1,8 @@
 <!-- Figma: Pagination -->
 <script setup lang="ts">
-import { computed } from 'vue';
-import BasePaginationArrow from './BasePaginationArrow.vue';
 import BasePaginationNumber from './BasePaginationNumber.vue';
+import BasePaginationArrow from './BasePaginationArrow.vue';
+import { computed } from 'vue';
 
 /**
  * 페이지네이션 컴포넌트

@@ -20,7 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
 import {
   getColorTokens,
   getTypographyTokens,
@@ -28,6 +27,7 @@ import {
   getPaddingTokens,
   getRadiusTokens,
 } from '@template/theme';
+import { ref, onMounted } from 'vue';
 
 const colors = ref({});
 const typography = ref({});

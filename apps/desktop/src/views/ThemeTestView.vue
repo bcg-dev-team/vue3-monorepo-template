@@ -46,10 +46,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import { BaseButton, BaseInputText } from '@template/ui';
-import { useThemeStore } from '@template/theme';
 import ThemeToggle from '../components/ThemeToggle.vue';
+import { useThemeStore } from '@template/theme';
+import { ref } from 'vue';
 
 const themeStore = useThemeStore();
 

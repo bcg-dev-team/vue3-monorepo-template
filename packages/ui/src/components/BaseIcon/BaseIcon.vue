@@ -1,3 +1,4 @@
+<!-- packages/ui/src/components/BaseIcon/BaseIcon.vue -->
 <!--
   BaseIcon 컴포넌트
   vite-svg-loader를 활용하여 SVG 아이콘을 Vue 컴포넌트로 렌더링합니다.
@@ -5,10 +6,10 @@
   Figma 컴포넌트: Icon (아이콘 컴포넌트)
 -->
 <script setup lang="ts">
-import { computed, ref, watch, onUnmounted } from 'vue';
 import type { IconName } from '../../types/icons';
+import { getIconComponent } from './iconRegistry';
 import { getIconType } from '../../types/icons';
-import type { Component } from 'vue';
+import { computed } from 'vue';
 
 interface Props {
   name: IconName;
@@ -22,39 +23,13 @@ const props = withDefaults(defineProps<Props>(), {
   color: 'currentColor',
 });
 
-// 타입 안전성 개선
-const iconComponent = ref<Component | null>(null);
-
-// 아이콘 로더 함수 (빌드 시점에 최적화됨)
-const loadIcon = async (name: string) => {
-  if (name.startsWith('flag-')) {
-    return import(`../../assets/icons/flags/${name}.svg`);
+// 아이콘 컴포넌트 가져오기 (정적 방식)
+const iconComponent = computed(() => {
+  const component = getIconComponent(props.name);
+  if (!component && import.meta.env.DEV) {
+    console.warn(`Icon "${props.name}" not found. Please check the icon name.`);
   }
-  return import(`../../assets/icons/${name}.svg`);
-};
-
-// name이 변경될 때마다 컴포넌트를 다시 로드
-const loadIconComponent = async () => {
-  try {
-    const module = await loadIcon(props.name);
-    iconComponent.value = module.default;
-  } catch (error) {
-    if (import.meta.env.DEV) {
-      console.warn(`Icon "${props.name}" not found. Please check the icon name.`);
-    }
-    iconComponent.value = null;
-  }
-};
-
-// 초기 로드
-loadIconComponent();
-
-// name이 변경될 때마다 다시 로드
-watch(() => props.name, loadIconComponent);
-
-// 메모리 누수 방지
-onUnmounted(() => {
-  iconComponent.value = null;
+  return component;
 });
 
 const iconClasses = computed(() => {
@@ -78,7 +53,6 @@ const iconClasses = computed(() => {
   return baseClasses;
 });
 
-// CSS 변수 오버헤드 제거 - 직접 스타일 적용
 const iconStyles = computed(() => {
   const styles: Record<string, string> = {};
 

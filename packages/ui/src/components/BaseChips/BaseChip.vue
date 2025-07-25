@@ -4,6 +4,7 @@
 <script setup lang="ts">
 import type { ChipVariant, ComponentSize } from '../../types/components';
 import { computed } from 'vue';
+import './BaseChip.scss';
 
 /**
  * 칩(Chip) 최소 단위 컴포넌트
@@ -49,30 +50,50 @@ const props = withDefaults(defineProps<Props>(), {
   fontWeight: 'font-normal',
 });
 
-// 정적 색상은 Tailwind arbitrary value로 처리 (성능 최적화)
+// Size별 클래스 매핑
+const sizeClasses = {
+  sm: 'text-xs px-2 py-0.5',
+  md: 'text-sm px-2.5 py-1',
+  lg: 'text-base px-3 py-1.5',
+};
+
+// Variant별 클래스 매핑 (컴포넌트별 토큰)
+const variantClasses = {
+  surface: 'chip-surface',
+  primary: 'chip-primary',
+  secondary: 'chip-secondary',
+  success: 'chip-success',
+  warning: 'chip-warning',
+  error: 'chip-error',
+};
+
+// Font weight별 클래스 매핑
+const fontWeightClasses: Record<string, string> = {
+  'font-normal': 'font-normal',
+  'font-medium': 'font-medium',
+  'font-semibold': 'font-semibold',
+  'font-bold': 'font-bold',
+};
+
+// Rounded별 클래스 매핑
+const roundedClasses: Record<string, string> = {
+  'rounded-sm': 'rounded-sm',
+  'rounded-md': 'rounded-md',
+  'rounded-lg': 'rounded-lg',
+  'rounded-full': 'rounded-full',
+};
+
+// 정적 클래스 (기본 스타일)
 const chipClasses = computed(() => {
-  const sizeClasses = {
-    sm: 'text-xs px-2 py-0.5',
-    md: 'text-sm px-2.5 py-1',
-    lg: 'text-base px-3 py-1.5',
-  };
+  const classes = [
+    'inline-flex items-center justify-center transition-all duration-150',
+    sizeClasses[props.size] || 'text-sm px-2.5 py-1',
+    variantClasses[props.variant] || 'chip-surface',
+    fontWeightClasses[props.fontWeight] || 'font-normal',
+    roundedClasses[props.rounded] || 'rounded-sm',
+  ];
 
-  const variantStyles = {
-    surface: 'bg-[var(--bg-surface)] text-[var(--text-secondary)]',
-    primary: 'bg-[var(--button-primary-background)] text-[var(--button-primary-text)]',
-    secondary: 'bg-[var(--bg-surface-muted)] text-[var(--text-primary)]',
-    success: 'bg-[var(--trade-correct-bg)] text-[var(--trade-correct-text)]',
-    warning: 'bg-[var(--warning)] text-[var(--white)]',
-    error: 'bg-[var(--error)] text-[var(--white)]',
-  };
-
-  return [
-    'inline-flex items-center justify-center transition-colors duration-150',
-    sizeClasses[props.size],
-    variantStyles[props.variant],
-    props.rounded,
-    props.fontWeight,
-  ].join(' ');
+  return classes.join(' ');
 });
 </script>
 

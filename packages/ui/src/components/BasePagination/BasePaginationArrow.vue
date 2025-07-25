@@ -1,5 +1,6 @@
 <!-- Figma: Pagination/Arrow-Left, Pagination/Arrow-Right -->
 <script setup lang="ts">
+import './BasePaginationArrow.scss';
 import { computed } from 'vue';
 
 /**
@@ -33,22 +34,33 @@ const handleClick = (event: MouseEvent) => {
   }
 };
 
-// 레이아웃/상태는 Tailwind class로 처리
+// 화살표 클래스
 const arrowClasses = computed(() => {
-  const baseClasses = 'relative w-6 h-6 cursor-pointer transition-colors duration-200';
-  const disabledClasses = props.disabled ? 'cursor-not-allowed opacity-50' : 'hover:opacity-80';
-  return `${baseClasses} ${disabledClasses}`;
+  const baseClasses = 'relative w-6 h-6 cursor-pointer transition-all duration-200';
+
+  if (props.disabled) {
+    return `${baseClasses} cursor-not-allowed opacity-50`;
+  }
+
+  return `${baseClasses} hover:opacity-80`;
 });
 
+// SVG 클래스
 const svgClasses = computed(() => {
   const baseClasses = 'block w-full h-full';
-  const rotationClasses = props.direction === 'right' ? 'rotate-180' : '';
-  return `${baseClasses} ${rotationClasses}`;
+
+  if (props.direction === 'right') {
+    return `${baseClasses} rotate-180`;
+  }
+
+  return baseClasses;
 });
 
-// 색상은 CSS 변수로 처리
-const fillColor = computed(() => {
-  return props.disabled ? 'var(--text-disabled)' : 'var(--text-primary)';
+// SVG 색상 클래스
+const svgColorClasses = computed(() => {
+  return props.disabled
+    ? 'fill-[var(--input-color-text-disable)]'
+    : 'fill-[var(--font-color-primary)]';
 });
 </script>
 
@@ -58,9 +70,14 @@ const fillColor = computed(() => {
     @click="handleClick"
     :data-name="`Pagination/Arrow-${direction === 'left' ? 'Left' : 'Right'}`"
   >
-    <div class="absolute bottom-[33.333%] left-1/4 right-1/4 top-[35.792%]">
-      <svg :class="svgClasses" fill="none" preserveAspectRatio="none" viewBox="0 0 12 8">
-        <path d="M1.41 0L6 4.58L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0Z" :fill="fillColor" />
+    <div class="absolute bottom-1/3 left-1/4 right-1/4 top-[35.792%]">
+      <svg
+        :class="[svgClasses, svgColorClasses]"
+        fill="none"
+        preserveAspectRatio="none"
+        viewBox="0 0 12 8"
+      >
+        <path d="M1.41 0L6 4.58L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0Z" />
       </svg>
     </div>
   </div>

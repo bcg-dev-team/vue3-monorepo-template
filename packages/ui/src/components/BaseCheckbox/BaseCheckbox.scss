@@ -1,0 +1,27 @@
+// BaseCheckbox 컴포넌트 스타일
+// Figma 디자인 토큰을 기반으로 한 체크박스 상태별 스타일 정의
+
+// 컴포넌트별 토큰만 정의
+// Tailwind 클래스로 처리 가능한 스타일들은 Vue 파일에서 직접 사용
+
+.checkbox-default {
+  background-color: var(--input-color-surface);
+  border-color: var(--input-color-border-static);
+}
+
+.checkbox-default:checked {
+  background-color: var(--button-primary-background);
+  border-color: var(--button-primary-background);
+}
+
+.checkbox-disabled {
+  background-color: var(--input-color-bg-disabled);
+  border-color: var(--input-color-border-disabled);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.checkbox-disabled:checked {
+  background-color: var(--input-color-text-disable);
+  border-color: var(--input-color-text-disable);
+} 

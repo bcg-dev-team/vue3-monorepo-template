@@ -70,14 +70,10 @@ const visiblePages = computed(() => {
 
   return pages;
 });
-
-const containerClasses = computed(() => {
-  return 'flex items-center justify-center gap-2';
-});
 </script>
 
 <template>
-  <div :class="containerClasses" data-name="Pagination">
+  <div class="flex items-center justify-center gap-2" data-name="Pagination">
     <!-- 첫 페이지 버튼 -->
     <BasePaginationArrow
       v-if="showFirstLast"

@@ -24,27 +24,24 @@ const props = withDefaults(defineProps<Props>(), {
   hover: true,
 });
 
-// 색상은 CSS 변수로 처리
-const rowStyle = computed(() => {
-  if (props.selected) {
-    return {
-      backgroundColor: 'var(--table-row-selected-bg)',
-    };
-  }
-  return {};
-});
-
-// 레이아웃/간격/상태는 Tailwind class로 처리
+// 행 클래스
 const rowClasses = computed(() => {
-  const baseClasses = 'flex w-full';
-  const hoverClasses =
-    props.hover && !props.isHeader ? 'hover:bg-gray-50 transition-colors duration-200' : '';
-  return `${baseClasses} ${hoverClasses}`;
+  const baseClasses = 'w-full';
+
+  if (props.selected) {
+    return `${baseClasses} table-row-selected`;
+  }
+
+  if (props.hover && !props.isHeader) {
+    return `${baseClasses} table-row-hover`;
+  }
+
+  return baseClasses;
 });
 </script>
 
 <template>
-  <div :class="rowClasses" :style="rowStyle" data-name="Table/Row">
+  <div :class="rowClasses" data-name="Table/Row">
     <slot />
   </div>
 </template>

@@ -32,25 +32,40 @@ const iconComponent = computed(() => {
   return component;
 });
 
+// 크기별 클래스 매핑 (컴포넌트별 토큰)
+const sizeClasses = {
+  xs: 'icon-xs',
+  sm: 'icon-sm',
+  md: 'icon-md',
+  lg: 'icon-lg',
+  xl: 'icon-xl',
+};
+
+// 아이콘 타입별 클래스 매핑 (컴포넌트별 토큰)
+const typeClasses = {
+  fill: 'icon-fill',
+  stroke: 'icon-stroke',
+};
+
 const iconClasses = computed(() => {
-  const baseClasses = ['inline-block'];
+  const baseClasses = 'inline-block';
+  let classes = baseClasses;
 
   if (typeof props.size === 'string') {
-    const sizeMap = {
-      xs: 'w-3 h-3',
-      sm: 'w-4 h-4',
-      md: 'w-6 h-6',
-      lg: 'w-8 h-8',
-      xl: 'w-12 h-12',
-    };
-    baseClasses.push(sizeMap[props.size]);
+    classes += ` ${sizeClasses[props.size]}`;
+  }
+
+  // 아이콘 타입에 따른 클래스 추가
+  const iconType = getIconType(props.name);
+  if (iconType) {
+    classes += ` ${typeClasses[iconType]}`;
   }
 
   if (props.class) {
-    baseClasses.push(props.class);
+    classes += ` ${props.class}`;
   }
 
-  return baseClasses;
+  return classes;
 });
 
 const iconStyles = computed(() => {
@@ -61,16 +76,14 @@ const iconStyles = computed(() => {
     styles.height = `${props.size}px`;
   }
 
-  // 아이콘 타입에 따라 fill/stroke 적용
-  const iconType = getIconType(props.name);
+  // 색상 적용
   const color = props.color || 'currentColor';
+  const iconType = getIconType(props.name);
 
   if (iconType === 'fill') {
     styles.fill = color;
-    styles.stroke = 'none';
   } else if (iconType === 'stroke') {
     styles.stroke = color;
-    styles.fill = 'none';
   }
 
   return styles;
@@ -85,9 +98,5 @@ const iconStyles = computed(() => {
     :style="iconStyles"
     aria-hidden="true"
   />
-  <div
-    v-else
-    class="inline-block bg-gray-200 animate-pulse"
-    :style="{ width: '24px', height: '24px' }"
-  />
+  <div v-else class="icon-loading" :style="{ width: '24px', height: '24px' }" />
 </template>

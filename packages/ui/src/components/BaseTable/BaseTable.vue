@@ -2,6 +2,7 @@
 <script setup lang="ts">
 import type { TableHeader, TableRow } from '../../types/components';
 import { computed } from 'vue';
+import './BaseTable.scss';
 
 /**
  * 테이블 컴포넌트
@@ -55,89 +56,38 @@ const isRowSelected = (rowId: string | number) => {
   return props.selectedRows.includes(rowId);
 };
 
-// 정적 색상은 Tailwind arbitrary value로 처리 (성능 최적화)
-const tableClasses = computed(() => {
-  return 'w-full border rounded-lg overflow-hidden border-[var(--neutral-neutral200)]';
-});
+// 행 클래스 (선택 상태에 따라)
+const getRowClasses = (rowId: string | number) => {
+  const classes = ['table-row'];
 
-const tableHeaderClasses = computed(() => {
-  return 'w-full bg-[var(--neutral-neutral100)] border-b border-[var(--neutral-neutral200)]';
-});
+  if (isRowSelected(rowId)) {
+    classes.push('table-row-selected');
+  }
 
-const tableBodyClasses = computed(() => {
-  return 'w-full bg-[var(--neutral-neutral000)]';
-});
-
-const headerCellClasses = computed(() => {
-  return 'relative w-full h-full';
-});
-
-const headerBorderClasses = computed(() => {
-  return 'absolute border-b border-solid inset-0 pointer-events-none';
-});
-
-const headerContentClasses = computed(() => {
-  return 'flex flex-row items-center relative size-full';
-});
-
-const headerPaddingClasses = computed(() => {
-  return 'box-border content-stretch flex flex-row gap-2.5 items-center justify-start px-[15px] py-3 relative size-full';
-});
-
-const headerTextClasses = computed(() => {
-  return 'flex flex-col font-medium justify-center leading-0 not-italic relative shrink-0 text-neutral-neutral800 text-font-14 text-left text-nowrap tracking-1';
-});
-
-const bodyCellClasses = computed(() => {
-  return 'relative w-full h-full';
-});
-
-const bodyBorderClasses = computed(() => {
-  return 'absolute border-x border-solid inset-0 pointer-events-none';
-});
-
-const bodyContentClasses = computed(() => {
-  return 'flex flex-row items-center relative size-full';
-});
-
-const bodyPaddingClasses = computed(() => {
-  return 'box-border content-stretch flex flex-row gap-2.5 items-center justify-start px-[15px] py-3 relative size-full';
-});
-
-const bodyTextClasses = computed(() => {
-  return 'font-regular leading-0 not-italic relative shrink-0 text-neutral-neutral800 text-font-14 text-left text-nowrap tracking-3';
-});
-
-const rowClasses = computed(() => {
-  return 'flex w-full hover:bg-gray-50 transition-colors duration-200 cursor-pointer';
-});
-
-// 동적 스타일 (조건부 변경이 필요한 경우만)
-const selectedRowStyle = computed(() => ({
-  backgroundColor: 'var(--blue-blue050)',
-}));
+  return classes.join(' ');
+};
 </script>
 
 <template>
-  <div :class="tableClasses" data-name="Table">
+  <div class="table" data-name="Table">
     <!-- 헤더 -->
-    <div :class="tableHeaderClasses">
+    <div class="table-header">
       <slot name="header">
-        <div class="flex w-full">
+        <div class="header-row">
           <div
             v-for="header in headers"
             :key="header.key"
             :style="{ width: header.width || 'auto' }"
-            class="flex-1"
+            class="cell-container"
           >
             <div class="cursor-pointer" @click="handleSort(header.key)">
               <slot name="header-cell" :header="header">
-                <div class="h-12">
-                  <div :class="headerCellClasses">
-                    <div :class="headerBorderClasses" />
-                    <div :class="headerContentClasses">
-                      <div :class="headerPaddingClasses">
-                        <div :class="headerTextClasses">
+                <div class="cell-content">
+                  <div class="header-cell">
+                    <div class="header-border" />
+                    <div class="header-content">
+                      <div class="header-padding">
+                        <div class="header-text">
                           <span class="block whitespace-pre">{{ header.title }}</span>
                         </div>
                       </div>
@@ -152,28 +102,27 @@ const selectedRowStyle = computed(() => ({
     </div>
 
     <!-- 바디 -->
-    <div :class="tableBodyClasses">
+    <div class="table-body">
       <slot name="body">
         <div
           v-for="row in data"
           :key="row.id"
-          :class="rowClasses"
-          :style="isRowSelected(row.id) ? selectedRowStyle : {}"
+          :class="getRowClasses(row.id)"
           @click="handleRowSelect(row.id)"
         >
           <div
             v-for="header in headers"
             :key="header.key"
             :style="{ width: header.width || 'auto' }"
-            class="flex-1"
+            class="cell-container"
           >
             <slot name="body-cell" :row="row" :header="header" :value="row[header.key]">
-              <div class="h-12">
-                <div :class="bodyCellClasses">
-                  <div :class="bodyBorderClasses" />
-                  <div :class="bodyContentClasses">
-                    <div :class="bodyPaddingClasses">
-                      <div :class="bodyTextClasses">
+              <div class="cell-content">
+                <div class="body-cell">
+                  <div class="body-border" />
+                  <div class="body-content">
+                    <div class="body-padding">
+                      <div class="body-text">
                         <span class="block whitespace-pre">{{ row[header.key] }}</span>
                       </div>
                     </div>

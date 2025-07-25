@@ -30,11 +30,7 @@ const handleClick = () => {
   emit('click', props.number);
 };
 
-const containerClasses = computed(() => {
-  const baseClasses = 'relative w-8 h-8 cursor-pointer transition-all duration-200';
-  return baseClasses;
-});
-
+// 배경 클래스
 const backgroundClasses = computed(() => {
   const baseClasses = 'absolute inset-0 rounded-[3px] transition-colors duration-200';
 
@@ -44,28 +40,32 @@ const backgroundClasses = computed(() => {
     case 'hover':
       return `${baseClasses} bg-neutral-neutral100`;
     default:
-      return baseClasses;
+      return `${baseClasses} bg-transparent`;
   }
 });
 
+// 텍스트 클래스
 const textClasses = computed(() => {
   const baseClasses =
-    'absolute flex flex-col justify-center leading-0 text-center text-nowrap not-italic tracking-1';
-  const sizeClasses = 'text-font-14';
+    'absolute flex flex-col justify-center leading-none text-center whitespace-nowrap font-normal text-sm tracking-1';
 
   switch (props.status) {
     case 'selected':
-      return `${baseClasses} ${sizeClasses} font-semibold text-neutral-neutral800 leading-2`;
+      return `${baseClasses} font-semibold text-neutral-neutral800 leading-2`;
     case 'hover':
-      return `${baseClasses} ${sizeClasses} font-normal text-neutral-neutral550 leading-6 tracking-3`;
+      return `${baseClasses} font-normal text-neutral-neutral550 leading-6 tracking-3`;
     default:
-      return `${baseClasses} ${sizeClasses} font-normal text-neutral-neutral550 leading-2`;
+      return `${baseClasses} font-normal text-neutral-neutral550 leading-2`;
   }
 });
 </script>
 
 <template>
-  <div :class="containerClasses" @click="handleClick" :data-name="`Pagination/Number-${status}`">
+  <div
+    class="relative w-8 h-8 cursor-pointer transition-all duration-200"
+    @click="handleClick"
+    :data-name="`Pagination/Number-${status}`"
+  >
     <div :class="backgroundClasses" />
     <div :class="textClasses">
       <span class="block whitespace-pre">{{ number }}</span>

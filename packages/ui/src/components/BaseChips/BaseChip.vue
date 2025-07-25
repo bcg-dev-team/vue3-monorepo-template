@@ -48,39 +48,7 @@ const props = withDefaults(defineProps<Props>(), {
   fontWeight: 'font-normal',
 });
 
-// 색상/테마는 CSS 변수 + Tailwind arbitrary value로 처리
-const chipStyle = computed(() => {
-  const variantStyles = {
-    surface: {
-      backgroundColor: 'var(--bg-surface)',
-      color: 'var(--text-secondary)',
-    },
-    primary: {
-      backgroundColor: 'var(--button-primary-background)',
-      color: 'var(--button-primary-text)',
-    },
-    secondary: {
-      backgroundColor: 'var(--bg-surface-muted)',
-      color: 'var(--text-primary)',
-    },
-    success: {
-      backgroundColor: 'var(--trade-correct-bg)',
-      color: 'var(--trade-correct-text)',
-    },
-    warning: {
-      backgroundColor: 'var(--warning)',
-      color: 'var(--white)',
-    },
-    error: {
-      backgroundColor: 'var(--error)',
-      color: 'var(--white)',
-    },
-  };
-
-  return variantStyles[props.variant];
-});
-
-// 레이아웃/간격/상태는 Tailwind class로 처리
+// 정적 색상은 Tailwind arbitrary value로 처리 (성능 최적화)
 const chipClasses = computed(() => {
   const sizeClasses = {
     sm: 'text-xs px-2 py-0.5',
@@ -88,9 +56,19 @@ const chipClasses = computed(() => {
     lg: 'text-base px-3 py-1.5',
   };
 
+  const variantStyles = {
+    surface: 'bg-[var(--bg-surface)] text-[var(--text-secondary)]',
+    primary: 'bg-[var(--button-primary-background)] text-[var(--button-primary-text)]',
+    secondary: 'bg-[var(--bg-surface-muted)] text-[var(--text-primary)]',
+    success: 'bg-[var(--trade-correct-bg)] text-[var(--trade-correct-text)]',
+    warning: 'bg-[var(--warning)] text-[var(--white)]',
+    error: 'bg-[var(--error)] text-[var(--white)]',
+  };
+
   return [
     'inline-flex items-center justify-center transition-colors duration-150',
     sizeClasses[props.size],
+    variantStyles[props.variant],
     props.rounded,
     props.fontWeight,
   ].join(' ');
@@ -98,7 +76,7 @@ const chipClasses = computed(() => {
 </script>
 
 <template>
-  <span :class="chipClasses" :style="chipStyle">
+  <span :class="chipClasses">
     <slot>{{ label }}</slot>
   </span>
 </template>

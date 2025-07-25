@@ -18,7 +18,8 @@
 
 ## 2. 스타일 적용 기본 원칙
 - **기본 스타일은 모두 class 기반(Tailwind/SCSS)으로 정의한다.**
-- **동적 수치나 사용자 입력값 등은 :style로 제한적으로 사용한다.**
+- **단순한 색상/값 적용은 정적 CSS 변수(Tailwind arbitrary value)로 처리한다.**
+- **조건부 변경이 필요한 경우만 :style로 동적 처리한다.**
 - **SCSS(Sass)를 적극 활용한다.**
 - **디자인 토큰은 CSS 변수로 관리하고, class에서 arbitrary value로 활용한다.**
 
@@ -28,56 +29,82 @@
 
 | 상황 | 권장 방식 | 참고 파일 |
 |------|-----------|-----------|
-| 반응형/상태 클래스 필요 | Tailwind 포맷 | tailwind.config.cjs |
-| 동적 스타일 변경 | 일반 CSS 스타일 | __tokens-light.css, 컴포넌트 |
+| 단순 색상/값 적용 | 정적 CSS 변수 (Tailwind arbitrary value) | __tokens-light.css |
+| 조건부 색상 변경 | 동적 CSS 변수 (:style) | __tokens-light.css, 컴포넌트 |
+| 반응형/상태 클래스 | Tailwind 클래스 | tailwind.config.cjs |
 | 복잡한 조건부 스타일 | 하이브리드 | tailwind.config.cjs, __tokens-light.css, 컴포넌트 |
-| 정적 컴포넌트 스타일 | Tailwind 포맷 | tailwind.config.cjs |
+| 정적 컴포넌트 스타일 | Tailwind 클래스 | tailwind.config.cjs |
 
 ---
 
 ## 4. 상황별 스타일 적용 예시
 
-### 4.1 Tailwind 포맷 방식 (arbitrary value)
+### 4.1 정적 CSS 변수 (Tailwind arbitrary value) - 권장
 ```vue
-<!-- 반응형/상태 클래스, 디자인 토큰(CSS 변수) 활용 -->
-<!-- 참고: tailwind.config.cjs, __tokens-light.css -->
+<!-- 단순한 색상/값 적용 - 성능 우수 -->
+<!-- 참고: __tokens-light.css -->
 <button class="
   bg-[var(--button-primary-background)]
   text-[var(--button-primary-text)]
+  border-[var(--button-primary-border)]
   hover:bg-[var(--button-primary-background-deep)]
-  md:bg-[var(--button-secondary-background)]
   disabled:bg-[var(--button-disabled-background)]
 ">
   Primary
 </button>
 ```
 
-### 4.2 일반 CSS 스타일 방식
+### 4.2 동적 CSS 변수 (:style) - 조건부 변경 시만
 ```vue
-<!-- 동적/복잡한 스타일, 런타임 계산 필요 -->
+<!-- 조건부 색상 변경이 필요한 경우만 -->
 <!-- 참고: __tokens-light.css, 컴포넌트 내 computed -->
-<button :style="{
-  backgroundColor: `var(--button-${variant}-background)`,
-  color: `var(--button-${variant}-text)`
-}">
-  {{ label }}
-</button>
+<script setup>
+const buttonStyle = computed(() => {
+  if (isDisabled.value) {
+    return {
+      backgroundColor: 'var(--button-disabled-background)',
+      color: 'var(--button-disabled-text)'
+    };
+  }
+  return {
+    backgroundColor: `var(--button-${props.variant}-background)`,
+    color: `var(--button-${props.variant}-text)`
+  };
+});
+</script>
+<template>
+  <button :style="buttonStyle">
+    {{ label }}
+  </button>
+</template>
 ```
 
 ### 4.3 하이브리드 접근법 (최적)
 ```vue
-<!-- Tailwind + CSS 변수 동시 활용, 조건부/동적 스타일 -->
-<!-- 참고: tailwind.config.cjs, __tokens-light.css, 컴포넌트 내 computed -->
+<!-- 정적 색상 + 동적 조건부 스타일 -->
+<!-- 참고: __tokens-light.css, 컴포넌트 내 computed -->
 <script setup>
-const buttonStyle = computed(() => ({
-  backgroundColor: `var(--button-${props.variant}-background)`,
-  color: `var(--button-${props.variant}-text)`,
-}));
+// 정적 색상은 클래스로, 동적 스타일만 :style로
+const staticClasses = computed(() => 
+  `bg-[var(--button-${props.variant}-background)] text-[var(--button-${props.variant}-text)]`
+);
+
+const dynamicStyle = computed(() => {
+  // 조건부 변경이 필요한 경우만
+  if (borderVariants.includes(props.variant)) {
+    return {
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      borderColor: `var(--button-${props.variant}-border)`
+    };
+  }
+  return {};
+});
 </script>
 <template>
   <button
-    :style="buttonStyle"
-    class="inline-flex items-center justify-center hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed md:px-6 lg:px-8"
+    :class="[baseClasses, staticClasses]"
+    :style="dynamicStyle"
   >
     {{ label }}
   </button>
@@ -92,8 +119,11 @@ const buttonStyle = computed(() => ({
   <button
     :class="[
       'inline-flex items-center px-4 py-2 rounded-lg font-semibold transition-all',
-      isActive ? 'bg-[var(--button-primary-background)] text-white' : 'bg-gray-100 text-gray-700',
-      isError && 'border border-red-500',
+      // 정적 색상은 arbitrary value로
+      'bg-[var(--button-primary-background)] text-[var(--button-primary-text)]',
+      // 조건부 클래스
+      isActive && 'bg-[var(--button-active-background)]',
+      isError && 'border border-[var(--input-color-border-error)]',
       isDisabled && 'opacity-50 cursor-not-allowed',
       'hover:bg-[var(--button-primary-background-deep)]',
       'md:px-6'
@@ -111,7 +141,7 @@ const buttonStyle = computed(() => ({
 <!-- 참고: __tokens-light.css, 컴포넌트 내 computed -->
 <template>
   <div
-    class="absolute bg-white shadow-lg"
+    class="absolute bg-[var(--bg-surface)] shadow-lg"
     :style="{
       width: `${dynamicWidth}px`,
       top: `${positionTop}px`,
@@ -151,9 +181,38 @@ const buttonStyle = computed(() => ({
 
 ---
 
-## 5. 컴포넌트/유틸리티/반응형 패턴 예시 (디자인 토큰 활용)
+## 5. 성능 최적화 가이드
 
-### 5.1 컴포넌트 스타일 패턴
+### 5.1 정적 CSS 변수 vs 동적 CSS 변수
+
+#### ✅ 정적 CSS 변수 (권장)
+```vue
+<!-- 성능 우수: CSS 클래스로 처리 -->
+<button class="bg-[var(--button-primary-background)] text-[var(--button-primary-text)]">
+  버튼
+</button>
+```
+
+#### ⚠️ 동적 CSS 변수 (조건부 변경 시만)
+```vue
+<!-- 성능 오버헤드: JavaScript 실행 필요 -->
+<button :style="buttonStyle">
+  버튼
+</button>
+```
+
+### 5.2 성능 비교표
+
+| 방식 | 성능 | 번들 크기 | 캐싱 | 가독성 | 사용 시기 |
+|------|------|-----------|------|--------|-----------|
+| 정적 CSS 변수 | ✅ 우수 | ✅ 최적화 | ✅ 브라우저 캐싱 | ✅ 직관적 | 단순 색상/값 |
+| 동적 CSS 변수 | ⚠️ 오버헤드 | ⚠️ JavaScript | ⚠️ 런타임 | ⚠️ 복잡 | 조건부 변경 |
+
+---
+
+## 6. 컴포넌트/유틸리티/반응형 패턴 예시 (디자인 토큰 활용)
+
+### 6.1 컴포넌트 스타일 패턴
 ```vue
 <!-- 참고: tailwind.config.cjs, __tokens-light.css -->
 <script setup lang="ts">
@@ -167,7 +226,7 @@ import { computed } from 'vue'
 </template>
 ```
 
-### 5.2 유틸리티 클래스 컴포넌트
+### 6.2 유틸리티 클래스 컴포넌트
 ```css
 /* 참고: tailwind.config.cjs, __tokens-light.css */
 @layer components {
@@ -186,7 +245,7 @@ import { computed } from 'vue'
 }
 ```
 
-### 5.3 반응형 디자인 패턴
+### 6.3 반응형 디자인 패턴
 ```vue
 <!-- 참고: tailwind.config.cjs, __tokens-light.css -->
 <script setup lang="ts">
@@ -202,13 +261,21 @@ import { computed } from 'vue'
 
 ---
 
-## 6. 실무 주의점 및 결론
-- **:style 남용 주의**: 동적 수치, 사용자 입력 등 “정말 Tailwind/SCSS로 불가능한 경우”에만 사용
-- **SCSS와 Tailwind 혼용 시 네이밍/우선순위 관리**: SCSS에서 @apply 사용 시 Tailwind 버전과 호환성 체크, SCSS 모듈/스코프 활용 권장
-- **디자인 토큰 변경 시 빌드/적용 프로세스 명확화**: CSS 변수 자동화(Style Dictionary 등)와 연동, 토큰 변경 시 빌드/배포 프로세스 문서화
-- **팀 내 코드리뷰/컨벤션 공유**: 예시 코드와 함께 팀 내 가이드로 문서화, Storybook/Docs에 실제 예시 포함
-- **색상/테마/폰트 등 디자인 토큰 → CSS 변수 + Tailwind arbitrary value**
+## 7. 실무 주의점 및 결론
+
+### 7.1 성능 최적화 원칙
+- **단순 색상/값 → 정적 CSS 변수 (Tailwind arbitrary value)**
+- **조건부 변경 → 동적 CSS 변수 (:style)**
+- **:style 남용 금지**: 정말 필요한 경우에만 사용
+
+### 7.2 코드 품질 원칙
+- **SCSS와 Tailwind 혼용 시 네이밍/우선순위 관리**: SCSS에서 @apply 사용 시 Tailwind 버전과 호환성 체크
+- **디자인 토큰 변경 시 빌드/적용 프로세스 명확화**: CSS 변수 자동화(Style Dictionary 등)와 연동
+- **팀 내 코드리뷰/컨벤션 공유**: 예시 코드와 함께 팀 내 가이드로 문서화
+
+### 7.3 최종 권장사항
+- **색상/테마/폰트 등 디자인 토큰 → 정적 CSS 변수 (Tailwind arbitrary value)**
 - **레이아웃/간격/반응형/상태 → Tailwind 클래스**
-- **동적 스타일 → computed로 Tailwind 클래스 조합, 필요시 :style 병행**
+- **조건부 색상 변경 → computed로 :style 처리**
 - **복잡한 구조/반복/미디어쿼리 → SCSS 적극 활용**
 - **디자인 토큰 → CSS 변수로 관리, class에서 arbitrary value로 활용**

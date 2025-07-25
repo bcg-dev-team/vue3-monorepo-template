@@ -55,36 +55,17 @@ const isRowSelected = (rowId: string | number) => {
   return props.selectedRows.includes(rowId);
 };
 
-// 색상/테마는 CSS 변수로 처리
-const tableStyle = computed(() => ({
-  borderColor: 'var(--neutral-neutral200)',
-}));
-
-const headerStyle = computed(() => ({
-  backgroundColor: 'var(--neutral-neutral100)',
-  borderBottomColor: 'var(--neutral-neutral200)',
-}));
-
-const bodyStyle = computed(() => ({
-  backgroundColor: 'var(--neutral-neutral000)',
-  borderColor: 'var(--neutral-neutral200)',
-}));
-
-const selectedRowStyle = computed(() => ({
-  backgroundColor: 'var(--blue-blue050)',
-}));
-
-// 레이아웃/간격/상태는 Tailwind class로 처리
+// 정적 색상은 Tailwind arbitrary value로 처리 (성능 최적화)
 const tableClasses = computed(() => {
-  return 'w-full border rounded-lg overflow-hidden';
+  return 'w-full border rounded-lg overflow-hidden border-[var(--neutral-neutral200)]';
 });
 
 const tableHeaderClasses = computed(() => {
-  return 'w-full';
+  return 'w-full bg-[var(--neutral-neutral100)] border-b border-[var(--neutral-neutral200)]';
 });
 
 const tableBodyClasses = computed(() => {
-  return 'w-full';
+  return 'w-full bg-[var(--neutral-neutral000)]';
 });
 
 const headerCellClasses = computed(() => {
@@ -130,10 +111,15 @@ const bodyTextClasses = computed(() => {
 const rowClasses = computed(() => {
   return 'flex w-full hover:bg-gray-50 transition-colors duration-200 cursor-pointer';
 });
+
+// 동적 스타일 (조건부 변경이 필요한 경우만)
+const selectedRowStyle = computed(() => ({
+  backgroundColor: 'var(--blue-blue050)',
+}));
 </script>
 
 <template>
-  <div :class="tableClasses" :style="tableStyle" data-name="Table">
+  <div :class="tableClasses" data-name="Table">
     <!-- 헤더 -->
     <div :class="tableHeaderClasses">
       <slot name="header">
@@ -147,7 +133,7 @@ const rowClasses = computed(() => {
             <div class="cursor-pointer" @click="handleSort(header.key)">
               <slot name="header-cell" :header="header">
                 <div class="h-12">
-                  <div :class="headerCellClasses" :style="headerStyle">
+                  <div :class="headerCellClasses">
                     <div :class="headerBorderClasses" />
                     <div :class="headerContentClasses">
                       <div :class="headerPaddingClasses">
@@ -183,7 +169,7 @@ const rowClasses = computed(() => {
           >
             <slot name="body-cell" :row="row" :header="header" :value="row[header.key]">
               <div class="h-12">
-                <div :class="bodyCellClasses" :style="bodyStyle">
+                <div :class="bodyCellClasses">
                   <div :class="bodyBorderClasses" />
                   <div :class="bodyContentClasses">
                     <div :class="bodyPaddingClasses">

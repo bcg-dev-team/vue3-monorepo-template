@@ -46,36 +46,12 @@ const emit = defineEmits<{
 const isChecked = computed(() => props.state === 'On' || props.modelValue);
 const isDisabled = computed(() => props.style === 'Disabled');
 
-// 색상/테마는 CSS 변수로 처리
-const checkboxStyle = computed(() => {
-  let backgroundColor: string;
-  let borderColor: string;
-
-  if (isDisabled.value && isChecked.value) {
-    backgroundColor = 'var(--input-color-text-disable)';
-  } else if (isDisabled.value && !isChecked.value) {
-    backgroundColor = 'var(--input-color-bg-disabled)';
-  } else if (!isDisabled.value && isChecked.value) {
-    backgroundColor = 'var(--button-primary-background)';
-  } else {
-    backgroundColor = 'var(--input-color-surface)';
-  }
-
-  if (isDisabled.value) {
-    borderColor = 'var(--input-color-border-disabled)';
-  } else if (isChecked.value) {
-    borderColor = 'var(--button-primary-background)';
-  } else {
-    borderColor = 'var(--input-color-border-static)';
-  }
-
-  return { backgroundColor, borderColor };
-});
-
-// 레이아웃/간격/상태는 Tailwind class로 처리
-const checkboxClasses = computed(() => {
+// 정적 색상은 Tailwind arbitrary value로 처리
+const staticClasses = computed(() => {
   const classes = [
     'relative flex items-center justify-center w-5 h-5 rounded-[3px] border transition-colors duration-150',
+    'bg-[var(--input-color-surface)]', // 기본 배경색
+    'border-[var(--input-color-border-static)]', // 기본 테두리 색상
   ];
 
   if (isDisabled.value) {
@@ -84,13 +60,36 @@ const checkboxClasses = computed(() => {
 
   return classes.join(' ');
 });
+
+// 동적 스타일 (조건부 변경이 필요한 경우만)
+const dynamicStyle = computed(() => {
+  const styles: Record<string, string> = {};
+
+  // 조건부 배경색
+  if (isDisabled.value && isChecked.value) {
+    styles.backgroundColor = 'var(--input-color-text-disable)';
+  } else if (isDisabled.value && !isChecked.value) {
+    styles.backgroundColor = 'var(--input-color-bg-disabled)';
+  } else if (!isDisabled.value && isChecked.value) {
+    styles.backgroundColor = 'var(--button-primary-background)';
+  }
+
+  // 조건부 테두리 색상
+  if (isDisabled.value) {
+    styles.borderColor = 'var(--input-color-border-disabled)';
+  } else if (isChecked.value) {
+    styles.borderColor = 'var(--button-primary-background)';
+  }
+
+  return styles;
+});
 </script>
 
 <template>
   <label class="inline-flex items-center cursor-pointer select-none">
     <span
-      :class="checkboxClasses"
-      :style="checkboxStyle"
+      :class="staticClasses"
+      :style="dynamicStyle"
       @click.stop.prevent="!isDisabled && emit('update:modelValue', !isChecked)"
     >
       <svg v-if="isChecked" class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24">

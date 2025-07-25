@@ -37,29 +37,22 @@ const props = withDefaults(defineProps<Props>(), {
 
 const items = computed(() => Array.from({ length: props.count }));
 
-// 색상은 CSS 변수로 처리
-const activeStyle = computed(() => ({
-  backgroundColor: 'var(--button-primary-background)',
-}));
+// 정적 색상은 Tailwind arbitrary value로 처리 (성능 최적화)
+const activeClasses = computed(
+  () =>
+    'h-2 w-10 rounded-full shrink-0 transition-all duration-200 bg-[var(--button-primary-background)]'
+);
 
-const inactiveStyle = computed(() => ({
-  backgroundColor: 'var(--bg-surface-muted)',
-}));
+const inactiveClasses = computed(
+  () => 'h-2 w-2 rounded-full shrink-0 transition-all duration-200 bg-[var(--bg-surface-muted)]'
+);
 </script>
 
 <template>
   <div class="flex flex-row gap-2 items-center justify-start p-0 h-4 min-h-4">
     <template v-for="(_, idx) in items" :key="idx">
-      <div
-        v-if="idx === current"
-        class="h-2 w-10 rounded-full shrink-0 transition-all duration-200"
-        :style="activeStyle"
-      />
-      <div
-        v-else
-        class="h-2 w-2 rounded-full shrink-0 transition-all duration-200"
-        :style="inactiveStyle"
-      />
+      <div v-if="idx === current" :class="activeClasses" />
+      <div v-else :class="inactiveClasses" />
     </template>
   </div>
 </template>

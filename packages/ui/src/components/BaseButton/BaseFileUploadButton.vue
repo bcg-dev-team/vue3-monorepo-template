@@ -53,8 +53,26 @@ const emit = defineEmits<{
 
 const inputRef = ref<HTMLInputElement | null>(null);
 
-// 색상/테마는 CSS 변수로 처리
-const buttonStyle = computed(() => {
+// 정적 색상은 Tailwind arbitrary value로 처리
+const staticClasses = computed(() => {
+  const classes = [
+    'relative w-full flex items-center rounded-sm border transition-colors duration-150',
+    'bg-[#f3f4f6]', // 기본 배경색
+    'border-[var(--background-bg-outline)]', // 기본 테두리 색상
+    'text-[var(--input-color-text-static)]', // 기본 텍스트 색상
+  ];
+
+  if (props.disabled) {
+    classes.push('cursor-not-allowed opacity-60');
+  } else {
+    classes.push('hover:bg-bg-surface');
+  }
+
+  return classes.join(' ');
+});
+
+// 동적 스타일 (조건부 변경이 필요한 경우만)
+const dynamicStyle = computed(() => {
   if (props.disabled) {
     return {
       backgroundColor: 'var(--button-disabled-background)',
@@ -66,31 +84,10 @@ const buttonStyle = computed(() => {
   if (props.status === 'hover') {
     return {
       backgroundColor: 'var(--base-colors-common-bg-surface-default)',
-      borderColor: 'var(--background-bg-outline)',
-      color: 'var(--input-color-text-static)',
     };
   }
 
-  return {
-    backgroundColor: '#f3f4f6',
-    borderColor: 'var(--background-bg-outline)',
-    color: 'var(--input-color-text-static)',
-  };
-});
-
-// 레이아웃/간격/상태는 Tailwind class로 처리
-const buttonClasses = computed(() => {
-  const classes = [
-    'relative w-full flex items-center rounded-sm border transition-colors duration-150',
-  ];
-
-  if (props.disabled) {
-    classes.push('cursor-not-allowed opacity-60');
-  } else {
-    classes.push('hover:bg-bg-surface');
-  }
-
-  return classes.join(' ');
+  return {};
 });
 
 function handleClick(e: MouseEvent) {
@@ -109,8 +106,8 @@ function handleChange(e: Event) {
 <template>
   <button
     type="button"
-    :class="buttonClasses"
-    :style="buttonStyle"
+    :class="staticClasses"
+    :style="dynamicStyle"
     :disabled="props.disabled"
     @click="handleClick"
   >

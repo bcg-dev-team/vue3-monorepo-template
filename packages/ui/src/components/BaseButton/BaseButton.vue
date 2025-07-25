@@ -62,34 +62,23 @@ const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void;
 }>();
 
-// 색상/테마는 CSS 변수 + Tailwind arbitrary value로 처리
-const buttonStyle = computed(() => {
-  const baseStyle = {
-    backgroundColor: `var(--button-${props.variant}-background)`,
-    color: `var(--button-${props.variant}-text)`,
-  };
-
-  // border가 필요한 variant들
-  const borderVariants = ['outline', 'red', 'blue', 'light-solid', 'disabled'];
-  if (borderVariants.includes(props.variant)) {
-    return {
-      ...baseStyle,
-      borderWidth: '1px',
-      borderStyle: 'solid',
-      borderColor: `var(--button-${props.variant}-border)`,
-    };
-  }
-
-  return baseStyle;
-});
-
-// 레이아웃/간격/상태는 Tailwind class로 처리
-const baseClasses = computed(() => {
+// 색상/테마는 정적 CSS 변수로 처리
+const staticClasses = computed(() => {
   const classes = [
     'inline-flex items-center justify-center font-sans font-semibold transition-all select-none',
     'focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus',
     'disabled:opacity-50 disabled:cursor-not-allowed',
   ];
+
+  // 정적 색상 적용
+  classes.push(`bg-[var(--button-${props.variant}-background)]`);
+  classes.push(`text-[var(--button-${props.variant}-text)]`);
+
+  // border가 필요한 variant들
+  const borderVariants = ['outline', 'red', 'blue', 'light-solid', 'disabled'];
+  if (borderVariants.includes(props.variant)) {
+    classes.push(`border-[var(--button-${props.variant}-border)]`);
+  }
 
   // hover 효과 추가
   switch (props.variant) {
@@ -119,6 +108,19 @@ const baseClasses = computed(() => {
   return classes.join(' ');
 });
 
+// 동적 스타일 (조건부 변경이 필요한 경우만)
+const dynamicStyle = computed(() => {
+  // border가 필요한 variant들만 동적 처리
+  const borderVariants = ['outline', 'red', 'blue', 'light-solid', 'disabled'];
+  if (borderVariants.includes(props.variant)) {
+    return {
+      borderWidth: '1px',
+      borderStyle: 'solid',
+    };
+  }
+  return {};
+});
+
 const sizeClass = computed(() => {
   switch (props.size) {
     case 'regular':
@@ -138,8 +140,8 @@ const sizeClass = computed(() => {
 <template>
   <button
     type="button"
-    :class="[baseClasses, sizeClass]"
-    :style="buttonStyle"
+    :class="[staticClasses, sizeClass]"
+    :style="dynamicStyle"
     :disabled="props.disabled"
     @click="emit('click', $event)"
   >

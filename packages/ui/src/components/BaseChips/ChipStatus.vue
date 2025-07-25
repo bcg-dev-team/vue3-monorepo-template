@@ -18,6 +18,7 @@ interface Props {
    */
   status?: 'Done' | 'Pending';
 }
+
 const props = withDefaults(defineProps<Props>(), {
   status: 'Done',
 });
@@ -26,27 +27,22 @@ const chipProps = computed(() => {
   if (props.status === 'Pending') {
     return {
       label: '대기중',
-      bg: 'bg-warning',
-      textColor: 'text-white',
+      variant: 'warning' as const,
+      size: 'sm' as const,
       rounded: 'rounded-[3px]',
-      size: 'text-xs',
       fontWeight: 'font-medium',
-      px: 'px-2.5',
-      py: 'py-0.5',
     };
   }
   return {
     label: '완료',
-    bg: 'bg-trade-correct-bg',
-    textColor: 'text-trade-correct-text',
+    variant: 'success' as const,
+    size: 'sm' as const,
     rounded: 'rounded-[3px]',
-    size: 'text-xs',
     fontWeight: 'font-medium',
-    px: 'px-2.5',
-    py: 'py-0.5',
   };
 });
 </script>
+
 <template>
   <BaseChip v-bind="chipProps" />
 </template>

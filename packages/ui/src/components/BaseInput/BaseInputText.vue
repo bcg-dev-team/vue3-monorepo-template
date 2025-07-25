@@ -46,11 +46,13 @@ interface Props {
    */
   disabled?: boolean;
 }
+
 const props = withDefaults(defineProps<Props>(), {
   status: 'Static',
   showIcon: true,
   disabled: false,
 });
+
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void;
 }>();
@@ -60,35 +62,77 @@ const isError = computed(() => props.status === 'Error');
 const isFocus = computed(() => props.status === 'Focus');
 const isFilled = computed(() => props.status === 'Filled');
 
-const borderClass = computed(() => {
-  if (isDisabled.value) return 'border-[var(--input-color-border-disabled)]';
-  if (isError.value) return 'border-[var(--input-color-border-error)]';
-  if (isFocus.value) return 'border-[var(--input-color-border-focus)]';
-  return 'border-[var(--input-color-border-static)]';
+// 색상/테마는 CSS 변수로 처리
+const containerStyle = computed(() => {
+  const backgroundColor = isDisabled.value
+    ? 'var(--input-color-bg-disabled)'
+    : 'var(--input-color-surface)';
+  return { backgroundColor };
 });
-const bgClass = computed(() =>
-  isDisabled.value ? 'bg-[var(--input-color-bg-disabled)]' : 'bg-[var(--input-color-surface)]'
-);
-const textClass = computed(() =>
-  isDisabled.value
-    ? 'text-[var(--input-color-text-disable)]'
-    : 'text-[var(--input-color-text-static)]'
-);
-const placeholderClass = computed(() =>
-  isDisabled.value
-    ? 'text-[var(--input-color-text-disable)]'
-    : 'text-[var(--input-color-text-placeholder)]'
-);
+
+const borderStyle = computed(() => {
+  let borderColor: string;
+
+  if (isDisabled.value) {
+    borderColor = 'var(--input-color-border-disabled)';
+  } else if (isError.value) {
+    borderColor = 'var(--input-color-border-error)';
+  } else if (isFocus.value) {
+    borderColor = 'var(--input-color-border-focus)';
+  } else {
+    borderColor = 'var(--input-color-border-static)';
+  }
+
+  return { borderColor };
+});
+
+const inputStyle = computed(() => {
+  const color = isDisabled.value
+    ? 'var(--input-color-text-disable)'
+    : 'var(--input-color-text-static)';
+  return { color };
+});
+
+const placeholderStyle = computed(() => {
+  const color = isDisabled.value
+    ? 'var(--input-color-text-disable)'
+    : 'var(--input-color-text-placeholder)';
+  return { color };
+});
+
+// 레이아웃/간격/상태는 Tailwind class로 처리
+const containerClasses = computed(() => {
+  return 'relative w-full rounded-sm';
+});
+
+const borderClasses = computed(() => {
+  const classes = [
+    'absolute inset-0 pointer-events-none rounded-sm border transition-colors duration-150',
+  ];
+
+  if (isError.value) {
+    classes.push('border-2');
+  } else {
+    classes.push('border');
+  }
+
+  return classes.join(' ');
+});
+
+const inputClasses = computed(() => {
+  const classes = ['flex-1 bg-transparent outline-none border-0 p-0 text-base'];
+
+  if (isDisabled.value) {
+    classes.push('cursor-not-allowed');
+  }
+
+  return classes.join(' ');
+});
 </script>
+
 <template>
-  <div :class="['relative w-full', bgClass, 'rounded-sm']">
-    <div
-      :class="[
-        'absolute inset-0 pointer-events-none rounded-sm border transition-colors duration-150',
-        borderClass,
-        isError ? 'border-2' : 'border',
-      ]"
-    />
+  <div :class="containerClasses" :style="containerStyle">
+    <div :class="borderClasses" :style="borderStyle" />
     <div class="flex flex-row items-center w-full px-4 py-3.5">
       <slot name="left">
         <BaseIcon
@@ -103,12 +147,9 @@ const placeholderClass = computed(() =>
         :value="modelValue"
         :placeholder="placeholder"
         :disabled="isDisabled"
-        :class="[
-          'flex-1 bg-transparent outline-none border-0 p-0 text-base',
-          textClass,
-          placeholderClass,
-          isDisabled ? 'cursor-not-allowed' : '',
-        ]"
+        :class="inputClasses"
+        :style="inputStyle"
+        :placeholder-style="placeholderStyle"
         @input="(e) => emit('update:modelValue', (e.target as HTMLInputElement).value)"
       />
       <slot name="right">

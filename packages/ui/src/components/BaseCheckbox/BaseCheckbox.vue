@@ -33,10 +33,12 @@ interface Props {
    */
   style?: 'Default' | 'Disabled';
 }
+
 const props = withDefaults(defineProps<Props>(), {
   state: 'Off',
   style: 'Default',
 });
+
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void;
 }>();
@@ -44,27 +46,51 @@ const emit = defineEmits<{
 const isChecked = computed(() => props.state === 'On' || props.modelValue);
 const isDisabled = computed(() => props.style === 'Disabled');
 
-const bgClass = computed(() => {
-  if (isDisabled.value && isChecked.value) return 'bg-[var(--input-color-text-disable)]';
-  if (isDisabled.value && !isChecked.value) return 'bg-[var(--input-color-bg-disabled)]';
-  if (!isDisabled.value && isChecked.value) return 'bg-[var(--button-primary-background)]';
-  return 'bg-[var(--input-color-surface)]';
+// 색상/테마는 CSS 변수로 처리
+const checkboxStyle = computed(() => {
+  let backgroundColor: string;
+  let borderColor: string;
+
+  if (isDisabled.value && isChecked.value) {
+    backgroundColor = 'var(--input-color-text-disable)';
+  } else if (isDisabled.value && !isChecked.value) {
+    backgroundColor = 'var(--input-color-bg-disabled)';
+  } else if (!isDisabled.value && isChecked.value) {
+    backgroundColor = 'var(--button-primary-background)';
+  } else {
+    backgroundColor = 'var(--input-color-surface)';
+  }
+
+  if (isDisabled.value) {
+    borderColor = 'var(--input-color-border-disabled)';
+  } else if (isChecked.value) {
+    borderColor = 'var(--button-primary-background)';
+  } else {
+    borderColor = 'var(--input-color-border-static)';
+  }
+
+  return { backgroundColor, borderColor };
 });
-const borderClass = computed(() => {
-  if (isDisabled.value) return 'border-[var(--input-color-border-disabled)]';
-  if (isChecked.value) return 'border-[var(--button-primary-background)]';
-  return 'border-[var(--input-color-border-static)]';
+
+// 레이아웃/간격/상태는 Tailwind class로 처리
+const checkboxClasses = computed(() => {
+  const classes = [
+    'relative flex items-center justify-center w-5 h-5 rounded-[3px] border transition-colors duration-150',
+  ];
+
+  if (isDisabled.value) {
+    classes.push('cursor-not-allowed opacity-60');
+  }
+
+  return classes.join(' ');
 });
 </script>
+
 <template>
   <label class="inline-flex items-center cursor-pointer select-none">
     <span
-      :class="[
-        'relative flex items-center justify-center w-5 h-5 rounded-[3px] border transition-colors duration-150',
-        bgClass,
-        borderClass,
-        isDisabled ? 'cursor-not-allowed opacity-60' : '',
-      ]"
+      :class="checkboxClasses"
+      :style="checkboxStyle"
       @click.stop.prevent="!isDisabled && emit('update:modelValue', !isChecked)"
     >
       <svg v-if="isChecked" class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24">

@@ -51,41 +51,72 @@ interface Props {
    */
   subLabel?: string;
 }
+
 const props = withDefaults(defineProps<Props>(), {
   variant: 'primary',
   size: 'regular',
   disabled: false,
 });
+
 const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void;
 }>();
 
-const base =
-  'inline-flex items-center justify-center font-sans font-semibold transition-all select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus disabled:opacity-50 disabled:cursor-not-allowed';
+// 색상/테마는 CSS 변수 + Tailwind arbitrary value로 처리
+const buttonStyle = computed(() => {
+  const baseStyle = {
+    backgroundColor: `var(--button-${props.variant}-background)`,
+    color: `var(--button-${props.variant}-text)`,
+  };
 
-const variantClass = computed(() => {
+  // border가 필요한 variant들
+  const borderVariants = ['outline', 'red', 'blue', 'light-solid', 'disabled'];
+  if (borderVariants.includes(props.variant)) {
+    return {
+      ...baseStyle,
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      borderColor: `var(--button-${props.variant}-border)`,
+    };
+  }
+
+  return baseStyle;
+});
+
+// 레이아웃/간격/상태는 Tailwind class로 처리
+const baseClasses = computed(() => {
+  const classes = [
+    'inline-flex items-center justify-center font-sans font-semibold transition-all select-none',
+    'focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus',
+    'disabled:opacity-50 disabled:cursor-not-allowed',
+  ];
+
+  // hover 효과 추가
   switch (props.variant) {
     case 'primary':
-      return 'bg-[var(--button-primary-background)] text-[var(--button-primary-text)] hover:bg-[var(--button-primary-background-deep)]';
+      classes.push('hover:bg-[var(--button-primary-background-deep)]');
+      break;
     case 'outline':
-      return 'bg-[var(--button-outline-background)] border border-[var(--button-outline-border)] text-[var(--button-outline-text)] hover:bg-[var(--button-outline-background)]';
+      classes.push('hover:bg-[var(--button-outline-background)]');
+      break;
     case 'red':
-      return 'bg-[var(--button-red-background)] border border-[var(--button-red-border)] text-[var(--button-red-text)] hover:bg-[var(--button-red-background-hover)]';
+      classes.push('hover:bg-[var(--button-red-background-hover)]');
+      break;
     case 'red-solid':
-      return 'bg-[var(--button-red-solid-background)] text-[var(--button-red-solid-text)] hover:bg-[var(--button-red-solid-hover)]';
+      classes.push('hover:bg-[var(--button-red-solid-hover)]');
+      break;
     case 'blue':
-      return 'bg-[var(--button-blue-background)] border border-[var(--button-blue-border)] text-[var(--button-blue-text)] hover:bg-[var(--button-blue-background-hover)]';
+      classes.push('hover:bg-[var(--button-blue-background-hover)]');
+      break;
     case 'blue-solid':
-      return 'bg-[var(--button-blue-solid-background)] text-[var(--button-blue-solid-text)] hover:bg-[var(--button-blue-solid-hover)]';
-    case 'light-solid':
-      return 'bg-[var(--button-light-solid-background)] text-[var(--button-light-solid-text)] border border-[var(--button-light-solid-border)]';
-    case 'pill':
-      return 'bg-[var(--button-primary-background)] text-[var(--button-primary-text)] rounded-full';
+      classes.push('hover:bg-[var(--button-blue-solid-hover)]');
+      break;
     case 'disabled':
-      return 'bg-[var(--button-disabled-background)] text-[var(--button-disabled-text)] border border-[var(--button-disabled-border)] cursor-not-allowed';
-    default:
-      return '';
+      classes.push('cursor-not-allowed');
+      break;
   }
+
+  return classes.join(' ');
 });
 
 const sizeClass = computed(() => {
@@ -107,7 +138,8 @@ const sizeClass = computed(() => {
 <template>
   <button
     type="button"
-    :class="[base, variantClass, sizeClass]"
+    :class="[baseClasses, sizeClass]"
+    :style="buttonStyle"
     :disabled="props.disabled"
     @click="emit('click', $event)"
   >

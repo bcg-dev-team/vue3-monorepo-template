@@ -36,6 +36,15 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const items = computed(() => Array.from({ length: props.count }));
+
+// 색상은 CSS 변수로 처리
+const activeStyle = computed(() => ({
+  backgroundColor: 'var(--button-primary-background)',
+}));
+
+const inactiveStyle = computed(() => ({
+  backgroundColor: 'var(--bg-surface-muted)',
+}));
 </script>
 
 <template>
@@ -44,16 +53,12 @@ const items = computed(() => Array.from({ length: props.count }));
       <div
         v-if="idx === current"
         class="h-2 w-10 rounded-full shrink-0 transition-all duration-200"
-        style="min-height: 0.5rem; min-width: 2.5rem; background-color: var(--input-icon-on)"
+        :style="activeStyle"
       />
       <div
         v-else
         class="h-2 w-2 rounded-full shrink-0 transition-all duration-200"
-        style="
-          min-height: 0.5rem;
-          min-width: 0.5rem;
-          background-color: var(--background-bg-surface-muted);
-        "
+        :style="inactiveStyle"
       />
     </template>
   </div>

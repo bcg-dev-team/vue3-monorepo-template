@@ -38,33 +38,60 @@ interface Props {
    */
   showIcon?: boolean;
 }
+
 const props = withDefaults(defineProps<Props>(), {
   label: '파일선택',
   status: 'default',
   disabled: false,
   showIcon: true,
 });
+
 const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void;
   (e: 'change', files: FileList | null): void;
 }>();
 
 const inputRef = ref<HTMLInputElement | null>(null);
-const bgClass = computed(() =>
-  props.disabled
-    ? 'bg-[var(--button-disabled-background)]'
-    : props.status === 'hover'
-      ? 'bg-[var(--base-colors-common-bg-surface-default)]'
-      : 'bg-gray-100'
-);
-const borderClass = computed(() =>
-  props.disabled
-    ? 'border-[var(--button-disabled-border)]'
-    : 'border-[var(--background-bg-outline)]'
-);
-const textClass = computed(() =>
-  props.disabled ? 'text-[var(--button-disabled-text)]' : 'text-[var(--input-color-text-static)]'
-);
+
+// 색상/테마는 CSS 변수로 처리
+const buttonStyle = computed(() => {
+  if (props.disabled) {
+    return {
+      backgroundColor: 'var(--button-disabled-background)',
+      borderColor: 'var(--button-disabled-border)',
+      color: 'var(--button-disabled-text)',
+    };
+  }
+
+  if (props.status === 'hover') {
+    return {
+      backgroundColor: 'var(--base-colors-common-bg-surface-default)',
+      borderColor: 'var(--background-bg-outline)',
+      color: 'var(--input-color-text-static)',
+    };
+  }
+
+  return {
+    backgroundColor: '#f3f4f6',
+    borderColor: 'var(--background-bg-outline)',
+    color: 'var(--input-color-text-static)',
+  };
+});
+
+// 레이아웃/간격/상태는 Tailwind class로 처리
+const buttonClasses = computed(() => {
+  const classes = [
+    'relative w-full flex items-center rounded-sm border transition-colors duration-150',
+  ];
+
+  if (props.disabled) {
+    classes.push('cursor-not-allowed opacity-60');
+  } else {
+    classes.push('hover:bg-bg-surface');
+  }
+
+  return classes.join(' ');
+});
 
 function handleClick(e: MouseEvent) {
   if (!props.disabled) {
@@ -72,20 +99,18 @@ function handleClick(e: MouseEvent) {
     emit('click', e);
   }
 }
+
 function handleChange(e: Event) {
   const files = (e.target as HTMLInputElement).files;
   emit('change', files);
 }
 </script>
+
 <template>
   <button
     type="button"
-    :class="[
-      'relative w-full flex items-center rounded-sm border transition-colors duration-150',
-      bgClass,
-      borderClass,
-      props.disabled ? 'cursor-not-allowed opacity-60' : 'hover:bg-bg-surface',
-    ]"
+    :class="buttonClasses"
+    :style="buttonStyle"
     :disabled="props.disabled"
     @click="handleClick"
   >
@@ -97,7 +122,7 @@ function handleChange(e: Event) {
       @change="handleChange"
     />
     <span class="flex flex-row items-center gap-1 px-6 py-2 w-full justify-center">
-      <span :class="['text-sm font-normal', textClass]">{{ label }}</span>
+      <span class="text-sm font-normal">{{ label }}</span>
       <BaseIcon
         v-if="showIcon"
         name="plus"

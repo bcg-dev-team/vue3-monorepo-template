@@ -18,6 +18,7 @@ interface Props {
    */
   status?: 'LONG' | 'SHORT';
 }
+
 const props = withDefaults(defineProps<Props>(), {
   status: 'LONG',
 });
@@ -26,27 +27,22 @@ const chipProps = computed(() => {
   if (props.status === 'SHORT') {
     return {
       label: 'SHORT',
-      bg: 'bg-trade-short-bg',
-      textColor: 'text-trade-short-text',
+      variant: 'error' as const, // trade-short 스타일을 error variant로 매핑
+      size: 'sm' as const,
       rounded: 'rounded-[3px]',
-      size: 'text-xs',
       fontWeight: 'font-medium',
-      px: 'px-2.5',
-      py: 'py-0.5',
     };
   }
   return {
     label: 'LONG',
-    bg: 'bg-trade-long-bg',
-    textColor: 'text-trade-long-text',
+    variant: 'success' as const, // trade-long 스타일을 success variant로 매핑
+    size: 'sm' as const,
     rounded: 'rounded-[3px]',
-    size: 'text-xs',
     fontWeight: 'font-medium',
-    px: 'px-2.5',
-    py: 'py-0.5',
   };
 });
 </script>
+
 <template>
   <BaseChip v-bind="chipProps" />
 </template>

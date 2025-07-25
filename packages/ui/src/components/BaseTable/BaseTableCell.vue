@@ -28,19 +28,28 @@ const props = withDefaults(defineProps<Props>(), {
   width: 'auto',
 });
 
+// 색상은 CSS 변수로 처리
+const cellStyle = computed(() => {
+  const bgColor =
+    props.type === 'selected' ? 'var(--table-type1-body-bg-select)' : 'var(--table-type1-body-bg)';
+
+  const borderColor = 'var(--table-type1-body-border)';
+
+  return {
+    backgroundColor: bgColor,
+    borderColor: borderColor,
+    width: props.width,
+  };
+});
+
+// 레이아웃/간격/상태는 Tailwind class로 처리
 const containerClasses = computed(() => {
-  const baseClasses = 'relative w-full h-full';
-  const bgClasses =
-    props.type === 'selected' ? 'bg-table-type1-body-bg-select' : 'bg-table-type1-body-bg';
-  return `${baseClasses} ${bgClasses}`;
+  return 'relative w-full h-full';
 });
 
 const borderClasses = computed(() => {
-  const baseClasses = 'absolute inset-0 pointer-events-none';
-  const borderClasses =
-    props.type === 'input'
-      ? 'border-table-type1-body-border border-[0px_0px_1px] border-solid'
-      : 'border-table-type1-body-border border-[1px_0px] border-solid';
+  const baseClasses = 'absolute inset-0 pointer-events-none border-solid';
+  const borderClasses = props.type === 'input' ? 'border-b' : 'border-x';
   return `${baseClasses} ${borderClasses}`;
 });
 
@@ -64,17 +73,10 @@ const paddingClasses = computed(() => {
 
 const textClasses = computed(() => {
   const baseClasses =
-    'font-regular leading-[0] not-italic relative shrink-0 text-left text-nowrap tracking-wide';
-  const fontClasses =
-    props.type === 'input'
-      ? 'text-input-color-text-static text-base leading-tight'
-      : 'text-input-color-text-static text-sm leading-snug';
+    'font-regular leading-[0] not-italic relative shrink-0 text-left text-nowrap tracking-wide text-input-color-text-static';
+  const fontClasses = props.type === 'input' ? 'text-base leading-tight' : 'text-sm leading-snug';
   return `${baseClasses} ${fontClasses}`;
 });
-
-const cellStyle = computed(() => ({
-  width: props.width,
-}));
 </script>
 
 <template>

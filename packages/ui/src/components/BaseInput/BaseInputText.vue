@@ -62,37 +62,49 @@ const isError = computed(() => props.status === 'Error');
 const isFocus = computed(() => props.status === 'Focus');
 const isFilled = computed(() => props.status === 'Filled');
 
-// 색상/테마는 CSS 변수로 처리
-const containerStyle = computed(() => {
-  const backgroundColor = isDisabled.value
-    ? 'var(--input-color-bg-disabled)'
-    : 'var(--input-color-surface)';
-  return { backgroundColor };
+// 정적 색상은 Tailwind arbitrary value로 처리
+const staticClasses = computed(() => {
+  const classes = [
+    'relative w-full rounded-sm',
+    'bg-[var(--input-color-surface)]', // 기본 배경색
+  ];
+
+  // 기본 테두리 색상
+  classes.push('border-[var(--input-color-border-static)]');
+
+  // 기본 텍스트 색상
+  classes.push('text-[var(--input-color-text-static)]');
+
+  return classes.join(' ');
 });
 
-const borderStyle = computed(() => {
-  let borderColor: string;
+// 동적 스타일 (조건부 변경이 필요한 경우만)
+const dynamicStyle = computed(() => {
+  const styles: Record<string, string> = {};
 
+  // 조건부 배경색
   if (isDisabled.value) {
-    borderColor = 'var(--input-color-border-disabled)';
-  } else if (isError.value) {
-    borderColor = 'var(--input-color-border-error)';
-  } else if (isFocus.value) {
-    borderColor = 'var(--input-color-border-focus)';
-  } else {
-    borderColor = 'var(--input-color-border-static)';
+    styles.backgroundColor = 'var(--input-color-bg-disabled)';
   }
 
-  return { borderColor };
+  // 조건부 테두리 색상
+  if (isDisabled.value) {
+    styles.borderColor = 'var(--input-color-border-disabled)';
+  } else if (isError.value) {
+    styles.borderColor = 'var(--input-color-border-error)';
+  } else if (isFocus.value) {
+    styles.borderColor = 'var(--input-color-border-focus)';
+  }
+
+  // 조건부 텍스트 색상
+  if (isDisabled.value) {
+    styles.color = 'var(--input-color-text-disable)';
+  }
+
+  return styles;
 });
 
-const inputStyle = computed(() => {
-  const color = isDisabled.value
-    ? 'var(--input-color-text-disable)'
-    : 'var(--input-color-text-static)';
-  return { color };
-});
-
+// placeholder 스타일 (동적 처리 필요)
 const placeholderStyle = computed(() => {
   const color = isDisabled.value
     ? 'var(--input-color-text-disable)'
@@ -131,8 +143,8 @@ const inputClasses = computed(() => {
 </script>
 
 <template>
-  <div :class="containerClasses" :style="containerStyle">
-    <div :class="borderClasses" :style="borderStyle" />
+  <div :class="staticClasses" :style="dynamicStyle">
+    <div :class="borderClasses" :style="dynamicStyle" />
     <div class="flex flex-row items-center w-full px-4 py-3.5">
       <slot name="left">
         <BaseIcon
@@ -148,7 +160,7 @@ const inputClasses = computed(() => {
         :placeholder="placeholder"
         :disabled="isDisabled"
         :class="inputClasses"
-        :style="inputStyle"
+        :style="dynamicStyle"
         :placeholder-style="placeholderStyle"
         @input="(e) => emit('update:modelValue', (e.target as HTMLInputElement).value)"
       />

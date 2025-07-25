@@ -1,7 +1,7 @@
 <template>
-  <div id="app" class="min-h-screen flex flex-col font-sans bg-bg-surface text-text-primary">
+  <div id="app" class="bg-bg-surface text-text-primary flex min-h-screen flex-col font-sans">
     <Header />
-    <main class="flex-1 p-6 mx-auto w-full bg-bg-surface">
+    <main class="bg-bg-surface mx-auto w-full flex-1 p-6">
       <router-view />
     </main>
 

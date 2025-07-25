@@ -8,5 +8,5 @@
   "arrowParens": "always",
   "endOfLine": "auto",
   "vueIndentScriptAndStyle": false,
-  "plugins": ["prettier-plugin-sort-imports"]
+  "plugins": ["prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"]
 }

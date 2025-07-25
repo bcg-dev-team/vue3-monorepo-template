@@ -86,11 +86,23 @@ const roundedClasses: Record<string, string> = {
 // 정적 클래스 (기본 스타일)
 const chipClasses = computed(() => {
   const classes = [
-    'inline-flex items-center justify-center transition-all duration-150',
+    // 1. 레이아웃
+    'inline-flex items-center justify-center',
+
+    // 2. 전환 효과
+    'transition-all duration-150',
+
+    // 3. 크기별 클래스 (패딩 + 타이포그래피)
     sizeClasses[props.size] || 'text-sm px-2.5 py-1',
-    variantClasses[props.variant] || 'chip-surface',
+
+    // 4. 폰트 굵기
     fontWeightClasses[props.fontWeight] || 'font-normal',
+
+    // 5. 테두리
     roundedClasses[props.rounded] || 'rounded-sm',
+
+    // 6. 컴포넌트별 토큰 (배경색, 텍스트색 등)
+    variantClasses[props.variant] || 'chip-surface',
   ];
 
   return classes.join(' ');

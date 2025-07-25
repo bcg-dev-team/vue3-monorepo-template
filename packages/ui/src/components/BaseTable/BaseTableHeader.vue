@@ -39,7 +39,10 @@ const alignClasses = {
 
 // 컨테이너 클래스
 const containerClasses = computed(() => {
-  const baseClasses = 'relative w-full h-full';
+  const baseClasses = [
+    // 1. 레이아웃
+    'relative w-full h-full',
+  ].join(' ');
   const typeClass = typeClasses[props.type];
 
   return `${baseClasses} ${typeClass}`;
@@ -47,7 +50,13 @@ const containerClasses = computed(() => {
 
 // 테두리 클래스
 const borderClasses = computed(() => {
-  const baseClasses = 'absolute border-b border-solid inset-0 pointer-events-none';
+  const baseClasses = [
+    // 1. 레이아웃
+    'absolute inset-0 pointer-events-none',
+
+    // 2. 테두리
+    'border-b border-solid',
+  ].join(' ');
   const typeClass = `table-header-border-${props.type}`;
 
   return `${baseClasses} ${typeClass}`;
@@ -55,7 +64,10 @@ const borderClasses = computed(() => {
 
 // 컨텐츠 클래스
 const contentClasses = computed(() => {
-  const baseClasses = 'flex flex-row items-center relative w-full h-full';
+  const baseClasses = [
+    // 1. 레이아웃
+    'relative flex h-full w-full flex-row items-center',
+  ].join(' ');
   const alignClass = alignClasses[props.align];
 
   return `${baseClasses} ${alignClass}`;
@@ -63,8 +75,16 @@ const contentClasses = computed(() => {
 
 // 패딩 클래스
 const paddingClasses = computed(() => {
-  const baseClasses =
-    'box-border content-stretch flex flex-row gap-2.5 items-center justify-start relative w-full h-full';
+  const baseClasses = [
+    // 1. 레이아웃
+    'relative flex h-full w-full flex-row items-center justify-start',
+
+    // 2. 간격
+    'gap-2.5',
+
+    // 3. 박스 모델
+    'box-border content-stretch',
+  ].join(' ');
   const typeClass = `table-header-padding-${props.type}`;
 
   return `${baseClasses} ${typeClass}`;
@@ -72,8 +92,16 @@ const paddingClasses = computed(() => {
 
 // 텍스트 클래스
 const textClasses = computed(() => {
-  const baseClasses =
-    'flex flex-col font-medium justify-center leading-none font-normal relative flex-shrink-0 text-sm text-left whitespace-nowrap tracking-1';
+  const baseClasses = [
+    // 1. 레이아웃
+    'relative flex flex-shrink-0 flex-col justify-center',
+
+    // 2. 타이포그래피
+    'text-left text-sm font-medium font-normal leading-none tracking-1',
+
+    // 3. 텍스트 처리
+    'whitespace-nowrap',
+  ].join(' ');
   const typeClass = `table-header-text-${props.type}`;
 
   return `${baseClasses} ${typeClass}`;

@@ -62,7 +62,7 @@ const textClasses = computed(() => {
 
 <template>
   <div
-    class="relative w-8 h-8 cursor-pointer transition-all duration-200"
+    class="relative h-8 w-8 cursor-pointer transition-all duration-200"
     @click="handleClick"
     :data-name="`Pagination/Number-${status}`"
   >

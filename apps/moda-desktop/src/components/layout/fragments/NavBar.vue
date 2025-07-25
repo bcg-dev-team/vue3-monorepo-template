@@ -4,7 +4,7 @@
       v-for="menu in navMenus"
       :key="menu.id"
       :to="menu.to"
-      class="text-white decoration-none text-lg font-semibold whitespace-nowrap"
+      class="decoration-none whitespace-nowrap text-lg font-semibold text-white"
       :class="{ '!text-primary': $route.path === menu.to }"
     >
       {{ menu.text }}

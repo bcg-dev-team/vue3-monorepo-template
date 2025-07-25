@@ -82,9 +82,23 @@ const emit = defineEmits<{
 // 색상/테마는 정적 CSS 변수로 처리
 const staticClasses = computed(() => {
   const classes = [
-    'inline-flex items-center justify-center font-sans font-semibold transition-all select-none',
+    // 1. 레이아웃
+    'inline-flex items-center justify-center',
+
+    // 2. 타이포그래피
+    'font-sans font-semibold',
+
+    // 3. 전환 효과
+    'transition-all',
+
+    // 4. 사용자 선택
+    'select-none',
+
+    // 5. 포커스 상태
     'focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus',
-    'disabled:opacity-50 disabled:cursor-not-allowed',
+
+    // 6. 비활성화 상태
+    'disabled:cursor-not-allowed disabled:opacity-50',
   ];
 
   // variant별 클래스 매핑
@@ -121,13 +135,41 @@ const dynamicStyle = computed(() => {
 const sizeClass = computed(() => {
   switch (props.size) {
     case 'regular':
-      return 'px-4 py-3 text-lg rounded-default';
+      return [
+        // 1. 패딩
+        'px-4 py-3',
+        // 2. 타이포그래피
+        'text-lg',
+        // 3. 테두리
+        'rounded-default',
+      ].join(' ');
     case 'small':
-      return 'px-5 py-1.5 text-md rounded-sm';
+      return [
+        // 1. 패딩
+        'px-5 py-1.5',
+        // 2. 타이포그래피
+        'text-md',
+        // 3. 테두리
+        'rounded-sm',
+      ].join(' ');
     case 'pill':
-      return 'px-4 py-2 text-md rounded-full';
+      return [
+        // 1. 패딩
+        'px-4 py-2',
+        // 2. 타이포그래피
+        'text-md',
+        // 3. 테두리
+        'rounded-full',
+      ].join(' ');
     case 'small-inner':
-      return 'px-3 py-2.5 text-base rounded-sm';
+      return [
+        // 1. 패딩
+        'px-3 py-2.5',
+        // 2. 타이포그래피
+        'text-base',
+        // 3. 테두리
+        'rounded-sm',
+      ].join(' ');
     default:
       return '';
   }

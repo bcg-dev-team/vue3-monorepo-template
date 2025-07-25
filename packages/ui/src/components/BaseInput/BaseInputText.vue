@@ -74,7 +74,16 @@ const statusClasses = {
 // 정적 클래스 (기본 스타일)
 const staticClasses = computed(() => {
   const classes = [
-    'relative w-full rounded-sm transition-all duration-150',
+    // 1. 레이아웃
+    'relative w-full',
+
+    // 2. 테두리
+    'rounded-sm',
+
+    // 3. 전환 효과
+    'transition-all duration-150',
+
+    // 4. 컴포넌트별 토큰 (상태별 스타일)
     statusClasses[props.status] || 'input-static',
   ];
 
@@ -83,8 +92,16 @@ const staticClasses = computed(() => {
 
 // 테두리 클래스
 const borderClasses = computed(() => {
-  const baseClasses =
-    'absolute inset-0 pointer-events-none rounded-sm border border-solid transition-colors duration-150';
+  const baseClasses = [
+    // 1. 레이아웃
+    'absolute inset-0 pointer-events-none',
+
+    // 2. 테두리
+    'rounded-sm border border-solid',
+
+    // 3. 전환 효과
+    'transition-colors duration-150',
+  ].join(' ');
 
   if (isError.value) {
     return `${baseClasses} border-2 input-border-error`;
@@ -95,7 +112,25 @@ const borderClasses = computed(() => {
 
 // 입력 요소 클래스
 const inputClasses = computed(() => {
-  const baseClasses = 'flex-1 bg-transparent outline-none border-0 p-0 text-base';
+  const baseClasses = [
+    // 1. 레이아웃
+    'flex-1',
+
+    // 2. 배경
+    'bg-transparent',
+
+    // 3. 테두리
+    'border-0',
+
+    // 4. 패딩
+    'p-0',
+
+    // 5. 타이포그래피
+    'text-base',
+
+    // 6. 포커스
+    'outline-none',
+  ].join(' ');
 
   if (isDisabled.value) {
     return `${baseClasses} cursor-not-allowed`;
@@ -108,7 +143,7 @@ const inputClasses = computed(() => {
 <template>
   <div :class="staticClasses">
     <div :class="borderClasses" />
-    <div class="flex flex-row items-center w-full py-3.5 px-4">
+    <div class="flex w-full flex-row items-center px-4 py-3.5">
       <slot name="left">
         <BaseIcon
           v-if="showIcon"

@@ -83,7 +83,10 @@ const sizeClasses = {
 
 // 컨테이너 클래스
 const containerClasses = computed(() => {
-  const baseClasses = 'w-full';
+  const baseClasses = [
+    // 1. 레이아웃
+    'w-full',
+  ].join(' ');
   const directionClass = directionClasses[props.direction];
   const sizeClass = sizeClasses[props.size];
 

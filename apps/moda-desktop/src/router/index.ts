@@ -66,7 +66,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/service/Index.vue'),
   },
   {
-    path: '/myPage',
+    path: '/my-page',
     name: 'MyPage',
     meta: { layout: MainLayout },
     component: () => import('@/views/myPage/Index.vue'),

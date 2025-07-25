@@ -1,6 +1,6 @@
 <template>
   <div class="px-6 py-4">
-    <CardLayoutVertical class="gap-3">
+    <CardLayoutVertical gap="gap-3">
       <MainCardContent class="p-6" title="내 자산" size="large">
         <template #content>
           <div>
@@ -8,8 +8,8 @@
           </div>
         </template>
       </MainCardContent>
-      <CardLayoutHorizontal class="grid-cols-5 gap-3">
-        <MainCardContent class="col-span-4 p-6">
+      <CardLayoutHorizontal :columns="[4, 1]" gap="gap-3">
+        <MainCardContent class="p-6">
           <template #content>
             <div>
               보유 포지션
@@ -17,7 +17,7 @@
             </div>
           </template>
         </MainCardContent>
-        <MainCardContent class="col-span-1 p-6">
+        <MainCardContent class="p-6">
           <template #content>
             <div>
               자산구성

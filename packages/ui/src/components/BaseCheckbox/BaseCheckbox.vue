@@ -45,15 +45,15 @@ const isChecked = computed(() => props.state === 'On' || props.modelValue);
 const isDisabled = computed(() => props.style === 'Disabled');
 
 const bgClass = computed(() => {
-  if (isDisabled.value && isChecked.value) return 'bg-input-text-disabled';
-  if (isDisabled.value && !isChecked.value) return 'bg-input-bg-disabled';
-  if (!isDisabled.value && isChecked.value) return 'bg-button-primary-bg';
-  return 'bg-input-bg';
+  if (isDisabled.value && isChecked.value) return 'bg-[var(--input-color-text-disable)]';
+  if (isDisabled.value && !isChecked.value) return 'bg-[var(--input-color-bg-disabled)]';
+  if (!isDisabled.value && isChecked.value) return 'bg-[var(--button-primary-background)]';
+  return 'bg-[var(--input-color-surface)]';
 });
 const borderClass = computed(() => {
-  if (isDisabled.value) return 'border-input-border-disabled';
-  if (isChecked.value) return 'border-button-primary-bg';
-  return 'border-input-border';
+  if (isDisabled.value) return 'border-[var(--input-color-border-disabled)]';
+  if (isChecked.value) return 'border-[var(--button-primary-background)]';
+  return 'border-[var(--input-color-border-static)]';
 });
 </script>
 <template>

@@ -6,8 +6,8 @@
         :key="metric.id"
         class="flex flex-col items-start gap-1"
       >
-        <dt class="text-divider-muted text-[11px] tracking-[-0.1px]">{{ metric.label }}</dt>
-        <dd class="text-white font-semibold tracking-[-0.35px]">{{ metric.value }}</dd>
+        <dt class="text-divider-muted text-font-10 tracking-0">{{ metric.label }}</dt>
+        <dd class="text-white font-semibold tracking-3">{{ metric.value }}</dd>
       </dl>
     </div>
     <span class="text-divider-muted text-2xl">|</span>
@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { MyPageIcon, ModeLightIcon, LogoutIcon } from '@template/ui';
+// import { MyPageIcon, ModeLightIcon, LogoutIcon } from '@template/ui';
 
 interface FinancialMetric {
   id: string;

@@ -66,23 +66,23 @@ const base =
 const variantClass = computed(() => {
   switch (props.variant) {
     case 'primary':
-      return 'bg-button-primary-bg text-button-primary-text hover:bg-primary-deep';
+      return 'bg-[var(--button-primary-background)] text-[var(--button-primary-text)] hover:bg-[var(--button-primary-background-deep)]';
     case 'outline':
-      return 'bg-button-outline-bg border border-button-outline-border text-button-outline-text hover:bg-surface-muted';
+      return 'bg-[var(--button-outline-background)] border border-[var(--button-outline-border)] text-[var(--button-outline-text)] hover:bg-[var(--button-outline-background)]';
     case 'red':
-      return 'bg-button-red-bg border border-button-red-border text-button-red-text hover:bg-bg-red';
+      return 'bg-[var(--button-red-background)] border border-[var(--button-red-border)] text-[var(--button-red-text)] hover:bg-[var(--button-red-background-hover)]';
     case 'red-solid':
-      return 'bg-button-red-solid-bg text-button-red-solid-text hover:bg-error';
+      return 'bg-[var(--button-red-solid-background)] text-[var(--button-red-solid-text)] hover:bg-[var(--button-red-solid-hover)]';
     case 'blue':
-      return 'bg-button-outline-bg border border-info text-info hover:bg-bg-blue';
+      return 'bg-[var(--button-blue-background)] border border-[var(--button-blue-border)] text-[var(--button-blue-text)] hover:bg-[var(--button-blue-background-hover)]';
     case 'blue-solid':
-      return 'bg-button-blue-solid-bg text-button-blue-solid-text hover:bg-info';
+      return 'bg-[var(--button-blue-solid-background)] text-[var(--button-blue-solid-text)] hover:bg-[var(--button-blue-solid-hover)]';
     case 'light-solid':
-      return 'bg-button-light-solid-bg text-button-light-solid-text border border-primary';
+      return 'bg-[var(--button-light-solid-background)] text-[var(--button-light-solid-text)] border border-[var(--button-light-solid-border)]';
     case 'pill':
-      return 'bg-primary text-button-primary-text rounded-full';
+      return 'bg-[var(--button-primary-background)] text-[var(--button-primary-text)] rounded-full';
     case 'disabled':
-      return 'bg-button-disabled-bg text-button-disabled-text border border-button-disabled-border cursor-not-allowed';
+      return 'bg-[var(--button-disabled-background)] text-[var(--button-disabled-text)] border border-[var(--button-disabled-border)] cursor-not-allowed';
     default:
       return '';
   }

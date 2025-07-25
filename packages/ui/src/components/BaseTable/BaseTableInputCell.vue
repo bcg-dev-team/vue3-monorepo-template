@@ -66,18 +66,18 @@ const handleCheckboxChange = (checked: boolean) => {
 </script>
 
 <template>
-  <div class="relative w-full h-full table-input-cell" data-name="Table/Body-Input">
+  <div class="table-input-cell relative h-full w-full" data-name="Table/Body-Input">
     <div
-      class="absolute border-b border-solid inset-0 pointer-events-none table-input-cell-border"
+      class="table-input-cell-border pointer-events-none absolute inset-0 border-b border-solid"
     />
-    <div class="flex flex-row items-center relative w-full h-full">
+    <div class="relative flex h-full w-full flex-row items-center">
       <div
-        class="flex flex-row items-center justify-start gap-2.5 relative w-full h-full table-input-cell-padding"
+        class="table-input-cell-padding relative flex h-full w-full flex-row items-center justify-start gap-2.5"
       >
         <!-- 라벨 -->
         <div
           v-if="label"
-          class="flex flex-col justify-center leading-none font-normal relative flex-shrink-0 text-sm text-left whitespace-nowrap table-input-cell-label"
+          class="table-input-cell-label relative flex flex-shrink-0 flex-col justify-center whitespace-nowrap text-left text-sm font-normal leading-none"
         >
           <span class="block whitespace-pre">{{ label }}</span>
         </div>
@@ -111,15 +111,15 @@ const handleCheckboxChange = (checked: boolean) => {
         <!-- 체크박스 -->
         <div
           v-if="showCheckbox"
-          class="relative flex items-center justify-center w-5 h-5 rounded-[3px] border border-solid transition-all duration-150 cursor-pointer table-input-checkbox"
+          class="table-input-checkbox relative flex h-5 w-5 cursor-pointer items-center justify-center rounded-[3px] border border-solid transition-all duration-150"
           @click="handleCheckboxChange(!checked)"
         >
           <div
             v-if="checked"
-            class="relative flex items-center justify-center w-5 h-5 rounded-[3px] border border-solid transition-all duration-150 table-input-checkbox-inner-checked"
+            class="table-input-checkbox-inner-checked relative flex h-5 w-5 items-center justify-center rounded-[3px] border border-solid transition-all duration-150"
           >
             <svg
-              class="w-4 h-4 text-white"
+              class="h-4 w-4 text-white"
               fill="none"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
@@ -132,7 +132,7 @@ const handleCheckboxChange = (checked: boolean) => {
           </div>
           <div
             v-else
-            class="relative flex items-center justify-center w-5 h-5 rounded-[3px] border border-solid transition-all duration-150 table-input-checkbox-inner-unchecked"
+            class="table-input-checkbox-inner-unchecked relative flex h-5 w-5 items-center justify-center rounded-[3px] border border-solid transition-all duration-150"
           />
         </div>
 

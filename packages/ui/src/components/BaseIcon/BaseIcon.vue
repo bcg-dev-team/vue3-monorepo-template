@@ -48,24 +48,26 @@ const typeClasses = {
 };
 
 const iconClasses = computed(() => {
-  const baseClasses = 'inline-block';
-  let classes = baseClasses;
+  const classes = [
+    // 1. 레이아웃
+    'inline-block',
+  ];
 
   if (typeof props.size === 'string') {
-    classes += ` ${sizeClasses[props.size]}`;
+    classes.push(sizeClasses[props.size]);
   }
 
   // 아이콘 타입에 따른 클래스 추가
   const iconType = getIconType(props.name);
   if (iconType) {
-    classes += ` ${typeClasses[iconType]}`;
+    classes.push(typeClasses[iconType]);
   }
 
   if (props.class) {
-    classes += ` ${props.class}`;
+    classes.push(props.class);
   }
 
-  return classes;
+  return classes.join(' ');
 });
 
 const iconStyles = computed(() => {

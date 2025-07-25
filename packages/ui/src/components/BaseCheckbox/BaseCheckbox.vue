@@ -55,8 +55,20 @@ const styleClasses = {
 
 // 정적 클래스 (기본 스타일)
 const staticClasses = computed(() => {
-  const baseClasses =
-    'relative flex items-center justify-center w-5 h-5 rounded-[3px] border border-solid transition-all duration-150';
+  const baseClasses = [
+    // 1. 레이아웃
+    'relative flex items-center justify-center',
+
+    // 2. 크기
+    'w-5 h-5',
+
+    // 3. 테두리
+    'rounded-[3px] border border-solid',
+
+    // 4. 전환 효과
+    'transition-all duration-150',
+  ].join(' ');
+
   const styleClass = styleClasses[props.style] || 'checkbox-default';
 
   return `${baseClasses} ${styleClass}`;
@@ -64,12 +76,12 @@ const staticClasses = computed(() => {
 </script>
 
 <template>
-  <label class="inline-flex items-center cursor-pointer select-none">
+  <label class="inline-flex cursor-pointer select-none items-center">
     <span
       :class="staticClasses"
       @click.stop.prevent="!isDisabled && emit('update:modelValue', !isChecked)"
     >
-      <svg v-if="isChecked" class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24">
+      <svg v-if="isChecked" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
         <path
           d="M9.5 13.38l6.9-6.9 1.06 1.06-7.96 7.96-4.77-4.77 1.06-1.06 3.71 3.71z"
           fill="currentColor"
@@ -78,7 +90,7 @@ const staticClasses = computed(() => {
     </span>
     <input
       type="checkbox"
-      class="absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0"
+      class="absolute -m-px h-px w-px overflow-hidden whitespace-nowrap border-0 p-0"
       :checked="isChecked"
       :disabled="isDisabled"
       @change="(e) => emit('update:modelValue', (e.target as HTMLInputElement).checked)"

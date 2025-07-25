@@ -118,7 +118,7 @@ function handleChange(e: Event) {
       :disabled="props.disabled"
       @change="handleChange"
     />
-    <span class="flex flex-row items-center gap-1 px-6 py-2 w-full justify-center">
+    <span class="flex w-full flex-row items-center justify-center gap-1 px-6 py-2">
       <span class="text-sm font-normal">{{ label }}</span>
       <BaseIcon
         v-if="showIcon"

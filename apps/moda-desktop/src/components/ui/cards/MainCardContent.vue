@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 bg-bg-surface rounded-md border-bg-outline border border-solid">
+  <div class="bg-bg-surface border-bg-outline rounded-md border border-solid p-6">
     <div v-if="title">
       <span class="text-3xl font-semibold leading-snug tracking-wide">{{ props.title }}</span>
     </div>

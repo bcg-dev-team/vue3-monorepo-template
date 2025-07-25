@@ -1,50 +1,50 @@
 <template>
-  <div id="app" class="min-h-screen flex flex-col font-sans bg-bg-surface text-primary">
+  <div id="app" class="bg-bg-surface text-primary flex min-h-screen flex-col font-sans">
     <header class="app-header sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto px-8 flex justify-between items-center">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-8">
         <div class="flex items-baseline gap-2">
-          <h1 class="text-2xl font-bold text-text-primary m-0">Vue 3 Monorepo Template</h1>
-          <span class="text-sm font-medium text-text-secondary">v1.0.0</span>
+          <h1 class="text-text-primary m-0 text-2xl font-bold">Vue 3 Monorepo Template</h1>
+          <span class="text-text-secondary text-sm font-medium">v1.0.0</span>
         </div>
         <nav class="flex gap-6">
           <router-link
             to="/"
-            class="text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:bg-surface-muted hover:-translate-y-0.5"
+            class="hover:bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
             :class="{ 'bg-primary-light text-primary': $route.path === '/' }"
           >
             시작하기
           </router-link>
           <router-link
             to="/packages"
-            class="text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:bg-surface-muted hover:-translate-y-0.5"
+            class="hover:bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
             :class="{ 'bg-primary-light text-primary': $route.path === '/packages' }"
           >
             패키지 구조
           </router-link>
           <router-link
             to="/development"
-            class="text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:bg-surface-muted hover:-translate-y-0.5"
+            class="hover:bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
             :class="{ 'bg-primary-light text-primary': $route.path === '/development' }"
           >
             개발 가이드
           </router-link>
           <router-link
             to="/components"
-            class="text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:bg-surface-muted hover:-translate-y-0.5"
+            class="hover:bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
             :class="{ 'bg-primary-light text-primary': $route.path === '/components' }"
           >
             컴포넌트
           </router-link>
           <router-link
             to="/api-examples"
-            class="text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:bg-surface-muted hover:-translate-y-0.5"
+            class="hover:bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
             :class="{ 'bg-primary-light text-primary': $route.path === '/api-examples' }"
           >
             API 예제
           </router-link>
           <router-link
             to="/theme-test"
-            class="text-sm font-medium px-4 py-2 rounded-lg transition-all duration-200 hover:bg-surface-muted hover:-translate-y-0.5"
+            class="hover:bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
             :class="{ 'bg-primary-light text-primary': $route.path === '/theme-test' }"
           >
             테마 테스트
@@ -53,13 +53,13 @@
       </div>
     </header>
 
-    <main class="flex-1 p-8 max-w-7xl mx-auto w-full bg-bg-surface">
+    <main class="bg-bg-surface mx-auto w-full max-w-7xl flex-1 p-8">
       <router-view />
     </main>
 
     <footer class="app-footer mt-auto">
-      <div class="max-w-7xl mx-auto px-8 flex justify-between items-center">
-        <p class="m-0 text-sm text-text-footer">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-8">
+        <p class="text-text-footer m-0 text-sm">
           &copy; 2024 Vue 3 Monorepo Template - TypeScript, Vite, Performance Optimized
         </p>
         <div class="flex gap-6">
@@ -67,7 +67,7 @@
             href="https://github.com/your-username/vue3-monorepo-template"
             target="_blank"
             rel="noopener"
-            class="text-sm text-text-footer hover:text-text-primary transition-colors duration-200"
+            class="text-text-footer hover:text-text-primary text-sm transition-colors duration-200"
           >
             GitHub
           </a>
@@ -75,7 +75,7 @@
             href="https://vuejs.org"
             target="_blank"
             rel="noopener"
-            class="text-sm text-text-footer hover:text-text-primary transition-colors duration-200"
+            class="text-text-footer hover:text-text-primary text-sm transition-colors duration-200"
           >
             Vue.js
           </a>
@@ -83,7 +83,7 @@
             href="https://vitejs.dev"
             target="_blank"
             rel="noopener"
-            class="text-sm text-text-footer hover:text-text-primary transition-colors duration-200"
+            class="text-text-footer hover:text-text-primary text-sm transition-colors duration-200"
           >
             Vite
           </a>

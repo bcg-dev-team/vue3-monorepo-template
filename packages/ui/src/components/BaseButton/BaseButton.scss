@@ -11,7 +11,10 @@
 .btn-red-solid,
 .btn-blue-solid,
 .btn-disabled {
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 // Primary 버튼
@@ -102,10 +105,10 @@
 button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  
+
   &:hover {
     background-color: inherit !important;
     border-color: inherit !important;
     color: inherit !important;
   }
-} 
+}

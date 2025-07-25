@@ -45,7 +45,10 @@ const alignClasses = {
 
 // 컨테이너 클래스
 const containerClasses = computed(() => {
-  const baseClasses = 'relative w-full h-full';
+  const baseClasses = [
+    // 1. 레이아웃
+    'relative w-full h-full',
+  ].join(' ');
   const typeClass = typeClasses[props.type];
 
   return `${baseClasses} ${typeClass}`;
@@ -53,7 +56,13 @@ const containerClasses = computed(() => {
 
 // 테두리 클래스
 const borderClasses = computed(() => {
-  const baseClasses = 'absolute border-l border-r border-solid inset-0 pointer-events-none';
+  const baseClasses = [
+    // 1. 레이아웃
+    'absolute inset-0 pointer-events-none',
+
+    // 2. 테두리
+    'border-l border-r border-solid',
+  ].join(' ');
   const typeClass = `table-cell-border-${props.type}`;
 
   return `${baseClasses} ${typeClass}`;
@@ -61,7 +70,10 @@ const borderClasses = computed(() => {
 
 // 컨텐츠 클래스
 const contentClasses = computed(() => {
-  const baseClasses = 'flex flex-row items-center relative w-full h-full';
+  const baseClasses = [
+    // 1. 레이아웃
+    'relative flex h-full w-full flex-row items-center',
+  ].join(' ');
   const alignClass = alignClasses[props.align];
 
   return `${baseClasses} ${alignClass}`;
@@ -69,7 +81,10 @@ const contentClasses = computed(() => {
 
 // 패딩 클래스
 const paddingClasses = computed(() => {
-  const baseClasses = 'flex flex-row items-center justify-start relative w-full h-full';
+  const baseClasses = [
+    // 1. 레이아웃
+    'relative flex h-full w-full flex-row items-center justify-start',
+  ].join(' ');
   const typeClass = `table-cell-padding-${props.type}`;
 
   return `${baseClasses} ${typeClass}`;
@@ -77,8 +92,16 @@ const paddingClasses = computed(() => {
 
 // 텍스트 클래스
 const textClasses = computed(() => {
-  const baseClasses =
-    'flex flex-col justify-center leading-none font-normal relative flex-shrink-0 text-sm text-left whitespace-nowrap';
+  const baseClasses = [
+    // 1. 레이아웃
+    'relative flex flex-shrink-0 flex-col justify-center',
+
+    // 2. 타이포그래피
+    'text-left text-sm font-normal leading-none',
+
+    // 3. 텍스트 처리
+    'whitespace-nowrap',
+  ].join(' ');
   const typeClass = `table-cell-text-${props.type}`;
 
   return `${baseClasses} ${typeClass}`;

@@ -7,7 +7,7 @@
         class="flex flex-col items-start gap-1"
       >
         <dt class="text-divider-muted text-font-10 tracking-0">{{ metric.label }}</dt>
-        <dd class="text-white font-semibold tracking-3">{{ metric.value }}</dd>
+        <dd class="tracking-3 font-semibold text-white">{{ metric.value }}</dd>
       </dl>
     </div>
     <span class="text-divider-muted text-2xl">|</span>

@@ -2,14 +2,14 @@
   <div class="flex flex-col gap-6">
     <MainCardContent title="출금신청">
       <template #content>
-        <div class="flex gap-3 items-center">
+        <div class="flex items-center gap-3">
           <SubCardContent title="계좌번호">
             <template #content> <> </template>
           </SubCardContent>
           <p>></p>
           <SubCardContent title="받을 계좌번호">
             <template #content>
-              <div class="flex gap-2 items-center">
+              <div class="flex items-center gap-2">
                 <BaseInputText
                   v-model="accountNumber"
                   :showIcon="false"
@@ -22,7 +22,7 @@
           <p>></p>
           <SubCardContent title="신청금액">
             <template #content>
-              <div class="flex gap-2 items-center">
+              <div class="flex items-center gap-2">
                 <BaseInputText class="w-[140px]" type="number" v-model="amount" :showIcon="false" />
                 <BaseButton variant="outline" label="전액" class="whitespace-nowrap" />
               </div>

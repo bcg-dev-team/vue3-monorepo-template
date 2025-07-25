@@ -44,11 +44,11 @@
   }
 
   .app-header {
-    @apply bg-white border-b border-gray-200 shadow-sm;
+    @apply border-b border-gray-200 bg-white shadow-sm;
   }
 
   .app-sidebar {
-    @apply bg-white border-r border-gray-200;
+    @apply border-r border-gray-200 bg-white;
   }
 
   .app-main {
@@ -56,6 +56,6 @@
   }
 
   .app-footer {
-    @apply bg-white border-t border-gray-200;
+    @apply border-t border-gray-200 bg-white;
   }
 }

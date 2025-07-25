@@ -51,7 +51,7 @@ const getIndicatorClasses = (idx: number) => {
 </script>
 
 <template>
-  <div class="flex flex-row gap-2 items-center justify-start p-0 h-4 min-h-4">
+  <div class="flex h-4 min-h-4 flex-row items-center justify-start gap-2 p-0">
     <template v-for="(_, idx) in items" :key="idx">
       <div :class="getIndicatorClasses(idx)" />
     </template>

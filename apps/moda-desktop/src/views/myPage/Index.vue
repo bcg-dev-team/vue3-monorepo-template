@@ -1,7 +1,7 @@
 <template>
   <div class="px-[240px] py-4">
-    <CardLayoutHorizontal class="grid-cols-10 gap-6">
-      <CardLayoutVertical class="col-span-2 gap-3">
+    <CardLayoutHorizontal :columns="[330, 680, 382]" gap="gap-6">
+      <CardLayoutVertical gap="gap-3 ">
         <MainCardContent class="row-span-1 p-6">
           <template #content>
             <div class="my-[100px]">내정보</div>
@@ -18,7 +18,7 @@
           </template>
         </MainCardContent>
       </CardLayoutVertical>
-      <CardLayoutVertical class="col-span-5 gap-3">
+      <CardLayoutVertical gap="gap-3">
         <MainCardContent class="row-span-2 p-6">
           <template #content>
             <div class="my-[220px]">개요|활동내역</div>
@@ -35,7 +35,7 @@
           </template>
         </MainCardContent>
       </CardLayoutVertical>
-      <CardLayoutVertical class="col-span-3 gap-3">
+      <CardLayoutVertical gap="gap-3">
         <MainCardContent class="row-span-1 p-6">
           <template #content>
             <div class="my-[100px]">공지사항</div>

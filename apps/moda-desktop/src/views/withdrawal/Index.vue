@@ -1,6 +1,6 @@
 <template>
   <div class="p-6">
-    <CardLayoutVertical class="gap-6">
+    <CardLayoutVertical gap="gap-6">
       <MainCardContent class="p-6" title="출금신청" size="large">
         <template #content>
           <div class="flex items-center gap-3">

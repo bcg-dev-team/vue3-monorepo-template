@@ -1,6 +1,6 @@
 <template>
   <div class="px-6 py-4">
-    <CardLayoutVertical class="gap-3">
+    <CardLayoutVertical gap="gap-3">
       <MainCardContent class="p-6" title="거래내역" size="large">
         <template #content>
           <div>

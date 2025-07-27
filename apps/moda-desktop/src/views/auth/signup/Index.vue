@@ -8,6 +8,6 @@
   </div>
 </template>
 <script lang="ts" setup>
-import MainCardContent from '@/components/ui/cards/MainCardContent.vue';
+import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import SignUpIntro from '@/components/auth/signup/SignUpIntro.vue';
 </script>

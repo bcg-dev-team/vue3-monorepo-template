@@ -6,8 +6,10 @@
           {{ props.title }}
         </span>
       </div>
+
       <div><slot name="title-right" /></div>
     </div>
+    <slot name="title" />
     <div :class="!title ? 'mt-0' : 'mt-4'">
       <slot name="content" />
     </div>

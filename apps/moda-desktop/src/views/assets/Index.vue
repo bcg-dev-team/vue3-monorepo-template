@@ -39,7 +39,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import MainCardContent from '@/components/ui/cards/MainCardContent.vue';
+import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
 import CardLayoutHorizontal from '@/components/layout/fragments/CardLayoutHorizontal.vue';
 </script>

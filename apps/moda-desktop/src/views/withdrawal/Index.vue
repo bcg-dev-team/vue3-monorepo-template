@@ -63,8 +63,8 @@
 
 <script setup lang="ts">
 import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
-import MainCardContent from '@/components/ui/cards/MainCardContent.vue';
-import SubCardContent from '@/components/ui/cards/SubCardContent.vue';
+import MainCardContent from '@/components/common/cards/MainCardContent.vue';
+import SubCardContent from '@/components/common/cards/SubCardContent.vue';
 import { BaseButton, BaseTable, BaseInputText } from '@template/ui';
 import type { TableHeader, TableRow } from '@template/ui';
 import { ref } from 'vue';

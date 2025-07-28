@@ -4,6 +4,7 @@
   - 여러 탭을 관리하는 컨테이너 컴포넌트
   - 탭 순서에 따른 색상 변경: [빨간색, 파란색, 초록색, 보라색] 순환
   - 컨텐츠 영역도 선택된 탭과 같은 색상으로 변경
+  - 연결된 탭 형태로 첫 번째 탭이 선택된 상태
   @figma Tab (node-id: 58-877)
 -->
 <script setup lang="ts">
@@ -94,12 +95,18 @@ const containerClasses = computed(() => {
   return `${baseClasses} ${directionClass} ${sizeClass}`;
 });
 
+/**
+ * 각 탭의 위치를 결정하는 함수
+ */
 const getTabPosition = (index: number): 'first' | 'middle' | 'last' => {
   if (index === 0) return 'first';
   if (index === props.tabs.length - 1) return 'last';
   return 'middle';
 };
 
+/**
+ * 탭 변경 핸들러
+ */
 const handleTabChange = (index: number) => {
   const selectedTab = props.tabs[index];
   if (selectedTab && !selectedTab.disabled) {
@@ -108,6 +115,9 @@ const handleTabChange = (index: number) => {
   }
 };
 
+/**
+ * 현재 선택된 탭의 인덱스
+ */
 const selectedIndex = computed(() => {
   return props.tabs.findIndex((tab) => tab.value === props.modelValue);
 });
@@ -122,6 +132,7 @@ const getTabClasses = computed(() => {
     // 위치별 클래스
     const position = getTabPosition(index);
     if (position === 'first') classes.push('tab-first');
+    if (position === 'middle') classes.push('tab-middle');
     if (position === 'last') classes.push('tab-last');
 
     // 상태별 클래스
@@ -129,8 +140,6 @@ const getTabClasses = computed(() => {
       classes.push('tab-disabled');
     } else if (selected) {
       classes.push('tab-selected', `tab-color-${index % 4}`);
-    } else {
-      classes.push('tab-default');
     }
 
     return classes.join(' ');
@@ -146,12 +155,20 @@ const getPanelClasses = computed(() => {
     return classes.join(' ');
   };
 });
+
+/**
+ * 우측 여백 영역 클래스 계산
+ */
+const spacerClasses = computed(() => {
+  return 'tab-spacer';
+});
 </script>
 
 <template>
-  <div>
+  <div :class="containerClasses">
     <TabGroup :selected-index="selectedIndex" @change="handleTabChange">
-      <TabList :class="containerClasses" role="tablist">
+      <!-- 탭 리스트 -->
+      <TabList :class="['tab-list']" role="tablist">
         <Tab
           v-for="(tab, index) in tabs"
           :key="tab.value"
@@ -163,6 +180,9 @@ const getPanelClasses = computed(() => {
             {{ tab.label }}
           </button>
         </Tab>
+
+        <!-- 우측 여백 영역 (탭과 컨텐츠 연결) -->
+        <div :class="spacerClasses"></div>
       </TabList>
 
       <!-- 컨텐츠 영역 -->
@@ -170,7 +190,7 @@ const getPanelClasses = computed(() => {
         <TabPanel v-for="(tab, index) in tabs" :key="tab.value" :class="getPanelClasses(index)">
           <slot name="content" :tab="tab" :index="index" :is-selected="selectedIndex === index">
             <div v-if="tab.content" v-html="tab.content"></div>
-            <div v-else class="text-center"></div>
+            <div v-else class="text-center text-gray-500">{{ tab.label }} 컨텐츠</div>
           </slot>
         </TabPanel>
       </TabPanels>

@@ -43,7 +43,7 @@
 
 // 로딩 상태 스타일
 .icon-loading {
-  background-color: rgb(229 231 235); // bg-gray-200
+  background-color: var(--icon-color-loading);
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 

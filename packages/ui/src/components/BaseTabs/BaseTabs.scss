@@ -7,12 +7,14 @@
 // 컨테이너 스타일
 .tabs-container-horizontal {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  width: 100%;
 }
 
 .tabs-container-vertical {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  width: 100%;
 }
 
 // 크기별 스타일
@@ -28,74 +30,149 @@
   gap: 1.5rem;
 }
 
-// 기본 탭 스타일
-.tab-default {
-  background-color: var(--background-bg-surface);
-  color: var(--font-color-secondary);
+// 탭 리스트 스타일 (연결된 탭 형태)
+.tab-list {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
 }
 
-// 선택된 탭 스타일
+// 기본 탭 스타일
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--base-size-size-12) var(--base-size-size-16);
+  font-family: 'Pretendard GOV', sans-serif;
+  font-size: var(--base-size-size-14);
+  font-weight: 400;
+  line-height: var(--font-line-heights-6);
+  letter-spacing: var(--font-letter-spacing-0);
+  border: 1px solid transparent;
+  background-color: var(--base-colors-common-light-gray-ea);
+  color: var(--base-colors-neutral-neutral500);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  white-space: nowrap;
+}
+
+// 첫 번째 탭
+.tab-first {
+  border-top-left-radius: var(--radius-md);
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+// 중간 탭들
+.tab-middle {
+  border-radius: 0;
+  border-left: none;
+}
+
+// 마지막 탭
+.tab-last {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: var(--radius-md);
+  border-bottom-right-radius: 0;
+  border-left: none;
+}
+
+// 우측 여백 영역 (탭과 컨텐츠 연결)
+.tab-spacer {
+  flex: 1;
+  background-color: var(--base-colors-common-light-gray-ea);
+  border-top: 1px solid transparent;
+  border-right: 1px solid transparent;
+  border-top-right-radius: var(--radius-md);
+}
+
+// 선택된 탭 스타일 (색상별)
 .tab-selected {
-  background-color: var(--background-bg-surface-muted);
+  font-weight: 500;
+  border-bottom: none;
 }
 
 // 비활성화된 탭 스타일
 .tab-disabled {
-  background-color: var(--surface-disabled);
-  color: var(--input-color-text-disable);
-  border-color: var(--border-default);
+  background-color: var(--base-colors-common-light-gray-ea);
+  color: var(--base-colors-neutral-neutral500);
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
-// 색상별 탭 스타일
+// 색상별 탭 스타일 (Trade 토큰 활용)
 .tab-color-0 {
-  background-color: var(--trade-long-bg);
+  // 빨간색 (Trade Long)
+  background-color: var(--trade-long-background);
   color: var(--trade-long-text);
   border-color: var(--trade-long-border);
 }
 
 .tab-color-1 {
-  background-color: var(--trade-short-bg);
+  // 파란색 (Trade Short)
+  background-color: var(--trade-short-background);
   color: var(--trade-short-text);
   border-color: var(--trade-short-border);
 }
 
 .tab-color-2 {
-  background-color: var(--trade-correct-bg);
+  // 초록색 (Trade Correct)
+  background-color: var(--trade-correct-background);
   color: var(--trade-correct-text);
   border-color: var(--trade-correct-border);
 }
 
 .tab-color-3 {
-  background-color: var(--trade-cancel-bg);
+  // 보라색 (Trade Cancel)
+  background-color: var(--trade-cancel-background);
   color: var(--trade-cancel-text);
   border-color: var(--trade-cancel-border);
 }
 
-// 탭 패널 스타일
+// 탭 패널 스타일 (컨텐츠 영역)
 .tab-panel {
-  padding: 1rem;
+  padding: var(--base-size-size-16);
+  min-height: 65px;
+  border-bottom-left-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+  border-top: none;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+  border-bottom: 1px solid transparent;
 }
 
+// 색상별 탭 패널 스타일 (선택된 탭과 같은 색상)
 .tab-panel-color-0 {
-  background-color: var(--trade-long-bg);
-  color: var(--trade-long-text);
+  background-color: var(--trade-long-background);
   border-color: var(--trade-long-border);
 }
 
 .tab-panel-color-1 {
-  background-color: var(--trade-short-bg);
-  color: var(--trade-short-text);
+  background-color: var(--trade-short-background);
   border-color: var(--trade-short-border);
 }
 
 .tab-panel-color-2 {
-  background-color: var(--trade-correct-bg);
-  color: var(--trade-correct-text);
+  background-color: var(--trade-correct-background);
   border-color: var(--trade-correct-border);
 }
 
 .tab-panel-color-3 {
-  background-color: var(--trade-cancel-bg);
-  color: var(--trade-cancel-text);
+  background-color: var(--trade-cancel-background);
   border-color: var(--trade-cancel-border);
+}
+
+// 호버 효과
+.tab:not(.tab-disabled):hover {
+  opacity: 0.8;
+}
+
+// 포커스 효과
+.tab:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--base-colors-primary-primary100);
 }

@@ -1,31 +1,35 @@
 <!--
-  Figma 컴포넌트: Input/Text-SM, Input/Text-MD
-  BaseInput을 확장한 텍스트 입력 컴포넌트
+  Figma 컴포넌트: Input/Select-SM
+  BaseInput을 확장한 셀렉트 박스 컴포넌트
 -->
 <script setup lang="ts">
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import BaseInput from './BaseInput.vue';
+import './BaseInputSelect.scss';
 import { computed } from 'vue';
-import './BaseInputText.scss';
 
 /**
- * BaseInputText - 텍스트 입력 컴포넌트
+ * BaseInputSelect - 셀렉트 박스 컴포넌트
  *
- * @props modelValue - 입력값 (v-model)
+ * @props modelValue - 선택된 값 (v-model)
  * @props placeholder - 플레이스홀더 텍스트
  * @props size - 크기 (sm, md)
  * @props disabled - 비활성화 여부
  * @props error - 에러 상태 여부
  * @props errorMessage - 에러 메시지
- * @props readonly - 읽기 전용 여부
- * @props showIcon - 아이콘 표시 여부
- * @emits update:modelValue - 입력값 변경 시 발생
+ * @props options - 선택 옵션들
+ * @emits update:modelValue - 값 변경 시 발생
  * @emits focus - 포커스 시 발생
  * @emits blur - 블러 시 발생
  */
+interface Option {
+  value: string;
+  label: string;
+}
+
 interface Props {
   /**
-   * 입력값 (v-model)
+   * 선택된 값 (v-model)
    */
   modelValue?: string;
   /**
@@ -34,7 +38,7 @@ interface Props {
   placeholder?: string;
   /**
    * 크기
-   * @default 'md'
+   * @default 'sm'
    */
   size?: 'sm' | 'md';
   /**
@@ -52,26 +56,19 @@ interface Props {
    */
   errorMessage?: string;
   /**
-   * 읽기 전용 여부
-   * @default false
+   * 선택 옵션들
    */
-  readonly?: boolean;
-  /**
-   * 아이콘 표시 여부
-   * @default true
-   */
-  showIcon?: boolean;
+  options?: Option[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
   placeholder: '',
-  size: 'md',
+  size: 'sm',
   disabled: false,
   error: false,
   errorMessage: '',
-  readonly: false,
-  showIcon: true,
+  options: () => [],
 });
 
 const emit = defineEmits<{
@@ -80,14 +77,22 @@ const emit = defineEmits<{
   (e: 'blur', event: FocusEvent): void;
 }>();
 
+// 선택된 옵션 라벨
+const selectedLabel = computed(() => {
+  if (!props.modelValue) return '';
+  const option = props.options.find((opt) => opt.value === props.modelValue);
+  return option ? option.label : props.modelValue;
+});
+
 // 아이콘 크기 계산
 const iconSize = computed(() => {
   return props.size === 'sm' ? 'sm' : 'md';
 });
 
 // 이벤트 핸들러
-const handleInput = (value: string) => {
-  emit('update:modelValue', value);
+const handleSelect = (event: Event) => {
+  const target = event.target as HTMLSelectElement;
+  emit('update:modelValue', target.value);
 };
 
 const handleFocus = (event: FocusEvent) => {
@@ -101,24 +106,33 @@ const handleBlur = (event: FocusEvent) => {
 
 <template>
   <BaseInput
-    :model-value="modelValue"
+    :model-value="selectedLabel"
     :placeholder="placeholder"
     :size="size"
     :disabled="disabled"
     :error="error"
     :error-message="errorMessage"
-    :readonly="readonly"
-    @update:model-value="handleInput"
+    readonly
     @focus="handleFocus"
     @blur="handleBlur"
   >
     <template #suffix>
-      <BaseIcon
-        v-if="showIcon"
-        name="eye"
-        :size="iconSize"
-        :color="disabled ? 'disabled' : 'default'"
-      />
+      <BaseIcon name="arrow-down" :size="iconSize" :color="disabled ? 'disabled' : 'default'" />
     </template>
   </BaseInput>
+
+  <!-- 실제 셀렉트 요소 (숨김) -->
+  <select
+    :value="modelValue"
+    :disabled="disabled"
+    class="base-input-select-hidden"
+    @change="handleSelect"
+    @focus="handleFocus"
+    @blur="handleBlur"
+  >
+    <option value="" disabled>{{ placeholder }}</option>
+    <option v-for="option in options" :key="option.value" :value="option.value">
+      {{ option.label }}
+    </option>
+  </select>
 </template>

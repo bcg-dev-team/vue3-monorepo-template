@@ -2,7 +2,7 @@ import BasePaginationJoin from '../BasePaginationJoin.vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof BasePaginationJoin> = {
-  title: 'BasePagination/BasePaginationJoin',
+  title: 'Pagination/Join',
   component: BasePaginationJoin,
   tags: ['autodocs'],
   parameters: {

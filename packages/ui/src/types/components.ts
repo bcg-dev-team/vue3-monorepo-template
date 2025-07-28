@@ -38,4 +38,4 @@ export interface TabItem {
 }
 
 // BaseChip
-export type ChipVariant = 'surface' | 'primary' | 'secondary' | 'success' | 'warning' | 'error';
+export type ChipVariant = 'surface' | 'primary';

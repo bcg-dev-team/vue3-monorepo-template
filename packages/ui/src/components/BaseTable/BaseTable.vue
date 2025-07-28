@@ -1,6 +1,8 @@
 <!-- Figma: Table -->
 <script setup lang="ts">
 import type { TableHeader, TableRow } from '../../types/components';
+import BaseTableHead from './BaseTableHead.vue';
+import BaseTableBody from './BaseTableBody.vue';
 import { computed } from 'vue';
 import './BaseTable.scss';
 
@@ -11,6 +13,10 @@ import './BaseTable.scss';
  * @props data - 테이블 데이터 배열
  * @props selectable - 행 선택 가능 여부
  * @props sortable - 정렬 가능 여부
+ * @props selectedRows - 선택된 행 ID들
+ * @props headerType - 헤더 타입 ('type1' | 'type2')
+ * @props headerPreset - Type2 헤더의 preset 색상 ('gray' | 'blue' | 'pink')
+ * @props headerCustomColor - Type2 헤더의 커스텀 색상
  * @emits rowSelect - 행 선택 이벤트
  * @emits sort - 정렬 이벤트
  */
@@ -26,6 +32,12 @@ interface Props {
   sortable?: boolean;
   /** 선택된 행 ID들 */
   selectedRows?: (string | number)[];
+  /** 헤더 타입 */
+  headerType?: 'type1' | 'type2';
+  /** Type2 헤더의 preset 색상 */
+  headerPreset?: 'gray' | 'blue' | 'pink';
+  /** Type2 헤더의 커스텀 색상 */
+  headerCustomColor?: string;
 }
 
 interface Emits {
@@ -37,13 +49,14 @@ const props = withDefaults(defineProps<Props>(), {
   selectable: false,
   sortable: false,
   selectedRows: () => [],
+  headerType: 'type1',
+  headerPreset: 'gray',
 });
 
 const emit = defineEmits<Emits>();
 
-const handleRowSelect = (rowId: string | number) => {
-  const isSelected = props.selectedRows.includes(rowId);
-  emit('rowSelect', rowId, !isSelected);
+const handleRowSelect = (rowId: string | number, selected: boolean) => {
+  emit('rowSelect', rowId, selected);
 };
 
 const handleSort = (key: string) => {
@@ -66,73 +79,51 @@ const getRowClasses = (rowId: string | number) => {
 
   return classes.join(' ');
 };
+
+// 셀 클래스
+const getCellClasses = (rowId: string | number) => {
+  const classes = ['table-cell'];
+
+  if (isRowSelected(rowId)) {
+    classes.push('table-cell-selected');
+  }
+
+  return classes.join(' ');
+};
 </script>
 
 <template>
-  <div class="table" data-name="Table">
-    <!-- 헤더 -->
-    <div class="table-header">
-      <slot name="header">
-        <div class="header-row">
-          <div
-            v-for="header in headers"
-            :key="header.key"
-            :style="{ width: header.width || 'auto' }"
-            class="cell-container"
-          >
-            <div class="cursor-pointer" @click="handleSort(header.key)">
-              <slot name="header-cell" :header="header">
-                <div class="cell-content">
-                  <div class="header-cell">
-                    <div class="header-border" />
-                    <div class="header-content">
-                      <div class="header-padding">
-                        <div class="header-text">
-                          <span class="block whitespace-pre">{{ header.title }}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </slot>
-            </div>
-          </div>
-        </div>
-      </slot>
-    </div>
-
-    <!-- 바디 -->
-    <div class="table-body">
-      <slot name="body">
-        <div
-          v-for="row in data"
-          :key="row.id"
-          :class="getRowClasses(row.id)"
-          @click="handleRowSelect(row.id)"
+  <div class="table-container" data-name="Table">
+    <table class="table">
+      <!-- 헤더 -->
+      <slot name="head">
+        <BaseTableHead
+          :headers="headers"
+          :type="headerType"
+          :preset="headerPreset"
+          :custom-color="headerCustomColor"
+          @sort="handleSort"
         >
-          <div
-            v-for="header in headers"
-            :key="header.key"
-            :style="{ width: header.width || 'auto' }"
-            class="cell-container"
-          >
-            <slot name="body-cell" :row="row" :header="header" :value="row[header.key]">
-              <div class="cell-content">
-                <div class="body-cell">
-                  <div class="body-border" />
-                  <div class="body-content">
-                    <div class="body-padding">
-                      <div class="body-text">
-                        <span class="block whitespace-pre">{{ row[header.key] }}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </slot>
-          </div>
-        </div>
+          <template #head-cell="slotProps">
+            <slot name="head-cell" v-bind="slotProps" />
+          </template>
+        </BaseTableHead>
       </slot>
-    </div>
+
+      <!-- 바디 -->
+      <slot name="body">
+        <BaseTableBody
+          :headers="headers"
+          :data="data"
+          :selectable="selectable"
+          :selected-rows="selectedRows"
+          @row-select="handleRowSelect"
+        >
+          <template #body-cell="slotProps">
+            <slot name="body-cell" v-bind="slotProps" />
+          </template>
+        </BaseTableBody>
+      </slot>
+    </table>
   </div>
 </template>

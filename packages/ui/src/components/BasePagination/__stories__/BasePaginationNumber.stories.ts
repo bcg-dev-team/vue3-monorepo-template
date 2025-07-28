@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import BasePaginationNumber from '../BasePaginationNumber.vue';
 
 const meta: Meta<typeof BasePaginationNumber> = {
-  title: 'Components/BasePaginationNumber',
+  title: 'Pagination/Number',
   component: BasePaginationNumber,
   parameters: {
     docs: {

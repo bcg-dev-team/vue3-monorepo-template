@@ -7,11 +7,11 @@ import { computed } from 'vue';
 import './BaseCheckbox.scss';
 
 /**
- * 체크박스 컴포넌트
+ * BaseCheckbox - 체크박스 컴포넌트
  *
  * @props modelValue - 체크 여부 (v-model)
- * @props state - 체크 상태 (On, Off)
- * @props style - 스타일 (Default, Disabled)
+ * @props disabled - 비활성화 여부
+ * @props indeterminate - 부분 선택 상태 (3-state checkbox)
  * @emits update:modelValue - 값 변경 시 발생
  */
 interface Props {
@@ -20,81 +20,144 @@ interface Props {
    */
   modelValue: boolean;
   /**
-   * 체크 상태
-   *
-   * On: 체크됨, Off: 체크 안됨
-   * @default 'Off'
+   * 비활성화 여부
+   * @default false
    */
-  state?: 'On' | 'Off';
+  disabled?: boolean;
   /**
-   * 스타일
-   *
-   * Default: 기본, Disabled: 비활성화
-   * @default 'Default'
+   * 부분 선택 상태 (3-state checkbox)
+   * @default false
    */
-  style?: 'Default' | 'Disabled';
+  indeterminate?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  state: 'Off',
-  style: 'Default',
+  disabled: false,
+  indeterminate: false,
 });
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void;
 }>();
 
-const isChecked = computed(() => props.state === 'On' || props.modelValue);
-const isDisabled = computed(() => props.style === 'Disabled');
+// 상태 계산
+const isChecked = computed(() => props.modelValue);
+const isDisabled = computed(() => props.disabled);
+const isIndeterminate = computed(() => props.indeterminate);
 
-// 스타일별 클래스 매핑 (컴포넌트별 토큰)
-const styleClasses = {
-  Default: 'checkbox-default',
-  Disabled: 'checkbox-disabled',
+// 체크박스 클래스 계산
+const checkboxClasses = computed(() => {
+  const baseClasses = [
+    'relative',
+    'w-6 h-6', // 24x24px (피그마 크기)
+    'rounded-[3px]',
+    'border-[1.5px]',
+    'border-solid',
+    'transition-all',
+    'duration-150',
+    'flex',
+    'items-center',
+    'justify-center',
+  ];
+
+  if (isDisabled.value) {
+    if (isChecked.value) {
+      // Disabled + Checked
+      baseClasses.push(
+        'bg-[var(--checkbox-color-background-disabled)]',
+        'border-[var(--checkbox-color-border-disabled)]'
+      );
+    } else {
+      // Disabled + Unchecked
+      baseClasses.push(
+        'bg-[var(--checkbox-color-surface-disabled)]',
+        'border-[var(--checkbox-color-border-disabled)]'
+      );
+    }
+  } else {
+    if (isChecked.value || isIndeterminate.value) {
+      // Enabled + Checked/Indeterminate
+      baseClasses.push(
+        'bg-[var(--checkbox-color-background-checked)]',
+        'border-[var(--checkbox-color-border-checked)]'
+      );
+    } else {
+      // Enabled + Unchecked
+      baseClasses.push(
+        'bg-[var(--checkbox-color-surface)]',
+        'border-[var(--checkbox-color-border-static)]'
+      );
+    }
+  }
+
+  return baseClasses.join(' ');
+});
+
+// 이벤트 핸들러
+const handleClick = () => {
+  if (!isDisabled.value) {
+    emit('update:modelValue', !isChecked.value);
+  }
 };
 
-// 정적 클래스 (기본 스타일)
-const staticClasses = computed(() => {
-  const baseClasses = [
-    // 1. 레이아웃
-    'relative flex items-center justify-center',
-
-    // 2. 크기
-    'w-5 h-5',
-
-    // 3. 테두리
-    'rounded-[3px] border border-solid',
-
-    // 4. 전환 효과
-    'transition-all duration-150',
-  ].join(' ');
-
-  const styleClass = styleClasses[props.style] || 'checkbox-default';
-
-  return `${baseClasses} ${styleClass}`;
-});
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    handleClick();
+  }
+};
 </script>
 
 <template>
-  <label class="inline-flex cursor-pointer select-none items-center">
-    <span
-      :class="staticClasses"
-      @click.stop.prevent="!isDisabled && emit('update:modelValue', !isChecked)"
-    >
-      <svg v-if="isChecked" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+  <div
+    class="inline-flex cursor-pointer select-none items-center"
+    :class="{ 'cursor-not-allowed': isDisabled }"
+    @click="handleClick"
+    @keydown="handleKeydown"
+    tabindex="0"
+    role="checkbox"
+    :aria-checked="isIndeterminate ? 'mixed' : isChecked"
+    :aria-disabled="isDisabled"
+  >
+    <!-- 체크박스 박스 -->
+    <div :class="checkboxClasses">
+      <!-- 체크 아이콘 (체크된 상태) -->
+      <svg
+        v-if="isChecked && !isIndeterminate"
+        class="h-6 w-6 text-white"
+        fill="none"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
         <path
-          d="M9.5 13.38l6.9-6.9 1.06 1.06-7.96 7.96-4.77-4.77 1.06-1.06 3.71 3.71z"
+          d="M9.50071 13.3801L16.3957 6.48438L17.4571 7.54502L9.50071 15.5014L4.72705 10.7277L5.7877 9.66706L9.50071 13.3801Z"
           fill="currentColor"
         />
       </svg>
-    </span>
+
+      <!-- 부분 선택 아이콘 (indeterminate 상태) -->
+      <svg
+        v-if="isIndeterminate"
+        class="h-4 w-4 text-white"
+        fill="none"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </div>
+
+    <!-- 숨겨진 실제 input 요소 -->
     <input
       type="checkbox"
-      class="absolute -m-px h-px w-px overflow-hidden whitespace-nowrap border-0 p-0"
+      class="sr-only"
       :checked="isChecked"
       :disabled="isDisabled"
+      :indeterminate="isIndeterminate"
       @change="(e) => emit('update:modelValue', (e.target as HTMLInputElement).checked)"
     />
+
+    <!-- 라벨 슬롯 -->
     <slot />
-  </label>
+  </div>
 </template>

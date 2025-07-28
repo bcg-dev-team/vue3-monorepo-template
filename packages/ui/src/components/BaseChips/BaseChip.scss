@@ -1,13 +1,24 @@
 // BaseChip 컴포넌트 스타일
-// Figma 디자인 토큰을 기반으로 한 칩 스타일 정의
+// 피그마 디자인 토큰을 기반으로 한 칩 스타일 정의
+// 가이드: 피그마 HEX → 디자인 토큰 변환 적용
+
+// 기본 칩 스타일
+.base-chip {
+  font-family: 'Pretendard GOV', sans-serif;
+  letter-spacing: -0.35px;
+  border: none;
+  outline: none;
+  cursor: default;
+  user-select: none;
+}
 
 // 컴포넌트별 토큰만 정의
 // Tailwind 클래스로 처리 가능한 스타일들은 Vue 파일에서 직접 사용
 
-// Surface 칩
+// Surface 칩 (기본)
 .chip-surface {
-  background-color: var(--background-bg-surface);
-  color: var(--font-color-secondary);
+  background-color: var(--table-chip-bg);
+  color: var(--font-color-footer);
 }
 
 // Primary 칩
@@ -16,26 +27,58 @@
   color: var(--button-primary-text);
 }
 
-// Secondary 칩
-.chip-secondary {
-  background-color: var(--background-bg-surface-muted);
-  color: var(--font-color-primary);
+
+
+// 크기별 스타일
+.chip-sm {
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: -0.1px;
+  padding: 2px 4px;
+  border-radius: 4px;
 }
 
-// Success 칩
-.chip-success {
-  background-color: var(--trade-correct-bg);
-  color: var(--trade-correct-text);
+.chip-md {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: -0.35px;
+  padding: 2px 8px;
+  border-radius: 3px;
 }
 
-// Warning 칩
-.chip-warning {
-  background-color: var(--warning);
-  color: var(--white);
+.chip-lg {
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: -0.35px;
+  padding: 4px 8px;
+  border-radius: 6px;
 }
 
-// Error 칩
-.chip-error {
-  background-color: var(--error);
-  color: var(--white);
+// 폰트 굵기별 스타일
+.chip-font-normal {
+  font-weight: 400;
+}
+
+.chip-font-medium {
+  font-weight: 500;
+}
+
+.chip-font-semibold {
+  font-weight: 600;
+}
+
+.chip-font-bold {
+  font-weight: 700;
+}
+
+// 호버 효과 (선택사항)
+.base-chip:hover {
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+// 포커스 상태 (접근성)
+.base-chip:focus-visible {
+  outline: 2px solid var(--input-color-border-focus);
+  outline-offset: 2px;
 }

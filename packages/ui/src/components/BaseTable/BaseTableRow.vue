@@ -1,48 +1,52 @@
 <!-- Figma: Table Row -->
 <script setup lang="ts">
+import type { TextAlign } from '../../types/components';
 import { computed } from 'vue';
 import './BaseTableRow.scss';
 
-/**
- * 테이블 행 컴포넌트
- *
- * @props isHeader - 헤더 행 여부
- * @props selected - 선택된 행 여부
- * @props hover - 호버 효과 여부
- */
 interface Props {
-  /** 헤더 행 여부 */
-  isHeader?: boolean;
-  /** 선택된 행 여부 */
+  type?: 'header' | 'body' | 'footer';
+  align?: TextAlign;
   selected?: boolean;
-  /** 호버 효과 여부 */
-  hover?: boolean;
+  selectable?: boolean;
+}
+
+interface Emits {
+  (e: 'click', event: MouseEvent): void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  isHeader: false,
+  type: 'body',
+  align: 'left',
   selected: false,
-  hover: true,
+  selectable: false,
 });
 
-// 행 클래스
+const emit = defineEmits<Emits>();
+
 const rowClasses = computed(() => {
-  const baseClasses = 'w-full';
+  const classes = ['table-row', `table-row-${props.type}`];
 
   if (props.selected) {
-    return `${baseClasses} table-row-selected`;
+    classes.push('table-row-selected');
   }
 
-  if (props.hover && !props.isHeader) {
-    return `${baseClasses} table-row-hover`;
+  if (props.selectable) {
+    classes.push('table-row-selectable');
   }
 
-  return baseClasses;
+  return classes.join(' ');
 });
+
+const handleClick = (event: MouseEvent) => {
+  if (props.selectable) {
+    emit('click', event);
+  }
+};
 </script>
 
 <template>
-  <div :class="rowClasses" data-name="Table/Row">
+  <tr :class="rowClasses" :data-type="type" @click="handleClick">
     <slot />
-  </div>
+  </tr>
 </template>

@@ -18,20 +18,42 @@
       </div>
     </div>
     <div class="mt-6 flex flex-col gap-3">
-      <div class="py-3 px-4 bg-bg-innerframe rounded-md flex items-center justify-between">
-        <span class="text-md font-regular text-divider-muted">총 손익</span>
-        <span class="text-md font-semibold">+$23,456.78</span>
-      </div>
-      <div class="py-3 px-4 bg-bg-innerframe rounded-md flex items-center justify-between">
-        <span class="text-md font-regular text-divider-muted">승률</span>
-        <span class="text-md font-semibold">68.5%</span>
-      </div>
-      <div class="py-3 px-4 bg-bg-innerframe rounded-md flex items-center justify-between">
-        <span class="text-md font-regular text-divider-muted">총 거래</span>
-        <span class="text-md font-semibold">1,257 건</span>
-      </div>
+      <SubCardContent v-for="(item, index) in assetsInfo" :key="index">
+        <template #content>
+          <div class="flex items-center justify-between py-3 px-4">
+            <span class="text-md font-regular text-divider-muted">{{ item.title }}</span>
+            <span
+              class="text-md font-semibold"
+              :class="{ 'text-trade-buy': item.title === '총 손익' }"
+              >{{ item.value }}</span
+            >
+          </div>
+        </template>
+      </SubCardContent>
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import SubCardContent from '@/components/common/cards/SubCardContent.vue';
+
+interface AssetsInfo {
+  title: string;
+  value: string;
+}
+
+const assetsInfo: AssetsInfo[] = [
+  {
+    title: '총 손익',
+    value: '-$23,456.78',
+  },
+  {
+    title: '승률',
+    value: '68.5%',
+  },
+  {
+    title: '총 거래',
+    value: '1,257 건',
+  },
+];
+</script>

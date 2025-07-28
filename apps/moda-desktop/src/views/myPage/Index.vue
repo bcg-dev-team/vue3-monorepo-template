@@ -51,9 +51,27 @@
             <div class="my-[80px]">이번주 성과</div>
           </template>
         </MainCardContent>
-        <MainCardContent class="row-span-1 p-6">
+        <MainCardContent class="row-span-1">
           <template #content>
-            <div class="my-[100px]">도움이 필요하세요?</div>
+            <div class="bg-[#19323f] flex flex-col gap-6 items-center justify-center p-6">
+              <div class="text-white bg-[#eaecee33] p-3 rounded-md">:헤드셋 아이콘:</div>
+              <div class="flex flex-col gap-2 text-white items-center justify-center">
+                <span class="text-xl font-bold">도움이 필요하세요?</span>
+                <span class="text-md font-medium">24시간 고객지원팀이 언제든 도와드립니다.</span>
+              </div>
+              <div class="flex items-center justify-center flex-col gap-3 w-full">
+                <div
+                  class="bg-white w-full rounded-sm px-5 py-[6px] h-[42px] flex items-center justify-center"
+                >
+                  <span class="text-md font-medium">채팅 상담 버튼 영역</span>
+                </div>
+                <div
+                  class="bg-white w-full rounded-sm px-5 py-[6px] h-[42px] flex items-center justify-center"
+                >
+                  <span class="text-md font-medium">전화 상담 버튼 영역</span>
+                </div>
+              </div>
+            </div>
           </template>
         </MainCardContent>
       </CardLayoutVertical>

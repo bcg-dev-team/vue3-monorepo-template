@@ -12,7 +12,7 @@ import type { IconName } from '../../../types/icons';
  * Figma 링크: [Icon 컴포넌트](https://figma.com/design/...)
  */
 const meta: Meta<typeof BaseIcon> = {
-  title: 'Components/BaseIcon',
+  title: 'Icons/Icons',
   component: BaseIcon,
   parameters: {
     docs: {

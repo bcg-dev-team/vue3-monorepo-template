@@ -1,16 +1,14 @@
 <!--
   Figma 컴포넌트: Tabs 컨테이너
-  - Headless UI TabGroup 컴포넌트 기반
-  - 여러 탭을 관리하는 컨테이너 컴포넌트
-  - 탭 순서에 따른 색상 변경: [빨간색, 파란색, 초록색, 보라색] 순환
-  - 컨텐츠 영역도 선택된 탭과 같은 색상으로 변경
-  - 연결된 탭 형태로 첫 번째 탭이 선택된 상태
-  @figma Tab (node-id: 58-877)
+  - v-if를 활용한 세 가지 탭 디자인 지원
+  - 첫 번째 탭: 연결된 탭 형태 (기존 BaseTabs 디자인)
+  - 두 번째 탭: 개별 탭 형태
+  - 세 번째 탭: 카드 형태 탭
+  @figma Tab (node-id: 58-877, 815-12005, 1133-11929)
 -->
 <script setup lang="ts">
-import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
 import type { TabItem, ComponentSize } from '../../types/components';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import './BaseTabs.scss';
 
 interface Props {
@@ -27,6 +25,15 @@ interface Props {
    * 탭의 value와 일치하는 값이어야 합니다.
    */
   modelValue: string | number;
+
+  /**
+   * 탭 디자인 타입
+   *
+   * 'connected': 연결된 탭 형태 (첫 번째 탭 디자인)
+   * 'individual': 개별 탭 형태 (두 번째 탭 디자인)
+   * 'card': 카드 형태 탭 (세 번째 탭 디자인)
+   */
+  variant?: 'connected' | 'individual' | 'card';
 
   /**
    * 탭 그룹의 방향 (horizontal, vertical)
@@ -63,6 +70,7 @@ interface Emits {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  variant: 'connected',
   direction: 'horizontal',
   size: 'md',
   showContent: true,
@@ -70,13 +78,13 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>();
 
-// 방향별 클래스 매핑 (컴포넌트별 토큰)
+// 방향별 클래스 매핑
 const directionClasses = {
   horizontal: 'tabs-container-horizontal',
   vertical: 'tabs-container-vertical',
 };
 
-// 크기별 클래스 매핑 (컴포넌트별 토큰)
+// 크기별 클래스 매핑
 const sizeClasses = {
   sm: 'tabs-sm',
   md: 'tabs-md',
@@ -85,10 +93,7 @@ const sizeClasses = {
 
 // 컨테이너 클래스
 const containerClasses = computed(() => {
-  const baseClasses = [
-    // 1. 레이아웃
-    'w-full',
-  ].join(' ');
+  const baseClasses = ['w-full', `tabs-variant-${props.variant}`].join(' ');
   const directionClass = directionClasses[props.direction];
   const sizeClass = sizeClasses[props.size];
 
@@ -96,7 +101,7 @@ const containerClasses = computed(() => {
 });
 
 /**
- * 각 탭의 위치를 결정하는 함수
+ * 각 탭의 위치를 결정하는 함수 (연결된 탭용)
  */
 const getTabPosition = (index: number): 'first' | 'middle' | 'last' => {
   if (index === 0) return 'first';
@@ -107,8 +112,8 @@ const getTabPosition = (index: number): 'first' | 'middle' | 'last' => {
 /**
  * 탭 변경 핸들러
  */
-const handleTabChange = (index: number) => {
-  const selectedTab = props.tabs[index];
+const handleTabChange = (tabValue: string | number) => {
+  const selectedTab = props.tabs.find((tab) => tab.value === tabValue);
   if (selectedTab && !selectedTab.disabled) {
     emit('update:modelValue', selectedTab.value);
     emit('tab-click', selectedTab.value);
@@ -123,11 +128,11 @@ const selectedIndex = computed(() => {
 });
 
 /**
- * 각 탭의 클래스 계산
+ * 각 탭의 클래스 계산 (연결된 탭용)
  */
-const getTabClasses = computed(() => {
+const getConnectedTabClasses = computed(() => {
   return (index: number, disabled: boolean, selected: boolean) => {
-    const classes = ['tab'];
+    const classes = ['tab', 'tab-connected'];
 
     // 위치별 클래스
     const position = getTabPosition(index);
@@ -147,6 +152,42 @@ const getTabClasses = computed(() => {
 });
 
 /**
+ * 각 탭의 클래스 계산 (개별 탭용)
+ */
+const getIndividualTabClasses = computed(() => {
+  return (index: number, disabled: boolean, selected: boolean) => {
+    const classes = ['tab', 'tab-individual'];
+
+    // 상태별 클래스
+    if (disabled) {
+      classes.push('tab-disabled');
+    } else if (selected) {
+      classes.push('tab-selected', `tab-individual-color-${index % 4}`);
+    }
+
+    return classes.join(' ');
+  };
+});
+
+/**
+ * 각 탭의 클래스 계산 (카드 탭용)
+ */
+const getCardTabClasses = computed(() => {
+  return (index: number, disabled: boolean, selected: boolean) => {
+    const classes = ['tab', 'tab-card'];
+
+    // 상태별 클래스
+    if (disabled) {
+      classes.push('tab-disabled');
+    } else if (selected) {
+      classes.push('tab-selected', `tab-card-color-${index % 4}`);
+    }
+
+    return classes.join(' ');
+  };
+});
+
+/**
  * 각 탭 패널의 클래스 계산
  */
 const getPanelClasses = computed(() => {
@@ -157,7 +198,7 @@ const getPanelClasses = computed(() => {
 });
 
 /**
- * 우측 여백 영역 클래스 계산
+ * 우측 여백 영역 클래스 계산 (연결된 탭용)
  */
 const spacerClasses = computed(() => {
   return 'tab-spacer';
@@ -166,34 +207,100 @@ const spacerClasses = computed(() => {
 
 <template>
   <div :class="containerClasses">
-    <TabGroup :selected-index="selectedIndex" @change="handleTabChange">
+    <!-- 연결된 탭 형태 (첫 번째 탭 디자인) -->
+    <div v-if="variant === 'connected'" class="tabs-connected">
       <!-- 탭 리스트 -->
-      <TabList :class="['tab-list']" role="tablist">
-        <Tab
+      <div class="tab-list" role="tablist">
+        <button
           v-for="(tab, index) in tabs"
           :key="tab.value"
+          :class="getConnectedTabClasses(index, tab.disabled || false, modelValue === tab.value)"
           :disabled="tab.disabled"
-          as="template"
-          v-slot="{ selected }"
+          @click="handleTabChange(tab.value)"
         >
-          <button :class="getTabClasses(index, tab.disabled || false, selected)">
-            {{ tab.label }}
-          </button>
-        </Tab>
+          {{ tab.label }}
+        </button>
 
         <!-- 우측 여백 영역 (탭과 컨텐츠 연결) -->
         <div :class="spacerClasses"></div>
-      </TabList>
+      </div>
 
       <!-- 컨텐츠 영역 -->
-      <TabPanels v-if="showContent">
-        <TabPanel v-for="(tab, index) in tabs" :key="tab.value" :class="getPanelClasses(index)">
-          <slot name="content" :tab="tab" :index="index" :is-selected="selectedIndex === index">
+      <div v-if="showContent" class="tab-content">
+        <div
+          v-for="(tab, index) in tabs"
+          :key="tab.value"
+          v-show="modelValue === tab.value"
+          :class="getPanelClasses(index)"
+        >
+          <slot name="content" :tab="tab" :index="index" :is-selected="modelValue === tab.value">
             <div v-if="tab.content" v-html="tab.content"></div>
             <div v-else class="text-center text-gray-500">{{ tab.label }} 컨텐츠</div>
           </slot>
-        </TabPanel>
-      </TabPanels>
-    </TabGroup>
+        </div>
+      </div>
+    </div>
+
+    <!-- 개별 탭 형태 (두 번째 탭 디자인) -->
+    <div v-else-if="variant === 'individual'" class="tabs-individual">
+      <!-- 탭 리스트 -->
+      <div class="tab-list" role="tablist">
+        <button
+          v-for="(tab, index) in tabs"
+          :key="tab.value"
+          :class="getIndividualTabClasses(index, tab.disabled || false, modelValue === tab.value)"
+          :disabled="tab.disabled"
+          @click="handleTabChange(tab.value)"
+        >
+          {{ tab.label }}
+        </button>
+      </div>
+
+      <!-- 컨텐츠 영역 -->
+      <div v-if="showContent" class="tab-content">
+        <div
+          v-for="(tab, index) in tabs"
+          :key="tab.value"
+          v-show="modelValue === tab.value"
+          class="tab-panel tab-panel-individual"
+        >
+          <slot name="content" :tab="tab" :index="index" :is-selected="modelValue === tab.value">
+            <div v-if="tab.content" v-html="tab.content"></div>
+            <div v-else class="text-center text-gray-500">{{ tab.label }} 컨텐츠</div>
+          </slot>
+        </div>
+      </div>
+    </div>
+
+    <!-- 카드 형태 탭 (세 번째 탭 디자인) -->
+    <div v-else-if="variant === 'card'" class="tabs-card">
+      <!-- 탭 리스트 -->
+      <div class="tab-list" role="tablist">
+        <button
+          v-for="(tab, index) in tabs"
+          :key="tab.value"
+          :class="getCardTabClasses(index, tab.disabled || false, modelValue === tab.value)"
+          :disabled="tab.disabled"
+          @click="handleTabChange(tab.value)"
+        >
+          {{ tab.label }}
+        </button>
+      </div>
+
+      <!-- 컨텐츠 영역 -->
+      <div v-if="showContent" class="tab-content">
+        <div
+          v-for="(tab, index) in tabs"
+          :key="tab.value"
+          v-show="modelValue === tab.value"
+          class="tab-panel tab-panel-card"
+        >
+          <slot name="content" :tab="tab" :index="index" :is-selected="modelValue === tab.value">
+            <div v-if="tab.content" v-html="tab.content"></div>
+            <div v-else class="text-center text-gray-500">{{ tab.label }} 컨텐츠</div>
+          </slot>
+        </div>
+      </div>
+    </div>
   </div>
 </template>

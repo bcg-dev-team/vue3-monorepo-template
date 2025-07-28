@@ -1,5 +1,6 @@
 // BaseButton 컴포넌트 스타일
-// Figma 디자인 토큰을 기반으로 한 버튼 variant 스타일 정의
+// 피그마 디자인 토큰을 기반으로 한 버튼 variant 스타일 정의
+// 가이드: 피그마 HEX → 디자인 토큰 변환 적용
 
 // 기본 버튼 스타일
 .btn-primary,
@@ -10,70 +11,86 @@
 .btn-light-solid,
 .btn-red-solid,
 .btn-blue-solid,
+.btn-green-solid,
+.btn-cancel-solid,
 .btn-disabled {
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease,
     color 0.2s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: 'Pretendard GOV', sans-serif;
 }
 
-// Primary 버튼
+// Primary 버튼 (기본 노란색)
 .btn-primary {
   background-color: var(--button-primary-background);
   color: var(--button-primary-text);
+  font-weight: 600;
 }
 
 .btn-primary:hover {
   background-color: var(--button-primary-background-deep);
 }
 
-// Outline 버튼
+// Outline 버튼 (기본 아웃라인)
 .btn-outline {
-  background-color: transparent;
+  background-color: var(--button-outline-background);
   color: var(--button-outline-text);
-  border-color: var(--button-outline-border);
+  border: 1px solid var(--button-outline-border);
 }
 
 .btn-outline:hover {
   background-color: var(--button-outline-background);
 }
 
-// Red 버튼
+// Red 버튼 (빨간색 아웃라인)
 .btn-red {
-  background-color: transparent;
+  background-color: var(--button-red-background);
   color: var(--button-red-text);
-  border-color: var(--button-red-border);
+  border: 1px solid var(--button-red-border);
 }
 
 .btn-red:hover {
   background-color: var(--button-red-background-hover);
 }
 
-// Blue 버튼
+// Blue 버튼 (파란색 아웃라인)
 .btn-blue {
-  background-color: transparent;
+  background-color: var(--button-blue-background);
   color: var(--button-blue-text);
-  border-color: var(--button-blue-border);
+  border: 1px solid var(--button-blue-border);
 }
 
 .btn-blue:hover {
   background-color: var(--button-blue-background-hover);
 }
 
-// Pill 버튼
+// Pill 버튼 (둥근 모서리)
 .btn-pill {
-  background-color: var(--button-pill-background);
-  color: var(--button-pill-text);
+  background-color: var(--button-primary-background);
+  color: var(--button-primary-text);
+  font-weight: 500;
 }
 
-// Light Solid 버튼
+.btn-pill:hover {
+  background-color: var(--button-primary-background-deep);
+}
+
+// Light Solid 버튼 (연한 노란색)
 .btn-light-solid {
   background-color: var(--button-light-solid-background);
   color: var(--button-light-solid-text);
-  border-color: var(--button-light-solid-border);
+  border: 1px solid var(--button-light-solid-border);
 }
 
-// Red Solid 버튼
+.btn-light-solid:hover {
+  background-color: var(--button-light-solid-background);
+}
+
+// Red Solid 버튼 (빨간색 솔리드)
 .btn-red-solid {
   background-color: var(--button-red-solid-background);
   color: var(--button-red-solid-text);
@@ -83,7 +100,7 @@
   background-color: var(--button-red-solid-hover);
 }
 
-// Blue Solid 버튼
+// Blue Solid 버튼 (파란색 솔리드)
 .btn-blue-solid {
   background-color: var(--button-blue-solid-background);
   color: var(--button-blue-solid-text);
@@ -93,11 +110,32 @@
   background-color: var(--button-blue-solid-hover);
 }
 
+// Green Solid 버튼 (초록색 솔리드)
+.btn-green-solid {
+  background-color: var(--base-colors-green-green700);
+  color: var(--base-colors-neutral-neutral000);
+  font-weight: 600;
+}
+
+.btn-green-solid:hover {
+  background-color: var(--base-colors-green-green700);
+}
+
+// Cancel Solid 버튼 (보라색 솔리드)
+.btn-cancel-solid {
+  background-color: var(--base-colors-purple-purple600);
+  color: var(--base-colors-neutral-neutral000);
+  font-weight: 600;
+}
+
+.btn-cancel-solid:hover {
+  background-color: var(--base-colors-purple-purple600);
+}
+
 // Disabled 버튼
 .btn-disabled {
   background-color: var(--button-disabled-background);
   color: var(--button-disabled-text);
-  border-color: var(--button-disabled-border);
   cursor: not-allowed;
 }
 
@@ -111,4 +149,76 @@ button:disabled {
     border-color: inherit !important;
     color: inherit !important;
   }
+}
+
+// 크기별 스타일
+.btn-size-regular {
+  padding: 12px 16px; // py-3 px-4
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: -0.35px;
+  border-radius: 8px; // rounded-default
+}
+
+.btn-size-small {
+  padding: 6px 20px; // py-1.5 px-5
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0;
+  border-radius: 6px; // rounded-sm
+}
+
+.btn-size-small-inner {
+  padding: 10px 12px; // py-2.5 px-3
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: -0.35px;
+  border-radius: 6px; // rounded-sm
+}
+
+.btn-size-pill {
+  padding: 8px 16px; // py-2 px-4
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0;
+  border-radius: 9999px; // rounded-full
+}
+
+// 아이콘 크기 조정
+.btn-size-regular .icon {
+  width: 24px;
+  height: 24px;
+}
+
+.btn-size-small .icon {
+  width: 24px;
+  height: 24px;
+}
+
+.btn-size-small-inner .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.btn-size-pill .icon {
+  width: 20px;
+  height: 20px;
+}
+
+// 서브 텍스트 스타일
+.btn-sub-text {
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.btn-size-regular .btn-sub-text {
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.btn-size-small-inner .btn-sub-text {
+  font-size: 13px;
+  line-height: 16px;
 }

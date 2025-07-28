@@ -1,5 +1,7 @@
 <!--
   Figma 공통 칩 최소 단위 컴포넌트
+  하이브리드 방식: 기본 variant + 커스텀 색상 지원
+  가이드: 피그마 HEX → 디자인 토큰 변환 적용
 -->
 <script setup lang="ts">
 import type { ChipVariant, ComponentSize } from '../../types/components';
@@ -8,12 +10,16 @@ import './BaseChip.scss';
 
 /**
  * 칩(Chip) 최소 단위 컴포넌트
+ * 하이브리드 방식: 기본 variant + 커스텀 색상 지원
  *
  * @props label - 칩 텍스트
  * @props variant - 칩 스타일 변형 (surface, primary, secondary 등)
  * @props size - 칩 크기 (sm, md, lg)
  * @props rounded - border-radius 클래스 (Tailwind 토큰)
  * @props fontWeight - 폰트 굵기 (font-normal, font-medium 등)
+ * @props backgroundColor - 커스텀 배경색 (CSS 변수 또는 HEX)
+ * @props textColor - 커스텀 텍스트색 (CSS 변수 또는 HEX)
+ * @props borderColor - 커스텀 테두리색 (CSS 변수 또는 HEX)
  * @slot 기본 슬롯(텍스트 대신 커스텀)
  */
 interface Props {
@@ -41,6 +47,18 @@ interface Props {
    * @default 'font-normal'
    */
   fontWeight?: string;
+  /**
+   * 커스텀 배경색 (CSS 변수 또는 HEX)
+   */
+  backgroundColor?: string;
+  /**
+   * 커스텀 텍스트색 (CSS 변수 또는 HEX)
+   */
+  textColor?: string;
+  /**
+   * 커스텀 테두리색 (CSS 변수 또는 HEX)
+   */
+  borderColor?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -61,10 +79,6 @@ const sizeClasses = {
 const variantClasses = {
   surface: 'chip-surface',
   primary: 'chip-primary',
-  secondary: 'chip-secondary',
-  success: 'chip-success',
-  warning: 'chip-warning',
-  error: 'chip-error',
 };
 
 // Font weight별 클래스 매핑
@@ -83,7 +97,23 @@ const roundedClasses: Record<string, string> = {
   'rounded-full': 'rounded-full',
 };
 
-// 정적 클래스 (기본 스타일)
+// 기본 색상 규칙 (backgroundColor만 입력 시 적용)
+const getDefaultTextColor = (backgroundColor: string) => {
+  // 디자인 토큰 기반 기본 텍스트색 결정
+  if (backgroundColor.includes('--trade-short-bg') || backgroundColor.includes('#e8f0fa')) {
+    return 'var(--trade-short-text)'; // #0067ef
+  }
+  if (backgroundColor.includes('--trade-cancel-bg') || backgroundColor.includes('#f9f3ff')) {
+    return 'var(--trade-cancel-text)'; // #892fe9
+  }
+  if (backgroundColor.includes('--table-chip-bg') || backgroundColor.includes('#eaecee')) {
+    return 'var(--font-color-footer)'; // #5a5c5e
+  }
+  // 기본값
+  return 'var(--font-color-primary)';
+};
+
+// 칩 클래스 계산
 const chipClasses = computed(() => {
   const classes = [
     // 1. 레이아웃
@@ -100,17 +130,45 @@ const chipClasses = computed(() => {
 
     // 5. 테두리
     roundedClasses[props.rounded] || 'rounded-sm',
-
-    // 6. 컴포넌트별 토큰 (배경색, 텍스트색 등)
-    variantClasses[props.variant] || 'chip-surface',
   ];
 
+  // 커스텀 색상이 있으면 우선 적용
+  if (props.backgroundColor || props.textColor || props.borderColor) {
+    return classes.join(' ');
+  }
+
+  // 없으면 기본 variant 적용
+  classes.push(variantClasses[props.variant] || 'chip-surface');
   return classes.join(' ');
+});
+
+// 커스텀 스타일 계산
+const customStyles = computed(() => {
+  const styles: Record<string, string> = {};
+
+  if (props.backgroundColor) {
+    styles.backgroundColor = props.backgroundColor;
+  }
+
+  if (props.textColor) {
+    styles.color = props.textColor;
+  } else if (props.backgroundColor) {
+    // backgroundColor만 입력된 경우 기본 텍스트색 적용
+    styles.color = getDefaultTextColor(props.backgroundColor);
+  }
+
+  if (props.borderColor) {
+    styles.borderColor = props.borderColor;
+    styles.borderWidth = '1px';
+    styles.borderStyle = 'solid';
+  }
+
+  return styles;
 });
 </script>
 
 <template>
-  <span :class="chipClasses">
+  <span :class="chipClasses" :style="customStyles">
     <slot>{{ label }}</slot>
   </span>
 </template>

@@ -1,55 +1,71 @@
 // BaseInputText 컴포넌트 스타일
-// Figma 디자인 토큰을 기반으로 한 입력 필드 스타일 정의
+// 피그마의 Input/Text-SM과 Input/Text-MD 디자인 기반
+// 가이드: 피그마 HEX → 디자인 토큰 변환 적용
 
-// 컴포넌트별 토큰만 정의
-// Tailwind 클래스로 처리 가능한 스타일들은 Vue 파일에서 직접 사용
-
-// Static 상태 스타일
-.input-static {
-  background-color: var(--input-color-surface);
-  border-color: var(--input-color-border-static);
-  color: var(--input-color-text-static);
+.base-input-text {
+  // 텍스트 입력에 특화된 스타일
+  input {
+    // 텍스트 입력 전용 스타일
+    &::placeholder {
+      color: var(--input-color-text-placeholder);
+      font-weight: 400;
+      font-family: 'Pretendard GOV', sans-serif;
+      letter-spacing: -0.35px;
+    }
+    
+    &:focus::placeholder {
+      color: var(--input-color-text-placeholder);
+    }
+  }
+  
+  // 비활성화 상태
+  &.base-input-disabled {
+    input::placeholder {
+      color: var(--input-color-text-disable);
+    }
+  }
+  
+  // 에러 상태
+  &.base-input-error {
+    input::placeholder {
+      color: var(--input-color-text-placeholder);
+    }
+  }
+  
+  // 값이 있는 상태
+  &.base-input-filled {
+    input {
+      color: var(--input-color-text-static);
+    }
+  }
 }
 
-// Focus 상태 스타일
-.input-focus {
-  background-color: var(--input-color-surface);
-  border-color: var(--input-color-border-focus);
-  color: var(--input-color-text-static);
+// 크기별 스타일
+.base-input-text-sm {
+  input {
+    font-size: 13px;
+    line-height: 16px;
+    letter-spacing: -0.35px;
+  }
 }
 
-// Error 상태 스타일
-.input-error {
-  background-color: var(--input-color-surface);
-  border-color: var(--input-color-border-error);
-  color: var(--input-color-text-static);
+.base-input-text-md {
+  input {
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: -0.35px;
+  }
 }
 
-// Filled 상태 스타일
-.input-filled {
-  background-color: var(--input-color-surface);
-  border-color: var(--input-color-border-static);
-  color: var(--input-color-text-static);
+// 아이콘 스타일
+.base-input-text .base-input-suffix {
+  .base-icon {
+    color: var(--input-icon-default);
+  }
 }
 
-// Disabled 상태 스타일
-.input-disabled {
-  background-color: var(--input-color-bg-disabled);
-  border-color: var(--input-color-border-disabled);
-  color: var(--input-color-text-disable);
-}
-
-// Error 테두리 스타일
-.input-border-error {
-  border-color: var(--input-color-border-error);
-}
-
-// Placeholder 스타일
-.input::placeholder {
-  color: var(--input-color-text-placeholder);
-}
-
-// Disabled 텍스트 스타일
-.input:disabled {
-  color: var(--input-color-text-disable);
-}
+.base-input-text.base-input-disabled .base-input-suffix {
+  .base-icon {
+    color: var(--input-color-text-disable);
+  }
+} 

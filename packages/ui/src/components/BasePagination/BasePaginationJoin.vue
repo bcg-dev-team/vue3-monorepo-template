@@ -1,33 +1,18 @@
-<!--
-  Figma 컴포넌트: Icon/pagination-join (node-id: 152-4581)
-  https://www.figma.com/design/5OJPsmnkEgZZnkHtNbk1wK/-MODA--Draft-250514-?node-id=152-4581&m=dev
-  - status(페이지 수): 기본 5개, n개로 확장 가능
-  - current(활성 인덱스): 0부터 시작
-  - 디자인 토큰: bg-surface-muted(#dadbdd), primary(#ffc300), radius-pill(rounded-full)
--->
+<!-- Figma: Pagination/pagination-join -->
 <script setup lang="ts">
 import './BasePaginationJoin.scss';
 import { computed } from 'vue';
 
+/**
+ * 페이지네이션 조인 컴포넌트 (점과 선으로 구성된 진행 상태 표시)
+ *
+ * @props count - 전체 인디케이터 개수 (기본값: 5)
+ * @props current - 현재 활성 인덱스 (0부터 시작, 기본값: 0)
+ */
 interface Props {
-  /**
-   * 전체 indicator 개수 (페이지 수)
-   *
-   * 기본값은 5개이며, 2개 이상 10개 이하로 설정할 수 있습니다.
-   *
-   * @description 페이지네이션에서 총 페이지 수를 나타내는 indicator의 개수입니다. 기본값은 5개이며, 2개 이상 10개 이하로 설정할 수 있습니다.
-   * @default 5
-   * @minimum 2
-   * @maximum 10
-   */
+  /** 전체 인디케이터 개수 */
   count?: number;
-  /**
-   * 현재 활성 인덱스 (0부터 시작)
-   *
-   * @description 현재 선택된 페이지의 인덱스입니다. 0부터 시작하며, count보다 작은 값이어야 합니다.
-   * @default 0
-   * @minimum 0
-   */
+  /** 현재 활성 인덱스 (0부터 시작) */
   current?: number;
 }
 
@@ -36,30 +21,24 @@ const props = withDefaults(defineProps<Props>(), {
   current: 0,
 });
 
-const items = computed(() => Array.from({ length: props.count }));
+// 인디케이터 배열 생성
+const indicators = computed(() => Array.from({ length: props.count }, (_, index) => index));
 
 // 인디케이터 클래스
-const getIndicatorClasses = (idx: number) => {
-  const baseClasses = [
-    // 1. 크기
-    'h-2 rounded-full shrink-0',
+const getIndicatorClasses = (index: number) => {
+  const baseClasses = 'pagination-join-indicator';
 
-    // 2. 전환 효과
-    'transition-all duration-200',
-  ].join(' ');
-
-  if (idx === props.current) {
-    return `${baseClasses} w-10 pagination-join-indicator-active`;
+  if (index === props.current) {
+    return `${baseClasses} pagination-join-line pagination-join-line-active`;
   } else {
-    return `${baseClasses} w-3 bg-bg-surface-muted`;
+    return `${baseClasses} pagination-join-dot pagination-join-dot-inactive`;
   }
 };
 </script>
 
 <template>
-  <div class="flex h-4 min-h-4 flex-row items-center justify-start gap-2 p-0">
-    <template v-for="(_, idx) in items" :key="idx">
-      <div :class="getIndicatorClasses(idx)" />
-    </template>
+  <div class="pagination-join" :data-name="`Pagination/pagination-join`">
+    <!-- 동적으로 생성되는 인디케이터들 -->
+    <div v-for="index in indicators" :key="index" :class="getIndicatorClasses(index)" />
   </div>
 </template>

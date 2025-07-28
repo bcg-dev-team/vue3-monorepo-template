@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import BasePaginationNumber from './BasePaginationNumber.vue';
 import BasePaginationArrow from './BasePaginationArrow.vue';
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 
 /**
  * 페이지네이션 컴포넌트
@@ -70,10 +70,34 @@ const visiblePages = computed(() => {
 
   return pages;
 });
+
+// ----------------------
+// Hover 상태 Local State
+// ----------------------
+const hoveredPage = ref<number | null>(null);
+
+const handleMouseEnter = (page: number) => {
+  if (page !== props.currentPage) {
+    hoveredPage.value = page;
+  }
+};
+
+const handleMouseLeave = () => {
+  hoveredPage.value = null;
+};
+
+const getPageStatus = (page: number) => {
+  if (page === props.currentPage) return 'selected';
+  if (page === hoveredPage.value) return 'hover';
+  return 'unselected';
+};
 </script>
 
 <template>
-  <div class="flex items-center justify-center gap-2" data-name="Pagination">
+  <div
+    class="flex min-h-8 w-fit flex-row items-center justify-center gap-2 p-0"
+    data-name="Pagination"
+  >
     <!-- 첫 페이지 버튼 -->
     <BasePaginationArrow
       v-if="showFirstLast"
@@ -93,8 +117,10 @@ const visiblePages = computed(() => {
     <template v-for="page in visiblePages" :key="page">
       <BasePaginationNumber
         :number="page"
-        :status="page === currentPage ? 'selected' : 'unselected'"
+        :status="getPageStatus(page)"
         @click="handlePageChange(page)"
+        @mouseenter="handleMouseEnter(page)"
+        @mouseleave="handleMouseLeave"
       />
     </template>
 

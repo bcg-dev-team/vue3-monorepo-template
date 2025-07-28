@@ -1,53 +1,47 @@
 // BaseTableCell 컴포넌트 스타일
 // Figma 디자인 토큰을 기반으로 한 테이블 셀 스타일 정의
 
-// 컴포넌트별 토큰만 정의
-// Tailwind 클래스로 처리 가능한 스타일들은 Vue 파일에서 직접 사용
-
-// Normal 셀 스타일
-.table-cell-normal {
-  background-color: var(--table-type1-body-bg);
-  border-color: var(--table-type1-body-border);
+// 테이블 셀 기본 스타일
+.table-cell {
+  vertical-align: middle;
 }
 
-// Selected 셀 스타일
-.table-cell-selected {
-  background-color: var(--table-type1-body-bg-select);
-  border-color: var(--table-type1-body-border);
-}
-
-// Input 셀 스타일
-.table-cell-input {
-  background-color: var(--table-type1-body-bg);
-  border-color: var(--table-type1-body-border);
-}
-
-// 테두리 타입별 스타일
-.table-cell-border-normal {
-  border-left: 1px solid;
-  border-right: 1px solid;
-}
-
-.table-cell-border-input {
-  border-bottom: 1px solid;
-}
-
-// 패딩 타입별 스타일
-.table-cell-padding-normal {
-  padding: 0.75rem 0.9375rem; // px-[15px] py-3
-}
-
-.table-cell-padding-input {
-  padding: 0.5rem 0.9375rem; // px-[15px] py-2
-}
-
-// 텍스트 타입별 스타일
-.table-cell-text-normal {
+// 헤더 셀 스타일
+.table-cell-header {
+  padding: 0.75rem 1rem;
+  font-weight: 600;
   font-size: 0.875rem; // text-sm
-  line-height: 1.375; // leading-snug
+  line-height: 1.25; // leading-tight
+  color: var(--base-colors-neutral-neutral800);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--table-header-hover-bg, rgba(0, 0, 0, 0.05));
+  }
 }
 
-.table-cell-text-input {
-  font-size: 1rem; // text-base
-  line-height: 1.25; // leading-tight
+// 바디 셀 스타일
+.table-cell-body {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.375;
+  color: var(--base-colors-neutral-neutral800);
+  text-align: left;
+  background-color: transparent; // 부모 행의 배경색을 사용
+}
+
+// 푸터 셀 스타일
+.table-cell-footer {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.375;
+  color: var(--base-colors-neutral-neutral800);
+  text-align: left;
+}
+
+// 셀 텍스트 스타일
+.table-cell-text {
+  display: block;
+  white-space: pre;
 }

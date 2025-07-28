@@ -1,65 +1,20 @@
 // BaseTable 컴포넌트 스타일
 // Figma 디자인 토큰을 기반으로 한 테이블 스타일 정의
 
-// 컴포넌트별 토큰만 정의
-// Tailwind 클래스로 처리 가능한 스타일들은 Vue 파일에서 직접 사용
-
 // 테이블 컨테이너 스타일
 .table-container {
-  border: 1px solid var(--base-colors-neutral-neutral200);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  // border 제거 - Figma 디자인에 맞춰 테이블 자체에는 border 없음
   border-radius: 0.5rem;
   overflow: hidden;
-}
-
-// 테이블 헤더 스타일
-.table-header {
-  background-color: var(--base-colors-neutral-neutral100);
-  border-bottom: 1px solid var(--base-colors-neutral-neutral200);
-}
-
-// 테이블 바디 스타일
-.table-body {
   background-color: var(--base-colors-neutral-neutral000);
 }
 
-// 테이블 행 스타일
-.table-row {
-  border-bottom: 1px solid var(--base-colors-neutral-neutral200);
-}
-
-.table-row:last-child {
-  border-bottom: none;
-}
-
-// 테이블 셀 스타일
-.table-cell {
-  padding: 0.75rem 1rem;
-  vertical-align: middle;
-}
-
-// 테이블 헤더 셀 스타일
-.table-header-cell {
-  padding: 1rem;
-  font-weight: 600;
-  color: var(--base-colors-neutral-neutral800);
-  background-color: var(--base-colors-neutral-neutral100);
-  border-bottom: 1px solid var(--base-colors-neutral-neutral200);
-}
-
-// 테이블 바디 셀 스타일
-.table-body-cell {
-  padding: 0.75rem 1rem;
-  color: var(--base-colors-neutral-neutral800);
+// 테이블 기본 스타일
+.table {
+  width: 100%;
+  border-collapse: collapse;
   background-color: var(--base-colors-neutral-neutral000);
-  border-bottom: 1px solid var(--base-colors-neutral-neutral200);
-}
-
-// 선택된 행 스타일
-.table-row-selected {
-  background-color: var(--base-colors-blue-blue050);
-}
-
-// 호버 상태 스타일
-.table-row:hover {
-  background-color: var(--base-colors-neutral-neutral100);
 }

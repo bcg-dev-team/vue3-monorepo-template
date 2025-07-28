@@ -1,5 +1,6 @@
 <!-- Figma: Pagination/Arrow-Left, Pagination/Arrow-Right -->
 <script setup lang="ts">
+import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import './BasePaginationArrow.scss';
 import { computed } from 'vue';
 
@@ -34,33 +35,25 @@ const handleClick = (event: MouseEvent) => {
   }
 };
 
+// 화살표 아이콘 이름
+const iconName = computed(() => {
+  return props.direction === 'left' ? 'arrow-backward' : 'arrow-forward';
+});
+
 // 화살표 클래스
 const arrowClasses = computed(() => {
-  const baseClasses = 'relative w-6 h-6 cursor-pointer transition-all duration-200';
+  const baseClasses = 'pagination-arrow';
 
   if (props.disabled) {
-    return `${baseClasses} cursor-not-allowed opacity-50`;
+    return `${baseClasses} pagination-arrow-disabled`;
   }
 
-  return `${baseClasses} hover:opacity-80`;
+  return `${baseClasses} pagination-arrow-enabled`;
 });
 
-// SVG 클래스
-const svgClasses = computed(() => {
-  const baseClasses = 'block w-full h-full';
-
-  if (props.direction === 'right') {
-    return `${baseClasses} rotate-180`;
-  }
-
-  return baseClasses;
-});
-
-// SVG 색상 클래스
-const svgColorClasses = computed(() => {
-  return props.disabled
-    ? 'fill-[var(--input-color-text-disable)]'
-    : 'fill-[var(--font-color-primary)]';
+// 아이콘 색상 (피그마 디자인 토큰 적용)
+const iconColor = computed(() => {
+  return props.disabled ? 'var(--input-color-text-disable)' : 'var(--icon-color-default)';
 });
 </script>
 
@@ -70,15 +63,6 @@ const svgColorClasses = computed(() => {
     @click="handleClick"
     :data-name="`Pagination/Arrow-${direction === 'left' ? 'Left' : 'Right'}`"
   >
-    <div class="absolute bottom-1/3 left-1/4 right-1/4 top-[35.792%]">
-      <svg
-        :class="[svgClasses, svgColorClasses]"
-        fill="none"
-        preserveAspectRatio="none"
-        viewBox="0 0 12 8"
-      >
-        <path d="M1.41 0L6 4.58L10.59 0L12 1.41L6 7.41L0 1.41L1.41 0Z" />
-      </svg>
-    </div>
+    <BaseIcon :name="iconName" size="sm" :color="iconColor" />
   </div>
 </template>

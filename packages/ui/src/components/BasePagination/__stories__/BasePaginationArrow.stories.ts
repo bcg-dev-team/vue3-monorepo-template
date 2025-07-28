@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import BasePaginationArrow from '../BasePaginationArrow.vue';
 
 const meta: Meta<typeof BasePaginationArrow> = {
-  title: 'Components/BasePaginationArrow',
+  title: 'Pagination/Arrow',
   component: BasePaginationArrow,
   parameters: {
     docs: {

@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import BasePagination from '../BasePagination.vue';
 
 const meta: Meta<typeof BasePagination> = {
-  title: 'Components/BasePagination',
+  title: 'Pagination/Pagination',
   component: BasePagination,
   parameters: {
     docs: {

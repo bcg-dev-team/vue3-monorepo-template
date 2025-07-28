@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import BaseTabs from '../BaseTabs.vue';
 
 const meta: Meta<typeof BaseTabs> = {
-  title: 'Components/BaseTabs',
+  title: 'Tabs/Tabs',
   component: BaseTabs,
   parameters: {
     docs: {

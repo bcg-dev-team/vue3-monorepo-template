@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * BaseButton - Figma 버튼 컴포넌트 1:1 구현
- * @props variant - 버튼 스타일 (primary, outline, red, blue, pill, ...)
+ * @props variant - 버튼 스타일 (primary, outline, red, blue, pill, light-solid, red-solid, blue-solid, green-solid, cancel-solid, disabled)
  * @props size - 버튼 크기 (regular, small, pill, small-inner)
  * @props disabled - 비활성화 여부
  * @props leftIcon - 좌측 아이콘 정보 (name, size, color)
@@ -25,9 +25,18 @@ interface ButtonIconProps {
 
 interface Props {
   /**
-   * 버튼 스타일 (primary, outline, red, blue, pill, ...)]
-   *
-   * 기본값은 'primary'입니다.
+   * 버튼 스타일
+   * - primary: 기본 노란색 버튼
+   * - outline: 기본 아웃라인 버튼
+   * - red: 빨간색 아웃라인 버튼
+   * - blue: 파란색 아웃라인 버튼
+   * - pill: 둥근 모서리 버튼
+   * - light-solid: 연한 노란색 솔리드 버튼
+   * - red-solid: 빨간색 솔리드 버튼
+   * - blue-solid: 파란색 솔리드 버튼
+   * - green-solid: 초록색 솔리드 버튼
+   * - cancel-solid: 보라색 솔리드 버튼
+   * - disabled: 비활성화 버튼
    */
   variant?:
     | 'primary'
@@ -38,25 +47,27 @@ interface Props {
     | 'light-solid'
     | 'red-solid'
     | 'blue-solid'
+    | 'green-solid'
+    | 'cancel-solid'
     | 'disabled';
   /**
-   * 버튼 크기 (regular, small, pill, small-inner)
-   *
-   * 기본값은 'regular'입니다.
+   * 버튼 크기
+   * - regular: 기본 크기 (16px, py-3 px-4)
+   * - small: 작은 크기 (14px, py-1.5 px-5)
+   * - pill: 둥근 모서리 크기 (14px, py-2 px-4)
+   * - small-inner: 작은 내부 크기 (13px, py-2.5 px-3)
    */
   size?: 'regular' | 'small' | 'pill' | 'small-inner';
   /**
    * 비활성화 여부
-   *
-   * 기본값은 false입니다.
    */
   disabled?: boolean;
   /**
-   * 좌측 아이콘 정보 (name, size, color)
+   * 좌측 아이콘 정보
    */
   leftIcon?: ButtonIconProps;
   /**
-   * 우측 아이콘 정보 (name, size, color)
+   * 우측 아이콘 정보
    */
   rightIcon?: ButtonIconProps;
   /**
@@ -79,131 +90,113 @@ const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void;
 }>();
 
-// 색상/테마는 정적 CSS 변수로 처리
-const staticClasses = computed(() => {
+// 버튼 클래스 계산
+const buttonClasses = computed(() => {
   const classes = [
-    // 1. 레이아웃
-    'inline-flex items-center justify-center',
-
-    // 2. 타이포그래피
-    'font-sans font-semibold',
-
-    // 3. 전환 효과
-    'transition-all',
-
-    // 4. 사용자 선택
+    // 기본 클래스
+    'inline-flex items-center justify-center gap-2.5',
+    'transition-all duration-200',
     'select-none',
-
-    // 5. 포커스 상태
-    'focus:outline-none focus-visible:ring-2 focus-visible:ring-border-focus',
-
-    // 6. 비활성화 상태
-    'disabled:cursor-not-allowed disabled:opacity-50',
+    'focus:outline-none',
   ];
 
-  // variant별 클래스 매핑
-  const variantClasses = {
-    primary: 'btn-primary',
-    outline: 'btn-outline',
-    red: 'btn-red',
-    blue: 'btn-blue',
-    pill: 'btn-pill',
-    'light-solid': 'btn-light-solid',
-    'red-solid': 'btn-red-solid',
-    'blue-solid': 'btn-blue-solid',
-    disabled: 'btn-disabled',
-  };
+  // variant 클래스
+  const variantClass = `btn-${props.variant}`;
+  classes.push(variantClass);
 
-  classes.push(variantClasses[props.variant] || 'btn-primary');
+  // 크기 클래스
+  const sizeClass = `btn-size-${props.size}`;
+  classes.push(sizeClass);
+
+  // 비활성화 상태
+  if (props.disabled) {
+    classes.push('btn-disabled');
+  }
 
   return classes.join(' ');
 });
 
-// 동적 스타일 (조건부 변경이 필요한 경우만)
-const dynamicStyle = computed(() => {
-  // border가 필요한 variant들만 동적 처리
-  const borderVariants = ['outline', 'red', 'blue', 'light-solid', 'disabled'];
-  if (borderVariants.includes(props.variant)) {
-    return {
-      borderWidth: '1px',
-      borderStyle: 'solid',
-    };
-  }
-  return {};
-});
-
-const sizeClass = computed(() => {
-  switch (props.size) {
+// 아이콘 크기 매핑
+const getIconSize = (size: string) => {
+  switch (size) {
     case 'regular':
-      return [
-        // 1. 패딩
-        'px-4 py-3',
-        // 2. 타이포그래피
-        'text-lg',
-        // 3. 테두리
-        'rounded-default',
-      ].join(' ');
+      return 'md'; // 24px
     case 'small':
-      return [
-        // 1. 패딩
-        'px-5 py-1.5',
-        // 2. 타이포그래피
-        'text-md',
-        // 3. 테두리
-        'rounded-sm',
-      ].join(' ');
-    case 'pill':
-      return [
-        // 1. 패딩
-        'px-4 py-2',
-        // 2. 타이포그래피
-        'text-md',
-        // 3. 테두리
-        'rounded-full',
-      ].join(' ');
+      return 'md'; // 24px
     case 'small-inner':
-      return [
-        // 1. 패딩
-        'px-3 py-2.5',
-        // 2. 타이포그래피
-        'text-base',
-        // 3. 테두리
-        'rounded-sm',
-      ].join(' ');
+      return 'sm'; // 16px
+    case 'pill':
+      return 'lg'; // 20px
     default:
-      return '';
+      return 'md';
   }
-});
+};
+
+// 아이콘 색상 계산
+const getIconColor = (iconProps: ButtonIconProps | undefined, variant: string) => {
+  if (iconProps?.color) {
+    return iconProps.color;
+  }
+
+  // variant별 기본 아이콘 색상 (디자인 토큰 사용)
+  switch (variant) {
+    case 'primary':
+    case 'pill':
+    case 'light-solid':
+      return 'var(--button-primary-text)'; // #131313 → var(--button-primary-text)
+    case 'outline':
+      return 'var(--button-outline-text)'; // #242424 → var(--button-outline-text)
+    case 'red':
+    case 'red-solid':
+      return 'var(--button-red-text)'; // #f63338 → var(--button-red-text)
+    case 'blue':
+    case 'blue-solid':
+      return 'var(--button-blue-text)'; // #0067ef → var(--button-blue-text)
+    case 'green-solid':
+    case 'cancel-solid':
+      return 'var(--base-colors-neutral-neutral000)'; // #ffffff → var(--base-colors-neutral-neutral000)
+    case 'disabled':
+      return 'var(--button-disabled-text)'; // #b4b6bb → var(--button-disabled-text)
+    default:
+      return 'currentColor';
+  }
+};
 </script>
 
 <template>
   <button
     type="button"
-    :class="[staticClasses, sizeClass]"
-    :style="dynamicStyle"
+    :class="buttonClasses"
     :disabled="props.disabled"
     @click="emit('click', $event)"
   >
-    <span v-if="props.leftIcon" class="mr-2">
-      <BaseIcon
-        :name="props.leftIcon.name"
-        :size="props.leftIcon.size"
-        :color="props.leftIcon.color || 'currentColor'"
-      />
-    </span>
-    <span class="flex flex-col justify-center">
-      {{ props.label }}
-      <span v-if="props.subLabel" class="block text-xs font-semibold leading-5">{{
-        props.subLabel
-      }}</span>
-    </span>
-    <span v-if="props.rightIcon" class="ml-2">
-      <BaseIcon
-        :name="props.rightIcon.name"
-        :size="props.rightIcon.size"
-        :color="props.rightIcon.color || 'currentColor'"
-      />
-    </span>
+    <!-- 좌측 아이콘 -->
+    <BaseIcon
+      v-if="props.leftIcon"
+      :name="props.leftIcon.name"
+      :size="getIconSize(props.size)"
+      :color="getIconColor(props.leftIcon, props.variant)"
+      class="icon"
+    />
+
+    <!-- 텍스트 영역 -->
+    <div class="flex flex-col items-center justify-center">
+      <span class="font-medium">{{ props.label }}</span>
+      <span v-if="props.subLabel" class="btn-sub-text font-semibold">
+        {{ props.subLabel }}
+      </span>
+    </div>
+
+    <!-- 우측 아이콘 -->
+    <BaseIcon
+      v-if="props.rightIcon"
+      :name="props.rightIcon.name"
+      :size="getIconSize(props.size)"
+      :color="getIconColor(props.rightIcon, props.variant)"
+      class="icon"
+    />
+
+    <!-- 기본 슬롯 -->
     <slot />
   </button>
 </template>

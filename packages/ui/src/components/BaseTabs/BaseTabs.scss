@@ -1,8 +1,48 @@
 // BaseTabs 컴포넌트 스타일
 // Figma 디자인 토큰을 기반으로 한 탭 스타일 정의
+// 세 가지 탭 디자인 지원: connected, individual, card
 
-// 컴포넌트별 토큰만 정의
-// Tailwind 클래스로 처리 가능한 스타일들은 Vue 파일에서 직접 사용
+// CSS 변수 정의 (디자인 토큰)
+:root {
+  // Base Colors
+  --base-colors-common-white: #ffffff;
+  --base-colors-common-light-gray-ea: #eaeaea;
+  --base-colors-neutral-neutral500: #6b7280;
+  --base-colors-primary-primary100: #dbeafe;
+
+  // Base Sizes
+  --base-size-size-8: 8px;
+  --base-size-size-12: 12px;
+  --base-size-size-14: 14px;
+  --base-size-size-16: 16px;
+  --base-size-size-20: 20px;
+  --base-size-size-24: 24px;
+
+  // Font
+  --font-line-heights-6: 1.5;
+  --font-letter-spacing-0: 0;
+
+  // Radius
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  // Trade Colors
+  --trade-long-background: #fef2f2;
+  --trade-long-text: #dc2626;
+  --trade-long-border: #fecaca;
+
+  --trade-short-background: #eff6ff;
+  --trade-short-text: #2563eb;
+  --trade-short-border: #bfdbfe;
+
+  --trade-correct-background: #f0fdf4;
+  --trade-correct-text: #16a34a;
+  --trade-correct-border: #bbf7d0;
+
+  --trade-cancel-background: #faf5ff;
+  --trade-cancel-text: #9333ea;
+  --trade-cancel-border: #ddd6fe;
+}
 
 // 컨테이너 스타일
 .tabs-container-horizontal {
@@ -30,149 +70,337 @@
   gap: 1.5rem;
 }
 
-// 탭 리스트 스타일 (연결된 탭 형태)
-.tab-list {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
+// ===== 연결된 탭 형태 (첫 번째 탭 디자인) =====
+.tabs-connected {
+  .tab-list {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  // 기본 탭 스타일
+  .tab-connected {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--base-size-size-12) var(--base-size-size-16);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: var(--base-size-size-14);
+    font-weight: 400;
+    line-height: var(--font-line-heights-6);
+    letter-spacing: var(--font-letter-spacing-0);
+    border: 1px solid transparent;
+    background-color: var(--base-colors-common-light-gray-ea);
+    color: var(--base-colors-neutral-neutral500);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    white-space: nowrap;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--base-colors-primary-primary100);
+    }
+
+    &:not(.tab-disabled):hover {
+      opacity: 0.8;
+    }
+  }
+
+  // 첫 번째 탭
+  .tab-first {
+    border-top-left-radius: var(--radius-md);
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  // 중간 탭들
+  .tab-middle {
+    border-radius: 0;
+    border-left: none;
+  }
+
+  // 마지막 탭
+  .tab-last {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: var(--radius-md);
+    border-bottom-right-radius: 0;
+    border-left: none;
+  }
+
+  // 우측 여백 영역 (탭과 컨텐츠 연결)
+  .tab-spacer {
+    flex: 1;
+    background-color: var(--base-colors-common-light-gray-ea);
+    border-top: 1px solid transparent;
+    border-right: 1px solid transparent;
+    border-top-right-radius: var(--radius-md);
+  }
+
+  // 선택된 탭 스타일 (색상별)
+  .tab-selected {
+    font-weight: 500;
+    border-bottom: none;
+  }
+
+  // 색상별 탭 스타일 (Trade 토큰 활용)
+  .tab-color-0 {
+    // 빨간색 (Trade Long)
+    background-color: var(--trade-long-background);
+    color: var(--trade-long-text);
+    border-color: var(--trade-long-border);
+  }
+
+  .tab-color-1 {
+    // 파란색 (Trade Short)
+    background-color: var(--trade-short-background);
+    color: var(--trade-short-text);
+    border-color: var(--trade-short-border);
+  }
+
+  .tab-color-2 {
+    // 초록색 (Trade Correct)
+    background-color: var(--trade-correct-background);
+    color: var(--trade-correct-text);
+    border-color: var(--trade-correct-border);
+  }
+
+  .tab-color-3 {
+    // 보라색 (Trade Cancel)
+    background-color: var(--trade-cancel-background);
+    color: var(--trade-cancel-text);
+    border-color: var(--trade-cancel-border);
+  }
+
+  // 비활성화된 탭 스타일
+  .tab-disabled {
+    background-color: var(--base-colors-common-light-gray-ea);
+    color: var(--base-colors-neutral-neutral500);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  // 탭 패널 스타일 (컨텐츠 영역)
+  .tab-panel {
+    padding: var(--base-size-size-16);
+    min-height: 65px;
+    border-bottom-left-radius: var(--radius-md);
+    border-bottom-right-radius: var(--radius-md);
+    border-top: none;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+  }
+
+  // 색상별 탭 패널 스타일 (선택된 탭과 같은 색상)
+  .tab-panel-color-0 {
+    background-color: var(--trade-long-background);
+    border-color: var(--trade-long-border);
+  }
+
+  .tab-panel-color-1 {
+    background-color: var(--trade-short-background);
+    border-color: var(--trade-short-border);
+  }
+
+  .tab-panel-color-2 {
+    background-color: var(--trade-correct-background);
+    border-color: var(--trade-correct-border);
+  }
+
+  .tab-panel-color-3 {
+    background-color: var(--trade-cancel-background);
+    border-color: var(--trade-cancel-border);
+  }
+}
+
+// ===== 개별 탭 형태 (두 번째 탭 디자인) =====
+.tabs-individual {
+  .tab-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--base-size-size-8);
+    width: 100%;
+    margin-bottom: var(--base-size-size-16);
+  }
+
+  // 기본 탭 스타일
+  .tab-individual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--base-size-size-12) var(--base-size-size-20);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: var(--base-size-size-14);
+    font-weight: 400;
+    line-height: var(--font-line-heights-6);
+    letter-spacing: var(--font-letter-spacing-0);
+    border: 1px solid var(--base-colors-common-light-gray-ea);
+    background-color: var(--base-colors-common-white);
+    color: var(--base-colors-neutral-neutral500);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: var(--radius-md);
+    white-space: nowrap;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--base-colors-primary-primary100);
+    }
+
+    &:not(.tab-disabled):hover {
+      opacity: 0.8;
+      transform: translateY(-1px);
+    }
+  }
+
+  // 선택된 탭 스타일
+  .tab-selected {
+    font-weight: 500;
+  }
+
+  // 색상별 탭 스타일
+  .tab-individual-color-0 {
+    background-color: var(--trade-long-background);
+    color: var(--trade-long-text);
+    border-color: var(--trade-long-border);
+  }
+
+  .tab-individual-color-1 {
+    background-color: var(--trade-short-background);
+    color: var(--trade-short-text);
+    border-color: var(--trade-short-border);
+  }
+
+  .tab-individual-color-2 {
+    background-color: var(--trade-correct-background);
+    color: var(--trade-correct-text);
+    border-color: var(--trade-correct-border);
+  }
+
+  .tab-individual-color-3 {
+    background-color: var(--trade-cancel-background);
+    color: var(--trade-cancel-text);
+    border-color: var(--trade-cancel-border);
+  }
+
+  // 비활성화된 탭 스타일
+  .tab-disabled {
+    background-color: var(--base-colors-common-light-gray-ea);
+    color: var(--base-colors-neutral-neutral500);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  // 탭 패널 스타일
+  .tab-panel-individual {
+    padding: var(--base-size-size-20);
+    background-color: var(--base-colors-common-white);
+    border: 1px solid var(--base-colors-common-light-gray-ea);
+    border-radius: var(--radius-md);
+    min-height: 100px;
+  }
+}
+
+// ===== 카드 형태 탭 (세 번째 탭 디자인) =====
+.tabs-card {
+  .tab-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--base-size-size-12);
+    width: 100%;
+    margin-bottom: var(--base-size-size-20);
+  }
+
+  // 기본 탭 스타일
+  .tab-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--base-size-size-16) var(--base-size-size-24);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: var(--base-size-size-16);
+    font-weight: 400;
+    line-height: var(--font-line-heights-6);
+    letter-spacing: var(--font-letter-spacing-0);
+    border: 2px solid var(--base-colors-common-light-gray-ea);
+    background-color: var(--base-colors-common-white);
+    color: var(--base-colors-neutral-neutral500);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: var(--radius-lg);
+    white-space: nowrap;
+    min-width: 120px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--base-colors-primary-primary100);
+    }
+
+    &:not(.tab-disabled):hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  // 선택된 탭 스타일
+  .tab-selected {
+    font-weight: 600;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  // 색상별 탭 스타일
+  .tab-card-color-0 {
+    background-color: var(--trade-long-background);
+    color: var(--trade-long-text);
+    border-color: var(--trade-long-border);
+  }
+
+  .tab-card-color-1 {
+    background-color: var(--trade-short-background);
+    color: var(--trade-short-text);
+    border-color: var(--trade-short-border);
+  }
+
+  .tab-card-color-2 {
+    background-color: var(--trade-correct-background);
+    color: var(--trade-correct-text);
+    border-color: var(--trade-correct-border);
+  }
+
+  .tab-card-color-3 {
+    background-color: var(--trade-cancel-background);
+    color: var(--trade-cancel-text);
+    border-color: var(--trade-cancel-border);
+  }
+
+  // 비활성화된 탭 스타일
+  .tab-disabled {
+    background-color: var(--base-colors-common-light-gray-ea);
+    color: var(--base-colors-neutral-neutral500);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  // 탭 패널 스타일
+  .tab-panel-card {
+    padding: var(--base-size-size-24);
+    background-color: var(--base-colors-common-white);
+    border: 2px solid var(--base-colors-common-light-gray-ea);
+    border-radius: var(--radius-lg);
+    min-height: 120px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+}
+
+// 컨텐츠 영역
+.tab-content {
   width: 100%;
-}
-
-// 기본 탭 스타일
-.tab {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--base-size-size-12) var(--base-size-size-16);
-  font-family: 'Pretendard GOV', sans-serif;
-  font-size: var(--base-size-size-14);
-  font-weight: 400;
-  line-height: var(--font-line-heights-6);
-  letter-spacing: var(--font-letter-spacing-0);
-  border: 1px solid transparent;
-  background-color: var(--base-colors-common-light-gray-ea);
-  color: var(--base-colors-neutral-neutral500);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-  white-space: nowrap;
-}
-
-// 첫 번째 탭
-.tab-first {
-  border-top-left-radius: var(--radius-md);
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-// 중간 탭들
-.tab-middle {
-  border-radius: 0;
-  border-left: none;
-}
-
-// 마지막 탭
-.tab-last {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: var(--radius-md);
-  border-bottom-right-radius: 0;
-  border-left: none;
-}
-
-// 우측 여백 영역 (탭과 컨텐츠 연결)
-.tab-spacer {
-  flex: 1;
-  background-color: var(--base-colors-common-light-gray-ea);
-  border-top: 1px solid transparent;
-  border-right: 1px solid transparent;
-  border-top-right-radius: var(--radius-md);
-}
-
-// 선택된 탭 스타일 (색상별)
-.tab-selected {
-  font-weight: 500;
-  border-bottom: none;
-}
-
-// 비활성화된 탭 스타일
-.tab-disabled {
-  background-color: var(--base-colors-common-light-gray-ea);
-  color: var(--base-colors-neutral-neutral500);
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-// 색상별 탭 스타일 (Trade 토큰 활용)
-.tab-color-0 {
-  // 빨간색 (Trade Long)
-  background-color: var(--trade-long-background);
-  color: var(--trade-long-text);
-  border-color: var(--trade-long-border);
-}
-
-.tab-color-1 {
-  // 파란색 (Trade Short)
-  background-color: var(--trade-short-background);
-  color: var(--trade-short-text);
-  border-color: var(--trade-short-border);
-}
-
-.tab-color-2 {
-  // 초록색 (Trade Correct)
-  background-color: var(--trade-correct-background);
-  color: var(--trade-correct-text);
-  border-color: var(--trade-correct-border);
-}
-
-.tab-color-3 {
-  // 보라색 (Trade Cancel)
-  background-color: var(--trade-cancel-background);
-  color: var(--trade-cancel-text);
-  border-color: var(--trade-cancel-border);
-}
-
-// 탭 패널 스타일 (컨텐츠 영역)
-.tab-panel {
-  padding: var(--base-size-size-16);
-  min-height: 65px;
-  border-bottom-left-radius: var(--radius-md);
-  border-bottom-right-radius: var(--radius-md);
-  border-top: none;
-  border-left: 1px solid transparent;
-  border-right: 1px solid transparent;
-  border-bottom: 1px solid transparent;
-}
-
-// 색상별 탭 패널 스타일 (선택된 탭과 같은 색상)
-.tab-panel-color-0 {
-  background-color: var(--trade-long-background);
-  border-color: var(--trade-long-border);
-}
-
-.tab-panel-color-1 {
-  background-color: var(--trade-short-background);
-  border-color: var(--trade-short-border);
-}
-
-.tab-panel-color-2 {
-  background-color: var(--trade-correct-background);
-  border-color: var(--trade-correct-border);
-}
-
-.tab-panel-color-3 {
-  background-color: var(--trade-cancel-background);
-  border-color: var(--trade-cancel-border);
-}
-
-// 호버 효과
-.tab:not(.tab-disabled):hover {
-  opacity: 0.8;
-}
-
-// 포커스 효과
-.tab:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--base-colors-primary-primary100);
 }

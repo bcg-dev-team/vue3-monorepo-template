@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-bg-innerframe rounded-md">
+  <div class="bg-bg-innerframe rounded-[8px]">
     <div v-if="title">
-      <span class="text-md leading-xl font-medium tracking-wide">{{ props.title }}</span>
+      <span class="text-md leading-xl font-semibold tracking-wide">{{ props.title }}</span>
     </div>
     <div :class="!title ? 'mt-0' : 'mt-4'">
       <slot name="content" />

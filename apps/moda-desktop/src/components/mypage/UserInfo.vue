@@ -18,7 +18,7 @@
         <span class="text-md font-medium">{{ userInfo.phone }}</span>
       </div>
     </div>
-    <div class="w-[282px] h-[48px] bg-primary rounded-md flex items-center justify-center mt-4">
+    <div class="w-[282px] h-[48px] bg-primary rounded-sm flex items-center justify-center mt-4">
       <span class="text-sm font-semibold">버튼 영역</span>
     </div>
   </div>

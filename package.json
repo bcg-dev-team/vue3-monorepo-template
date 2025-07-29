@@ -26,6 +26,7 @@
     "deps:circular": "npx madge --circular packages/",
     "deps:tree": "pnpm list --depth=5 --json",
     "storybook": "pnpm --filter @template/ui storybook",
+    "storybook:external": "pnpm --filter @template/ui storybook:external",
     "build-storybook": "pnpm --filter @template/ui build-storybook",
     "optimize-icons": "tsx shared/scripts/optimize-icons.ts",
     "mobile:start": "pnpm --filter @template/mobile-native start",

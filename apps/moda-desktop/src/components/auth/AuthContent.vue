@@ -1,5 +1,5 @@
 <template>
-  <div class="px-[50px] pt-[50px] pb-[60px]">
+  <div class="px-[50px] pt-[50px] pb-[60px] w-[460px]">
     <slot name="header" />
     <div>
       <img class="h-[70px] w-auto" src="@/assets/logo/moda_logo.svg" alt="logo" />

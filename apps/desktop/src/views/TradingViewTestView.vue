@@ -45,26 +45,6 @@
           <div class="">
             <ChartView ref="chartRef" />
           </div>
-
-          <div class="chart-info">
-            <NText type="info">
-              💡 이 차트는 MSW로 모킹된 데이터를 사용합니다. 실시간 데이터는 WebSocket을 통해
-              업데이트됩니다.
-            </NText>
-            <div class="mt-3 p-3 bg-blue-50 rounded-lg">
-              <h4 class="font-semibold mb-2">가격 스케일 디버깅 정보:</h4>
-              <ul class="text-sm space-y-1">
-                <li>• <strong>심볼 설정:</strong> pricescale=100 (소수점 2자리)</li>
-                <li>• <strong>minmov:</strong> 1 (최소 움직임 단위)</li>
-                <li>• <strong>가격 범위:</strong> ~50,000 EUR (소수점 표시)</li>
-                <li>• <strong>포맷:</strong> price (가격 형식)</li>
-                <li>• <strong>스케일 표시:</strong> showSeriesLastValue=true</li>
-              </ul>
-              <div class="mt-2 text-xs text-gray-600">
-                오른쪽 가격 스케일이 보이지 않으면 브라우저 콘솔에서 오류를 확인하세요.
-              </div>
-            </div>
-          </div>
         </NSpace>
       </NCard>
 

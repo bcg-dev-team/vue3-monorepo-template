@@ -86,11 +86,21 @@ onMounted(() => {
         'side_toolbar_in_fullscreen_mode',
         'header_compare',
         'compare_symbol',
+        'show_spread_operators',
+        'hide_price_scale_if_all_sources_hidden',
       ],
       disabled_features: [
         'use_localstorage_for_settings',
         'volume_force_overlay',
         'create_volume_indicator_by_default',
+
+        'left_toolbar', // 왼쪽 도구모음 안보이게
+        'header_widget', // 헤더 위젯 안보이게
+        'header_symbol_search', // 헤더 위젯 안보이게
+        'header_settings', // 헤더 위젯 안보이게
+        'header_quick_search', // 헤더 위젯 안보이게
+        'main_series_scale_menu', // 오른쪽하단 설정버튼 안보이게
+        'right_toolbar',
       ],
       charts_storage_url: 'https://saveload.tradingview.com',
       charts_storage_api_version: '1.1',
@@ -98,6 +108,11 @@ onMounted(() => {
       user_id: 'public_user_id',
       // 가격 스케일 및 차트 스타일 설정
       overrides: {
+        'mainSeriesProperties.style': 2, // 2 = 라인 차트
+        // 'scalesProperties.showRightScale': false, // 오른쪽 가격 스케일 숨기기
+        // 'mainSeriesProperties.showPriceLine': false, // 가격 라인 숨기기
+        'paneProperties.gridLinesMode': 'none', // 그리드 라인 숨기기
+
         'paneProperties.background': '#ffffff',
         'paneProperties.vertGridProperties.color': '#e6e6e6',
         'paneProperties.horzGridProperties.color': '#e6e6e6',
@@ -105,31 +120,31 @@ onMounted(() => {
         'scalesProperties.textColor': '#191919',
         'scalesProperties.lineColor': '#b8b8b8',
         // 가격 스케일 표시 강제
-        'scalesProperties.showSeriesLastValue': true,
-        'scalesProperties.showStudyLastValue': true,
-        'scalesProperties.fontSize': 12,
+        // 'scalesProperties.showSeriesLastValue': true,
+        // 'scalesProperties.showStudyLastValue': true,
+        // 'scalesProperties.fontSize': 12,
         // 시간 축 표시 형식 설정
-        'timeScale.timeVisible': true,
-        'timeScale.secondsVisible': false,
-        'timeScale.rightOffset': 12,
-        'timeScale.barSpacing': 3,
-        'timeScale.fixLeftEdge': true,
-        'timeScale.fixRightEdge': true,
-        'timeScale.lockVisibleTimeRangeOnResize': true,
-        'timeScale.rightBarStaysOnScroll': true,
-        'timeScale.borderVisible': true,
-        'timeScale.visible': true,
-        'timeScale.tickMarkFormatter': {
-          '1': '%H:%M', // 1분: 시:분
-          '5': '%H:%M', // 5분: 시:분
-          '15': '%H:%M', // 15분: 시:분
-          '30': '%H:%M', // 30분: 시:분
-          '60': '%m-%d %H:%M', // 1시간: 월-일 시:분
-          '240': '%m-%d %H:%M', // 4시간: 월-일 시:분
-          '1D': '%Y-%m-%d', // 1일: 년-월-일
-          '1W': '%Y-%m-%d', // 1주: 년-월-일
-          '1M': '%Y-%m', // 1개월: 년-월
-        },
+        // 'timeScale.timeVisible': true,
+        // 'timeScale.secondsVisible': false,
+        // 'timeScale.rightOffset': 12,
+        // 'timeScale.barSpacing': 3,
+        // 'timeScale.fixLeftEdge': true,
+        // 'timeScale.fixRightEdge': true,
+        // 'timeScale.lockVisibleTimeRangeOnResize': true,
+        // 'timeScale.rightBarStaysOnScroll': true,
+        // 'timeScale.borderVisible': true,
+        // 'timeScale.visible': true,
+        // 'timeScale.tickMarkFormatter': {
+        //   '1': '%H:%M', // 1분: 시:분
+        //   '5': '%H:%M', // 5분: 시:분
+        //   '15': '%H:%M', // 15분: 시:분
+        //   '30': '%H:%M', // 30분: 시:분
+        //   '60': '%m-%d %H:%M', // 1시간: 월-일 시:분
+        //   '240': '%m-%d %H:%M', // 4시간: 월-일 시:분
+        //   '1D': '%Y-%m-%d', // 1일: 년-월-일
+        //   '1W': '%Y-%m-%d', // 1주: 년-월-일
+        //   '1M': '%Y-%m', // 1개월: 년-월
+        // },
       },
       studies_overrides: {},
       // 차트 스타일
@@ -239,4 +254,15 @@ watch(
     }
   }
 );
+
+const rightScale = document.querySelector('.chart-markup-table');
+if (rightScale) {
+  rightScale.style.display = 'none';
+}
 </script>
+
+<style scoped>
+.chart-page canvas[style*='left: 0px'][style*='z-index: 2'] {
+  display: none !important;
+}
+</style>

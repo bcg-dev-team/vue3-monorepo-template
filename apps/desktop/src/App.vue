@@ -6,7 +6,7 @@
         <div class="flex justify-between h-16">
           <div class="flex items-center space-x-8">
             <h1 class="text-xl font-bold">Vue3 모노레포 템플릿</h1>
-            <div class="flex space-x-4">
+            <div class="flex flex-col space-x-4">
               <router-link
                 v-for="route in navRoutes"
                 :key="route.name"
@@ -39,13 +39,8 @@
 
 // 네비게이션 라우트 정의
 const navRoutes = [
-  { name: 'GettingStarted', path: '/', label: '시작하기' },
-  { name: 'Components', path: '/components', label: '컴포넌트' },
-  { name: 'ApiExamples', path: '/api-examples', label: 'API 예시' },
-  { name: 'ThemeTest', path: '/theme-test', label: '테마 테스트' },
-  { name: 'MSWTest', path: '/msw-test', label: 'MSW 테스트' },
-  { name: 'WebSocketTest', path: '/websocket-test', label: 'WebSocket 테스트' },
-  { name: 'TradingViewTest', path: '/trading-view-test', label: 'TradingView 테스트' },
+  { name: 'TradingViewTest', path: '/trading-view-test', label: 'TradingView 테스트 ' },
+  { name: 'LightChartTest', path: '/light-chart-test', label: 'LightChart 테스트' },
 ];
 </script>
 

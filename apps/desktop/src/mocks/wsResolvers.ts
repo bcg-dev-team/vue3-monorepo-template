@@ -145,13 +145,13 @@ const getInitialPrice = (symbol: string): number => {
 const getVolatility = (symbol: string): number => {
   switch (symbol) {
     case 'BTCUSDT':
-      return 0.002; // 0.2%
+      return 0.4; // 0.2%
     case 'ETHUSDT':
-      return 0.003; // 0.3% (ETH는 BTC보다 변동성이 조금 더 높음)
+      return 0.4; // 0.3% (ETH는 BTC보다 변동성이 조금 더 높음)
     case 'ETHEUR':
-      return 0.003; // 0.3% (ETH는 BTC보다 변동성이 조금 더 높음)
+      return 0.4; // 0.3% (ETH는 BTC보다 변동성이 조금 더 높음)
     default:
-      return 0.001;
+      return 0.4;
   }
 };
 
@@ -160,32 +160,85 @@ const getVolatility = (symbol: string): number => {
  */
 const startMockDataStream = (client: any, symbol: string) => {
   let currentPrice = getInitialPrice(symbol);
-  let dailyOpen = currentPrice;
-  let dailyHigh = currentPrice;
-  let dailyLow = currentPrice;
-  let dailyVolume = 0;
+  let barOpen = currentPrice;
+  let barHigh = currentPrice;
+  let barLow = currentPrice;
+  let barVolume = 0;
 
-  // 하루 시작 시간 (자정)
-  let currentDayStart = Math.floor(Date.now() / (24 * 60 * 60 * 1000)) * (24 * 60 * 60 * 1000);
+  // 구독 정보에서 interval 가져오기
+  const subscription = subscriptions[symbol];
+  const interval = subscription?.interval || '1m';
 
-  const interval = setInterval(() => {
+  // interval에 따른 시간 간격 계산 (초 단위)
+  let timeIntervalSeconds;
+  switch (interval) {
+    case '1m':
+      timeIntervalSeconds = 60;
+      break;
+    case '5m':
+      timeIntervalSeconds = 5 * 60;
+      break;
+    case '15m':
+      timeIntervalSeconds = 15 * 60;
+      break;
+    case '30m':
+      timeIntervalSeconds = 30 * 60;
+      break;
+    case '1h':
+      timeIntervalSeconds = 60 * 60;
+      break;
+    case '4h':
+      timeIntervalSeconds = 4 * 60 * 60;
+      break;
+    case '1D':
+      timeIntervalSeconds = 24 * 60 * 60;
+      break;
+    default:
+      timeIntervalSeconds = 60; // 기본값 1분
+  }
+
+  let currentBarStart =
+    Math.floor(Date.now() / (timeIntervalSeconds * 1000)) * (timeIntervalSeconds * 1000);
+
+  const updateInterval = setInterval(() => {
     // 구독이 비활성화되었는지 확인
     if (!subscriptions[symbol] || !subscriptions[symbol].active) {
-      clearInterval(interval);
+      clearInterval(updateInterval);
       return;
     }
 
     const now = Date.now();
-    const todayStart = Math.floor(now / (24 * 60 * 60 * 1000)) * (24 * 60 * 60 * 1000);
+    const currentBar =
+      Math.floor(now / (timeIntervalSeconds * 1000)) * (timeIntervalSeconds * 1000);
 
-    // 새로운 날이 시작되었는지 확인
-    if (todayStart > currentDayStart) {
-      currentDayStart = todayStart;
-      dailyOpen = currentPrice;
-      dailyHigh = currentPrice;
-      dailyLow = currentPrice;
-      dailyVolume = 0;
-      console.log(`[MSW WebSocket] ${symbol} 새로운 거래일 시작`);
+    // 새로운 Bar가 시작되었는지 확인
+    if (currentBar > currentBarStart) {
+      // 새로운 Bar 시작 - 이전 Bar 데이터를 전송
+      const previousBarData = {
+        type: 'price_update',
+        symbol,
+        price: currentPrice,
+        open: barOpen,
+        high: barHigh,
+        low: barLow,
+        volume: barVolume,
+        timestamp: currentBarStart + 9 * 60 * 60 * 1000, // 한국 시간 (UTC+9)으로 변환
+      };
+
+      console.log(
+        `[${symbol}] 새로운 ${interval} Bar 시작:`,
+        new Date(currentBarStart).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
+      );
+
+      // 이전 Bar 데이터 전송
+      client.send(JSON.stringify(previousBarData));
+
+      // 새로운 Bar 초기화
+      currentBarStart = currentBar;
+      barOpen = currentPrice;
+      barHigh = currentPrice;
+      barLow = currentPrice;
+      barVolume = 0;
     }
 
     // 현실적인 가격 변동
@@ -193,63 +246,42 @@ const startMockDataStream = (client: any, symbol: string) => {
     const change = (Math.random() - 0.5) * 2 * volatility * currentPrice;
     const newPrice = Math.max(100, currentPrice + change);
 
-    // 일일 최고/최저 업데이트
-    dailyHigh = Math.max(dailyHigh, newPrice);
-    dailyLow = Math.min(dailyLow, newPrice);
+    // Bar 최고/최저 업데이트
+    barHigh = Math.max(barHigh, newPrice);
+    barLow = Math.min(barLow, newPrice);
 
     // 볼륨 추가 (심볼별로 다른 범위)
     const volumeRange = symbol === 'BTCUSDT' ? { min: 10, max: 50 } : { min: 20, max: 80 };
     const volumeIncrement = Math.random() * (volumeRange.max - volumeRange.min) + volumeRange.min;
-    dailyVolume += volumeIncrement;
+    barVolume += volumeIncrement;
 
     currentPrice = newPrice;
 
-    // TradingView 형식에 맞는 데이터 생성
-    // 시간을 정확하게 동기화하여 시간 순서 위반 방지
-    let currentTimestamp = Date.now(); // 현재 시간을 밀리초로 정확하게
-
-    // 타임스탬프 유효성 검증
-    if (!currentTimestamp || currentTimestamp < 1000000000000) {
-      // 2001년 이전이면 유효하지 않음
-      console.error(`[MSW WebSocket] ${symbol} 유효하지 않은 타임스탬프 감지:`, {
-        original: currentTimestamp,
-        originalDate: new Date(currentTimestamp).toISOString(),
-      });
-      currentTimestamp = Date.now(); // 강제로 현재 시간 사용
-    }
-
-    const mockData = {
+    // 실시간 업데이트 데이터 (현재 Bar 내에서)
+    const realtimeData = {
       type: 'price_update',
       symbol,
       price: Math.round(currentPrice * 100) / 100,
-      open: Math.round(dailyOpen * 100) / 100,
-      high: Math.round(dailyHigh * 100) / 100,
-      low: Math.round(dailyLow * 100) / 100,
-      volume: Math.round(dailyVolume * 100) / 100,
-      timestamp: currentTimestamp,
+      open: Math.round(barOpen * 100) / 100,
+      high: Math.round(barHigh * 100) / 100,
+      low: Math.round(barLow * 100) / 100,
+      volume: Math.round(barVolume * 100) / 100,
+      timestamp: now + 9 * 60 * 60 * 1000, // 한국 시간 (UTC+9)으로 변환
     };
 
-    // 타임스탬프 검증 로그
-    console.log(`[MSW WebSocket] ${symbol} 타임스탬프 생성:`, {
-      timestamp: currentTimestamp,
-      timestampISO: new Date(currentTimestamp).toISOString(),
-      price: mockData.price,
-      isValid: currentTimestamp > 1000000000000,
-    });
+    // 실시간 데이터 전송 (Bar 내 업데이트)
+    console.log(
+      `[${symbol}] 현재 시간:`,
+      new Date(now).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
+      `가격: ${realtimeData.price}`
+    );
 
-    console.log(`[MSW WebSocket] ${symbol} 실시간 데이터 전송:`, {
-      price: mockData.price,
-      change: (((currentPrice - dailyOpen) / dailyOpen) * 100).toFixed(2) + '%',
-      volume: mockData.volume,
-    });
-
-    // 클라이언트로 데이터 전송
-    client.send(JSON.stringify(mockData));
-  }, 2000); // 2초마다 업데이트
+    client.send(JSON.stringify(realtimeData));
+  }, 1000); // 1초마다 업데이트
 
   // 구독 상태에 인터벌 저장
   if (subscriptions[symbol]) {
-    subscriptions[symbol].dataStream = interval;
+    subscriptions[symbol].dataStream = updateInterval;
   }
 };
 

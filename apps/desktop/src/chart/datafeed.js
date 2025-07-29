@@ -189,13 +189,13 @@ const configurationData = {
   // Represents the resolutions for bars supported by your datafeed
   // 데이터피드에서 지원하는 봉(resolution) 목록을 나타냅니다
   // 이미지 메시지와 일치하도록 설정: "1M, 5M, 15M, 30M, 60, 240, 1D, 1W, 1M"
-  supported_resolutions: ['1', '5', '15', '30', '60', '240', '1D', '1W', '1M'],
+  supported_resolutions: ['1', '5', '30', '60', '240', '1D', '1W', '1M'],
   // The `exchanges` arguments are used for the `searchSymbols` method if a user selects the exchange
   // 사용자가 거래소를 선택할 경우 searchSymbols 메서드에서 사용되는 거래소 목록입니다
-  exchanges: [
-    { value: 'Bitfinex', name: 'Bitfinex', desc: 'Bitfinex' },
-    { value: 'Binance', name: 'Binance', desc: 'Binance' },
-  ],
+  // exchanges: [
+  //   { value: 'Bitfinex', name: 'Bitfinex', desc: 'Bitfinex' },
+  //   { value: 'Binance', name: 'Binance', desc: 'Binance' },
+  // ],
   // The `symbols_types` arguments are used for the `searchSymbols` method if a user selects this symbol type
   // 사용자가 심볼 타입을 선택할 경우 searchSymbols 메서드에서 사용되는 심볼 타입 목록입니다
   symbols_types: [{ name: 'crypto', value: 'crypto' }],

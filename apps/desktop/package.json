@@ -20,6 +20,7 @@
     "@template/ui": "workspace:*",
     "@template/utils": "workspace:*",
     "@vee-validate/zod": "^4.15.1",
+    "lightweight-charts": "^5.0.8",
     "naive-ui": "^2.42.0",
     "pinia": "^2.1.0",
     "vee-validate": "^4.15.1",

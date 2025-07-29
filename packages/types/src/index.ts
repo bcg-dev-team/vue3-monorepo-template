@@ -4,3 +4,6 @@ export * from './api';
 export * from './ui';
 export * from './user';
 export * from './auth';
+
+// Chart types
+export * from './chart';

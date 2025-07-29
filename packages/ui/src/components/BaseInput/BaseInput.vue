@@ -100,15 +100,13 @@ const stateClasses = computed(() => {
 
   if (isDisabled.value) {
     classes.push(
-      'bg-[var(--input-color-bg-disabled)] border-[var(--input-color-border-disabled)] text-[var(--input-color-text-disable)] cursor-not-allowed'
+      'bg-input-bg-disabled border-input-border-disabled text-input-text-disable cursor-not-allowed'
     );
   } else if (isError.value) {
-    classes.push(
-      'border-[var(--input-color-border-error)] focus:border-[var(--input-color-border-error)]'
-    );
+    classes.push('border-input-border-error focus:border-input-border-error');
   } else {
     classes.push(
-      'border-[var(--input-color-border-static)] focus:border-[var(--input-color-border-focus)] hover:border-[var(--input-color-border-focus)]'
+      'border-input-border-static focus:border-input-border-focus hover:border-input-border-focus'
     );
   }
 
@@ -125,11 +123,11 @@ const inputClasses = computed(() => {
   ];
 
   if (isDisabled.value) {
-    classes.push('text-[var(--input-color-text-disable)] cursor-not-allowed');
+    classes.push('text-input-text-disable cursor-not-allowed');
   } else if (hasValue.value) {
-    classes.push('text-[var(--input-color-text-static)]');
+    classes.push('text-input-text-static');
   } else {
-    classes.push('text-[var(--input-color-text-placeholder)]');
+    classes.push('text-input-text-placeholder');
   }
 
   return classes.join(' ');

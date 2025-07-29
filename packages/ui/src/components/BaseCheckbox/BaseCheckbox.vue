@@ -60,37 +60,36 @@ const checkboxClasses = computed(() => {
     'justify-center',
   ];
 
+  return baseClasses.join(' ');
+});
+
+// 체크박스 스타일 계산
+const checkboxStyles = computed(() => {
+  const styles: Record<string, string> = {};
+
   if (isDisabled.value) {
     if (isChecked.value) {
       // Disabled + Checked
-      baseClasses.push(
-        'bg-[var(--checkbox-color-background-disabled)]',
-        'border-[var(--checkbox-color-border-disabled)]'
-      );
+      styles.backgroundColor = 'var(--checkbox-color-background-disabled)';
+      styles.borderColor = 'var(--checkbox-color-border-disabled)';
     } else {
       // Disabled + Unchecked
-      baseClasses.push(
-        'bg-[var(--checkbox-color-surface-disabled)]',
-        'border-[var(--checkbox-color-border-disabled)]'
-      );
+      styles.backgroundColor = 'var(--checkbox-color-surface-disabled)';
+      styles.borderColor = 'var(--checkbox-color-border-disabled)';
     }
   } else {
     if (isChecked.value || isIndeterminate.value) {
       // Enabled + Checked/Indeterminate
-      baseClasses.push(
-        'bg-[var(--checkbox-color-background-checked)]',
-        'border-[var(--checkbox-color-border-checked)]'
-      );
+      styles.backgroundColor = 'var(--checkbox-color-background-checked)';
+      styles.borderColor = 'var(--checkbox-color-border-checked)';
     } else {
       // Enabled + Unchecked
-      baseClasses.push(
-        'bg-[var(--checkbox-color-surface)]',
-        'border-[var(--checkbox-color-border-static)]'
-      );
+      styles.backgroundColor = 'var(--checkbox-color-surface)';
+      styles.borderColor = 'var(--checkbox-color-border-static)';
     }
   }
 
-  return baseClasses.join(' ');
+  return styles;
 });
 
 // 이벤트 핸들러
@@ -120,7 +119,7 @@ const handleKeydown = (event: KeyboardEvent) => {
     :aria-disabled="isDisabled"
   >
     <!-- 체크박스 박스 -->
-    <div :class="checkboxClasses">
+    <div :class="checkboxClasses" :style="checkboxStyles">
       <!-- 체크 아이콘 (체크된 상태) -->
       <svg
         v-if="isChecked && !isIndeterminate"

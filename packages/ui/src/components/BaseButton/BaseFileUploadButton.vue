@@ -58,8 +58,8 @@ const staticClasses = computed(() => {
   const classes = [
     'relative w-full flex items-center rounded-sm border transition-colors duration-150',
     'bg-[#f3f4f6]', // 기본 배경색
-    'border-[var(--background-bg-outline)]', // 기본 테두리 색상
-    'text-[var(--input-color-text-static)]', // 기본 텍스트 색상
+    'border-bg-bg-outline', // 기본 테두리 색상
+    'text-input-text-static', // 기본 텍스트 색상
   ];
 
   if (props.disabled) {

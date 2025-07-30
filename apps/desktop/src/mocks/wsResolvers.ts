@@ -145,13 +145,13 @@ const getInitialPrice = (symbol: string): number => {
 const getVolatility = (symbol: string): number => {
   switch (symbol) {
     case 'BTCUSDT':
-      return 0.4; // 0.2%
+      return 0.2; // 0.2%
     case 'ETHUSDT':
-      return 0.4; // 0.3% (ETH는 BTC보다 변동성이 조금 더 높음)
+      return 0.2; // 0.3% (ETH는 BTC보다 변동성이 조금 더 높음)
     case 'ETHEUR':
-      return 0.4; // 0.3% (ETH는 BTC보다 변동성이 조금 더 높음)
+      return 0.2; // 0.3% (ETH는 BTC보다 변동성이 조금 더 높음)
     default:
-      return 0.4;
+      return 0.2;
   }
 };
 
@@ -325,69 +325,3 @@ export const logSubscriptionStatus = () => {
     });
   }
 };
-
-/**
- * 채팅 웹소켓 모킹 (예시)
- */
-export const mockChatConnection = (client: any, server: any) => {
-  console.log('[MSW WebSocket] 채팅 연결 수립');
-
-  client.addEventListener('message', (event: any) => {
-    try {
-      const message = JSON.parse(event.data);
-
-      // 채팅 메시지 에코백
-      client.send(
-        JSON.stringify({
-          type: 'chat_message',
-          user: 'MockUser',
-          message: `Echo: ${message.text}`,
-          timestamp: Date.now(),
-        })
-      );
-    } catch (error) {
-      console.error('[MSW WebSocket] 채팅 메시지 처리 오류:', error);
-    }
-  });
-};
-
-/*
-테스트 예시 코드:
-
-// 1. BTCUSDT 구독 시작
-ws.send(JSON.stringify({
-  type: 'subscribe',
-  symbol: 'BTCUSDT',
-  interval: '1m'
-}));
-
-// 2. ETHUSDT 구독 시작 (BTCUSDT는 계속 활성)
-ws.send(JSON.stringify({
-  type: 'subscribe',
-  symbol: 'ETHUSDT',
-  interval: '1m'
-}));
-
-// 3. BTCUSDT 구독 해제 (ETHUSDT만 활성)
-ws.send(JSON.stringify({
-  type: 'unsubscribe',
-  symbol: 'BTCUSDT'
-}));
-
-// 4. ETHUSDT 구독 해제 (모든 구독 해제)
-ws.send(JSON.stringify({
-  type: 'unsubscribe',
-  symbol: 'ETHUSDT'
-}));
-
-// 5. 구독 상태 확인 (브라우저 콘솔에서)
-import { getActiveSubscriptions, logSubscriptionStatus, isSubscribed } from './mocks/wsResolvers';
-logSubscriptionStatus();
-console.log('활성 구독:', getActiveSubscriptions());
-console.log('BTCUSDT 구독 중?', isSubscribed('BTCUSDT'));
-console.log('ETHUSDT 구독 중?', isSubscribed('ETHUSDT'));
-
-// 6. 모든 구독 강제 해제 (테스트용)
-import { clearAllSubscriptions } from './mocks/wsResolvers';
-clearAllSubscriptions();
-*/

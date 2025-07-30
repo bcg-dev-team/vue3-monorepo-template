@@ -1,27 +1,6 @@
 import { HttpResponse, type HttpResponseResolver, type PathParams } from 'msw';
 
 /**
- * 사용자 상세 정보 조회 API 모킹
- */
-export const mockUserDetail: HttpResponseResolver<PathParams, any> = async ({
-  request,
-  params,
-  cookies,
-}) => {
-  const { user_id } = params as { user_id: string };
-
-  // GET 요청에서는 request body를 읽지 않습니다
-  console.log(`[MSW] 사용자 조회 요청: ${user_id}`);
-
-  return HttpResponse.json({
-    user_id,
-    user_name: 'User Name',
-    email: `user${user_id}@example.com`,
-    created_at: new Date().toISOString(),
-  });
-};
-
-/**
  * TradingView 차트 데이터 조회 API 모킹 (CryptoCompare API 형태)
  */
 export const mockHistoricalData: HttpResponseResolver<PathParams, any> = async ({

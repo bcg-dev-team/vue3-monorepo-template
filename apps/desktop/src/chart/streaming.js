@@ -4,7 +4,9 @@ import { parseFullSymbol } from './helpers.js';
 let socket = null;
 let reconnectAttempts = 0;
 const maxReconnectAttempts = 5;
-const channelToSubscription = new Map();
+
+// 단순화된 구독 구조: 각 구독을 독립적으로 관리
+const subscriptions = new Map(); // key: subscriberUID, value: { symbol, resolution, lastBar, callback }
 
 // WebSocket 연결 초기화
 function initializeSocket() {
@@ -57,11 +59,13 @@ function initializeSocket() {
   }
 }
 
-// MSW WebSocket 메시지 처리
+// 메시지 처리
 function handleMSWMessage(data) {
+  console.log('[handleMSWMessage] 받은 데이터:', data);
+
   if (data.type === 'price_update') {
     // MSW 가격 업데이트를 TradingView Bar 형식으로 변환
-    const bar = {
+    const realtimeBar = {
       time: data.timestamp,
       open: data.open || data.price,
       high: data.high || data.price,
@@ -70,109 +74,11 @@ function handleMSWMessage(data) {
       volume: data.volume || 1000,
     };
 
-    // 모든 구독자에게 데이터 전송
-    channelToSubscription.forEach((subscriptionItem, channelString) => {
-      // 심볼 매칭 개선
-      const parts = channelString.split('~');
-      const channelSymbol = parts.length >= 4 ? `${parts[2]}${parts[3]}` : '';
-      const symbolMatches =
-        data.symbol === channelSymbol ||
-        channelString.includes(data.symbol) ||
-        (data.symbol === 'ETHEUR' && channelSymbol === 'ETHEUR') ||
-        (data.symbol === 'BTCEUR' && channelSymbol === 'BTCEUR');
+    console.log('[handleMSWMessage] 변환된 realtimeBar:', realtimeBar);
+    console.log('[handleMSWMessage] 현재 구독 목록:', Array.from(subscriptions.entries()));
 
-      if (symbolMatches && subscriptionItem.lastDailyBar) {
-        const resolution = subscriptionItem.resolution;
-        const lastBar = subscriptionItem.lastDailyBar;
-
-        // 해상도에 따른 시간 간격 계산
-        let timeInterval;
-        switch (resolution) {
-          case '1':
-            timeInterval = 60;
-            break; // 1분
-          case '5':
-            timeInterval = 5 * 60;
-            break; // 5분
-          case '15':
-            timeInterval = 15 * 60;
-            break; // 15분
-          case '30':
-            timeInterval = 30 * 60;
-            break; // 30분
-          case '60':
-            timeInterval = 60 * 60;
-            break; // 1시간
-          case '240':
-            timeInterval = 4 * 60 * 60;
-            break; // 4시간
-          case '1D':
-            timeInterval = 24 * 60 * 60;
-            break; // 1일
-          case '1W':
-            timeInterval = 7 * 24 * 60 * 60;
-            break; // 1주
-          case '1M':
-            timeInterval = 30 * 24 * 60 * 60;
-            break; // 1개월
-          default:
-            timeInterval = 24 * 60 * 60; // 기본값: 1일
-        }
-
-        // 현재 Bar의 시작 시간 계산 (밀리초 단위로 받으므로 간단하게 처리)
-        // bar.time이 밀리초 단위로 전달됨 (이미 한국 시간)
-        const barTimeInSeconds = Math.floor(bar.time / 1000);
-
-        // 현재 Bar의 시작 시간 계산 (초 단위)
-        const currentBarStart = Math.floor(barTimeInSeconds / timeInterval) * timeInterval;
-
-        // lastBar.time 처리 (밀리초 단위를 초 단위로 변환)
-        const lastBarTimeInSeconds = Math.floor(lastBar.time / 1000);
-        const lastBarStart = Math.floor(lastBarTimeInSeconds / timeInterval) * timeInterval;
-
-        console.log(`[${data.symbol}] ${resolution}분봉 - currentBarStart:`, currentBarStart);
-        console.log(`[${data.symbol}] ${resolution}분봉 - lastBarStart:`, lastBarStart);
-
-        let updatedBar;
-        if (currentBarStart > lastBarStart) {
-          // 새로운 Bar 생성
-          updatedBar = {
-            time: currentBarStart * 1000, // 밀리초 단위로 변환
-            open: bar.close, // 새로운 Bar의 시작가는 현재 가격
-            high: bar.close,
-            low: bar.close,
-            close: bar.close,
-            volume: bar.volume || 1000,
-          };
-          console.log(
-            `[${data.symbol}] 새로운 ${resolution}분봉 생성:`,
-            new Date(currentBarStart * 1000).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
-          );
-        } else {
-          // 기존 Bar 업데이트
-          updatedBar = {
-            ...lastBar,
-            time: lastBar.time, // 기존 시간 유지 (이미 밀리초 단위)
-            high: Math.max(lastBar.high, bar.high || bar.close),
-            low: Math.min(lastBar.low, bar.low || bar.close),
-            close: bar.close,
-            volume: lastBar.volume + (bar.volume || 1000),
-          };
-        }
-
-        // 캐시 업데이트
-        subscriptionItem.lastDailyBar = updatedBar;
-
-        // 모든 핸들러에 데이터 전송
-        subscriptionItem.handlers.forEach((handler, index) => {
-          try {
-            handler.callback(updatedBar);
-          } catch (error) {
-            console.error(`[MSW WebSocket] 핸들러 ${index} 콜백 오류:`, error);
-          }
-        });
-      }
-    });
+    // 해당 심볼의 모든 구독에 대해 Bar 업데이트
+    updateBarsForSymbol(data.symbol, realtimeBar);
   } else if (data.type === 'subscription_success') {
     console.log('[MSW WebSocket] 구독 성공:', data);
   } else if (data.type === 'unsubscription_success') {
@@ -180,48 +86,161 @@ function handleMSWMessage(data) {
   }
 }
 
+// 심볼별 모든 구독 Bar 업데이트
+function updateBarsForSymbol(symbol, realtimeBar) {
+  let matchedCount = 0;
+
+  // 해당 심볼의 모든 구독 찾기
+  subscriptions.forEach((subscription, subscriberUID) => {
+    if (subscription.symbol === symbol) {
+      matchedCount++;
+      console.log('[updateBarsForSymbol] 매칭된 구독 발견:', subscriberUID);
+
+      const updatedBar = createOrUpdateBar(
+        realtimeBar,
+        subscription.lastBar,
+        subscription.resolution
+      );
+
+      // 구독의 lastBar 업데이트
+      subscription.lastBar = updatedBar;
+
+      // 콜백 호출
+      try {
+        subscription.callback(updatedBar);
+      } catch (error) {
+        console.error(`[MSW WebSocket] 구독 ${subscriberUID} 콜백 오류:`, error);
+      }
+    }
+  });
+
+  console.log('[updateBarsForSymbol] 완료:', { symbol, matchedCount });
+}
+
+// Resolution별 Bar 생성/업데이트
+function createOrUpdateBar(realtimeBar, lastBar, resolution) {
+  const timeInterval = getTimeInterval(resolution);
+  const barTimeInSeconds = Math.floor(realtimeBar.time / 1000);
+  const currentBarStart = Math.floor(barTimeInSeconds / timeInterval) * timeInterval;
+
+  if (!lastBar) {
+    // 첫 번째 Bar 생성
+    return {
+      time: currentBarStart * 1000,
+      open: realtimeBar.close,
+      high: realtimeBar.close,
+      low: realtimeBar.close,
+      close: realtimeBar.close,
+      volume: realtimeBar.volume,
+    };
+  }
+
+  const lastBarTimeInSeconds = Math.floor(lastBar.time / 1000);
+  const lastBarStart = Math.floor(lastBarTimeInSeconds / timeInterval) * timeInterval;
+
+  if (currentBarStart > lastBarStart) {
+    // 새로운 Bar 생성
+    const newBar = {
+      time: currentBarStart * 1000, // 밀리초 단위로 변환
+      open: realtimeBar.close, // 새로운 Bar의 시작가는 현재 가격
+      high: realtimeBar.close,
+      low: realtimeBar.close,
+      close: realtimeBar.close,
+      volume: realtimeBar.volume || 1000,
+    };
+    console.log(
+      `[${resolution}분봉] 새로운 Bar 생성:`,
+      new Date(currentBarStart * 1000).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
+    );
+    return newBar;
+  } else {
+    // 기존 Bar 업데이트
+    return {
+      ...lastBar,
+      time: lastBar.time, // 기존 시간 유지 (이미 밀리초 단위)
+      high: Math.max(lastBar.high, realtimeBar.high || realtimeBar.close),
+      low: Math.min(lastBar.low, realtimeBar.low || realtimeBar.close),
+      close: realtimeBar.close,
+      volume: lastBar.volume + (realtimeBar.volume || 1000),
+    };
+  }
+}
+
+// 시간 간격 계산
+function getTimeInterval(resolution) {
+  switch (resolution) {
+    case '1':
+      return 60;
+    case '5':
+      return 5 * 60;
+    case '15':
+      return 15 * 60;
+    case '30':
+      return 30 * 60;
+    case '60':
+      return 60 * 60;
+    case '240':
+      return 4 * 60 * 60;
+    case '1D':
+      return 24 * 60 * 60;
+    case '1W':
+      return 7 * 24 * 60 * 60;
+    case '1M':
+      return 30 * 24 * 60 * 60;
+    default:
+      return 24 * 60 * 60; // 기본값: 1일
+  }
+}
+
 // 모든 기존 구독 재구독
 function resubscribeAll() {
-  channelToSubscription.forEach((subscriptionItem, channelString) => {
-    sendSubscribeMessage(channelString, subscriptionItem);
+  // 심볼별로 중복 제거하여 구독
+  const uniqueSymbols = new Set();
+  subscriptions.forEach((subscription) => {
+    uniqueSymbols.add(subscription.symbol);
+  });
+
+  uniqueSymbols.forEach((symbol) => {
+    sendSubscribeMessage(symbol);
   });
 }
 
 // 구독 메시지 전송
-function sendSubscribeMessage(channelString, subscriptionItem) {
-  if (socket && socket.readyState === WebSocket.OPEN) {
-    // channelString에서 심볼 정보 추출 (예: "msw~BINANCE~ETH~EUR")
-    const parts = channelString.split('~');
-    const symbol = parts.length >= 4 ? `${parts[2]}${parts[3]}` : 'BTCUSDT'; // 기본값
+function sendSubscribeMessage(symbol) {
+  console.log('[sendSubscribeMessage] 호출:', { symbol, socketState: socket?.readyState });
 
-    // 심볼별로 하나만 구독 (resolution과 관계없이)
+  if (socket && socket.readyState === WebSocket.OPEN) {
     const subscribeMessage = {
       type: 'subscribe',
       symbol: symbol,
-      interval: '1m', // 기본 1분봉으로 구독 (클라이언트에서 resolution 처리)
-      channel: channelString,
     };
 
-    console.log('[MSW WebSocket] 구독 요청:', subscribeMessage);
+    console.log('[sendSubscribeMessage] 구독 요청:', subscribeMessage);
     socket.send(JSON.stringify(subscribeMessage));
+    console.log('[sendSubscribeMessage] 메시지 전송 완료');
+  } else {
+    console.error('[sendSubscribeMessage] WebSocket이 연결되지 않음:', {
+      socket: !!socket,
+      readyState: socket?.readyState,
+      expectedState: WebSocket.OPEN,
+    });
   }
 }
 
 // 구독 해제 메시지 전송
-function sendUnsubscribeMessage(channelString) {
-  if (socket && socket.readyState === WebSocket.OPEN) {
-    // channelString에서 심볼 정보 추출
-    const parts = channelString.split('~');
-    const symbol = parts.length >= 4 ? `${parts[2]}${parts[3]}` : 'BTCUSDT';
+function sendUnsubscribeMessage(symbol) {
+  console.log('[sendUnsubscribeMessage] 호출:', { symbol, socketState: socket?.readyState });
 
+  if (socket && socket.readyState === WebSocket.OPEN) {
     const unsubscribeMessage = {
       type: 'unsubscribe',
       symbol: symbol,
-      channel: channelString,
     };
 
-    console.log('[MSW WebSocket] 구독 해제 요청:', unsubscribeMessage);
+    console.log('[sendUnsubscribeMessage] 구독 해제 요청:', unsubscribeMessage);
     socket.send(JSON.stringify(unsubscribeMessage));
+  } else {
+    console.error('[sendUnsubscribeMessage] WebSocket이 연결되지 않음');
   }
 }
 
@@ -230,23 +249,26 @@ initializeSocket();
 
 // 현재 구독 상태 확인 (디버깅용)
 export function getSubscriptionStatus() {
+  const symbolCounts = new Map();
+  subscriptions.forEach((subscription) => {
+    const count = symbolCounts.get(subscription.symbol) || 0;
+    symbolCounts.set(subscription.symbol, count + 1);
+  });
+
   return {
     connected: isConnected(),
-    subscriptions: Array.from(channelToSubscription.keys()),
-    subscriberCount: Array.from(channelToSubscription.values()).reduce(
-      (total, sub) => total + sub.handlers.length,
-      0
-    ),
-    details: Array.from(channelToSubscription.entries()).map(([channel, sub]) => ({
-      channel,
+    subscriptions: Array.from(subscriptions.entries()).map(([uid, sub]) => ({
+      uid,
+      symbol: sub.symbol,
       resolution: sub.resolution,
-      handlerCount: sub.handlers.length,
-      lastBar: sub.lastDailyBar,
+      lastBar: sub.lastBar,
     })),
+    symbolCounts: Object.fromEntries(symbolCounts),
+    totalSubscriptions: subscriptions.size,
   };
 }
 
-// MSW WebSocket 구독
+// 구독 함수
 export function subscribeOnStream(
   symbolInfo,
   resolution,
@@ -263,87 +285,62 @@ export function subscribeOnStream(
 
   // 심볼 파싱 (MSW 버전)
   const parsedSymbol = parseFullSymbol(symbolInfo.full_name);
-  const channelString = `msw~${parsedSymbol.exchange}~${parsedSymbol.fromSymbol}~${parsedSymbol.toSymbol}`;
+  const symbol = `${parsedSymbol.fromSymbol}${parsedSymbol.toSymbol}`;
 
-  console.log('[subscribeOnStream] 파싱된 심볼:', parsedSymbol);
-  console.log('[subscribeOnStream] 채널 문자열:', channelString);
-
-  const handler = {
-    id: subscriberUID,
-    callback: onRealtimeCallback,
-  };
-
-  let subscriptionItem = channelToSubscription.get(channelString);
-  if (subscriptionItem) {
-    // 기존 구독이 있으면 핸들러만 추가 (resolution과 관계없이)
-    subscriptionItem.handlers.push(handler);
-    console.log('[subscribeOnStream] 기존 구독에 핸들러 추가:', channelString);
-    console.log('[subscribeOnStream] 현재 핸들러 수:', subscriptionItem.handlers.length);
-    console.log('[subscribeOnStream] 현재 resolution:', resolution);
-    return;
-  }
-
-  // 새로운 구독 생성 (WebSocket 구독은 심볼별로 하나만)
+  // 기본 가격 설정
   const currentTime = Math.floor(Date.now() / 1000);
   const defaultPrice = parsedSymbol.fromSymbol === 'ETH' ? 2800 : 50000; // ETH는 2800, BTC는 50000
 
-  subscriptionItem = {
-    subscriberUID,
+  // WebSocket 구독 상태 확인 (구독 추가 전에 확인)
+  const symbolSubscribed = Array.from(subscriptions.values()).some((sub) => sub.symbol === symbol);
+
+  const subscription = {
+    symbol,
     resolution,
-    lastDailyBar: lastDailyBar || {
-      time: currentTime,
+    lastBar: lastDailyBar || {
+      time: currentTime * 1000,
       open: defaultPrice,
       high: defaultPrice,
       low: defaultPrice,
       close: defaultPrice,
       volume: 1000,
     },
-    handlers: [handler],
+    callback: onRealtimeCallback,
   };
 
-  console.log('[subscribeOnStream] 새 구독 생성:', {
-    channelString,
-    resolution,
-    defaultPrice,
-    currentTime,
-    handlerCount: subscriptionItem.handlers.length,
-  });
+  subscriptions.set(subscriberUID, subscription);
 
-  channelToSubscription.set(channelString, subscriptionItem);
-  console.log('[subscribeOnStream] 새 구독 생성:', channelString);
-
-  // MSW WebSocket으로 구독 메시지 전송 (심볼별로 하나만)
-  sendSubscribeMessage(channelString, subscriptionItem);
+  // WebSocket 구독 (심볼이 아직 구독되지 않은 경우에만)
+  if (!symbolSubscribed) {
+    sendSubscribeMessage(symbol);
+    console.log('[subscribeOnStream] 새로운 심볼 구독:', symbol);
+  } else {
+    console.log('[subscribeOnStream] 이미 구독된 심볼:', symbol);
+  }
 }
 
-// MSW WebSocket 구독 해제
+// 단순화된 구독 해제 함수
 export function unsubscribeFromStream(subscriberUID) {
   console.log('[unsubscribeFromStream] 호출:', subscriberUID);
 
-  // subscriberUID와 일치하는 구독 찾기
-  for (const channelString of channelToSubscription.keys()) {
-    const subscriptionItem = channelToSubscription.get(channelString);
-    const handlerIndex = subscriptionItem.handlers.findIndex(
-      (handler) => handler.id === subscriberUID
-    );
+  const subscription = subscriptions.get(subscriberUID);
+  if (!subscription) {
+    console.log('[unsubscribeFromStream] 구독을 찾을 수 없음:', subscriberUID);
+    return;
+  }
 
-    if (handlerIndex !== -1) {
-      // 핸들러 제거
-      subscriptionItem.handlers.splice(handlerIndex, 1);
-      console.log(`[unsubscribeFromStream] 핸들러 제거: ${subscriberUID} from ${channelString}`);
+  // 구독 제거
+  subscriptions.delete(subscriberUID);
 
-      if (subscriptionItem.handlers.length === 0) {
-        // 마지막 핸들러였다면 채널 구독 해제
-        console.log('[unsubscribeFromStream] 채널 구독 완전 해제:', channelString);
+  // 해당 심볼의 다른 구독이 있는지 확인
+  const symbolSubscribed = Array.from(subscriptions.values()).some(
+    (sub) => sub.symbol === subscription.symbol
+  );
 
-        // MSW WebSocket으로 구독 해제 메시지 전송
-        sendUnsubscribeMessage(channelString);
-
-        // 메모리에서 제거
-        channelToSubscription.delete(channelString);
-        break;
-      }
-    }
+  if (!symbolSubscribed) {
+    // 심볼 구독 해제
+    sendUnsubscribeMessage(subscription.symbol);
+    console.log('[unsubscribeFromStream] 심볼 구독 해제:', subscription.symbol);
   }
 }
 

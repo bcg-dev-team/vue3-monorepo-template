@@ -324,6 +324,84 @@ type TextSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl'
 type FontWeight = 'normal' | 'medium' | 'semibold' | 'bold'
 ```
 
+## 📚 문서
+
+### 아이콘 최적화 가이드
+아이콘 시스템의 최적화 프로세스와 사용법에 대한 상세한 가이드는 [아이콘 최적화 가이드](./docs/icon-optimization.md)를 참조하세요.
+
+## 디자인 토큰 변환 프로세스
+
+UI 패키지의 디자인 토큰은 Figma(Token Studio)에서 추출한 __tokens.json을 style-dictionary 및 변환 스크립트로 가공하여 CSS 변수와 Tailwind config로 자동 변환됩니다.
+
+### 전체 흐름
+
+1. **Figma(Token Studio)에서 토큰 추출**
+   - Figma에서 Token Studio 플러그인으로 디자인 토큰을 추출하여 `packages/theme/src/tokens/__tokens.json` 파일로 저장합니다.
+2. **토큰 변환 스크립트 실행**
+   - `pnpm --filter @template/theme run build:tokens` 또는 UI 패키지에서 `pnpm build:theme` 실행 시, 내부적으로 `scripts/generate-tailwind-config.mjs`가 동작합니다.
+3. **Style Dictionary 변환**
+   - 라이트/다크 테마별로 토큰을 분리하고, Style Dictionary + sd-tailwindcss-transformer로 CSS 변수(`src/styles/__tokens-light.css`, `__tokens-dark.css`)와 Tailwind config(`tailwind.config.cjs`)를 자동 생성합니다.
+4. **Tailwind 공식 분류로 후처리**
+   - colors, fontSize, spacing 등 Tailwind 공식 분류에 맞게 토큰을 재매핑하고, 컴포넌트별/불필요 토큰은 필터링합니다.
+5. **중간 산출물 정리**
+   - 변환 과정에서 생성된 임시 파일들은 자동으로 삭제됩니다.
+6. **UI 패키지에서 활용**
+   - @template/theme의 CSS 변수와 Tailwind config를 그대로 import하여 사용합니다.
+
+### 주요 스크립트 및 파일
+- `packages/theme/scripts/generate-tailwind-config.mjs`: 메인 변환 스크립트
+- `packages/theme/src/tokens/__tokens.json`: Figma에서 추출한 원본 토큰
+- `packages/theme/src/styles/__tokens-light.css`, `__tokens-dark.css`: 변환된 CSS 변수
+- `packages/theme/tailwind.config.cjs`: 변환된 Tailwind 설정
+- `packages/theme/scripts/debug-references.mjs`: 토큰 내부 참조 경로를 일괄 변환하는 수동 디버깅 스크립트
+
+### 예시
+
+#### Figma 원본 토큰
+```json
+{
+  "Theme/Light": {
+    "Base-Colors": {
+      "Primary": {
+        "primary800": { "$type": "color", "$value": "#ffc300" }
+      }
+    }
+  }
+}
+```
+
+#### 변환 후 CSS 변수
+```css
+:root[data-theme="light"] {
+  --base-colors-primary-primary800: #ffc300;
+  /* ... */
+}
+```
+
+#### 변환 후 Tailwind config
+```js
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          primary800: 'var(--base-colors-primary-primary800)',
+          // ...
+        }
+      }
+    }
+  }
+}
+```
+
+### 수동 디버깅/보정이 필요한 경우
+- Figma 구조가 변경되거나, 토큰 내부 참조 경로가 맞지 않을 때 `debug-references.mjs` 스크립트로 경로를 일괄 보정할 수 있습니다.
+- 예: `{Base-Colors...}` → `{Theme/Light.Base-Colors...}`
+
+---
+
+이 과정을 통해 Figma의 디자인 토큰이 코드에 1:1로 반영되며, 토큰의 일관성과 유지보수성이 극대화됩니다.
+
 ## 📚 Storybook
 
 ### 개발 서버 실행

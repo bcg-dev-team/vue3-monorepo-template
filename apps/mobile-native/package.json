@@ -1,7 +1,10 @@
 {
   "name": "@template/mobile-native",
   "version": "0.1.0",
-  "description": "React Native 네이티브 앱 (WebView 기반)",
+  "description": "React Native 모바일 애플리케이션",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "main": "index.ts",
   "scripts": {
     "start": "expo start",
@@ -31,7 +34,7 @@
     "@template/utils": "workspace:*",
     "expo": "~53.0.20",
     "expo-status-bar": "~2.2.3",
-    "react": "19.1.0",
+    "react": "19.1.1",
     "react-native": "0.80.1",
     "react-native-dotenv": "^3.4.11",
     "react-native-web": "^0.20.0",
@@ -39,7 +42,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
-    "@types/react": "~19.1.0"
+    "@types/react": "~19.1.1"
   },
   "private": true
 }

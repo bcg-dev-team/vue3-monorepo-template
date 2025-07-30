@@ -1,8 +1,11 @@
 {
   "name": "@template/ui",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Headless UI + Tailwind CSS 기반 UI 컴포넌트 패키지",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {

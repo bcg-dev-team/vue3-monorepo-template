@@ -1,8 +1,11 @@
 {
   "name": "@template/utils",
-  "version": "0.1.0",
-  "description": "공통 유틸리티 함수",
+  "version": "1.0.0",
+  "description": "공통 유틸리티 함수 패키지",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
@@ -24,10 +27,16 @@
     "test:coverage": "vitest --coverage"
   },
   "dependencies": {
-    "@template/types": "workspace:*"
+    "@template/types": "workspace:*",
+    "zxcvbn": "^4.4.2"
   },
-  "devDependencies": {},
+  "peerDependencies": {
+    "vitest": "^1.6.1"
+  },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "@types/zxcvbn": "^4.4.5"
   }
 }

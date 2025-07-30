@@ -1,8 +1,11 @@
 {
   "name": "@template/types",
-  "version": "0.1.0",
-  "description": "공통 타입 정의",
+  "version": "1.0.0",
+  "description": "공통 TypeScript 타입 정의 패키지",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {

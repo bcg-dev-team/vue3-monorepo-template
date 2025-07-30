@@ -21,7 +21,7 @@ const BUILD_ORDER = [
   'apps/desktop', // 모든 패키지 사용
   'apps/mobile', // 모든 패키지 사용
   'apps/mobile-native', // React Native 앱 (WebView 기반)
-  'apps/moda-desktop', // 모든 패키지 사용
+  'apps/sample-desktop', // 모든 패키지 사용
 ] as const;
 
 // 의존성 그래프 정의
@@ -38,7 +38,7 @@ const DEPENDENCY_GRAPH = {
     'packages/ui',
     'packages/theme',
   ],
-  'apps/moda-desktop': [
+  'apps/sample-desktop': [
     'packages/types',
     'packages/utils',
     'packages/api',

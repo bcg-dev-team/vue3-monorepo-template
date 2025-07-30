@@ -86,7 +86,7 @@ export class RealTimeChartManager {
 
       case 'price_update':
         if (message.data) {
-          this.addDataPoint(message.data);
+          this.addDataPointAppend(message.data);
         }
         break;
     }
@@ -106,6 +106,32 @@ export class RealTimeChartManager {
     } else {
       // 데이터가 없으면 새로 추가
       this.data.push(point);
+    }
+
+    this.notifyUpdate();
+  }
+
+  /**
+   * 데이터 포인트 추가 (새로운 데이터를 마지막에 추가)
+   */
+  addDataPointAppend(point: ChartDataPoint): void {
+    // 시간 값 자동 증가 처리
+    let newTime = point.time;
+    if (this.data.length > 0) {
+      // 마지막 데이터의 시간보다 큰 값이어야 함
+      const lastTime = this.data[this.data.length - 1].time;
+      if (point.time <= lastTime) {
+        newTime = lastTime + 1; // 시간이 같거나 작으면 1씩 증가
+      }
+    }
+
+    // 새로운 데이터 포인트를 배열 끝에 추가 (수정된 시간 값 사용)
+    const newPoint = { time: newTime, value: point.value };
+    this.data.push(newPoint);
+
+    // 최대 데이터 포인트 수 제한
+    if (this.data.length > this.maxDataPoints) {
+      this.data = this.data.slice(-this.maxDataPoints);
     }
 
     this.notifyUpdate();

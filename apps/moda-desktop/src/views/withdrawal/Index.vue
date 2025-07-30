@@ -1,12 +1,16 @@
 <template>
-  <div class="flex flex-col gap-6">
+  <CardLayoutVertical>
     <MainCardContent title="출금신청">
       <template #content>
         <div class="flex items-center gap-3">
           <SubCardContent title="계좌번호">
-            <template #content> <> </template>
+            <template #content>
+              <div class="flex items-center gap-2">
+                <span class="text-gray-600">002-01-000001</span>
+              </div>
+            </template>
           </SubCardContent>
-          <p>></p>
+          <p class="text-gray-400">></p>
           <SubCardContent title="받을 계좌번호">
             <template #content>
               <div class="flex items-center gap-2">
@@ -19,7 +23,7 @@
               </div>
             </template>
           </SubCardContent>
-          <p>></p>
+          <p class="text-gray-400">></p>
           <SubCardContent title="신청금액">
             <template #content>
               <div class="flex items-center gap-2">
@@ -28,7 +32,7 @@
               </div>
             </template>
           </SubCardContent>
-          <p>></p>
+          <p class="text-gray-400">></p>
           <BaseButton class="px-[43px]" variant="primary" label="신청하기" />
         </div>
       </template>
@@ -45,11 +49,12 @@
         />
       </template>
     </MainCardContent>
-  </div>
+  </CardLayoutVertical>
 </template>
+
 <script setup lang="ts">
-import MainCardContent from '@/components/ui/cards/MainCardContent.vue';
-import SubCardContent from '@/components/ui/cards/SubCardContent.vue';
+import CardLayoutVertical from '@/components/layout/CardLayoutVertical.vue';
+import SubCardContent from '@/components/common/cards/SubCardContent.vue';
 import { BaseButton, BaseTable, BaseInputText } from '@template/ui';
 import type { TableHeader, TableRow } from '@template/ui';
 import { ref } from 'vue';
@@ -97,4 +102,5 @@ const handleSort = (key: string, direction: 'asc' | 'desc') => {
   console.log(`Sorting by ${key} in ${direction} direction`);
 };
 </script>
+
 <style scoped></style>

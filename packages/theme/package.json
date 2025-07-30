@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Headless UI + Tailwind CSS 기반 디자인 토큰/테마 패키지 (Figma 연동)",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {

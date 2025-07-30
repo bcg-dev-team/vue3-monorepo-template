@@ -1,8 +1,11 @@
 {
   "name": "@template/moda-desktop",
   "version": "0.1.0",
-  "description": "Vue 3 Moda 데스크톱 애플리케이션",
+  "description": "MODA 데스크톱 애플리케이션",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",

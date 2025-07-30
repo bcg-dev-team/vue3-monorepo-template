@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "API 통신 라이브러리",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
@@ -26,6 +29,9 @@
   "dependencies": {
     "@template/types": "workspace:*",
     "@template/utils": "workspace:*"
+  },
+  "peerDependencies": {
+    "vitest": "^1.6.1"
   },
   "devDependencies": {},
   "publishConfig": {

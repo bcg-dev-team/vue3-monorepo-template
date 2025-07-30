@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Vue 3 데스크톱 애플리케이션",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",

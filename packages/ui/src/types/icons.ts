@@ -28,6 +28,7 @@ export type IconName =
   | 'refresh'
   | 'search'
   | 'eye'
+  | 'eye-off'
   | 'fullscreen'
   | 'external-link'
   | 'icn-delete'
@@ -112,6 +113,7 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   refresh: 'fill', // fill="#333740"
   search: 'fill', // fill="#333740"
   eye: 'stroke', // stroke="#333740"
+  'eye-off': 'stroke', // stroke="#333740"
   fullscreen: 'fill', // fill="#333740"
   'external-link': 'fill', // fill="#333740"
   'icn-delete': 'fill', // fill="#b4b6bb"

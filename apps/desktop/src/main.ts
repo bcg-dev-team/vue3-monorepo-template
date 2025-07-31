@@ -3,6 +3,20 @@ import { createApp } from 'vue';
 import router from './router';
 import App from './App.vue';
 
+import setupLocatorUI from '@locator/runtime';
+
+if (process.env.NODE_ENV === 'development') {
+  setupLocatorUI({
+    adapter: 'vue',
+    editor: {
+      // 환경변수에서 editor template 가져오기 (기본값 설정)
+      linkTemplate:
+        process.env.VITE_LOCATOR_EDITOR_TEMPLATE ||
+        'cursor://file/${projectPath}${filePath}:${line}:${column}',
+    },
+  });
+}
+
 // Theme 패키지 import (CSS 변수 포함)
 import '@template/theme';
 

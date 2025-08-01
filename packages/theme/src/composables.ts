@@ -29,7 +29,7 @@ export function useTheme(): ThemeComposable {
    */
   const updateHtmlClass = () => {
     if (typeof document === 'undefined') return;
-    document.body.setAttribute('data-theme', themeStore.isDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', themeStore.isDark ? 'dark' : 'light');
   };
 
   // 테마 변경 시 HTML 클래스 업데이트

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-primary px-6 pt-9 pb-6">
+  <div class="bg-primary-primary800 px-6 pb-6 pt-9">
     <div class="flex items-center gap-2">
       <span class="text-2xl font-bold">{{ userInfo.name }}</span>
     </div>
@@ -9,21 +9,27 @@
   </div>
   <div class="p-6">
     <div class="flex flex-col gap-3">
-      <div class="py-3 px-4 bg-bg-innerframe rounded-md">
-        <span class="text-primary">:편지: </span>
+      <div class="bg-bg-innerframe rounded-md px-4 py-3">
+        <BaseIcon name="email" size="xs" color="primary" />
         <span class="text-md font-medium">{{ userInfo.email }}</span>
       </div>
-      <div class="py-3 px-4 bg-bg-innerframe rounded-md">
-        <span class="text-primary">:전화: </span>
+      <div class="bg-bg-innerframe rounded-md px-4 py-3">
+        <BaseIcon name="phone" size="xs" color="primary" />
         <span class="text-md font-medium">{{ userInfo.phone }}</span>
       </div>
     </div>
-    <div class="w-[282px] h-[48px] bg-primary rounded-sm flex items-center justify-center mt-4">
-      <span class="text-sm font-semibold">버튼 영역</span>
+    <div class="mt-4 flex items-center justify-center">
+      <BaseButton
+        label="정보 수정"
+        variant="primary"
+        size="regular"
+        :leftIcon="{ name: 'order', size: 'xl', color: 'current' }"
+      />
     </div>
   </div>
 </template>
 <script setup lang="ts">
+import { BaseButton, BaseIcon } from '@template/ui';
 import { reactive } from 'vue';
 
 const userInfo = reactive({

@@ -53,20 +53,20 @@
         </MainCardContent>
         <MainCardContent class="row-span-1">
           <template #content>
-            <div class="bg-[#19323f] flex flex-col gap-6 items-center justify-center p-6">
-              <div class="text-white bg-[#eaecee33] p-3 rounded-md">:헤드셋 아이콘:</div>
-              <div class="flex flex-col gap-2 text-white items-center justify-center">
+            <div class="flex flex-col items-center justify-center gap-6 bg-[#19323f] p-6">
+              <div class="rounded-md bg-[#eaecee33] p-3 text-white">:헤드셋 아이콘:</div>
+              <div class="flex flex-col items-center justify-center gap-2 text-white">
                 <span class="text-xl font-bold">도움이 필요하세요?</span>
                 <span class="text-md font-medium">24시간 고객지원팀이 언제든 도와드립니다.</span>
               </div>
-              <div class="flex items-center justify-center flex-col gap-3 w-full">
+              <div class="flex w-full flex-col items-center justify-center gap-3">
                 <div
-                  class="bg-white w-full rounded-sm px-5 py-[6px] h-[42px] flex items-center justify-center"
+                  class="flex h-[42px] w-full items-center justify-center rounded-sm bg-white px-5 py-[6px]"
                 >
                   <span class="text-md font-medium">채팅 상담 버튼 영역</span>
                 </div>
                 <div
-                  class="bg-white w-full rounded-sm px-5 py-[6px] h-[42px] flex items-center justify-center"
+                  class="flex h-[42px] w-full items-center justify-center rounded-sm bg-white px-5 py-[6px]"
                 >
                   <span class="text-md font-medium">전화 상담 버튼 영역</span>
                 </div>
@@ -80,9 +80,9 @@
 </template>
 
 <script setup lang="ts">
-import MainCardContent from '@/components/common/cards/MainCardContent.vue';
-import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
 import CardLayoutHorizontal from '@/components/layout/fragments/CardLayoutHorizontal.vue';
-import UserInfo from '@/components/mypage/UserInfo.vue';
+import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
+import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import UserAssetsInfo from '@/components/mypage/UserAssetsInfo.vue';
+import UserInfo from '@/components/mypage/UserInfo.vue';
 </script>

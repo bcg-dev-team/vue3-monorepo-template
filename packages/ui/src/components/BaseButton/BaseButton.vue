@@ -15,6 +15,7 @@
 import type { ComponentSize } from '../../types/components';
 import type { IconName } from '../../types/icons';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
+import BaseSkeleton from '../BaseSkeleton/BaseSkeleton.vue';
 import { computed } from 'vue';
 import './BaseButton.scss';
 
@@ -94,6 +95,10 @@ interface Props {
    * 커스텀 클래스 (button/a에 직접 적용)
    */
   customClass?: string;
+  /** 
+  * 로딩 상태 여부
+   */
+  isLoading?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -105,6 +110,7 @@ const props = withDefaults(defineProps<Props>(), {
   fullWidth: false,
   href: undefined,
   centerIcon: undefined,
+  isLoading: false,
 });
 
 const emit = defineEmits<{
@@ -181,10 +187,104 @@ function handleKeydown(e: KeyboardEvent) {
     emit('click', e as any);
   }
 }
+
+// 스켈레톤 크기 계산 - CSS 값 기반 동적 계산
+const getSkeletonWidth = () => {
+  // 텍스트 길이 기반 계산
+  const textLength = props.label?.length || 0;
+  const subTextLength = props.subLabel?.length || 0;
+  
+  // CSS에서 정의된 폰트 크기 기반 계산
+  // TODO: CSS 변수로 추출 가능: --button-font-size-small, --button-font-size-regular 등
+  const getFontSize = () => {
+    switch (props.size) {
+      case 'md': return 14; // btn-size-small font-size: 14px
+      case 'sm': return 13; // btn-size-small-inner font-size: 13px
+      default: return 16; // btn-size-regular font-size: 16px
+    }
+  };
+  
+  // CSS에서 정의된 패딩 기반 계산
+  // TODO: CSS 변수로 추출 가능: --button-padding-small, --button-padding-regular 등
+  const getPadding = () => {
+    switch (props.size) {
+      case 'md': return { x: 20, y: 6 }; // py-1.5 px-5 → padding: 6px 20px
+      case 'sm': return { x: 12, y: 10 }; // py-2.5 px-3 → padding: 10px 12px
+      default: return { x: 16, y: 12 }; // py-3 px-4 → padding: 12px 16px
+    }
+  };
+  
+  // CSS에서 정의된 아이콘 크기 기반 계산
+  // TODO: CSS 변수로 추출 가능: --button-icon-size-small, --button-icon-size-regular 등
+  const getIconSize = () => {
+    switch (props.size) {
+      case 'md': return 24; // .btn-size-small .icon { width: 24px; height: 24px; }
+      case 'sm': return 16; // .btn-size-small-inner .icon { width: 16px; height: 16px; }
+      default: return 24; // .btn-size-regular .icon { width: 24px; height: 24px; }
+    }
+  };
+  
+  const fontSize = getFontSize();
+  const padding = getPadding();
+  const iconSize = getIconSize();
+  
+  // 문자당 너비 계산 (폰트 크기의 60% 정도)
+  // TODO: 폰트 패밀리에 따라 조정 가능
+  const charWidth = fontSize * 0.6;
+  
+  // 텍스트 너비 계산
+  let textWidth = textLength * charWidth;
+  if (subTextLength > 0) {
+    // 서브 텍스트는 더 작은 폰트 크기 사용
+    const subFontSize = props.size === 'sm' ? 13 : 14; // .btn-sub-text font-size
+    const subCharWidth = subFontSize * 0.6;
+    textWidth = Math.max(textWidth, subTextLength * subCharWidth);
+  }
+  
+  // 아이콘 공간 계산
+  let iconSpace = 0;
+  if (props.leftIcon) iconSpace += iconSize + 8; // 아이콘 + 간격
+  if (props.rightIcon) iconSpace += iconSize + 8;
+  
+  // 전체 너비 계산
+  const totalWidth = textWidth + iconSpace + (padding.x * 2);
+  
+  // 최소/최대 제한 (CSS 값 기반)
+  // TODO: CSS 변수로 추출 가능: --button-min-width, --button-max-width 등
+  const minWidth = props.size === 'md' ? 60 : props.size === 'sm' ? 50 : 80;
+  const maxWidth = 400;
+  
+  return Math.max(minWidth, Math.min(maxWidth, totalWidth)) + 'px';
+};
+
+const getSkeletonHeight = () => {
+  // CSS에서 정의된 높이 기반 계산
+  // TODO: CSS 변수로 추출 가능: --button-height-small, --button-height-regular 등
+  const getBaseHeight = () => {
+    switch (props.size) {
+      case 'md': return 32; // py-1.5 (6px * 2) + line-height (18px) + 여유
+      case 'sm': return 28; // py-2.5 (10px * 2) + line-height (16px) + 여유
+      default: return 40; // py-3 (12px * 2) + line-height (20px) + 여유
+    }
+  };
+  
+  const baseHeight = getBaseHeight();
+  const hasSubLabel = !!props.subLabel;
+  
+  // 서브 라벨이 있으면 추가 높이
+  if (hasSubLabel) {
+    const subLabelHeight = props.size === 'sm' ? 16 : 18; // .btn-sub-text line-height
+    const subLabelMargin = 2; // .btn-sub-text margin-top: 2px
+    return (baseHeight + subLabelHeight + subLabelMargin) + 'px';
+  }
+  
+  return baseHeight + 'px';
+};
 </script>
 
 <template>
   <component
+    v-if="!props.isLoading"
     :is="props.href ? 'a' : 'button'"
     :href="props.href"
     role="button"
@@ -236,4 +336,24 @@ function handleKeydown(e: KeyboardEvent) {
     <!-- 기본 슬롯 -->
     <slot />
   </component>
+  
+  <!-- 스켈레톤 상태 -->
+  <div v-else class="button-skeleton">
+    <BaseSkeleton
+      :width="getSkeletonWidth()"
+      :height="getSkeletonHeight()"
+      variant="rectangular"
+      class="button-skeleton-element"
+    />
+  </div>
 </template>
+
+<style scoped>
+.button-skeleton {
+  display: inline-block;
+}
+
+.button-skeleton-element {
+  border-radius: var(--radius-sm);
+}
+</style>

@@ -6,22 +6,25 @@
   Figma 컴포넌트: Icon (아이콘 컴포넌트)
 -->
 <script setup lang="ts">
-import type { IconName } from '../../types/icons';
+import type { IconName, IconSize } from '../../types/icons';
 import { getIconComponent } from './iconRegistry';
 import { getIconType } from '../../types/icons';
 import { computed } from 'vue';
+import IconSkeleton from '../BaseSkeleton/IconSkeleton.vue';
 import './BaseIcon.scss';
 
 interface Props {
   name: IconName;
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | number;
+  size?: IconSize | number;
   color?: string;
   class?: string;
+  isLoading?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 'md',
   color: 'currentColor',
+  isLoading: false,
 });
 
 // 아이콘 컴포넌트 가져오기 (정적 방식)
@@ -91,15 +94,39 @@ const iconStyles = computed(() => {
 
   return styles;
 });
+
+// 스켈레톤용 크기 변환
+const getSkeletonSize = computed((): IconSize => {
+  if (typeof props.size === 'number') {
+    // 숫자 크기를 가장 가까운 IconSize로 변환
+    if (props.size <= 16) return 'sm';
+    if (props.size <= 24) return 'md';
+    if (props.size <= 32) return 'lg';
+    return 'xl';
+  }
+  return props.size;
+});
 </script>
 
 <template>
+  <!-- 로딩 상태일 때 스켈레톤 표시 -->
+  <IconSkeleton
+    v-if="props.isLoading"
+    :size="getSkeletonSize"
+  />
+  
+  <!-- 정상 상태일 때 아이콘 표시 -->
   <component
-    v-if="iconComponent"
+    v-else-if="iconComponent"
     :is="iconComponent"
     :class="iconClasses"
     :style="iconStyles"
     aria-hidden="true"
   />
-  <div v-else class="icon-loading" :style="{ width: '24px', height: '24px' }" />
+  
+  <!-- 아이콘을 찾을 수 없을 때 스켈레톤 표시 -->
+  <IconSkeleton
+    v-else
+    :size="getSkeletonSize"
+  />
 </template>

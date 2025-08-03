@@ -115,3 +115,31 @@ export interface PopupConfig {
   actions?: PopupAction[];
   alertVariant?: AlertVariant;
 }
+// BaseSkeleton
+export interface SkeletonProps {
+  width?: string;
+  height?: string;
+  variant?: 'text' | 'circular' | 'rectangular';
+  animation?: 'pulse' | 'shimmer';
+  className?: string;
+}
+
+// 로딩 상태를 포함하는 컴포넌트 공통 타입
+export interface LoadingComponentProps {
+  isLoading?: boolean;
+}
+
+// 테이블 스켈레톤 전용 타입
+export interface TableSkeletonProps extends LoadingComponentProps {
+  skeletonRows?: number;
+}
+
+// 카드 스켈레톤 전용 타입
+export interface CardSkeletonProps extends LoadingComponentProps {
+  skeleton?: {
+    showImage?: boolean;
+    showTitle?: boolean;
+    showDescription?: boolean;
+    showActions?: boolean;
+  };
+}

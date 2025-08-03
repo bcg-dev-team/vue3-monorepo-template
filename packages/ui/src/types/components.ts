@@ -74,3 +74,44 @@ export interface ChipData {
   variant: ChipVariant;
   icon?: string;
 }
+
+// BasePopup
+export type PopupSize = 'sm' | 'md' | 'lg' | 'xl';
+export type PopupVariant = 'default' | 'confirm' | 'alert';
+export type AlertVariant = 'success' | 'info' | 'warning' | 'error';
+
+export interface PopupState {
+  isOpen: boolean;
+  title?: string;
+  content?: string;
+  description?: string;
+  data?: unknown;
+}
+
+export interface PopupAction {
+  label: string;
+  variant?: 'primary' | 'outline' | 'red' | 'blue' | 'pill' | 'light-solid' | 'red-solid' | 'blue-solid' | 'green-solid' | 'cancel-solid' | 'disabled';
+  size?: 'regular' | 'small' | 'pill' | 'small-inner';
+  disabled?: boolean;
+  loading?: boolean;
+  leftIcon?: {
+    name: IconName;
+    size?: ComponentSize | 'xl';
+    color?: string;
+  };
+  rightIcon?: {
+    name: IconName;
+    size?: ComponentSize | 'xl';
+    color?: string;
+  };
+}
+
+export interface PopupConfig {
+  size?: PopupSize;
+  variant?: PopupVariant;
+  closeOnOverlayClick?: boolean;
+  closeOnEscape?: boolean;
+  showCloseButton?: boolean;
+  actions?: PopupAction[];
+  alertVariant?: AlertVariant;
+}

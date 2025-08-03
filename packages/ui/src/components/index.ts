@@ -8,3 +8,4 @@ export { default as BasePasswordStrength } from './BasePasswordStrength/BasePass
 export * from './BasePagination';
 export * from './BaseTable';
 export * from './BaseIcon';
+export * from './BaseSkeleton';

@@ -103,11 +103,16 @@ const meta: Meta<typeof BaseIcon> = {
       description: '추가 CSS 클래스',
       control: { type: 'text' },
     },
+    isLoading: {
+      description: '로딩 상태',
+      control: { type: 'boolean' },
+    },
   },
   args: {
-    name: 'heart',
+    name: 'arrow-forward',
     size: 'md',
-    color: 'currentColor',
+    color: '#000000',
+    isLoading: false,
   },
   tags: ['autodocs'],
 };
@@ -201,6 +206,73 @@ export const Colors: Story = {
       </div>
     `,
   }),
+};
+
+/**
+ * 로딩 상태 아이콘
+ */
+export const Loading: Story = {
+  render: () => ({
+    components: { BaseIcon },
+    data() {
+      return {
+        sizes: [
+          { size: 'xs', label: 'xs' },
+          { size: 'sm', label: 'sm' },
+          { size: 'md', label: 'md' },
+          { size: 'lg', label: 'lg' },
+          { size: 'xl', label: 'xl' },
+        ],
+        iconNames,
+      };
+    },
+    template: `
+      <div class="flex flex-col gap-6">
+        <div>
+          <h3 class="text-sm font-medium text-gray-700 mb-3">로딩 상태 (isLoading: true)</h3>
+          <div class="flex items-center gap-4">
+            <div 
+              v-for="(item, index) in sizes" 
+              :key="item.label"
+              class="flex flex-col items-center gap-2"
+            >
+              <BaseIcon 
+                :name="iconNames[index % iconNames.length]" 
+                :size="item.size" 
+                :is-loading="true" 
+              />
+              <span class="text-xs text-gray-600">{{ item.label }}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-sm font-medium text-gray-700 mb-3">정상 상태 (isLoading: false)</h3>
+          <div class="flex items-center gap-4">
+            <div 
+              v-for="(item, index) in sizes" 
+              :key="item.label"
+              class="flex flex-col items-center gap-2"
+            >
+              <BaseIcon 
+                :name="iconNames[index % iconNames.length]" 
+                :size="item.size" 
+                :is-loading="false" 
+              />
+              <span class="text-xs text-gray-600">{{ item.label }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story: '아이콘의 로딩 상태를 보여줍니다. isLoading이 true일 때는 IconSkeleton이 표시됩니다.',
+      },
+    },
+  },
 };
 
 /**

@@ -46,6 +46,14 @@ const meta: Meta<typeof BaseTable> = {
     headerCustomColor: {
       description: 'Type2 헤더의 커스텀 색상',
       control: { type: 'color' }
+    },
+    isLoading: {
+      description: '로딩 상태 여부',
+      control: { type: 'boolean' }
+    },
+    skeletonRows: {
+      description: '스켈레톤 행 개수',
+      control: { type: 'number', min: 1, max: 20 }
     }
   },
   tags: ['autodocs']
@@ -402,6 +410,25 @@ export const EmptyTable: Story = {
     docs: {
       description: {
         story: '빈 데이터 테이블입니다. 데이터가 없을 때 표시할 내용을 커스텀할 수 있습니다.'
+      }
+    }
+  }
+};
+
+export const Skeleton: Story = {
+  args: {
+    headers: sampleHeaders,
+    data: [],
+    selectable: false,
+    sortable: false,
+    headerType: 'type1',
+    isLoading: true,
+    skeletonRows: 5
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '스켈레톤 상태의 테이블입니다. 데이터 로딩 중에 표시됩니다.'
       }
     }
   }

@@ -13,6 +13,7 @@ export * from './BasePagination';
 export * from './BaseTable';
 export * from './BaseIcon';
 export * from './BasePopup';
+export * from './BaseSkeleton';
 
 // 타입 export
 export * from '../types/components';

@@ -127,6 +127,36 @@ export type IconName =
 export type IconType = 'fill' | 'stroke';
 
 /**
+ * 아이콘 크기 타입
+ */
+export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+
+/**
+ * 아이콘 모양 타입 (스켈레톤용)
+ */
+export type IconVariant = 'circular' | 'square' | 'rounded';
+
+/**
+ * 아이콘 스켈레톤 Props
+ */
+export interface IconSkeletonProps {
+  size?: IconSize;
+  showText?: boolean;
+  text?: string;
+}
+
+/**
+ * 아이콘 크기 매핑
+ */
+export const ICON_SIZE_MAP: Record<IconSize, string> = {
+  xs: '12px',
+  sm: '16px',
+  md: '24px',
+  lg: '32px',
+  xl: '48px',
+};
+
+/**
  * 아이콘 타입 매핑
  * 실제 SVG 파일 분석 결과를 바탕으로 각 아이콘의 기본 타입을 정의합니다.
  */

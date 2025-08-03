@@ -5,6 +5,7 @@ export { default as BaseInputText } from './BaseInput/BaseInputText.vue';
 export { default as BaseInputPassword } from './BaseInput/BaseInputPassword.vue';
 export { default as BaseProgressBar } from './BaseProgressBar/BaseProgressBar.vue';
 export { default as BasePasswordStrength } from './BasePasswordStrength/BasePasswordStrength.vue';
+export { default as BaseSwitch } from './BaseSwitch/BaseSwitch.vue';
 export * from './BasePagination';
 export * from './BaseTable';
 export * from './BaseIcon';

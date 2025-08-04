@@ -33,6 +33,11 @@ const routes: RouteRecordRaw[] = [
           },
         ],
       },
+      {
+        path: 'find-id',
+        name: 'find-id',
+        component: () => import('@/views/auth/findId/Index.vue'),
+      },
     ],
   },
   {

@@ -1,5 +1,7 @@
 <template>
-  <div class="bg-bg-default border-bg-outline overflow-hidden rounded-md border border-solid">
+  <div
+    class="border-bg-outline bg-neutral-neutral000 overflow-hidden rounded-md border border-solid"
+  >
     <div class="flex items-center justify-between" v-if="title">
       <div>
         <span class="leading-snug tracking-wide" :class="[titleSizeClass]">

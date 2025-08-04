@@ -1,5 +1,6 @@
 import { useTheme } from '@template/theme';
 import { createPinia } from 'pinia';
+import '@template/ui/style.css';
 import { createApp } from 'vue';
 import App from './App.vue';
 import './style.css';

@@ -1,0 +1,43 @@
+// UI 패키지 메인 스타일 파일
+// 모든 컴포넌트의 SCSS를 여기서 import하여 하나의 CSS 번들로 컴파일
+
+// BaseButton 컴포넌트 스타일
+@use '../components/BaseButton/BaseButton.scss';
+
+// BaseInput 컴포넌트 스타일
+@use '../components/BaseInput/BaseInput.scss';
+@use '../components/BaseInput/BaseInputText.scss';
+@use '../components/BaseInput/BaseInputCalendar.scss';
+@use '../components/BaseInput/BaseInputSelect.scss';
+@use '../components/BaseInput/BaseInputStepper.scss';
+
+// BaseTable 컴포넌트 스타일
+@use '../components/BaseTable/BaseTable.scss';
+@use '../components/BaseTable/BaseTableBody.scss';
+@use '../components/BaseTable/BaseTableCell.scss';
+@use '../components/BaseTable/BaseTableHead.scss';
+@use '../components/BaseTable/BaseTableRow.scss';
+@use '../components/BaseTable/TableWithPagination.scss';
+
+// BaseTabs 컴포넌트 스타일
+@use '../components/BaseTabs/BaseTabs.scss';
+
+// BasePagination 컴포넌트 스타일
+@use '../components/BasePagination/BasePaginationArrow.scss';
+@use '../components/BasePagination/BasePaginationNumber.scss';
+@use '../components/BasePagination/BasePaginationJoin.scss';
+
+// BaseProgressBar 컴포넌트 스타일
+@use '../components/BaseProgressBar/BaseProgressBar.scss';
+
+// BasePasswordStrength 컴포넌트 스타일
+@use '../components/BasePasswordStrength/BasePasswordStrength.scss';
+
+// BaseCheckbox 컴포넌트 스타일
+@use '../components/BaseCheckbox/BaseCheckbox.scss';
+
+// BaseChips 컴포넌트 스타일
+@use '../components/BaseChips/BaseChip.scss';
+
+// BaseIcon 컴포넌트 스타일
+@use '../components/BaseIcon/BaseIcon.scss'; 

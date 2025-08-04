@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue';
 import { resolve } from 'node:path';
 import dts from 'vite-plugin-dts';
 import svgLoader from 'vite-svg-loader';
+import path from 'node:path';
 
 export default defineConfig({
   plugins: [
@@ -38,6 +39,9 @@ export default defineConfig({
         preserveModules: true,
       },
     },
+    cssCodeSplit: false,
+    outDir: 'dist',
+    assetsDir: '.',
   },
   resolve: {
     alias: {

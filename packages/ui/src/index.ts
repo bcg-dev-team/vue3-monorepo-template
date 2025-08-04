@@ -1,5 +1,5 @@
 // 스타일 import
-import './style.css';
+import './styles/index.scss';
 
 // Vue UI 컴포넌트들을 export
 export * from './components';

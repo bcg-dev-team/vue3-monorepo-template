@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6">
+  <div class="mx-auto w-[1920px] py-6">
     <CardLayoutVertical gap="gap-6">
       <MainCardContent class="p-6" title="출금신청" size="large">
         <template #content>

@@ -1,3 +1,3 @@
 <template>
-  <main class="flex-1 bg-bg-surface min-w-[1920px] w-full pt-[250px]"><slot /></main>
+  <main class="bg-bg-surface w-full min-w-[1920px] flex-1"><slot /></main>
 </template>

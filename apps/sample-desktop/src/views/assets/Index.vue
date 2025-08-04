@@ -1,5 +1,5 @@
 <template>
-  <div class="px-6 py-4">
+  <div class="mx-auto w-[1920px] py-4">
     <CardLayoutVertical gap="gap-3">
       <MainCardContent class="p-6" title="내 자산" size="large">
         <template #content>
@@ -39,7 +39,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import MainCardContent from '@/components/common/cards/MainCardContent.vue';
-import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
 import CardLayoutHorizontal from '@/components/layout/fragments/CardLayoutHorizontal.vue';
+import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
+import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 </script>

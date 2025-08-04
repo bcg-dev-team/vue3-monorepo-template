@@ -1,5 +1,5 @@
 <template>
-  <div class="px-[240px] py-4">
+  <div class="mx-auto mt-[22px] w-[1440px]">
     <CardLayoutHorizontal :columns="[330, 680, 382]" gap="gap-6">
       <CardLayoutVertical gap="gap-3">
         <MainCardContent class="row-span-1">

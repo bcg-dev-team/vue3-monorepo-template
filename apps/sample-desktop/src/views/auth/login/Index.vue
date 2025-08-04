@@ -1,8 +1,10 @@
 <template>
-  <div class="flex items-center justify-center min-h-screen">
+  <div class="flex min-h-screen items-center justify-center">
     <MainCardContent>
       <template #content> </template>
     </MainCardContent>
   </div>
 </template>
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import MainCardContent from '@/components/common/cards/MainCardContent.vue';
+</script>

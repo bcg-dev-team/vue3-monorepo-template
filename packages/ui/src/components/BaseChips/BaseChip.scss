@@ -4,7 +4,6 @@
 
 // 기본 칩 스타일
 .base-chip {
-  font-family: 'Pretendard GOV', sans-serif;
   letter-spacing: -0.35px;
   border: none;
   outline: none;
@@ -26,8 +25,6 @@
   background-color: var(--button-primary-background);
   color: var(--button-primary-text);
 }
-
-
 
 // 크기별 스타일
 .chip-sm {

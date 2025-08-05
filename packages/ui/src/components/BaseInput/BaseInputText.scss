@@ -9,29 +9,28 @@
     &::placeholder {
       color: var(--input-color-text-placeholder);
       font-weight: 400;
-      font-family: 'Pretendard GOV', sans-serif;
       letter-spacing: -0.35px;
     }
-    
+
     &:focus::placeholder {
       color: var(--input-color-text-placeholder);
     }
   }
-  
+
   // 비활성화 상태
   &.base-input-disabled {
     input::placeholder {
       color: var(--input-color-text-disable);
     }
   }
-  
+
   // 에러 상태
   &.base-input-error {
     input::placeholder {
       color: var(--input-color-text-placeholder);
     }
   }
-  
+
   // 값이 있는 상태
   &.base-input-filled {
     input {
@@ -68,4 +67,4 @@
   .base-icon {
     color: var(--input-color-text-disable);
   }
-} 
+}

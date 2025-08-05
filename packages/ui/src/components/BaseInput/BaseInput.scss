@@ -15,7 +15,6 @@
   color: var(--input-color-text-static);
   font-size: 13px;
   font-weight: 400;
-  font-family: 'Pretendard GOV', sans-serif;
   letter-spacing: -0.35px;
 }
 
@@ -31,7 +30,6 @@
   color: var(--input-color-border-error);
   font-size: 12px;
   font-weight: 500;
-  font-family: 'Pretendard GOV', sans-serif;
 }
 
 // 크기별 스타일
@@ -41,7 +39,7 @@
     font-size: 13px;
     line-height: 16px;
   }
-  
+
   .base-input-suffix {
     padding-right: 10px;
   }
@@ -53,7 +51,7 @@
     font-size: 16px;
     line-height: 20px;
   }
-  
+
   .base-input-suffix {
     padding-right: 10px;
   }
@@ -63,7 +61,6 @@
 .base-input input::placeholder {
   color: var(--input-color-text-placeholder);
   font-weight: 400;
-  font-family: 'Pretendard GOV', sans-serif;
   letter-spacing: -0.35px;
 }
 

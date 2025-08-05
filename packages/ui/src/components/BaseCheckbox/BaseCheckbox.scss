@@ -8,13 +8,13 @@
   align-items: center;
   cursor: pointer;
   user-select: none;
-  
+
   // 비활성화 상태
   &.disabled {
     cursor: not-allowed;
     opacity: 0.6;
   }
-  
+
   // 포커스 상태
   &:focus-visible {
     outline: 2px solid var(--checkbox-color-border-focus);
@@ -34,31 +34,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   // 기본 상태 (체크 안됨)
   &.unchecked {
     background-color: var(--checkbox-color-surface);
     border-color: var(--checkbox-color-border-static);
   }
-  
+
   // 체크된 상태
   &.checked {
     background-color: var(--checkbox-color-background-checked);
     border-color: var(--checkbox-color-border-checked);
   }
-  
+
   // 부분 선택 상태 (indeterminate)
   &.indeterminate {
     background-color: var(--checkbox-color-background-checked);
     border-color: var(--checkbox-color-border-checked);
   }
-  
+
   // 비활성화 + 체크 안됨
   &.disabled-unchecked {
     background-color: var(--checkbox-color-surface-disabled);
     border-color: var(--checkbox-color-border-disabled);
   }
-  
+
   // 비활성화 + 체크됨
   &.disabled-checked {
     background-color: var(--checkbox-color-background-disabled);
@@ -71,7 +71,7 @@
   width: 24px;
   height: 24px;
   color: var(--checkbox-color-icon);
-  
+
   &.indeterminate {
     width: 16px;
     height: 16px;
@@ -81,11 +81,10 @@
 // 라벨 스타일
 .base-checkbox-label {
   margin-left: 8px;
-  font-family: 'Pretendard GOV', sans-serif;
   font-size: 14px;
   line-height: 20px;
   color: var(--checkbox-color-text);
-  
+
   .disabled & {
     color: var(--checkbox-color-text-disabled);
   }
@@ -113,7 +112,7 @@
   .base-checkbox-icon {
     transition: transform 0.15s ease;
   }
-  
+
   &.checked .base-checkbox-icon,
   &.indeterminate .base-checkbox-icon {
     animation: checkmark-appear 0.15s ease;

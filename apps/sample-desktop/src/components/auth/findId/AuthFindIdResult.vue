@@ -2,7 +2,7 @@
   <AuthContent title="아이디 찾기 완료" description="입력하신 정보와 일치하는 아이디를 찾았어요">
     <template #header>
       <div class="flex items-center justify-between">
-        <BaseIcon class="text-font-16 w-4" name="arrow-backward" size="md" />
+        <BaseIcon name="arrow-backward" size="md" />
         <BasePaginationJoin :count="3" :current="1" />
       </div>
     </template>
@@ -14,7 +14,7 @@
             <div class="bg-bg-bg-innerframe gap-size-10 p-size-16 flex flex-col rounded-md">
               <div class="flex items-center justify-between">
                 <span class="text-font-14 font-normal">이름</span>
-                <span class="text-font-14 font-medium">김트레이드</span>
+                <span class="text-font-14 font-medium">김트레이더</span>
               </div>
               <div class="flex items-center justify-between">
                 <span class="text-font-14 font-normal">휴대폰번호</span>
@@ -26,8 +26,8 @@
             <span class="text-font-14 font-medium">찾은 아이디(이메일주소)</span>
             <div class="bg-bg-bg-innerframe gap-size-10 p-size-16 flex flex-col rounded-md">
               <div class="flex items-center justify-between">
-                <span class="text-font-16 font-normal">traderkim@email.com</span>
-                <span class="text-font-14 font-medium">:copy:</span>
+                <span class="text-font-16 font-medium">traderkim@email.com</span>
+                <span class="text-font-16 font-medium">:copy:</span>
               </div>
             </div>
           </div>

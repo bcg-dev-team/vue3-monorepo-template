@@ -28,7 +28,9 @@
 }
 
 .pagination-join-dot-inactive {
-  background-color: var(--background-bg-surface-muted); // #dadbdd → var(--background-bg-surface-muted)
+  background-color: var(
+    --background-bg-surface-muted
+  ); // #dadbdd → var(--background-bg-surface-muted)
 }
 
 // 선 스타일 (활성)
@@ -38,5 +40,7 @@
 }
 
 .pagination-join-line-active {
-  background-color: var(--button-primary-background); // #ffc300 → var(--button-primary-background)
+  background-color: var(
+    --base-colors-primary-primary800
+  ); // #ffc300 → var(--base-colors-primary-primary800)
 }

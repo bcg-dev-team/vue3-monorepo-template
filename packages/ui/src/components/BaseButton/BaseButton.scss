@@ -1,6 +1,4 @@
 // BaseButton 컴포넌트 스타일
-// 피그마 디자인 토큰을 기반으로 한 버튼 variant 스타일 정의
-// 가이드: 피그마 HEX → 디자인 토큰 변환 적용
 
 // 기본 버튼 스타일
 .btn-primary,
@@ -64,11 +62,6 @@
 .btn-color-cancel:hover {
   background-color: var(--base-colors-purple-purple600);
 }
-.btn-color-disabled {
-  background-color: var(--button-disabled-background);
-  color: var(--button-disabled-text);
-  cursor: not-allowed;
-}
 
 .btn-variant-contained {
   border: none;
@@ -100,10 +93,6 @@
   border-color: var(--base-colors-purple-purple600);
   color: var(--base-colors-purple-purple600);
 }
-.btn-variant-outlined.btn-color-disabled {
-  border-color: var(--button-disabled-background);
-  color: var(--button-disabled-background);
-}
 .btn-variant-outlined.btn-color-primary:hover {
   background-color: var(--button-primary-background-deep);
 }
@@ -119,8 +108,13 @@
 .btn-variant-outlined.btn-color-cancel:hover {
   background-color: var(--button-cancel-background-hover, var(--base-colors-purple-purple600));
 }
-.btn-variant-outlined.btn-color-disabled:hover {
-  background-color: var(--button-disabled-background);
+
+// outline variant + disabled 상태
+.btn-variant-outlined.btn-disabled,
+.btn-variant-outlined:disabled {
+  background-color: transparent;
+  border-color: var(--button-disabled-background);
+  color: var(--button-disabled-text);
 }
 
 // 크기별 스타일
@@ -197,4 +191,15 @@
 // pill 스타일 (border-radius override)
 .btn-pill {
   border-radius: var(--radius-pill);
+}
+
+// 비활성화 상태 스타일 (파일 마지막)
+.btn-disabled,
+button:disabled {
+  background-color: var(--button-disabled-background);
+  color: var(--button-disabled-text);
+  border-color: var(--button-disabled-background);
+  cursor: not-allowed;
+  opacity: 0.6;
+  pointer-events: none;
 }

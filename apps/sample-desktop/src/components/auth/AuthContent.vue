@@ -6,8 +6,8 @@
         <img class="h-[70px] w-auto" src="@/assets/logo/moda_logo.svg" alt="logo" />
       </div>
       <div class="mt-6">
-        <h2 class="text-font-24 font-semibold">{{ props.title }}</h2>
-        <p class="font-font-16 mt-3 text-lg tracking-[-1.95px]">{{ props.description }}</p>
+        <h2 class="text-font-24 tracking-3 font-semibold">{{ props.title }}</h2>
+        <p class="text-font-16 tracking-3 mt-3">{{ props.description }}</p>
       </div>
     </div>
     <slot name="content" />

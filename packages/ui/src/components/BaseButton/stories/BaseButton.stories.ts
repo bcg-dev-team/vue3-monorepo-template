@@ -27,9 +27,9 @@ const meta: Meta<typeof BaseButton> = {
     color: {
       description: '버튼 컬러',
       control: { type: 'select' },
-      options: ['primary', 'red', 'blue', 'green', 'cancel', 'disabled'],
+      options: ['primary', 'red', 'blue', 'green', 'cancel'],
       table: {
-        type: { summary: 'primary | red | blue | green | cancel | disabled' },
+        type: { summary: 'primary | red | blue | green | cancel' },
         defaultValue: { summary: 'primary' },
         category: 'Props',
       },
@@ -188,11 +188,21 @@ export const Pill: Story = {
   },
 };
 
-// 비활성화 버튼
-export const Disabled: Story = {
+// 비활성화 버튼 (contained)
+export const DisabledContained: Story = {
   args: {
     variant: 'contained',
-    color: 'disabled',
+    color: 'primary',
+    size: 'large',
+    label: 'Disabled',
+    disabled: true,
+  },
+};
+// 비활성화 버튼 (outlined)
+export const DisabledOutlined: Story = {
+  args: {
+    variant: 'outlined',
+    color: 'primary',
     size: 'large',
     label: 'Disabled',
     disabled: true,

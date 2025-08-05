@@ -37,9 +37,8 @@ interface Props {
    * - blue: 파란색
    * - green: 초록색
    * - cancel: 보라색
-   * - disabled: 비활성화
    */
-  color?: 'primary' | 'red' | 'blue' | 'green' | 'cancel' | 'disabled';
+  color?: 'primary' | 'red' | 'blue' | 'green' | 'cancel';
   /**
    * 버튼 크기
    * - large: 48px

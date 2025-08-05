@@ -17,21 +17,19 @@ const meta: Meta<typeof BaseButton> = {
     variant: {
       description: '버튼 스타일',
       control: { type: 'select' },
-      options: [
-        'primary',
-        'outline',
-        'red',
-        'blue',
-        'pill',
-        'light-solid',
-        'red-solid',
-        'blue-solid',
-        'green-solid',
-        'cancel-solid',
-        'disabled'
-      ],
+      options: ['contained', 'outlined'],
       table: {
-        type: { summary: 'string' },
+        type: { summary: 'contained | outlined' },
+        defaultValue: { summary: 'contained' },
+        category: 'Props',
+      },
+    },
+    color: {
+      description: '버튼 컬러',
+      control: { type: 'select' },
+      options: ['primary', 'red', 'blue', 'green', 'cancel', 'disabled'],
+      table: {
+        type: { summary: 'primary | red | blue | green | cancel | disabled' },
         defaultValue: { summary: 'primary' },
         category: 'Props',
       },
@@ -39,10 +37,19 @@ const meta: Meta<typeof BaseButton> = {
     size: {
       description: '버튼 크기',
       control: { type: 'select' },
-      options: ['regular', 'small', 'pill', 'small-inner'],
+      options: ['large', 'medium', 'small'],
       table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'regular' },
+        type: { summary: 'large | medium | small' },
+        defaultValue: { summary: 'large' },
+        category: 'Props',
+      },
+    },
+    pill: {
+      description: 'pill 스타일 여부',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
         category: 'Props',
       },
     },
@@ -73,344 +80,195 @@ const meta: Meta<typeof BaseButton> = {
     },
   },
 };
-
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// 기본 Primary 버튼 (Regular 크기)
-export const Primary: Story = {
+// 기본 버튼
+export const Base: Story = {
   args: {
-    variant: 'primary',
-    size: 'regular',
-    label: '버튼',
-    leftIcon: { name: 'plus' },
-    rightIcon: { name: 'plus' },
+    variant: 'contained',
+    color: 'primary',
+    size: 'large',
+    label: '기본 버튼',
   },
   parameters: {
     docs: {
       description: {
-        story: '기본 노란색 배경의 Primary 버튼입니다. 좌우 아이콘이 포함되어 있습니다.',
+        story: '기본(Contained) 스타일의 Primary 버튼입니다.',
       },
     },
   },
 };
 
-// Small 크기 Primary 버튼
-export const Small: Story = {
+// 외곽선 버튼
+export const Outlined: Story = {
   args: {
-    variant: 'primary',
-    size: 'small',
-    label: '버튼',
-    leftIcon: { name: 'plus' },
+    variant: 'outlined',
+    color: 'primary',
+    size: 'large',
+    label: '외곽선 버튼',
   },
   parameters: {
     docs: {
       description: {
-        story: '작은 크기의 Primary 버튼입니다.',
+        story: '투명 배경에 테두리가 있는 Outlined 버튼입니다.',
       },
     },
   },
 };
 
-// Small-inner 크기 Primary 버튼
-export const SmallInner: Story = {
-  args: {
-    variant: 'primary',
-    size: 'small-inner',
-    label: '버튼',
-    leftIcon: { name: 'plus' },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: '내부 여백이 작은 Primary 버튼입니다.',
-      },
-    },
-  },
-};
-
-// Pill 크기 Primary 버튼
-export const Pill: Story = {
-  args: {
-    variant: 'primary',
-    size: 'pill',
-    label: '버튼',
-    leftIcon: { name: 'plus' },
-    rightIcon: { name: 'plus' },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: '완전히 둥근 모서리의 Primary 버튼입니다.',
-      },
-    },
-  },
-};
-
-// Outline 버튼
-export const Outline: Story = {
-  args: {
-    variant: 'outline',
-    size: 'regular',
-    label: '버튼',
-    leftIcon: { name: 'plus' },
-    rightIcon: { name: 'plus' },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: '흰색 배경에 테두리가 있는 Outline 버튼입니다.',
-      },
-    },
-  },
-};
-
-// Red 버튼
+// 색상별 버튼
 export const Red: Story = {
   args: {
-    variant: 'red',
-    size: 'regular',
-    label: '버튼',
-    leftIcon: { name: 'plus' },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: '빨간색 테두리의 Red 버튼입니다.',
-      },
-    },
+    variant: 'contained',
+    color: 'red',
+    size: 'large',
+    label: 'Red',
   },
 };
-
-// Blue 버튼
 export const Blue: Story = {
   args: {
-    variant: 'blue',
-    size: 'regular',
-    label: '버튼',
-    leftIcon: { name: 'plus' },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: '파란색 테두리의 Blue 버튼입니다.',
-      },
-    },
+    variant: 'contained',
+    color: 'blue',
+    size: 'large',
+    label: 'Blue',
   },
 };
-
-// Light Solid 버튼
-export const LightSolid: Story = {
+export const Green: Story = {
   args: {
-    variant: 'light-solid',
-    size: 'regular',
-    label: '버튼',
-    leftIcon: { name: 'plus' },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: '연한 노란색 배경의 Light Solid 버튼입니다.',
-      },
-    },
+    variant: 'contained',
+    color: 'green',
+    size: 'large',
+    label: 'Green',
   },
 };
-
-// Red Solid 버튼
-export const RedSolid: Story = {
+export const Cancel: Story = {
   args: {
-    variant: 'red-solid',
-    size: 'regular',
-    label: '버튼',
-    leftIcon: { name: 'plus' },
-    rightIcon: { name: 'plus' },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: '빨간색 배경의 Red Solid 버튼입니다.',
-      },
-    },
+    variant: 'contained',
+    color: 'cancel',
+    size: 'large',
+    label: 'Cancel',
   },
 };
 
-// Blue Solid 버튼
-export const BlueSolid: Story = {
+// 크기별 버튼
+export const Large: Story = {
   args: {
-    variant: 'blue-solid',
-    size: 'regular',
-    label: '버튼',
-    leftIcon: { name: 'plus' },
-    rightIcon: { name: 'plus' },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: '파란색 배경의 Blue Solid 버튼입니다.',
-      },
-    },
+    variant: 'contained',
+    color: 'primary',
+    size: 'large',
+    label: 'Large',
   },
 };
-
-// Green Solid 버튼
-export const GreenSolid: Story = {
+export const Medium: Story = {
   args: {
-    variant: 'green-solid',
-    size: 'regular',
-    label: '버튼',
-    leftIcon: { name: 'plus' },
-    rightIcon: { name: 'plus' },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: '초록색 배경의 Green Solid 버튼입니다.',
-      },
-    },
+    variant: 'contained',
+    color: 'primary',
+    size: 'medium',
+    label: 'Medium',
   },
 };
-
-// Cancel Solid 버튼
-export const CancelSolid: Story = {
+export const Small: Story = {
   args: {
-    variant: 'cancel-solid',
-    size: 'regular',
-    label: '버튼',
-    leftIcon: { name: 'plus' },
-    rightIcon: { name: 'plus' },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: '보라색 배경의 Cancel Solid 버튼입니다.',
-      },
-    },
+    variant: 'contained',
+    color: 'primary',
+    size: 'small',
+    label: 'Small',
   },
 };
 
-// Disabled 버튼
+// pill 스타일
+export const Pill: Story = {
+  args: {
+    variant: 'contained',
+    color: 'primary',
+    size: 'large',
+    pill: true,
+    label: 'Pill',
+  },
+};
+
+// 비활성화 버튼
 export const Disabled: Story = {
   args: {
-    variant: 'disabled',
-    size: 'regular',
-    label: '버튼',
+    variant: 'contained',
+    color: 'disabled',
+    size: 'large',
+    label: 'Disabled',
     disabled: true,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: '비활성화된 버튼입니다.',
-      },
-    },
   },
 };
 
-// 서브 텍스트가 있는 버튼
+// 아이콘 포함 버튼
+export const LeftIcon: Story = {
+  args: {
+    variant: 'contained',
+    color: 'primary',
+    size: 'large',
+    label: 'Left Icon',
+    leftIcon: { name: 'plus' },
+  },
+};
+export const RightIcon: Story = {
+  args: {
+    variant: 'contained',
+    color: 'primary',
+    size: 'large',
+    label: 'Right Icon',
+    rightIcon: { name: 'plus' },
+  },
+};
+export const BothIcons: Story = {
+  args: {
+    variant: 'contained',
+    color: 'primary',
+    size: 'large',
+    label: 'Both Icons',
+    leftIcon: { name: 'plus' },
+    rightIcon: { name: 'plus' },
+  },
+};
+
+// fullWidth 버튼
+export const FullWidth: Story = {
+  args: {
+    variant: 'contained',
+    color: 'primary',
+    size: 'large',
+    label: 'Full Width',
+    fullWidth: true,
+  },
+};
+
+// 서브텍스트 포함 버튼
 export const WithSubLabel: Story = {
   args: {
-    variant: 'red-solid',
-    size: 'regular',
-    label: '버튼',
-    subLabel: '추가 텍스트',
+    variant: 'contained',
+    color: 'primary',
+    size: 'large',
+    label: 'Label',
+    subLabel: 'SubLabel',
+  },
+};
+
+// 모든 속성이 복잡하게 적용된 버튼 예시
+export const Complex: Story = {
+  args: {
+    variant: 'outlined',
+    color: 'red',
+    size: 'large',
+    pill: true,
+    disabled: false,
+    fullWidth: true,
+    label: 'Label',
+    subLabel: 'SubLabel',
     leftIcon: { name: 'plus' },
     rightIcon: { name: 'plus' },
   },
   parameters: {
     docs: {
       description: {
-        story: '메인 텍스트 아래에 서브 텍스트가 있는 버튼입니다.',
-      },
-    },
-  },
-};
-
-// 모든 크기 비교
-export const AllSizes: Story = {
-  render: () => ({
-    components: { BaseButton },
-    template: `
-      <div class="space-y-4">
-        <div>
-          <h3 class="text-sm font-medium text-gray-700 mb-2">Regular Size</h3>
-          <BaseButton variant="primary" size="regular" label="버튼" />
-        </div>
-        <div>
-          <h3 class="text-sm font-medium text-gray-700 mb-2">Small Size</h3>
-          <BaseButton variant="primary" size="small" label="버튼" />
-        </div>
-        <div>
-          <h3 class="text-sm font-medium text-gray-700 mb-2">Small-inner Size</h3>
-          <BaseButton variant="primary" size="small-inner" label="버튼" />
-        </div>
-        <div>
-          <h3 class="text-sm font-medium text-gray-700 mb-2">Pill Size</h3>
-          <BaseButton variant="primary" size="pill" label="버튼" />
-        </div>
-      </div>
-    `,
-  }),
-  parameters: {
-    docs: {
-      description: {
-        story: '4가지 크기의 Primary 버튼을 비교할 수 있습니다.',
-      },
-    },
-  },
-};
-
-// 모든 variant 비교
-export const AllVariants: Story = {
-  render: () => ({
-    components: { BaseButton },
-    template: `
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <h3 class="text-sm font-medium text-gray-700 mb-2">Primary</h3>
-          <BaseButton variant="primary" size="regular" label="버튼" />
-        </div>
-        <div>
-          <h3 class="text-sm font-medium text-gray-700 mb-2">Outline</h3>
-          <BaseButton variant="outline" size="regular" label="버튼" />
-        </div>
-        <div>
-          <h3 class="text-sm font-medium text-gray-700 mb-2">Red</h3>
-          <BaseButton variant="red" size="regular" label="버튼" />
-        </div>
-        <div>
-          <h3 class="text-sm font-medium text-gray-700 mb-2">Blue</h3>
-          <BaseButton variant="blue" size="regular" label="버튼" />
-        </div>
-        <div>
-          <h3 class="text-sm font-medium text-gray-700 mb-2">Light Solid</h3>
-          <BaseButton variant="light-solid" size="regular" label="버튼" />
-        </div>
-        <div>
-          <h3 class="text-sm font-medium text-gray-700 mb-2">Red Solid</h3>
-          <BaseButton variant="red-solid" size="regular" label="버튼" />
-        </div>
-        <div>
-          <h3 class="text-sm font-medium text-gray-700 mb-2">Blue Solid</h3>
-          <BaseButton variant="blue-solid" size="regular" label="버튼" />
-        </div>
-        <div>
-          <h3 class="text-sm font-medium text-gray-700 mb-2">Green Solid</h3>
-          <BaseButton variant="green-solid" size="regular" label="버튼" />
-        </div>
-        <div>
-          <h3 class="text-sm font-medium text-gray-700 mb-2">Cancel Solid</h3>
-          <BaseButton variant="cancel-solid" size="regular" label="버튼" />
-        </div>
-        <div>
-          <h3 class="text-sm font-medium text-gray-700 mb-2">Disabled</h3>
-          <BaseButton variant="disabled" size="regular" label="버튼" />
-        </div>
-      </div>
-    `,
-  }),
-  parameters: {
-    docs: {
-      description: {
-        story: '11가지 variant의 버튼을 비교할 수 있습니다.',
+        story: '모든 주요 속성이 조합된 복잡한 버튼 예시입니다.',
       },
     },
   },

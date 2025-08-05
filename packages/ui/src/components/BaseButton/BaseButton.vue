@@ -26,38 +26,31 @@ interface ButtonIconProps {
 interface Props {
   /**
    * 버튼 스타일
-   * - primary: 기본 노란색 버튼
-   * - outline: 기본 아웃라인 버튼
-   * - red: 빨간색 아웃라인 버튼
-   * - blue: 파란색 아웃라인 버튼
-   * - pill: 둥근 모서리 버튼
-   * - light-solid: 연한 노란색 솔리드 버튼
-   * - red-solid: 빨간색 솔리드 버튼
-   * - blue-solid: 파란색 솔리드 버튼
-   * - green-solid: 초록색 솔리드 버튼
-   * - cancel-solid: 보라색 솔리드 버튼
-   * - disabled: 비활성화 버튼
+   * - contained: 채움(기본)
+   * - outlined: 외곽선
    */
-  variant?:
-    | 'primary'
-    | 'outline'
-    | 'red'
-    | 'blue'
-    | 'pill'
-    | 'light-solid'
-    | 'red-solid'
-    | 'blue-solid'
-    | 'green-solid'
-    | 'cancel-solid'
-    | 'disabled';
+  variant?: 'contained' | 'outlined';
+  /**
+   * 버튼 컬러
+   * - primary: 기본 노란색
+   * - red: 빨간색
+   * - blue: 파란색
+   * - green: 초록색
+   * - cancel: 보라색
+   * - disabled: 비활성화
+   */
+  color?: 'primary' | 'red' | 'blue' | 'green' | 'cancel' | 'disabled';
   /**
    * 버튼 크기
-   * - regular: 기본 크기 (16px, py-3 px-4)
-   * - small: 작은 크기 (14px, py-1.5 px-5)
-   * - pill: 둥근 모서리 크기 (14px, py-2 px-4)
-   * - small-inner: 작은 내부 크기 (13px, py-2.5 px-3)
+   * - large: 48px
+   * - medium: 40px
+   * - small: 32px
    */
-  size?: 'regular' | 'small' | 'pill' | 'small-inner';
+  size?: 'large' | 'medium' | 'small';
+  /**
+   * pill 스타일 여부 (둥근 모서리)
+   */
+  pill?: boolean;
   /**
    * 비활성화 여부
    */
@@ -78,12 +71,19 @@ interface Props {
    * 서브 텍스트 (optional)
    */
   subLabel?: string;
+  /**
+   * 부모 컨테이너 100% 너비로 확장
+   */
+  fullWidth?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  variant: 'primary',
-  size: 'regular',
+  variant: 'contained',
+  color: 'primary',
+  size: 'large',
+  pill: false,
   disabled: false,
+  fullWidth: false,
 });
 
 const emit = defineEmits<{
@@ -98,11 +98,18 @@ const buttonClasses = computed(() => {
     'transition-all duration-200',
     'select-none',
     'focus:outline-none',
+    'min-w-[64px]',
+    'min-h-[32px]',
+    props.fullWidth ? 'w-full' : '',
   ];
 
   // variant 클래스
-  const variantClass = `btn-${props.variant}`;
+  const variantClass = `btn-variant-${props.variant}`;
   classes.push(variantClass);
+
+  // color 클래스
+  const colorClass = `btn-color-${props.color}`;
+  classes.push(colorClass);
 
   // 크기 클래스
   const sizeClass = `btn-size-${props.size}`;
@@ -113,50 +120,50 @@ const buttonClasses = computed(() => {
     classes.push('btn-disabled');
   }
 
+  // pill 스타일 (항상 마지막에 push)
+  if (props.pill) {
+    classes.push('btn-pill');
+  }
+
   return classes.join(' ');
 });
 
 // 아이콘 크기 매핑
 const getIconSize = (size: string) => {
   switch (size) {
-    case 'regular':
+    case 'large':
+    case 'medium': {
       return 'md'; // 24px
-    case 'small':
-      return 'md'; // 24px
-    case 'small-inner':
+    }
+    case 'small': {
       return 'sm'; // 16px
-    case 'pill':
-      return 'lg'; // 20px
-    default:
+    }
+    default: {
       return 'md';
+    }
   }
 };
 
 // 아이콘 색상 계산
-const getIconColor = (iconProps: ButtonIconProps | undefined, variant: string) => {
+const getIconColor = (iconProps: ButtonIconProps | undefined, color: string) => {
   if (iconProps?.color) {
     return iconProps.color;
   }
 
-  // variant별 기본 아이콘 색상 (디자인 토큰 사용)
-  switch (variant) {
+  // color별 기본 아이콘 색상 (디자인 토큰 사용)
+  switch (color) {
     case 'primary':
-    case 'pill':
-    case 'light-solid':
-      return 'var(--button-primary-text)'; // #131313 → var(--button-primary-text)
-    case 'outline':
-      return 'var(--button-outline-text)'; // #242424 → var(--button-outline-text)
+      return 'var(--button-primary-text)';
     case 'red':
-    case 'red-solid':
-      return 'var(--button-red-text)'; // #f63338 → var(--button-red-text)
+      return 'var(--button-red-text)';
     case 'blue':
-    case 'blue-solid':
-      return 'var(--button-blue-text)'; // #0067ef → var(--button-blue-text)
-    case 'green-solid':
-    case 'cancel-solid':
-      return 'var(--base-colors-neutral-neutral000)'; // #ffffff → var(--base-colors-neutral-neutral000)
+      return 'var(--button-blue-text)';
+    case 'green':
+      return 'var(--base-colors-neutral-neutral000)';
+    case 'cancel':
+      return 'var(--base-colors-neutral-neutral000)';
     case 'disabled':
-      return 'var(--button-disabled-text)'; // #b4b6bb → var(--button-disabled-text)
+      return 'var(--button-disabled-text)';
     default:
       return 'currentColor';
   }
@@ -175,13 +182,13 @@ const getIconColor = (iconProps: ButtonIconProps | undefined, variant: string) =
       v-if="props.leftIcon"
       :name="props.leftIcon.name"
       :size="getIconSize(props.size)"
-      :color="getIconColor(props.leftIcon, props.variant)"
+      :color="getIconColor(props.leftIcon, props.color)"
       class="icon"
     />
 
     <!-- 텍스트 영역 -->
     <div class="flex flex-col items-center justify-center">
-      <span class="font-medium">{{ props.label }}</span>
+      <span class="btn-label font-medium">{{ props.label }}</span>
       <span v-if="props.subLabel" class="btn-sub-text font-semibold">
         {{ props.subLabel }}
       </span>
@@ -192,7 +199,7 @@ const getIconColor = (iconProps: ButtonIconProps | undefined, variant: string) =
       v-if="props.rightIcon"
       :name="props.rightIcon.name"
       :size="getIconSize(props.size)"
-      :color="getIconColor(props.rightIcon, props.variant)"
+      :color="getIconColor(props.rightIcon, props.color)"
       class="icon"
     />
 

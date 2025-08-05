@@ -5,6 +5,7 @@
         <ResetPasswordEmailForm v-if="step === 0" />
         <ResetPasswordEmailAuth v-if="step === 1" />
         <ResetPasswordNewPassword v-if="step === 2" />
+        <ResetPasswordComplete v-if="step === 3" />
       </template>
     </MainCardContent>
   </div>
@@ -14,6 +15,7 @@
 import ResetPasswordNewPassword from '@/components/auth/resetPassword/ResetPasswordNewPassword.vue';
 import ResetPasswordEmailForm from '@/components/auth/resetPassword/ResetPasswordEmailForm.vue';
 import ResetPasswordEmailAuth from '@/components/auth/resetPassword/ResetPasswordEmailAuth.vue';
+import ResetPasswordComplete from '@/components/auth/resetPassword/ResetPasswordComplete.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import { ref } from 'vue';
 

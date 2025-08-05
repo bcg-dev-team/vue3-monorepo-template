@@ -283,3 +283,75 @@ export const Complex: Story = {
     },
   },
 };
+
+// 접근성 테스트: aria-label 커스텀
+export const AriaLabelCustom: Story = {
+  args: {
+    variant: 'contained',
+    color: 'primary',
+    size: 'large',
+    label: '실제 버튼 텍스트',
+    // aria-label은 label로 자동 부여됨
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'label이 aria-label로 자동 부여되는지 확인하세요.',
+      },
+    },
+  },
+};
+
+// 접근성 테스트: href prop으로 <a role="button">
+export const AsLinkButton: Story = {
+  args: {
+    variant: 'contained',
+    color: 'primary',
+    size: 'large',
+    label: '링크 버튼',
+    href: 'https://blockchainglobal.co.kr/',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'href prop이 있으면 <a role="button">으로 렌더링됩니다. 키보드/마우스 접근성 확인.',
+      },
+    },
+  },
+};
+
+// 접근성 테스트: disabled + href (비활성화 링크 버튼)
+export const DisabledLinkButton: Story = {
+  args: {
+    variant: 'contained',
+    color: 'primary',
+    size: 'large',
+    label: '비활성화 링크 버튼',
+    href: 'https://blockchainglobal.co.kr/',
+    disabled: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'disabled + href 조합에서 aria-disabled, tabindex=-1, 클릭/키보드 이벤트 차단 확인.',
+      },
+    },
+  },
+};
+
+// 접근성 테스트: 키보드 내비게이션 안내
+export const KeyboardNavigation: Story = {
+  args: {
+    variant: 'contained',
+    color: 'primary',
+    size: 'large',
+    label: 'Tab/Enter/Space로 테스트',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Tab으로 포커스, Enter/Space로 클릭 이벤트가 정상 동작하는지 확인하세요.',
+      },
+    },
+  },
+};

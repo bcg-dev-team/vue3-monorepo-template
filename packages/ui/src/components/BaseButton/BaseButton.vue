@@ -74,6 +74,11 @@ interface Props {
    * 부모 컨테이너 100% 너비로 확장
    */
   fullWidth?: boolean;
+  /**
+   * 버튼이 링크 역할을 할 때, 즉 href 사용할 때 <a role="button">
+   * 그 외 경우 <button>
+   */
+  href?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -83,6 +88,7 @@ const props = withDefaults(defineProps<Props>(), {
   pill: false,
   disabled: false,
   fullWidth: false,
+  href: undefined,
 });
 
 const emit = defineEmits<{
@@ -167,14 +173,30 @@ const getIconColor = (iconProps: ButtonIconProps | undefined, color: string) => 
       return 'currentColor';
   }
 };
+
+// <a role="button"> 키보드 접근성 핸들러
+function handleKeydown(e: KeyboardEvent) {
+  if (props.disabled) return;
+  if (e.key === ' ' || e.key === 'Enter') {
+    e.preventDefault();
+    emit('click', e as any);
+  }
+}
 </script>
 
 <template>
-  <button
-    type="button"
-    :class="buttonClasses"
-    :disabled="props.disabled"
-    @click="emit('click', $event)"
+  <component
+    :is="props.href ? 'a' : 'button'"
+    :href="props.href"
+    role="button"
+    :type="props.href ? undefined : 'button'"
+    :class="[buttonClasses, 'focus-ring']"
+    :aria-label="props.label"
+    :aria-disabled="props.disabled ? 'true' : undefined"
+    :tabindex="props.disabled ? -1 : 0"
+    :disabled="!props.href && props.disabled"
+    @click="props.disabled ? undefined : (e: MouseEvent) => emit('click', e)"
+    @keydown="props.href ? handleKeydown : undefined"
   >
     <!-- 좌측 아이콘 -->
     <BaseIcon
@@ -204,5 +226,5 @@ const getIconColor = (iconProps: ButtonIconProps | undefined, color: string) => 
 
     <!-- 기본 슬롯 -->
     <slot />
-  </button>
+  </component>
 </template>

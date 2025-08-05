@@ -157,6 +157,7 @@
 // label 텍스트 스타일
 .btn-label {
   font-weight: 500;
+  white-space: nowrap;
 }
 .btn-size-large .btn-label {
   font-size: 16px;
@@ -174,6 +175,7 @@
 // subLabel(서브텍스트) 스타일 - label보다 2px 크게, 세미볼드(600)
 .btn-sub-text {
   font-weight: 600;
+  white-space: nowrap;
 }
 .btn-size-large .btn-sub-text {
   font-size: 18px;

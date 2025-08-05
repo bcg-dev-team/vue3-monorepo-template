@@ -5,34 +5,33 @@
 .base-input-stepper {
   // 스테퍼 입력에 특화된 스타일
   position: relative;
-  
+
   // 숫자 입력 필드
-  input[type="number"] {
+  input[type='number'] {
     // 숫자 입력 전용 스타일
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
       display: none; // 기본 스핀 버튼 숨김
     }
-    
+
     -moz-appearance: textfield; // Firefox 스핀 버튼 숨김
-    
+
     text-align: center; // 숫자 중앙 정렬
-    
+
     // 플레이스홀더 스타일
     &::placeholder {
       color: var(--input-color-text-placeholder);
       font-weight: 400;
-      font-family: 'Pretendard GOV', sans-serif;
       letter-spacing: -0.35px;
     }
   }
-  
+
   // 스테퍼 컨트롤 버튼들
   .base-input-stepper-controls {
     display: flex;
     align-items: center;
     gap: 4px;
-    
+
     .base-input-stepper-btn {
       display: flex;
       align-items: center;
@@ -44,42 +43,42 @@
       cursor: pointer;
       border-radius: 4px;
       transition: all 0.2s ease;
-      
+
       // 기본 상태
       .base-icon {
         color: var(--input-icon-default);
         transition: color 0.2s ease;
       }
-      
+
       // 호버 상태
       &:hover:not(:disabled) {
         background-color: var(--input-color-bg-hover);
-        
+
         .base-icon {
           color: var(--input-color-text-static);
         }
       }
-      
+
       // 활성 상태
       &:active:not(:disabled) {
         background-color: var(--input-color-bg-active);
         transform: scale(0.95);
       }
-      
+
       // 비활성화 상태
       &:disabled {
         cursor: not-allowed;
         opacity: 0.5;
-        
+
         .base-icon {
           color: var(--input-color-text-disable);
         }
-        
+
         &:hover {
           background-color: transparent;
         }
       }
-      
+
       // 포커스 상태
       &:focus-visible {
         outline: 2px solid var(--input-color-border-focus);
@@ -87,39 +86,39 @@
       }
     }
   }
-  
+
   // 비활성화 상태
   &.base-input-disabled {
-    input[type="number"] {
+    input[type='number'] {
       &::placeholder {
         color: var(--input-color-text-disable);
       }
     }
-    
+
     .base-input-stepper-controls {
       .base-input-stepper-btn {
         cursor: not-allowed;
         opacity: 0.5;
-        
+
         .base-icon {
           color: var(--input-color-text-disable);
         }
       }
     }
   }
-  
+
   // 에러 상태
   &.base-input-error {
-    input[type="number"] {
+    input[type='number'] {
       &::placeholder {
         color: var(--input-color-text-placeholder);
       }
     }
   }
-  
+
   // 값이 있는 상태
   &.base-input-filled {
-    input[type="number"] {
+    input[type='number'] {
       color: var(--input-color-text-static);
     }
   }
@@ -127,12 +126,12 @@
 
 // 크기별 스타일
 .base-input-stepper-sm {
-  input[type="number"] {
+  input[type='number'] {
     font-size: 13px;
     line-height: 16px;
     letter-spacing: -0.35px;
   }
-  
+
   .base-input-stepper-controls {
     .base-input-stepper-btn {
       width: 20px;
@@ -142,12 +141,12 @@
 }
 
 .base-input-stepper-md {
-  input[type="number"] {
+  input[type='number'] {
     font-size: 16px;
     line-height: 20px;
     letter-spacing: -0.35px;
   }
-  
+
   .base-input-stepper-controls {
     .base-input-stepper-btn {
       width: 24px;
@@ -166,28 +165,28 @@
       }
     }
   }
-  
+
   // 라인 스테퍼 (피그마의 Input/Stepper-lined)
   &.variant-lined {
     .base-input-stepper-controls {
       .base-input-stepper-btn {
         border-radius: 0;
         border: 1px solid var(--input-color-border-static);
-        
+
         &:first-child {
           border-top-left-radius: 4px;
           border-bottom-left-radius: 4px;
         }
-        
+
         &:last-child {
           border-top-right-radius: 4px;
           border-bottom-right-radius: 4px;
         }
-        
+
         &:not(:last-child) {
           border-right: none;
         }
-        
+
         &:hover:not(:disabled) {
           background-color: var(--input-color-bg-hover);
           border-color: var(--input-color-border-focus);
@@ -205,7 +204,7 @@
       &[aria-label] {
         position: relative;
       }
-      
+
       // 키보드 네비게이션
       &:focus-visible {
         outline: 2px solid var(--input-color-border-focus);
@@ -213,4 +212,4 @@
       }
     }
   }
-} 
+}

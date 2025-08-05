@@ -5,7 +5,7 @@
 .base-input-select {
   // 셀렉트 박스에 특화된 스타일
   position: relative;
-  
+
   // 숨겨진 실제 셀렉트 요소
   .base-input-select-hidden {
     position: absolute;
@@ -16,22 +16,22 @@
     opacity: 0;
     cursor: pointer;
     z-index: 1;
-    
+
     &:disabled {
       cursor: not-allowed;
     }
   }
-  
+
   // 표시용 입력 필드 (읽기 전용)
   input {
     cursor: pointer;
     user-select: none;
-    
+
     &:disabled {
       cursor: not-allowed;
     }
   }
-  
+
   // 화살표 아이콘 스타일
   .base-input-suffix {
     .base-icon {
@@ -39,7 +39,7 @@
       transition: transform 0.2s ease;
     }
   }
-  
+
   // 비활성화 상태
   &.base-input-disabled {
     .base-input-suffix {
@@ -48,7 +48,7 @@
       }
     }
   }
-  
+
   // 포커스 상태에서 화살표 회전 (선택사항)
   &:focus-within {
     .base-input-suffix {
@@ -79,17 +79,16 @@
 // 셀렉트 옵션 스타일 (브라우저 기본 드롭다운)
 .base-input-select-hidden {
   option {
-    font-family: 'Pretendard GOV', sans-serif;
     font-size: 13px;
     line-height: 16px;
     letter-spacing: -0.35px;
     color: var(--input-color-text-static);
     background-color: var(--input-color-surface);
     padding: 8px 12px;
-    
+
     &:disabled {
       color: var(--input-color-text-disable);
       background-color: var(--input-color-bg-disabled);
     }
   }
-} 
+}

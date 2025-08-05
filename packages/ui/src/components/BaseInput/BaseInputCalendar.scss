@@ -5,33 +5,32 @@
 .base-input-calendar {
   // 캘린더 입력에 특화된 스타일
   position: relative;
-  
+
   // 날짜 입력 필드
-  input[type="date"] {
+  input[type='date'] {
     // 날짜 입력 전용 스타일
     &::-webkit-calendar-picker-indicator {
       display: none; // 기본 캘린더 아이콘 숨김
     }
-    
+
     &::-webkit-datetime-edit {
-      font-family: 'Pretendard GOV', sans-serif;
       letter-spacing: -0.35px;
     }
-    
+
     &::-webkit-datetime-edit-fields-wrapper {
       padding: 0;
     }
-    
+
     &::-webkit-datetime-edit-text {
       color: var(--input-color-text-placeholder);
     }
-    
+
     &::-webkit-datetime-edit-month-field,
     &::-webkit-datetime-edit-day-field,
     &::-webkit-datetime-edit-year-field {
       color: var(--input-color-text-static);
     }
-    
+
     // 값이 없을 때 플레이스홀더 스타일
     &:not([value]) {
       &::-webkit-datetime-edit-month-field,
@@ -41,7 +40,7 @@
       }
     }
   }
-  
+
   // 캘린더 아이콘 스타일
   .base-input-suffix {
     .base-icon {
@@ -49,27 +48,27 @@
       pointer-events: none; // 아이콘 클릭 방지
     }
   }
-  
+
   // 비활성화 상태
   &.base-input-disabled {
-    input[type="date"] {
+    input[type='date'] {
       &::-webkit-datetime-edit-month-field,
       &::-webkit-datetime-edit-day-field,
       &::-webkit-datetime-edit-year-field {
         color: var(--input-color-text-disable);
       }
     }
-    
+
     .base-input-suffix {
       .base-icon {
         color: var(--input-color-text-disable);
       }
     }
   }
-  
+
   // 에러 상태
   &.base-input-error {
-    input[type="date"] {
+    input[type='date'] {
       &::-webkit-datetime-edit-month-field,
       &::-webkit-datetime-edit-day-field,
       &::-webkit-datetime-edit-year-field {
@@ -81,7 +80,7 @@
 
 // 크기별 스타일
 .base-input-calendar-sm {
-  input[type="date"] {
+  input[type='date'] {
     font-size: 13px;
     line-height: 16px;
     letter-spacing: -0.35px;
@@ -89,7 +88,7 @@
 }
 
 .base-input-calendar-md {
-  input[type="date"] {
+  input[type='date'] {
     font-size: 16px;
     line-height: 20px;
     letter-spacing: -0.35px;
@@ -100,7 +99,7 @@
 .base-input-calendar {
   // YYYY-MM-DD 형식
   &.format-iso {
-    input[type="date"] {
+    input[type='date'] {
       &::-webkit-datetime-edit-year-field {
         width: 4em;
       }
@@ -112,10 +111,10 @@
       }
     }
   }
-  
+
   // 한국어 형식
   &.format-korean {
-    input[type="date"] {
+    input[type='date'] {
       &::-webkit-datetime-edit-year-field::after {
         content: '년';
         color: var(--input-color-text-placeholder);
@@ -130,4 +129,4 @@
       }
     }
   }
-} 
+}

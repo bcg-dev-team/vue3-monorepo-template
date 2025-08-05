@@ -117,7 +117,6 @@ const stateClasses = computed(() => {
 const inputClasses = computed(() => {
   const classes = [
     'w-full bg-transparent border-0 outline-none',
-    "font-['Pretendard_GOV:Regular',_sans-serif]",
     'tracking-[-0.35px]',
     sizeClasses.value,
   ];

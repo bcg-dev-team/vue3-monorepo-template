@@ -16,8 +16,9 @@
 
   &__fill {
     height: 100%;
-    border-radius: 999px;
-    transition: width 0.3s ease, background-color 0.3s ease;
+    transition:
+      width 0.3s ease,
+      background-color 0.3s ease;
   }
 
   /* 라벨 */
@@ -31,4 +32,4 @@
     flex-shrink: 0;
     transition: color 0.3s ease;
   }
-} 
+}

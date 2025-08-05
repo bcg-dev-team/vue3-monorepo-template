@@ -9,7 +9,10 @@
       <div
         class="base-progress-bar__fill"
         :class="progressColorClass"
-        :style="{ width: `${progressPercentage}%` }"
+        :style="{
+          width: `${progressPercentage}%`,
+          borderRadius: props.variant === 'performance' ? '999px 0 0 999px' : '999px',
+        }"
       />
     </div>
 
@@ -34,7 +37,7 @@ interface Props {
   /** 최대값 */
   max?: number;
   /** 진행바 변형 */
-  variant?: 'default' | 'password-strength';
+  variant?: 'default' | 'password-strength' | 'performance';
   /** 라벨 표시 여부 */
   showLabel?: boolean;
   /** 커스텀 라벨 */
@@ -52,7 +55,7 @@ const props = withDefaults(defineProps<Props>(), {
   max: 100,
   variant: 'default',
   showLabel: false,
-  trackColorClass: 'bg-common-light-gray-ea',
+  trackColorClass: 'bg-bg-bg-surface',
   fillColorClass: 'bg-blue-blue800-deep',
 });
 
@@ -109,6 +112,8 @@ const label = computed(() => {
   if (props.variant === 'password-strength') {
     const labels = ['매우 약함', '약함', '보통', '강함', '매우 강함'];
     return labels[props.strengthScore || 0] || labels[0];
+  } else if (props.variant === 'performance') {
+    return;
   }
 
   return `${Math.round(progressPercentage.value)}%`;

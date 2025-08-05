@@ -3,5 +3,7 @@ const themeConfig = require('../../packages/theme/tailwind.config.cjs');
 
 module.exports = {
   ...themeConfig,
-  content: ['./src/**/*.{vue,js,ts,jsx,tsx}', './src/components/**/*.{vue,js,ts,jsx,tsx}'],
+  content: [
+    './src/**/*.{vue,js,ts,jsx,tsx}',
+    '../../packages/ui/src/**/*.{vue,js,ts,scss}'],
 };

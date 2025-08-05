@@ -1,7 +1,7 @@
 <template>
   <div class="gap-size-48 flex w-[460px] flex-col justify-center px-[50px] pb-[60px] pt-[50px]">
     <slot name="header" />
-    <div>
+    <div v-if="props.title">
       <div>
         <img class="h-[70px] w-auto" src="@/assets/logo/moda_logo.svg" alt="logo" />
       </div>

@@ -26,7 +26,7 @@ const meta: Meta<typeof BaseProgressBar> = {
     },
     variant: {
       control: { type: 'select' },
-      options: ['default', 'password-strength'],
+      options: ['default', 'password-strength','performance'],
       description: '진행바 변형'
     },
     showLabel: {
@@ -124,4 +124,17 @@ export const PasswordStrengthCustomLabel: Story = {
     showLabel: true,
     label: '보안 수준'
   }
-} 
+}
+
+// 성과 진행바
+export const Performance: Story = {
+  args: {
+    variant: 'performance',
+    value: 80,
+    max: 100,
+    showLabel: false,
+    label: '성과',
+    fillColorClass: 'bg-blue-blue800-deep',
+    trackColorClass: 'bg-red-red800'
+  }
+}

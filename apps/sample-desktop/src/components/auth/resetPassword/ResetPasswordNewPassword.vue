@@ -1,5 +1,5 @@
 <template>
-  <AuthContent title="새 비밀번호 설정" description="새로운 비밀번호를 설정하세요요">
+  <AuthContent title="새 비밀번호 설정" description="새로운 비밀번호를 설정하세요">
     <template #header>
       <div class="flex items-center justify-between">
         <BaseIcon name="arrow-backward" size="md" />
@@ -16,6 +16,7 @@
               :error="true"
               errorMessage="에러메시지"
             />
+            <BaseProgressBar :strength-score="4" variant="password-strength" :show-label="true" />
           </FormField>
           <div
             class="mt-size-12 border-primary-primary800 bg-primary-primary100 p-size-8 text-font-12 text-default-muted-dark rounded-md border"
@@ -42,7 +43,7 @@
 </template>
 
 <script lang="ts" setup>
-import { BaseIcon, BasePaginationJoin, BaseInput, BaseButton } from '@template/ui';
+import { BaseIcon, BasePaginationJoin, BaseInput, BaseButton, BaseProgressBar } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
 import AuthContent from '@/components/auth/AuthContent.vue';
 </script>

@@ -8,6 +8,7 @@
     </MainCardContent>
   </div>
 </template>
+
 <script lang="ts" setup>
 import AuthFindIdResult from '@/components/auth/findId/AuthFindIdResult.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';

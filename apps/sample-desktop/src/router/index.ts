@@ -38,6 +38,11 @@ const routes: RouteRecordRaw[] = [
         name: 'find-id',
         component: () => import('@/views/auth/findId/Index.vue'),
       },
+      {
+        path: 'reset-password',
+        name: 'reset-password',
+        component: () => import('@/views/auth/resetPassword/Index.vue'),
+      },
     ],
   },
   {

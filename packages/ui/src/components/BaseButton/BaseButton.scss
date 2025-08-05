@@ -195,11 +195,11 @@
 
 // 비활성화 상태 스타일 (파일 마지막)
 .btn-disabled,
-button:disabled {
+button:disabled,
+a[role='button'][aria-disabled='true'] {
   background-color: var(--button-disabled-background);
   color: var(--button-disabled-text);
   border-color: var(--button-disabled-background);
-  cursor: not-allowed;
   opacity: 0.6;
   pointer-events: none;
 }

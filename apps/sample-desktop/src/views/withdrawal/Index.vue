@@ -11,7 +11,7 @@
             <SubCardContent title="받을 계좌번호" class="p-6">
               <template #content>
                 <div class="flex items-center gap-2">
-                  <BaseInputText
+                  <InputText
                     v-model="accountNumber"
                     :showIcon="false"
                     placeholder="계좌번호를 입력하세요"
@@ -24,7 +24,7 @@
             <SubCardContent title="신청금액" class="p-6">
               <template #content>
                 <div class="flex items-center gap-2">
-                  <BaseInputText
+                  <InputText
                     class="w-[140px]"
                     type="number"
                     size="sm"
@@ -60,7 +60,7 @@
 import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import SubCardContent from '@/components/common/cards/SubCardContent.vue';
-import { BaseButton, BaseTable, BaseInputText } from '@template/ui';
+import { BaseButton, BaseTable, InputText } from '@template/ui';
 import type { TableHeader, TableRow } from '@template/ui';
 import { ref } from 'vue';
 

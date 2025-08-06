@@ -122,6 +122,7 @@ const getSkeletonSize = computed((): IconSize => {
     :class="iconClasses"
     :style="iconStyles"
     aria-hidden="true"
+    v-bind="$attrs"
   />
   
   <!-- 아이콘을 찾을 수 없을 때 스켈레톤 표시 -->

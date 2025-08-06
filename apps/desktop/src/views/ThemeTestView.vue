@@ -26,8 +26,8 @@
       <div class="example-section">
         <h3>입력 컴포넌트</h3>
         <div class="input-examples">
-          <BaseInputText v-model="inputValue" placeholder="텍스트를 입력하세요" />
-          <BaseInputText v-model="inputValue2" placeholder="비밀번호" type="password" />
+          <InputText v-model="inputValue" placeholder="텍스트를 입력하세요" />
+          <InputText v-model="inputValue2" placeholder="비밀번호" type="password" />
         </div>
       </div>
 
@@ -46,8 +46,8 @@
 </template>
 
 <script setup lang="ts">
-import { BaseButton, BaseInputText } from '@template/ui';
 import ThemeToggle from '../components/ThemeToggle.vue';
+import { BaseButton, InputText } from '@template/ui';
 import { useThemeStore } from '@template/theme';
 import { ref } from 'vue';
 

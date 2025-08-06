@@ -1,0 +1,73 @@
+// InputText 컴포넌트 스타일
+// 피그마 디자인 토큰 기반으로 텍스트 입력 특화 스타일 정의
+// BaseInput의 스타일은 덮어쓰지 않음
+
+.input-text-container {
+  display: flex;
+  flex-direction: column;
+  // 너비는 fullWidth prop에 따라 동적으로 제어됨
+  // w-full: 전체 너비, w-fit: 내용에 맞는 너비
+}
+
+.input-text-label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 500;
+  color: var(--input-color-text-static);
+
+  .required-indicator {
+    color: var(--input-color-border-error);
+    margin-left: 2px;
+  }
+}
+
+.input-text-helper {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--input-color-text-placeholder);
+}
+
+.input-text-error {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--input-color-border-error);
+}
+
+.input-text-clear-icon,
+.input-text-eye-icon {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &:active {
+    opacity: 0.5;
+  }
+}
+
+// size별 스타일 (라벨, 헬퍼, 에러 텍스트만)
+.input-text-sm {
+  .input-text-label {
+    font-size: 13px;
+    line-height: 16px;
+  }
+
+  .input-text-helper,
+  .input-text-error {
+    font-size: 11px;
+  }
+}
+
+.input-text-md {
+  .input-text-label {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .input-text-helper,
+  .input-text-error {
+    font-size: 12px;
+  }
+}

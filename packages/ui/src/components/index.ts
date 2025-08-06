@@ -7,6 +7,7 @@ export { default as BaseProgressBar } from './BaseProgressBar/BaseProgressBar.vu
 export { default as BasePasswordStrength } from './BasePasswordStrength/BasePasswordStrength.vue';
 export { default as BaseChip } from './BaseChips/BaseChip.vue';
 export { default as BaseCheckbox } from './BaseCheckbox/BaseCheckbox.vue';
+export { default as BaseFileUploadButton } from './BaseButton/BaseFileUploadButton.vue';
 
 // TODO: BaseChip 컴포넌트 재설계 이후 제거 예정
 // export { default as ChipPosition } from './BaseChips/ChipPosition.vue';

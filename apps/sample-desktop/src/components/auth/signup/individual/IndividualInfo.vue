@@ -40,7 +40,7 @@
           </FormField>
         </div>
         <div class="mt-[33px] w-[360px]">
-          <BaseButton size="regular" label="다음" variant="primary" @click="step = 2" />
+          <BaseButton size="regular" label="다음" variant="primary" @click="step = 6" />
         </div>
       </div>
     </template>

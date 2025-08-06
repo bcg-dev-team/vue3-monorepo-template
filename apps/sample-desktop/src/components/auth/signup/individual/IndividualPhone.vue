@@ -8,9 +8,10 @@
     </template>
     <template #content>
       <div>
-        <div class="gap-size-12 flex flex-col">
-          <BaseButton size="regular" label="휴대폰 본인인증" variant="red" />
+        <div class="gap-size-12">
+          <BaseButton v-if="!status" size="regular" label="휴대폰 본인인증" variant="red" />
           <BaseButton
+            v-else
             size="regular"
             label="인증완료"
             variant="green-solid"
@@ -27,6 +28,8 @@
 <script lang="ts" setup>
 import { BaseIcon, BasePaginationJoin, BaseButton } from '@template/ui';
 import AuthContent from '@/components/auth/AuthContent.vue';
+import { ref } from 'vue';
 
 const step = defineModel<number>('step', { required: true });
+const status = ref<boolean>(false);
 </script>

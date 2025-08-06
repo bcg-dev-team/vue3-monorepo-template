@@ -7,7 +7,7 @@
       </div>
       <div class="mt-6">
         <h2 class="text-font-24 tracking-3 font-semibold">{{ props.title }}</h2>
-        <p class="text-font-16 tracking-3 mt-3">{{ props.description }}</p>
+        <p class="text-font-16 tracking-3 mt-3" v-html="props.description"></p>
       </div>
     </div>
     <slot name="content" />

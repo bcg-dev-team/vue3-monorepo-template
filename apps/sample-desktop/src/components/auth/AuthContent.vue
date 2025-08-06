@@ -1,5 +1,7 @@
 <template>
-  <div class="gap-size-48 flex w-[460px] flex-col justify-center px-[50px] pb-[60px] pt-[50px]">
+  <div
+    class="gap-size-48 bg-neutral-neutral000 border-bg-outline m-auto flex w-[460px] flex-col rounded-md border px-[50px] pb-[60px] pt-[50px]"
+  >
     <slot name="header" />
     <div v-if="props.title">
       <div>

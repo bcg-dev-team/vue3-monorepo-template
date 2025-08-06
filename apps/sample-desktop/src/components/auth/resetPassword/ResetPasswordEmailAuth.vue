@@ -35,7 +35,7 @@
         </div>
 
         <div class="gap-size-12 mt-[33px] flex items-center">
-          <BaseButton size="regular" label="인증번호 전송" variant="primary" />
+          <BaseButton size="regular" label="인증번호 전송" variant="primary" @click="step = 2" />
           <BaseButton size="regular" label="취소" variant="disabled" />
         </div>
         <div class="mt-size-16 flex items-center justify-center">
@@ -49,4 +49,5 @@
 <script lang="ts" setup>
 import { BaseIcon, BasePaginationJoin, BaseInput, BaseButton } from '@template/ui';
 import AuthContent from '@/components/auth/AuthContent.vue';
+const step = defineModel<number>('step', { required: true });
 </script>

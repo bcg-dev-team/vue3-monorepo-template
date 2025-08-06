@@ -38,4 +38,6 @@
 import { BaseIcon, BasePaginationJoin, BaseInput, BaseButton } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
 import AuthContent from '@/components/auth/AuthContent.vue';
+
+const step = defineModel<number>('step', { required: true });
 </script>

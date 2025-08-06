@@ -1,5 +1,5 @@
 <template>
-  <AuthContent>
+  <AuthContent class="pb-[30px]">
     <template #content>
       <div class="flex flex-col items-center justify-center">
         <div>

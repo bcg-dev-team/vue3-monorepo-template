@@ -2,9 +2,9 @@
   <div class="flex min-h-screen items-center justify-center">
     <MainCardContent>
       <template #content>
-        <ResetPasswordEmailForm v-if="step === 0" />
-        <ResetPasswordEmailAuth v-if="step === 1" />
-        <ResetPasswordNewPassword v-if="step === 2" />
+        <ResetPasswordEmailForm v-if="step === 0" v-model:step="step" />
+        <ResetPasswordEmailAuth v-if="step === 1" v-model:step="step" />
+        <ResetPasswordNewPassword v-if="step === 2" v-model:step="step" />
         <ResetPasswordComplete v-if="step === 3" />
       </template>
     </MainCardContent>

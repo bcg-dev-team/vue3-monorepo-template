@@ -35,7 +35,7 @@
           </FormField>
         </div>
         <div class="gap-size-12 mt-[33px] flex items-center">
-          <BaseButton size="regular" label="다음" variant="disabled" />
+          <BaseButton size="regular" label="다음" variant="primary" @click="step = 3" />
         </div>
       </div>
     </template>
@@ -46,4 +46,6 @@
 import { BaseIcon, BasePaginationJoin, BaseInput, BaseButton, BaseProgressBar } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
 import AuthContent from '@/components/auth/AuthContent.vue';
+
+const step = defineModel<number>('step', { required: true });
 </script>

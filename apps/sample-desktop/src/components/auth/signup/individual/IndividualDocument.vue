@@ -24,8 +24,8 @@
             <BaseFileUploadButton status="hover" />
           </div>
         </div>
-        <div class="flex flex-col">
-          <BaseButton size="regular" label="제출하기" variant="primary" @click="step = 6" />
+        <div class="">
+          <BaseButton size="regular" label="제출하기" variant="primary" @click="step = 7" />
         </div>
       </div>
     </template>

@@ -24,21 +24,6 @@
   font-weight: 500;
 }
 
-// 크기별 스타일
-.base-input-sm {
-  .base-input-prefix {
-    font-size: 13px;
-    line-height: 16px;
-  }
-}
-
-.base-input-md {
-  .base-input-prefix {
-    font-size: 16px;
-    line-height: 20px;
-  }
-}
-
 // 플레이스홀더 스타일
 .base-input input::placeholder {
   color: var(--input-color-text-placeholder);

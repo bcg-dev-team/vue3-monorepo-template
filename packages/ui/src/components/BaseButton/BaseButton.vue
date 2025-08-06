@@ -103,8 +103,6 @@ const buttonClasses = computed(() => {
     'transition-all duration-200',
     'select-none',
     'focus:outline-none',
-    'min-w-[64px]',
-    'min-h-[32px]',
     props.fullWidth ? 'w-full' : '',
   ];
 

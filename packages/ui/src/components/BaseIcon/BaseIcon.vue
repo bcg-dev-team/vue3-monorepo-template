@@ -100,6 +100,7 @@ const iconStyles = computed(() => {
     :class="iconClasses"
     :style="iconStyles"
     aria-hidden="true"
+    v-bind="$attrs"
   />
   <div v-else class="icon-loading" :style="{ width: '24px', height: '24px' }" />
 </template>

@@ -4,7 +4,9 @@
   피그마 디자인 토큰 기반으로 구현
 -->
 <script setup lang="ts">
+import type { BaseInputProps } from './types';
 import { computed } from 'vue';
+
 /**
  * BaseInput - 공통 스타일/상태/slot만 담당하는 베이스 컴포넌트
  * @props modelValue - 입력값 (v-model)
@@ -19,35 +21,14 @@ import { computed } from 'vue';
  * @slot suffix - 입력창 내부 오른쪽
  * @slot append - 입력창 외부 오른쪽(타이머, 버튼 등)
  */
-interface Props {
-  /**
-   * 입력값 (v-model)
-   */
-  modelValue?: string;
-  /**
-   * 플레이스홀더 텍스트
-   */
-  placeholder?: string;
-  /**
-   * 비활성화 여부
-   * @default false
-   */
-  disabled?: boolean;
-  /**
-   * 읽기 전용 여부
-   * @default false
-   */
-  readonly?: boolean;
-  /**
-   * 입력창을 부모의 100% 너비로 확장할지 여부 (기본값: false, false일 때는 w-[200px])
-   * @default false
-   */
-  fullWidth?: boolean;
+interface Props extends BaseInputProps {
+  // BaseInput 고유 props (현재는 없음)
 }
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
   placeholder: '',
+  type: 'text',
   disabled: false,
   readonly: false,
   fullWidth: false,
@@ -59,23 +40,33 @@ const emit = defineEmits<{
   (e: 'blur', event: FocusEvent): void;
 }>();
 
-// 상태별 클래스 (에러/사이드 등은 특화 컴포넌트에서 처리)
-const stateClasses = [
-  'relative rounded-md transition-all duration-150',
-  'bg-white border border-solid',
-  'border-input-border-static focus:border-input-border-focus hover:border-input-border-focus',
-];
+// 상태별 클래스 계산
+const stateClasses = computed(() => {
+  const baseClasses = ['relative rounded-md transition-all duration-150', 'border border-solid'];
 
-const inputClasses = [
-  'w-full bg-transparent border-0 outline-none',
-  'tracking-[-0.35px]',
-  'px-[15px] py-3.5 text-[16px] leading-[20px]',
-  'flex-1',
-];
+  if (props.disabled) {
+    // disabled 상태: 피그마 디자인 토큰 적용
+    baseClasses.push('bg-input-bg-disabled', 'border-input-border-disabled', 'cursor-not-allowed');
+  } else {
+    // 기본 상태
+    baseClasses.push(
+      'bg-white',
+      'border-input-border-static',
+      'focus:border-input-border-focus',
+      'hover:border-input-border-focus'
+    );
+  }
+
+  return baseClasses;
+});
 
 const mainRowClass = computed(() => {
   // fullWidth: w-full, 기본값 w-[200px] min-w-0
   return props.fullWidth ? 'flex items-stretch w-full' : 'flex items-stretch min-w-0 w-[200px]';
+});
+
+const innerClass = computed(() => {
+  return 'flex items-center px-[15px] w-full';
 });
 
 const handleInput = (event: Event) => {
@@ -94,7 +85,7 @@ const handleBlur = (event: FocusEvent) => {
 
 <template>
   <div :class="'base-input-main-row ' + mainRowClass">
-    <div :class="stateClasses.join(' ') + ' flex w-full items-center px-[15px]'">
+    <div :class="stateClasses.join(' ') + ' ' + innerClass">
       <!-- prefix slot: input 왼쪽, 오른쪽 마진(mr-2)으로 최소 공간 확보 -->
       <div v-if="$slots.prefix" class="base-input-prefix mr-2 flex shrink-0 items-center">
         <slot name="prefix" />
@@ -102,6 +93,7 @@ const handleBlur = (event: FocusEvent) => {
       <!-- 입력 필드 -->
       <input
         :value="modelValue"
+        :type="type"
         :placeholder="placeholder"
         :disabled="disabled"
         :readonly="readonly"
@@ -110,7 +102,7 @@ const handleBlur = (event: FocusEvent) => {
         @input="handleInput"
         @focus="handleFocus"
         @blur="handleBlur"
-        class="w-full flex-1 border-0 bg-transparent p-0 py-3.5 text-[16px] leading-[20px] tracking-[-0.35px] outline-none"
+        class="disabled:text-input-text-disable w-full flex-1 border-0 bg-transparent p-0 py-3.5 text-[16px] leading-[20px] tracking-[-0.35px] outline-none disabled:cursor-not-allowed"
       />
       <!-- suffix slot: input 오른쪽, 왼쪽 마진(ml-2)으로 최소 공간 확보 -->
       <div v-if="$slots.suffix" class="base-input-suffix ml-2 flex shrink-0 items-center">

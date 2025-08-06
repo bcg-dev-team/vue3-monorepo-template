@@ -32,17 +32,22 @@
 }
 
 // 비활성화 상태 플레이스홀더
-.base-input-disabled input::placeholder {
+.base-input input:disabled::placeholder {
   color: var(--input-color-text-disable);
 }
 
-// 포커스 상태
-.base-input:focus-within {
+// 포커스 상태 (disabled가 아닐 때만)
+.base-input:not(.bg-input-bg-disabled):focus-within {
   border-color: var(--input-color-border-focus) !important;
   box-shadow: 0 0 0 1px var(--input-color-border-focus);
 }
 
-// 호버 상태
-.base-input:hover:not(.base-input-disabled) {
+// 호버 상태 (disabled가 아닐 때만)
+.base-input:not(.bg-input-bg-disabled):hover {
   border-color: var(--input-color-border-focus);
+}
+
+// disabled 상태에서 suffix 아이콘 색상 조정
+.base-input.bg-input-bg-disabled .base-input-suffix {
+  opacity: 0.5;
 }

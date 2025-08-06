@@ -71,6 +71,15 @@ const meta: Meta<typeof BaseButton> = {
         category: 'Props',
       },
     },
+    isLoading: {
+      description: '로딩 상태 여부',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+        category: 'Props',
+      },
+    },
   },
 };
 
@@ -411,6 +420,22 @@ export const AllVariants: Story = {
     docs: {
       description: {
         story: '11가지 variant의 버튼을 비교할 수 있습니다.',
+      },
+    },
+  },
+};
+
+export const Skeleton: Story = {
+  args: {
+    variant: 'primary',
+    size: 'regular',
+    label: '로딩 중...',
+    isLoading: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '스켈레톤 상태의 버튼입니다. 로딩 중에 표시됩니다.',
       },
     },
   },

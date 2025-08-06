@@ -2,9 +2,9 @@
   <div class="flex min-h-screen items-center justify-center">
     <MainCardContent>
       <template #content>
-        <IndividualTerms v-if="step === 0" />
-        <IndividualPhone v-if="step === 1" />
-        <IndividualInfo v-if="step === 2" />
+        <IndividualTerms v-if="step === 0" v-model:step="step" />
+        <IndividualPhone v-if="step === 1" v-model:step="step" />
+        <IndividualInfo v-if="step === 2" v-model:step="step" />
       </template>
     </MainCardContent>
   </div>

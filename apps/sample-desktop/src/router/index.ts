@@ -31,6 +31,11 @@ const routes: RouteRecordRaw[] = [
             name: 'individual-sign-up',
             component: () => import('@/views/auth/signup/individual/Index.vue'),
           },
+          {
+            path: 'corporate',
+            name: 'corporate-sign-up',
+            component: () => import('@/views/auth/signup/corporate/Index.vue'),
+          },
         ],
       },
       {

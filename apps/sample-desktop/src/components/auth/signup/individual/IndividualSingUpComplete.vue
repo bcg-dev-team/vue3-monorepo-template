@@ -3,11 +3,11 @@
     <template #content>
       <div class="flex flex-col items-center justify-center">
         <div>
-          <span class="text-font-24 font-semibold">비밀번호 재설정 완료</span>
+          <span class="text-font-24 font-semibold">가입신청 완료</span>
         </div>
         <div class="mt-size-24 text-font-16 text-center">
-          <p>비밀번호 재설징이 완료 됐어요</p>
-          <p>다시 로그인해주세요</p>
+          <p>가입신청이 완료되었습니다.</p>
+          <p>관리자 확인 후 이메일로 승인 알림을 보내드릴게요!</p>
         </div>
       </div>
       <div><BaseButton label="확인" /></div>

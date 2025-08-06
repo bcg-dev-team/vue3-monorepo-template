@@ -9,11 +9,13 @@
         <IndividualSetPassword v-if="step === 4" v-model:step="step" />
         <IndividualInfo v-if="step === 5" v-model:step="step" />
         <IndividualDocument v-if="step === 6" v-model:step="step" />
+        <IndividualSingUpComplete v-if="step === 7" v-model:step="step" />
       </template>
     </MainCardContent>
   </div>
 </template>
 <script lang="ts" setup>
+import IndividualSingUpComplete from '@/components/auth/signup/individual/IndividualSingUpComplete.vue';
 import IndividualSetPassword from '@/components/auth/signup/individual/IndividualSetPassword.vue';
 import IndividualEmailForm from '@/components/auth/signup/individual/IndividualEmailForm.vue';
 import IndividualEmailAuth from '@/components/auth/signup/individual/IndividualEmailAuth.vue';

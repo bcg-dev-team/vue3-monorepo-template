@@ -40,6 +40,8 @@ const router = useRouter();
 const type = ref<'individual' | 'corporation' | null>(null);
 
 const onClickNext = () => {
+  if (type.value) {
+  }
   if (type.value === 'individual') {
     router.push({ name: 'individual-sign-up' });
   } else if (type.value === 'corporation') {

@@ -5,23 +5,19 @@
 -->
 <script setup lang="ts">
 import { computed } from 'vue';
-import './BaseInput.scss';
-
 /**
- * BaseInput - 모든 Input 타입의 공통 베이스 컴포넌트
- *
+ * BaseInput - 공통 스타일/상태/slot만 담당하는 베이스 컴포넌트
  * @props modelValue - 입력값 (v-model)
  * @props placeholder - 플레이스홀더 텍스트
- * @props size - 크기 (sm, md)
  * @props disabled - 비활성화 여부
- * @props error - 에러 상태 여부
- * @props errorMessage - 에러 메시지
  * @props readonly - 읽기 전용 여부
+ * @props fullWidth - 입력창을 부모의 100% 너비로 확장할지 여부 (기본값: false, false일 때는 w-[200px])
  * @emits update:modelValue - 입력값 변경 시 발생
  * @emits focus - 포커스 시 발생
  * @emits blur - 블러 시 발생
- * @slot prefix - 좌측 커스텀 컨텐츠
- * @slot suffix - 우측 커스텀 컨텐츠
+ * @slot prefix - 입력창 내부 왼쪽
+ * @slot suffix - 입력창 내부 오른쪽
+ * @slot append - 입력창 외부 오른쪽(타이머, 버튼 등)
  */
 interface Props {
   /**
@@ -33,39 +29,28 @@ interface Props {
    */
   placeholder?: string;
   /**
-   * 크기
-   * @default 'md'
-   */
-  size?: 'sm' | 'md';
-  /**
    * 비활성화 여부
    * @default false
    */
   disabled?: boolean;
   /**
-   * 에러 상태 여부
-   * @default false
-   */
-  error?: boolean;
-  /**
-   * 에러 메시지
-   */
-  errorMessage?: string;
-  /**
    * 읽기 전용 여부
    * @default false
    */
   readonly?: boolean;
+  /**
+   * 입력창을 부모의 100% 너비로 확장할지 여부 (기본값: false, false일 때는 w-[200px])
+   * @default false
+   */
+  fullWidth?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
   placeholder: '',
-  size: 'md',
   disabled: false,
-  error: false,
-  errorMessage: '',
   readonly: false,
+  fullWidth: false,
 });
 
 const emit = defineEmits<{
@@ -74,65 +59,25 @@ const emit = defineEmits<{
   (e: 'blur', event: FocusEvent): void;
 }>();
 
-// 상태 계산
-const isDisabled = computed(() => props.disabled);
-const isError = computed(() => props.error);
-const hasValue = computed(() => props.modelValue && props.modelValue.length > 0);
+// 상태별 클래스 (에러/사이드 등은 특화 컴포넌트에서 처리)
+const stateClasses = [
+  'relative rounded-md transition-all duration-150',
+  'bg-white border border-solid',
+  'border-input-border-static focus:border-input-border-focus hover:border-input-border-focus',
+];
 
-// 크기별 클래스
-const sizeClasses = computed(() => {
-  switch (props.size) {
-    case 'sm':
-      return 'px-[15px] py-3 text-[13px] leading-[16px]';
-    case 'md':
-      return 'px-[15px] py-3.5 text-[16px] leading-[20px]';
-    default:
-      return 'px-[15px] py-3.5 text-[16px] leading-[20px]';
-  }
+const inputClasses = [
+  'w-full bg-transparent border-0 outline-none',
+  'tracking-[-0.35px]',
+  'px-[15px] py-3.5 text-[16px] leading-[20px]',
+  'flex-1',
+];
+
+const mainRowClass = computed(() => {
+  // fullWidth: w-full, 기본값 w-[200px] min-w-0
+  return props.fullWidth ? 'flex items-stretch w-full' : 'flex items-stretch min-w-0 w-[200px]';
 });
 
-// 상태별 클래스
-const stateClasses = computed(() => {
-  const classes = [
-    'relative w-full rounded-md transition-all duration-150',
-    'bg-white border border-solid',
-  ];
-
-  if (isDisabled.value) {
-    classes.push(
-      'bg-input-bg-disabled border-input-border-disabled text-input-text-disable cursor-not-allowed'
-    );
-  } else if (isError.value) {
-    classes.push('border-input-border-error focus:border-input-border-error');
-  } else {
-    classes.push(
-      'border-input-border-static focus:border-input-border-focus hover:border-input-border-focus'
-    );
-  }
-
-  return classes.join(' ');
-});
-
-// 입력 요소 클래스
-const inputClasses = computed(() => {
-  const classes = [
-    'w-full bg-transparent border-0 outline-none',
-    'tracking-[-0.35px]',
-    sizeClasses.value,
-  ];
-
-  if (isDisabled.value) {
-    classes.push('text-input-text-disable cursor-not-allowed');
-  } else if (hasValue.value) {
-    classes.push('text-input-text-static');
-  } else {
-    classes.push('text-input-text-placeholder');
-  }
-
-  return classes.join(' ');
-});
-
-// 이벤트 핸들러
 const handleInput = (event: Event) => {
   const target = event.target as HTMLInputElement;
   emit('update:modelValue', target.value);
@@ -148,35 +93,33 @@ const handleBlur = (event: FocusEvent) => {
 </script>
 
 <template>
-  <div class="base-input-container">
-    <!-- 메인 입력 컨테이너 -->
-    <div :class="stateClasses">
-      <!-- 좌측 prefix -->
-      <div v-if="$slots.prefix" class="base-input-prefix">
+  <div :class="'base-input-main-row ' + mainRowClass">
+    <div :class="stateClasses.join(' ') + ' flex w-full items-center px-[15px]'">
+      <!-- prefix slot: input 왼쪽, 오른쪽 마진(mr-2)으로 최소 공간 확보 -->
+      <div v-if="$slots.prefix" class="base-input-prefix mr-2 flex shrink-0 items-center">
         <slot name="prefix" />
       </div>
-
       <!-- 입력 필드 -->
       <input
         :value="modelValue"
         :placeholder="placeholder"
-        :disabled="isDisabled"
+        :disabled="disabled"
         :readonly="readonly"
-        :class="inputClasses"
+        :aria-disabled="disabled"
+        :aria-readonly="readonly"
         @input="handleInput"
         @focus="handleFocus"
         @blur="handleBlur"
+        class="w-full flex-1 border-0 bg-transparent p-0 py-3.5 text-[16px] leading-[20px] tracking-[-0.35px] outline-none"
       />
-
-      <!-- 우측 suffix -->
-      <div v-if="$slots.suffix" class="base-input-suffix">
+      <!-- suffix slot: input 오른쪽, 왼쪽 마진(ml-2)으로 최소 공간 확보 -->
+      <div v-if="$slots.suffix" class="base-input-suffix ml-2 flex shrink-0 items-center">
         <slot name="suffix" />
       </div>
     </div>
-
-    <!-- 에러 메시지 -->
-    <div v-if="isError && errorMessage" class="base-input-error">
-      {{ errorMessage }}
+    <!-- append slot: 입력창 외부 오른쪽, 왼쪽 마진(ml-2)으로 최소 공간 확보 -->
+    <div v-if="$slots.append" class="base-input-append ml-2 flex items-center">
+      <slot name="append" />
     </div>
   </div>
 </template>

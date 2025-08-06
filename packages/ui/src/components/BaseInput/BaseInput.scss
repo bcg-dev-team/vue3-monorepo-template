@@ -2,16 +2,9 @@
 // 피그마 디자인 토큰 기반으로 모든 Input 타입의 공통 스타일 정의
 // 가이드: 피그마 HEX → 디자인 토큰 변환 적용
 
-.base-input-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
 .base-input-prefix {
   display: flex;
   align-items: center;
-  padding-left: 15px;
   color: var(--input-color-text-static);
   font-size: 13px;
   font-weight: 400;
@@ -21,7 +14,6 @@
 .base-input-suffix {
   display: flex;
   align-items: center;
-  padding-right: 10px;
   gap: 4px;
 }
 
@@ -35,25 +27,15 @@
 // 크기별 스타일
 .base-input-sm {
   .base-input-prefix {
-    padding-left: 15px;
     font-size: 13px;
     line-height: 16px;
-  }
-
-  .base-input-suffix {
-    padding-right: 10px;
   }
 }
 
 .base-input-md {
   .base-input-prefix {
-    padding-left: 15px;
     font-size: 16px;
     line-height: 20px;
-  }
-
-  .base-input-suffix {
-    padding-right: 10px;
   }
 }
 

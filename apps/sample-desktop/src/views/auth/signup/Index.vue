@@ -1,13 +1,6 @@
 <template>
-  <div class="flex min-h-screen items-center justify-center">
-    <MainCardContent>
-      <template #content>
-        <SignUpIntro />
-      </template>
-    </MainCardContent>
-  </div>
+  <SignUpIntro />
 </template>
 <script lang="ts" setup>
-import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import SignUpIntro from '@/components/auth/signup/SignUpIntro.vue';
 </script>

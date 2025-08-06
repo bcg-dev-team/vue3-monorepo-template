@@ -1,3 +1,4 @@
 <template>
-  <main class="bg-bg-surface min-w-[1920px] flex-1"><slot /></main>
+  <main class="flex h-screen items-center justify-center p-8"><slot /></main>
 </template>
+<script lang="ts" setup></script>

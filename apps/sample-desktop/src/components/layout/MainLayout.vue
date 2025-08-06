@@ -1,9 +1,8 @@
 <template>
   <Header />
-  <main class="">
+  <main>
     <slot />
   </main>
-
   <Footer />
 </template>
 <script lang="ts" setup>

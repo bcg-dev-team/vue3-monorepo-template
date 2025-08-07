@@ -52,6 +52,7 @@ export type IconName =
   | 'support'
   | 'list'
   | 'phone'
+  | 'notification'
 
   // 테마 아이콘
   | 'mode-dark'
@@ -65,10 +66,28 @@ export type IconName =
   | 'check-circle'
   | 'grade'
 
+  // 화면/디스플레이 아이콘
+  | 'screen-single'
+  | 'screen-multi'
+  | 'screem-multi2'
+
   // 기타 아이콘
   | 'asset'
   | 'calendar'
   | 'chart'
+  | 'chart-line'
+  | 'chart-candle'
+  | 'chart-bubble'
+  | 'chart-area'
+  | 'chart-5m'
+  | 'chart-4h'
+  | 'chart-1w'
+  | 'chart-1mon'
+  | 'chart-1m'
+  | 'chart-1h'
+  | 'chart-1d'
+  | 'chart-15m'
+  | 'chart-10m'
   | 'email'
   | 'time'
   | 'cert'
@@ -161,6 +180,7 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   support: 'fill', // fill="#333740"
   list: 'fill', // fill="#333740"
   phone: 'fill', // fill="#333740"
+  notification: 'fill', // fill="#333740" (path만 사용)
 
   // 테마 아이콘
   'mode-dark': 'fill', // fill="#333740"
@@ -174,10 +194,28 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   'check-circle': 'fill', // fill="#000"
   grade: 'fill', // fill="#333740"
 
+  // 화면/디스플레이 아이콘
+  'screen-single': 'fill', // fill="#333740" (path만 사용)
+  'screen-multi': 'fill', // fill="#333740" (path만 사용)
+  'screem-multi2': 'fill', // fill="#333740" (path만 사용)
+
   // 기타 아이콘
   asset: 'fill', // fill="#333740"
   calendar: 'fill', // fill="#333740"
   chart: 'fill', // fill="#333740"
+  'chart-line': 'fill', // fill="#333740" (path만 사용)
+  'chart-candle': 'fill', // fill="#333740" (path만 사용)
+  'chart-bubble': 'fill', // fill="#333740" (path만 사용)
+  'chart-area': 'fill', // fill="#333740" (path만 사용)
+  'chart-5m': 'fill', // fill="#333740" (path만 사용)
+  'chart-4h': 'fill', // fill="#333740" (path만 사용)
+  'chart-1w': 'fill', // fill="#333740" (path만 사용)
+  'chart-1mon': 'fill', // fill="#333740" (path만 사용)
+  'chart-1m': 'fill', // fill="#333740" (path만 사용)
+  'chart-1h': 'fill', // fill="#333740" (path만 사용)
+  'chart-1d': 'fill', // fill="#333740" (path만 사용)
+  'chart-15m': 'fill', // fill="#333740" (path만 사용)
+  'chart-10m': 'fill', // fill="#333740" (path만 사용)
   email: 'fill', // fill="#333740"
   time: 'fill', // fill="#333740"
   cert: 'fill', // fill="#000"

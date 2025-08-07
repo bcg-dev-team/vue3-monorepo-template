@@ -36,6 +36,23 @@ packages/ui/src/assets/icons/
 ├── arrow-forward.svg
 ├── account-balance.svg
 ├── home.svg
+├── notification.svg
+├── screen-single.svg
+├── screen-multi.svg
+├── screem-multi2.svg
+├── chart-line.svg
+├── chart-candle.svg
+├── chart-bubble.svg
+├── chart-area.svg
+├── chart-5m.svg
+├── chart-4h.svg
+├── chart-1w.svg
+├── chart-1mon.svg
+├── chart-1m.svg
+├── chart-1h.svg
+├── chart-1d.svg
+├── chart-15m.svg
+├── chart-10m.svg
 └── flags/
     ├── flag-kr.svg
     ├── flag-us.svg
@@ -329,7 +346,7 @@ const handleClose = () => {
 - `home`, `settings`, `person`
 - `login`, `logout`, `mypage`
 - `order`, `trade`, `support`
-- `list`, `phone`
+- `list`, `phone`, `notification`
 
 ### 9.4 테마 아이콘
 - `mode-dark`, `mode-light`
@@ -338,15 +355,25 @@ const handleClose = () => {
 - `warning`, `warning2`, `info`
 - `check-sm`, `check-circle`, `grade`
 
-### 9.6 기타 아이콘
-- `asset`, `calendar`, `chart`
+### 9.6 화면/디스플레이 아이콘
+- `screen-single`, `screen-multi`, `screem-multi2`
+
+### 9.7 차트 아이콘
+- `chart`, `chart-line`, `chart-candle`
+- `chart-bubble`, `chart-area`
+- `chart-5m`, `chart-4h`, `chart-1w`
+- `chart-1mon`, `chart-1m`, `chart-1h`
+- `chart-1d`, `chart-15m`, `chart-10m`
+
+### 9.8 기타 아이콘
+- `asset`, `calendar`
 - `email`, `time`, `cert`
 - `comm`, `account-balance`
 - `description`, `file-attached`, `filter`
 - `card`, `close`, `close small`
 - `trending-up`, `trending-down`
 
-### 9.7 플래그 아이콘
+### 9.9 플래그 아이콘
 - `flag-au`, `flag-ca`, `flag-cn`
 - `flag-eu`, `flag-hk`, `flag-jp`
 - `flag-kr`, `flag-mx`, `flag-nr`
@@ -419,21 +446,23 @@ pnpm type-check
 ## 📊 14. 아이콘 통계
 
 ### 14.1 현재 등록된 아이콘 수
-- **일반 아이콘**: 68개
+- **일반 아이콘**: 85개
 - **플래그 아이콘**: 17개
-- **총 아이콘 수**: 85개
+- **총 아이콘 수**: 102개
 
 ### 14.2 카테고리별 분포
 - **화살표 아이콘**: 11개
 - **액션 아이콘**: 19개
-- **네비게이션 아이콘**: 11개
+- **네비게이션 아이콘**: 12개 (notification 추가)
 - **테마 아이콘**: 2개
 - **상태/알림 아이콘**: 5개
+- **화면/디스플레이 아이콘**: 3개 (screen-single, screen-multi, screem-multi2 추가)
+- **차트 아이콘**: 13개 (chart-line, chart-candle, chart-bubble, chart-area, chart-5m, chart-4h, chart-1w, chart-1mon, chart-1m, chart-1h, chart-1d, chart-15m, chart-10m 추가)
 - **기타 아이콘**: 20개
 - **플래그 아이콘**: 17개
 
 ### 14.3 타입별 분포
-- **fill 타입**: 78개 (91.8%)
-- **stroke 타입**: 7개 (8.2%)
+- **fill 타입**: 95개 (93.1%)
+- **stroke 타입**: 7개 (6.9%)
 
 이 가이드를 따라 아이콘 시스템을 효과적으로 활용하세요! 

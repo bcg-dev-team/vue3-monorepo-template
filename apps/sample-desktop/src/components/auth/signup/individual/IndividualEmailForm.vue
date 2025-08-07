@@ -19,7 +19,14 @@
           </FormField>
         </div>
         <div class="mt-[33px]">
-          <BaseButton size="regular" label="다음" variant="primary" @click="step = 3" />
+          <BaseButton
+            size="large"
+            label="다음"
+            variant="contained"
+            color="primary"
+            full-width
+            @click="step = 3"
+          />
         </div>
       </div>
     </template>

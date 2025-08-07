@@ -57,7 +57,14 @@
           </div>
         </div>
         <div class="mt-[33px]">
-          <BaseButton size="regular" label="가입하기" variant="primary" @click="step = 1" />
+          <BaseButton
+            size="large"
+            label="가입하기"
+            variant="contained"
+            color="primary"
+            full-width
+            @click="step = 1"
+          />
         </div>
       </div>
     </template>

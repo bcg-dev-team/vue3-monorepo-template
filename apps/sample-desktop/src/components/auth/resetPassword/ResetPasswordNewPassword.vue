@@ -35,7 +35,14 @@
           </FormField>
         </div>
         <div class="gap-size-12 mt-[33px] flex items-center">
-          <BaseButton size="regular" label="다음" variant="primary" @click="step = 3" />
+          <BaseButton
+            size="large"
+            label="다음"
+            variant="contained"
+            color="primary"
+            full-width
+            @click="step = 3"
+          />
         </div>
       </div>
     </template>

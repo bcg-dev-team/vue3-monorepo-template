@@ -39,7 +39,7 @@
             variant="contained"
             color="primary"
             full-width
-            @click="step = 7"
+            @click="step = 8"
           />
         </div>
       </div>

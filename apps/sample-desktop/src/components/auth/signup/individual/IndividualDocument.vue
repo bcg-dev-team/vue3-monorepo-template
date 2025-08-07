@@ -25,7 +25,14 @@
           </div>
         </div>
         <div class="">
-          <BaseButton size="regular" label="제출하기" variant="primary" @click="step = 7" />
+          <BaseButton
+            size="large"
+            label="제출하기"
+            variant="contained"
+            color="primary"
+            full-width
+            @click="step = 7"
+          />
         </div>
       </div>
     </template>

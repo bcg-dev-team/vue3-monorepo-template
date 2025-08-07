@@ -9,17 +9,33 @@
     <template #content>
       <div>
         <div class="gap-size-12">
-          <BaseButton v-if="!status" size="regular" label="휴대폰 본인인증" variant="red" />
+          <BaseButton
+            v-if="status"
+            size="large"
+            label="휴대폰 본인인증"
+            variant="outlined"
+            color="red"
+            full-width
+          />
           <BaseButton
             v-else
-            size="regular"
+            size="large"
             label="인증완료"
-            variant="green-solid"
+            variant="outlined"
+            color="green"
+            full-width
             :rightIcon="{ name: 'arrow-right-thin' }"
           />
         </div>
         <div class="mt-[33px] flex flex-col">
-          <BaseButton size="regular" label="다음" variant="primary" @click="step = 2" />
+          <BaseButton
+            size="large"
+            label="다음"
+            variant="contained"
+            color="primary"
+            full-width
+            @click="step = 2"
+          />
         </div>
       </div>
     </template>

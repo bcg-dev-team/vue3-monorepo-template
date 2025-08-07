@@ -10,7 +10,7 @@
           <p>다시 로그인해주세요</p>
         </div>
       </div>
-      <div><BaseButton label="확인" /></div>
+      <div><BaseButton label="확인" full-width /></div>
     </template>
   </AuthContent>
 </template>

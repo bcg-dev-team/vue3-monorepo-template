@@ -10,7 +10,7 @@
           <p>관리자 확인 후 이메일로 승인 알림을 보내드릴게요!</p>
         </div>
       </div>
-      <div><BaseButton label="확인" /></div>
+      <div><BaseButton label="확인" full-width /></div>
     </template>
   </AuthContent>
 </template>

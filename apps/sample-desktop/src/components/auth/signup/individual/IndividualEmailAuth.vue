@@ -32,8 +32,21 @@
         </div>
 
         <div class="gap-size-12 mt-[33px] flex items-center">
-          <BaseButton size="regular" label="인증 메일 전송" variant="outline" @click="step = 4" />
-          <BaseButton size="regular" label="다음" variant="disabled" />
+          <BaseButton
+            size="large"
+            label="인증 메일 재전송"
+            variant="outlined"
+            color="primary"
+            full-width
+          />
+          <BaseButton
+            size="large"
+            label="다음"
+            variant="contained"
+            color="primary"
+            full-width
+            @click="step = 4"
+          />
         </div>
         <div class="mt-size-16 flex items-center justify-center">
           <span class="text-font-14 text-default-muted cursor-pointer font-medium underline"

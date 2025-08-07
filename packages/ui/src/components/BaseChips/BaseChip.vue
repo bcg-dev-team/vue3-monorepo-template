@@ -2,6 +2,7 @@
   Figma 공통 칩 최소 단위 컴포넌트
   하이브리드 방식: 기본 variant + 커스텀 색상 지원
   가이드: 피그마 HEX → 디자인 토큰 변환 적용
+  접근성: ARIA 속성, 키보드 네비게이션, 포커스 표시기 지원
 -->
 <script setup lang="ts">
 import type { ChipVariant, ComponentSize } from '../../types/components';
@@ -11,6 +12,7 @@ import './BaseChip.scss';
 /**
  * 칩(Chip) 최소 단위 컴포넌트
  * 하이브리드 방식: 기본 variant + 커스텀 색상 지원
+ * 접근성: ARIA 속성, 키보드 네비게이션, 포커스 표시기 지원
  *
  * @props label - 칩 텍스트
  * @props variant - 칩 스타일 변형 (surface, primary, secondary 등)
@@ -29,7 +31,7 @@ interface Props {
   label?: string;
   /**
    * 칩 스타일 변형
-   * @default 'surface'
+   * @default 'grey'
    */
   variant?: ChipVariant;
   /**
@@ -62,7 +64,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  variant: 'surface',
+  variant: 'grey',
   size: 'md',
   rounded: 'rounded-sm',
   fontWeight: 'font-normal',
@@ -77,8 +79,12 @@ const sizeClasses = {
 
 // Variant별 클래스 매핑 (컴포넌트별 토큰)
 const variantClasses = {
-  surface: 'chip-surface',
-  primary: 'chip-primary',
+  grey: 'chip-grey',
+  red: 'chip-red',
+  green: 'chip-green',
+  blue: 'chip-blue',
+  yellow: 'chip-yellow',
+  purple: 'chip-purple',
 };
 
 // Font weight별 클래스 매핑
@@ -113,6 +119,18 @@ const getDefaultTextColor = (backgroundColor: string) => {
   return 'var(--font-color-primary)';
 };
 
+// 접근성을 위한 ARIA 속성 계산
+const ariaAttributes = computed(() => {
+  const attributes: Record<string, string | boolean> = {};
+
+  // 라벨 설정
+  if (props.label) {
+    attributes['aria-label'] = props.label;
+  }
+
+  return attributes;
+});
+
 // 칩 클래스 계산
 const chipClasses = computed(() => {
   const classes = [
@@ -130,15 +148,25 @@ const chipClasses = computed(() => {
 
     // 5. 테두리
     roundedClasses[props.rounded] || 'rounded-sm',
+
+    // 6. 기본 칩 클래스
+    'base-chip',
+
+    // 7. 접근성 관련 클래스
+    'focus-visible:outline-none',
+    'focus-visible:ring-2',
+    'focus-visible:ring-offset-2',
+    'focus-visible:ring-blue-500',
   ];
 
+  // 8. 상태별 클래스
   // 커스텀 색상이 있으면 우선 적용
   if (props.backgroundColor || props.textColor || props.borderColor) {
     return classes.join(' ');
   }
 
   // 없으면 기본 variant 적용
-  classes.push(variantClasses[props.variant] || 'chip-surface');
+  classes.push(variantClasses[props.variant] || 'chip-grey');
   return classes.join(' ');
 });
 
@@ -168,7 +196,7 @@ const customStyles = computed(() => {
 </script>
 
 <template>
-  <span :class="chipClasses" :style="customStyles">
+  <span :class="chipClasses" :style="customStyles" v-bind="ariaAttributes">
     <slot>{{ label }}</slot>
   </span>
 </template>

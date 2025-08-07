@@ -8,13 +8,6 @@ export { default as BasePasswordStrength } from './BasePasswordStrength/BasePass
 export { default as BaseChip } from './BaseChips/BaseChip.vue';
 export { default as BaseCheckbox } from './BaseCheckbox/BaseCheckbox.vue';
 
-// TODO: BaseChip 컴포넌트 재설계 이후 제거 예정
-// export { default as ChipPosition } from './BaseChips/ChipPosition.vue';
-// export { default as ChipStatus } from './BaseChips/ChipStatus.vue';
-// export { default as ChipNotice } from './BaseChips/ChipNotice.vue';
-// export { default as ChipUpdown } from './BaseChips/ChipUpdown.vue';
-// export { default as ChipQna } from './BaseChips/ChipQna.vue';
-
 export * from './BasePagination';
 export * from './BaseTable';
 export * from './BaseIcon';

@@ -21,5 +21,5 @@ import CorporateInfo from '@/components/auth/signup/corporate/CorporateInfo.vue'
 import SingUpComplete from '@/components/auth/signup/common/SingUpComplete.vue';
 import { ref } from 'vue';
 
-const step = ref(8);
+const step = ref(0);
 </script>

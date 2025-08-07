@@ -28,10 +28,17 @@ export type IconName =
   | 'refresh'
   | 'search'
   | 'eye'
-  | 'eye-off'
+  | 'eye-close'
   | 'fullscreen'
   | 'external-link'
   | 'icn-delete'
+  | 'copy'
+  | 'download'
+  | 'upload'
+  | 'send'
+  | 'pause'
+  | 'move'
+  | 'withdraw'
 
   // 네비게이션 아이콘
   | 'home'
@@ -43,10 +50,20 @@ export type IconName =
   | 'order'
   | 'trade'
   | 'support'
+  | 'list'
+  | 'phone'
 
   // 테마 아이콘
   | 'mode-dark'
   | 'mode-light'
+
+  // 상태/알림 아이콘
+  | 'warning'
+  | 'warning2'
+  | 'info'
+  | 'check-sm'
+  | 'check-circle'
+  | 'grade'
 
   // 기타 아이콘
   | 'asset'
@@ -55,9 +72,16 @@ export type IconName =
   | 'email'
   | 'time'
   | 'cert'
-  | 'check-circle'
   | 'comm'
   | 'account-balance'
+  | 'description'
+  | 'file-attached'
+  | 'filter'
+  | 'card'
+  | 'close'
+  | 'close small'
+  | 'trending-up'
+  | 'trending-down'
 
   // 플래그 아이콘
   | 'flag-au'
@@ -113,10 +137,17 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   refresh: 'fill', // fill="#333740"
   search: 'fill', // fill="#333740"
   eye: 'stroke', // stroke="#333740"
-  'eye-off': 'stroke', // stroke="#333740"
+  'eye-close': 'stroke', // stroke="#333740" (path만 사용)
   fullscreen: 'fill', // fill="#333740"
   'external-link': 'fill', // fill="#333740"
   'icn-delete': 'fill', // fill="#b4b6bb"
+  copy: 'fill', // fill="#333740"
+  download: 'fill', // fill="#333740" (path만 사용)
+  upload: 'fill', // fill="#333740" (path만 사용)
+  send: 'fill', // fill="#333740"
+  pause: 'fill', // fill="#333740"
+  move: 'fill', // fill="#333740" (path만 사용)
+  withdraw: 'fill', // fill="#333740" (path만 사용)
 
   // 네비게이션 아이콘
   home: 'fill', // fill="#333740"
@@ -128,10 +159,20 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   order: 'fill', // fill="#333740"
   trade: 'stroke', // stroke="#333740"
   support: 'fill', // fill="#333740"
+  list: 'fill', // fill="#333740"
+  phone: 'fill', // fill="#333740"
 
   // 테마 아이콘
   'mode-dark': 'fill', // fill="#333740"
   'mode-light': 'fill', // fill="#333740"
+
+  // 상태/알림 아이콘
+  warning: 'fill', // fill="#333740" (path만 사용)
+  warning2: 'fill', // fill="#333740" (path만 사용)
+  info: 'fill', // fill="#333740"
+  'check-sm': 'fill', // fill="#333740" (path만 사용)
+  'check-circle': 'fill', // fill="#000"
+  grade: 'fill', // fill="#333740"
 
   // 기타 아이콘
   asset: 'fill', // fill="#333740"
@@ -140,9 +181,16 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   email: 'fill', // fill="#333740"
   time: 'fill', // fill="#333740"
   cert: 'fill', // fill="#000"
-  'check-circle': 'fill', // fill="#000"
   comm: 'fill', // fill="#333740"
   'account-balance': 'fill', // fill="#717375"
+  description: 'fill', // fill="#333740" (path만 사용)
+  'file-attached': 'fill', // fill="#333740" (path만 사용)
+  filter: 'fill', // fill="#333740" (path만 사용)
+  card: 'fill', // fill="#333740"
+  close: 'fill', // fill="#333740"
+  'close small': 'fill', // fill="#333740" (path만 사용)
+  'trending-up': 'fill', // fill="#333740"
+  'trending-down': 'fill', // fill="#333740"
 
   // 플래그 아이콘 (특별 처리)
   'flag-au': 'fill',

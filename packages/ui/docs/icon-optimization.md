@@ -99,14 +99,27 @@ const flagSvgConfig = {
 - **SVGO**: SVG 최적화
 - **kebab-case**: 파일명 변환
 
-## 🔧 3. Vite SVG Loader 설정
+## 🤖 3. AI 프롬프트 (스크립트 실행 후 수행)
 
-### 3.1 설정 위치
+### 3.1 프롬프트 1: 아이콘 타입 정의 업데이트
+```
+@icons.ts 
+@icons/ 내 파일 확인해서 IconName 추가하고, 각 SVG 파일들 내 path 확인해서 fill로 구성된 경우 fill, stroke로 구성된 경우 stroke로 아이콘 타입 매핑도 추가해줘
+```
+
+### 3.2 프롬프트 2: 가이드 문서 업데이트
+```
+@icon-optimization.md 추가된 아이콘들 반영해서 가이드도 업데이트해줘
+```
+
+## 🔧 4. Vite SVG Loader 설정
+
+### 4.1 설정 위치
 ```
 packages/ui/vite.config.ts
 ```
 
-### 3.2 설정 내용
+### 4.2 설정 내용
 ```typescript
 import svgLoader from 'vite-svg-loader';
 
@@ -120,14 +133,14 @@ export default defineConfig({
 });
 ```
 
-## 📋 4. 아이콘 레지스트리 시스템
+## 📋 5. 아이콘 레지스트리 시스템
 
-### 4.1 레지스트리 파일
+### 5.1 레지스트리 파일
 ```
 packages/ui/src/components/BaseIcon/iconRegistry.ts
 ```
 
-### 4.2 동적 import 시스템
+### 5.2 동적 import 시스템
 ```typescript
 // 일반 아이콘들
 const iconModules = import.meta.glob('../../assets/icons/*.svg', { eager: true });
@@ -147,14 +160,14 @@ Object.entries(iconModules).forEach(([path, module]) => {
 });
 ```
 
-## 🏷️ 5. 타입 시스템
+## 🏷️ 6. 타입 시스템
 
-### 5.1 타입 정의 파일
+### 6.1 타입 정의 파일
 ```
 packages/ui/src/types/icons.ts
 ```
 
-### 5.2 IconName 타입
+### 6.2 IconName 타입
 ```typescript
 export type IconName =
   // 화살표 아이콘
@@ -167,7 +180,7 @@ export type IconName =
   | 'flag-us';
 ```
 
-### 5.3 IconType 매핑
+### 6.3 IconType 매핑
 ```typescript
 export type IconType = 'fill' | 'stroke';
 
@@ -179,14 +192,14 @@ export const ICON_TYPES: Record<IconName, IconType> = {
 };
 ```
 
-## 🎨 6. BaseIcon 컴포넌트
+## 🎨 7. BaseIcon 컴포넌트
 
-### 6.1 컴포넌트 파일
+### 7.1 컴포넌트 파일
 ```
 packages/ui/src/components/BaseIcon/BaseIcon.vue
 ```
 
-### 6.2 주요 기능
+### 7.2 주요 기능
 
 #### Props
 ```typescript
@@ -220,9 +233,9 @@ interface Props {
 }
 ```
 
-## 💻 7. 사용법
+## 💻 8. 사용법
 
-### 7.1 기본 사용법
+### 8.1 기본 사용법
 ```vue
 <template>
   <!-- 기본 아이콘 -->
@@ -246,7 +259,7 @@ import { BaseIcon } from '@template/ui'
 </script>
 ```
 
-### 7.2 크기 옵션
+### 8.2 크기 옵션
 ```vue
 <template>
   <!-- 미리 정의된 크기 -->
@@ -261,7 +274,7 @@ import { BaseIcon } from '@template/ui'
 </template>
 ```
 
-### 7.3 색상 커스터마이징
+### 8.3 색상 커스터마이징
 ```vue
 <template>
   <!-- CSS 색상 값 -->
@@ -277,7 +290,7 @@ import { BaseIcon } from '@template/ui'
 </template>
 ```
 
-### 7.4 이벤트 처리
+### 8.4 이벤트 처리
 ```vue
 <template>
   <BaseIcon 
@@ -294,36 +307,46 @@ const handleClose = () => {
 </script>
 ```
 
-## 🔍 8. 사용 가능한 아이콘 목록
+## 🔍 9. 사용 가능한 아이콘 목록
 
-### 8.1 화살표 아이콘
+### 9.1 화살표 아이콘
 - `arrow-forward`, `arrow-backward`
 - `arrow-up`, `arrow-down`
 - `arrow-close`, `arrow-open`
 - `arrow-drawer`, `arrow-right-thin`
 - `arrow-updown`, `arrow-forward-sm`, `arrow-backward-sm`
 
-### 8.2 액션 아이콘
+### 9.2 액션 아이콘
 - `heart`, `heart-thin`, `star`
 - `plus`, `minus`, `plus-minus`
 - `edit`, `trash`, `refresh`
-- `search`, `eye`, `fullscreen`
+- `search`, `eye`, `eye-close`, `fullscreen`
 - `external-link`, `icn-delete`
+- `copy`, `download`, `upload`
+- `send`, `pause`, `move`, `withdraw`
 
-### 8.3 네비게이션 아이콘
+### 9.3 네비게이션 아이콘
 - `home`, `settings`, `person`
 - `login`, `logout`, `mypage`
 - `order`, `trade`, `support`
+- `list`, `phone`
 
-### 8.4 테마 아이콘
+### 9.4 테마 아이콘
 - `mode-dark`, `mode-light`
 
-### 8.5 기타 아이콘
+### 9.5 상태/알림 아이콘
+- `warning`, `warning2`, `info`
+- `check-sm`, `check-circle`, `grade`
+
+### 9.6 기타 아이콘
 - `asset`, `calendar`, `chart`
 - `email`, `time`, `cert`
-- `check-circle`, `comm`, `account-balance`
+- `comm`, `account-balance`
+- `description`, `file-attached`, `filter`
+- `card`, `close`, `close small`
+- `trending-up`, `trending-down`
 
-### 8.6 플래그 아이콘
+### 9.7 플래그 아이콘
 - `flag-au`, `flag-ca`, `flag-cn`
 - `flag-eu`, `flag-hk`, `flag-jp`
 - `flag-kr`, `flag-mx`, `flag-nr`
@@ -331,25 +354,25 @@ const handleClose = () => {
 - `flag-sui`, `flag-tr`, `flag-uk`
 - `flag-us`, `flag-za`
 
-## 🛠️ 9. 개발 가이드라인
+## 🛠️ 10. 개발 가이드라인
 
-### 9.1 새 아이콘 추가 시
+### 10.1 새 아이콘 추가 시
 1. Figma에서 SVG로 내보내기
 2. `packages/ui/src/assets/icons/` 폴더에 저장
 3. `pnpm optimize-icons` 실행
 4. `packages/ui/src/types/icons.ts`에 아이콘 이름과 타입 추가
 5. Storybook에서 테스트
 
-### 9.2 아이콘 타입 결정
+### 10.2 아이콘 타입 결정
 - **fill 타입**: 단색으로 채워진 아이콘
 - **stroke 타입**: 선으로 그려진 아이콘
 
-### 9.3 성능 최적화
+### 10.3 성능 최적화
 - SVG 파일 크기 최소화
 - 불필요한 속성 제거
 - 아이콘 레지스트리 캐싱 활용
 
-## 📚 10. 관련 파일들
+## 📚 11. 관련 파일들
 
 ```
 packages/ui/
@@ -369,7 +392,7 @@ shared/scripts/
 └── optimize-icons.ts           # 최적화 스크립트
 ```
 
-## 🔗 11. 관련 명령어
+## 🔗 12. 관련 명령어
 
 ```bash
 # 아이콘 최적화
@@ -385,12 +408,32 @@ pnpm storybook
 pnpm type-check
 ```
 
-## 📝 12. 주의사항
+## 📝 13. 주의사항
 
 1. **파일명 규칙**: 모든 아이콘 파일명은 kebab-case를 사용
 2. **타입 안전성**: 새로운 아이콘 추가 시 반드시 `IconName` 타입에 추가
 3. **최적화**: Figma에서 내보낸 원본 SVG는 반드시 최적화 스크립트 실행
 4. **플래그 아이콘**: 국가 플래그는 fill/stroke 속성을 유지
 5. **성능**: 불필요한 SVG 속성은 제거하여 파일 크기 최소화
+
+## 📊 14. 아이콘 통계
+
+### 14.1 현재 등록된 아이콘 수
+- **일반 아이콘**: 68개
+- **플래그 아이콘**: 17개
+- **총 아이콘 수**: 85개
+
+### 14.2 카테고리별 분포
+- **화살표 아이콘**: 11개
+- **액션 아이콘**: 19개
+- **네비게이션 아이콘**: 11개
+- **테마 아이콘**: 2개
+- **상태/알림 아이콘**: 5개
+- **기타 아이콘**: 20개
+- **플래그 아이콘**: 17개
+
+### 14.3 타입별 분포
+- **fill 타입**: 78개 (91.8%)
+- **stroke 타입**: 7개 (8.2%)
 
 이 가이드를 따라 아이콘 시스템을 효과적으로 활용하세요! 

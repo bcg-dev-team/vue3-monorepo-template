@@ -1,5 +1,5 @@
 <template>
-  <AuthContent title="개인회원 가입" description="가입 약관을 확인해주세요.">
+  <AuthContent title="법인회원 가입" description="가입 약관을 확인해주세요.">
     <template #header>
       <div class="flex items-center justify-between">
         <BaseIcon name="arrow-backward" size="md" />

@@ -28,27 +28,6 @@ const regularSvgConfig = {
   ],
 };
 
-// Flag 아이콘용 SVGO 설정 (fill, stroke 유지)
-const flagSvgConfig = {
-  multipass: true,
-  plugins: [
-    {
-      name: 'preset-default',
-      params: {
-        overrides: {
-          removeUselessStrokeAndFill: false, // stroke/fill 유지
-        },
-      },
-    },
-    {
-      name: 'removeAttrs',
-      params: {
-        attrs: ['width', 'height'], // fill, stroke는 제거하지 않음
-      },
-    },
-  ],
-};
-
 // SVG 최적화 함수
 function cleanSVGs(dir: string) {
   const files = fs.readdirSync(dir);
@@ -78,11 +57,13 @@ function cleanSVGs(dir: string) {
 
       // 파일 경로에 따라 적절한 SVGO 설정 선택
       const isFlagIcon = fullPath.startsWith(FLAGS_DIR);
-      const config = isFlagIcon ? flagSvgConfig : regularSvgConfig;
+      if (isFlagIcon) {
+        continue;
+      }
 
       const result = optimize(originalContent, {
         path: fullPath,
-        ...config,
+        ...regularSvgConfig,
       } as any);
 
       if ('error' in result) {

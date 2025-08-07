@@ -172,6 +172,12 @@ const getIconColor = (iconProps: ButtonIconProps | undefined, color: string) => 
   }
 };
 
+// 마우스 클릭 핸들러
+function handleClick(e: MouseEvent) {
+  if (props.disabled) return;
+  emit('click', e);
+}
+
 // <a role="button"> 키보드 접근성 핸들러
 function handleKeydown(e: KeyboardEvent) {
   if (props.disabled) return;
@@ -193,7 +199,7 @@ function handleKeydown(e: KeyboardEvent) {
     :aria-disabled="props.disabled ? 'true' : undefined"
     :tabindex="props.disabled ? -1 : 0"
     :disabled="!props.href && props.disabled"
-    @click="props.disabled ? undefined : (e: MouseEvent) => emit('click', e)"
+    @click="handleClick"
     @keydown="props.href ? handleKeydown : undefined"
   >
     <!-- 좌측 아이콘 -->

@@ -1,6 +1,7 @@
 // BaseChip 컴포넌트 스타일
 // 피그마 디자인 토큰을 기반으로 한 칩 스타일 정의
 // 가이드: 피그마 HEX → 디자인 토큰 변환 적용
+// 접근성: 포커스 표시기, 키보드 네비게이션, 상태별 스타일 지원
 
 // 기본 칩 스타일
 .base-chip {
@@ -9,21 +10,39 @@
   outline: none;
   cursor: default;
   user-select: none;
+  position: relative;
 }
 
 // 컴포넌트별 토큰만 정의
 // Tailwind 클래스로 처리 가능한 스타일들은 Vue 파일에서 직접 사용
-
-// Surface 칩 (기본)
-.chip-surface {
-  background-color: var(--table-chip-bg);
-  color: var(--font-color-footer);
+.chip-grey {
+  background-color: var(--base-colors-common-light-gray-ea);
+  color: var(--base-colors-neutral-neutral550);
 }
 
-// Primary 칩
-.chip-primary {
-  background-color: var(--button-primary-background);
-  color: var(--button-primary-text);
+.chip-red {
+  background-color: var(--base-colors-red-red050);
+  color: var(--base-colors-red-red800);
+}
+
+.chip-green {
+  background-color: var(--base-colors-green-green050);
+  color: var(--base-colors-green-green800);
+}
+
+.chip-blue {
+  background-color: var(--base-colors-blue-blue050);
+  color: var(--base-colors-blue-blue800);
+}
+
+.chip-yellow {
+  background-color: var(--base-colors-primary-primary050);
+  color: var(--base-colors-primary-primary-deep);
+}
+
+.chip-purple {
+  background-color: var(--base-colors-purple-purple050);
+  color: var(--base-colors-purple-purple800);
 }
 
 // 크기별 스타일
@@ -68,14 +87,11 @@
   font-weight: 700;
 }
 
-// 호버 효과 (선택사항)
-.base-chip:hover {
-  opacity: 0.9;
-  transition: opacity 0.2s ease;
-}
-
-// 포커스 상태 (접근성)
-.base-chip:focus-visible {
-  outline: 2px solid var(--input-color-border-focus);
-  outline-offset: 2px;
+// 키보드 네비게이션을 위한 스타일
+.chip-keyboard-focus {
+  &:focus-visible {
+    outline: 2px solid var(--blue-500, #3b82f6);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  }
 }

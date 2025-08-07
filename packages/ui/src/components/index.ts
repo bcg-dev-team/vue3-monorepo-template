@@ -18,3 +18,4 @@ export { default as BaseCheckbox } from './BaseCheckbox/BaseCheckbox.vue';
 export * from './BasePagination';
 export * from './BaseTable';
 export * from './BaseIcon';
+export * from './BasePopup';

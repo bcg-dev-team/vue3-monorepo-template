@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import './BaseCheckbox.scss';
+import BaseIcon from '../BaseIcon/BaseIcon.vue';
 
 /**
  * BaseCheckbox - 체크박스 컴포넌트
@@ -45,24 +46,6 @@ const isChecked = computed(() => props.modelValue);
 const isDisabled = computed(() => props.disabled);
 const isIndeterminate = computed(() => props.indeterminate);
 
-// 체크박스 클래스 계산
-const checkboxClasses = computed(() => {
-  const baseClasses = [
-    'relative',
-    'w-6 h-6', // 24x24px (피그마 크기)
-    'rounded-[3px]',
-    'border-[1.5px]',
-    'border-solid',
-    'transition-all',
-    'duration-150',
-    'flex',
-    'items-center',
-    'justify-center',
-  ];
-
-  return baseClasses.join(' ');
-});
-
 // 체크박스 스타일 계산
 const checkboxStyles = computed(() => {
   const styles: Record<string, string> = {};
@@ -70,22 +53,22 @@ const checkboxStyles = computed(() => {
   if (isDisabled.value) {
     if (isChecked.value) {
       // Disabled + Checked
-      styles.backgroundColor = 'var(--checkbox-color-background-disabled)';
-      styles.borderColor = 'var(--checkbox-color-border-disabled)';
+      styles.backgroundColor = 'var(--base-colors-neutral-neutral400)';
+      styles.borderColor = 'var(--base-colors-neutral-neutral400)';
     } else {
       // Disabled + Unchecked
-      styles.backgroundColor = 'var(--checkbox-color-surface-disabled)';
-      styles.borderColor = 'var(--checkbox-color-border-disabled)';
+      styles.backgroundColor = 'var(--base-colors-neutral-neutral300)';
+      styles.borderColor = 'var(--base-colors-neutral-neutral400)';
     }
   } else {
     if (isChecked.value || isIndeterminate.value) {
       // Enabled + Checked/Indeterminate
-      styles.backgroundColor = 'var(--checkbox-color-background-checked)';
-      styles.borderColor = 'var(--checkbox-color-border-checked)';
+      styles.backgroundColor = 'var(--base-colors-primary-primary800)';
+      styles.borderColor = 'var(--base-colors-primary-primary800)';
     } else {
       // Enabled + Unchecked
-      styles.backgroundColor = 'var(--checkbox-color-surface)';
-      styles.borderColor = 'var(--checkbox-color-border-static)';
+      styles.backgroundColor = 'var(--base-colors-neutral-neutral000)';
+      styles.borderColor = 'var(--base-colors-neutral-neutral400)';
     }
   }
 
@@ -118,32 +101,23 @@ const handleKeydown = (event: KeyboardEvent) => {
     :aria-checked="isIndeterminate ? 'mixed' : isChecked"
     :aria-disabled="isDisabled"
   >
-    <!-- 체크박스 박스 -->
-    <div :class="checkboxClasses" :style="checkboxStyles">
-      <!-- 체크 아이콘 (체크된 상태) -->
-      <svg
-        v-if="isChecked && !isIndeterminate"
-        class="h-6 w-6 text-white"
-        fill="none"
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-        <path
-          d="M9.50071 13.3801L16.3957 6.48438L17.4571 7.54502L9.50071 15.5014L4.72705 10.7277L5.7877 9.66706L9.50071 13.3801Z"
-          fill="currentColor"
+    <div class="flex items-center justify-center w-[22px] h-[22px] p-[1.83px]">
+      <!-- 체크박스 박스 -->
+      <div class="w-full h-full rounded-[3px] border-[1.5px] border flex items-center justify-center" :style="checkboxStyles">
+        <!-- 체크 아이콘 (체크된 상태) -->
+        <BaseIcon
+          v-if="isChecked && !isIndeterminate"
+          name="check-sm"
+          color="var(--base-colors-neutral-neutral000)"
         />
-      </svg>
 
-      <!-- 부분 선택 아이콘 (indeterminate 상태) -->
-      <svg
-        v-if="isIndeterminate"
-        class="h-4 w-4 text-white"
-        fill="none"
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-        <path d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-      </svg>
+        <!-- 부분 선택 아이콘 (indeterminate 상태) -->
+        <BaseIcon
+          v-if="isIndeterminate"
+          name="minus"
+          color="var(--base-colors-neutral-neutral000)"
+        />
+      </div>
     </div>
 
     <!-- 숨겨진 실제 input 요소 -->

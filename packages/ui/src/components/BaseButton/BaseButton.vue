@@ -13,16 +13,16 @@
  * @figma Button (node-id: 32-244)
  */
 import type { ComponentSize, ButtonIconProps } from '../../types/components';
+import BaseSkeleton from '../BaseSkeleton/BaseSkeleton.vue';
 import type { IconName } from '../../types/icons';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
-import BaseSkeleton from '../BaseSkeleton/BaseSkeleton.vue';
 import { computed } from 'vue';
 import './BaseButton.scss';
 
 /**
  * 버튼 색상 타입
  */
-export type ButtonColor = 'primary' | 'red' | 'blue' | 'green' | 'cancel';
+export type ButtonColor = 'primary' | 'red' | 'blue' | 'green' | 'cancel' | 'grey' | 'white';
 
 interface Props {
   /**
@@ -30,7 +30,7 @@ interface Props {
    * - contained: 채움(기본)
    * - outlined: 외곽선
    */
-  variant?: 'contained' | 'outlined';
+  variant?: 'contained' | 'contained-grey' | 'outlined';
   /**
    * 버튼 컬러
    * - primary: 기본 노란색
@@ -39,7 +39,7 @@ interface Props {
    * - green: 초록색
    * - cancel: 보라색
    */
-  color?: 'primary' | 'red' | 'blue' | 'green' | 'cancel';
+  color?: 'primary' | 'red' | 'blue' | 'green' | 'cancel' | 'grey' | 'white';
   /**
    * 버튼 크기
    * - lg: large (48px)
@@ -88,8 +88,8 @@ interface Props {
    * 커스텀 클래스 (button/a에 직접 적용)
    */
   customClass?: string;
-  /** 
-  * 로딩 상태 여부
+  /**
+   * 로딩 상태 여부
    */
   isLoading?: boolean;
 }
@@ -111,7 +111,15 @@ const emit = defineEmits<{
 }>();
 
 // 미리 정의된 색상 목록
-const predefinedColors: readonly ButtonColor[] = ['primary', 'red', 'blue', 'green', 'cancel'];
+const predefinedColors: readonly ButtonColor[] = [
+  'primary',
+  'red',
+  'blue',
+  'green',
+  'cancel',
+  'grey',
+  'white',
+];
 
 // 텍스트 영역 표시 여부 계산
 const showText = computed(() => {
@@ -186,45 +194,54 @@ const getSkeletonWidth = () => {
   // 텍스트 길이 기반 계산
   const textLength = props.label?.length || 0;
   const subTextLength = props.subLabel?.length || 0;
-  
+
   // CSS에서 정의된 폰트 크기 기반 계산
   // TODO: CSS 변수로 추출 가능: --button-font-size-small, --button-font-size-regular 등
   const getFontSize = () => {
     switch (props.size) {
-      case 'md': return 14; // btn-size-small font-size: 14px
-      case 'sm': return 13; // btn-size-small-inner font-size: 13px
-      default: return 16; // btn-size-regular font-size: 16px
+      case 'md':
+        return 14; // btn-size-small font-size: 14px
+      case 'sm':
+        return 13; // btn-size-small-inner font-size: 13px
+      default:
+        return 16; // btn-size-regular font-size: 16px
     }
   };
-  
+
   // CSS에서 정의된 패딩 기반 계산
   // TODO: CSS 변수로 추출 가능: --button-padding-small, --button-padding-regular 등
   const getPadding = () => {
     switch (props.size) {
-      case 'md': return { x: 20, y: 6 }; // py-1.5 px-5 → padding: 6px 20px
-      case 'sm': return { x: 12, y: 10 }; // py-2.5 px-3 → padding: 10px 12px
-      default: return { x: 16, y: 12 }; // py-3 px-4 → padding: 12px 16px
+      case 'md':
+        return { x: 20, y: 6 }; // py-1.5 px-5 → padding: 6px 20px
+      case 'sm':
+        return { x: 12, y: 10 }; // py-2.5 px-3 → padding: 10px 12px
+      default:
+        return { x: 16, y: 12 }; // py-3 px-4 → padding: 12px 16px
     }
   };
-  
+
   // CSS에서 정의된 아이콘 크기 기반 계산
   // TODO: CSS 변수로 추출 가능: --button-icon-size-small, --button-icon-size-regular 등
   const getIconSize = () => {
     switch (props.size) {
-      case 'md': return 24; // .btn-size-small .icon { width: 24px; height: 24px; }
-      case 'sm': return 16; // .btn-size-small-inner .icon { width: 16px; height: 16px; }
-      default: return 24; // .btn-size-regular .icon { width: 24px; height: 24px; }
+      case 'md':
+        return 24; // .btn-size-small .icon { width: 24px; height: 24px; }
+      case 'sm':
+        return 16; // .btn-size-small-inner .icon { width: 16px; height: 16px; }
+      default:
+        return 24; // .btn-size-regular .icon { width: 24px; height: 24px; }
     }
   };
-  
+
   const fontSize = getFontSize();
   const padding = getPadding();
   const iconSize = getIconSize();
-  
+
   // 문자당 너비 계산 (폰트 크기의 60% 정도)
   // TODO: 폰트 패밀리에 따라 조정 가능
   const charWidth = fontSize * 0.6;
-  
+
   // 텍스트 너비 계산
   let textWidth = textLength * charWidth;
   if (subTextLength > 0) {
@@ -233,20 +250,20 @@ const getSkeletonWidth = () => {
     const subCharWidth = subFontSize * 0.6;
     textWidth = Math.max(textWidth, subTextLength * subCharWidth);
   }
-  
+
   // 아이콘 공간 계산
   let iconSpace = 0;
   if (props.leftIcon) iconSpace += iconSize + 8; // 아이콘 + 간격
   if (props.rightIcon) iconSpace += iconSize + 8;
-  
+
   // 전체 너비 계산
-  const totalWidth = textWidth + iconSpace + (padding.x * 2);
-  
+  const totalWidth = textWidth + iconSpace + padding.x * 2;
+
   // 최소/최대 제한 (CSS 값 기반)
   // TODO: CSS 변수로 추출 가능: --button-min-width, --button-max-width 등
   const minWidth = props.size === 'md' ? 60 : props.size === 'sm' ? 50 : 80;
   const maxWidth = 400;
-  
+
   return Math.max(minWidth, Math.min(maxWidth, totalWidth)) + 'px';
 };
 
@@ -255,22 +272,25 @@ const getSkeletonHeight = () => {
   // TODO: CSS 변수로 추출 가능: --button-height-small, --button-height-regular 등
   const getBaseHeight = () => {
     switch (props.size) {
-      case 'md': return 32; // py-1.5 (6px * 2) + line-height (18px) + 여유
-      case 'sm': return 28; // py-2.5 (10px * 2) + line-height (16px) + 여유
-      default: return 40; // py-3 (12px * 2) + line-height (20px) + 여유
+      case 'md':
+        return 32; // py-1.5 (6px * 2) + line-height (18px) + 여유
+      case 'sm':
+        return 28; // py-2.5 (10px * 2) + line-height (16px) + 여유
+      default:
+        return 40; // py-3 (12px * 2) + line-height (20px) + 여유
     }
   };
-  
+
   const baseHeight = getBaseHeight();
   const hasSubLabel = !!props.subLabel;
-  
+
   // 서브 라벨이 있으면 추가 높이
   if (hasSubLabel) {
     const subLabelHeight = props.size === 'sm' ? 16 : 18; // .btn-sub-text line-height
     const subLabelMargin = 2; // .btn-sub-text margin-top: 2px
-    return (baseHeight + subLabelHeight + subLabelMargin) + 'px';
+    return baseHeight + subLabelHeight + subLabelMargin + 'px';
   }
-  
+
   return baseHeight + 'px';
 };
 </script>
@@ -283,7 +303,11 @@ const getSkeletonHeight = () => {
     role="button"
     :type="props.href ? undefined : 'button'"
     :class="[...buttonClasses, 'focus-ring']"
-    :style="!predefinedColors.includes(props.color as ButtonColor) ? { '--button-custom-color': props.color } : {}"
+    :style="
+      !predefinedColors.includes(props.color as ButtonColor)
+        ? { '--button-custom-color': props.color }
+        : {}
+    "
     :aria-label="props.centerIcon ? props.centerIcon.name : props.label"
     :aria-disabled="props.disabled ? 'true' : undefined"
     :tabindex="props.disabled ? -1 : 0"
@@ -311,7 +335,9 @@ const getSkeletonHeight = () => {
 
     <!-- 텍스트 영역 (중앙 아이콘이 없을 때만) -->
     <div v-if="showText" class="flex flex-col items-center justify-center">
-      <span class="btn-label font-medium">{{ props.label }}</span>
+      <span :class="['font-medium', props.subLabel ? 'btn-main-label' : 'btn-label']">{{
+        props.label
+      }}</span>
       <span v-if="props.subLabel" class="btn-sub-text font-semibold">
         {{ props.subLabel }}
       </span>
@@ -329,7 +355,7 @@ const getSkeletonHeight = () => {
     <!-- 기본 슬롯 -->
     <slot />
   </component>
-  
+
   <!-- 스켈레톤 상태 -->
   <div v-else class="button-skeleton">
     <BaseSkeleton

@@ -36,7 +36,7 @@
   border: 1px solid var(--base-colors-red-red800);
 }
 .btn-color-red:hover {
-  background-color: var(--button-red-background-hover);
+  background-color: var(--button-red-solid-hover);
 }
 .btn-color-blue {
   background-color: var(--base-colors-blue-blue800-deep);
@@ -44,7 +44,7 @@
   border: 1px solid var(--base-colors-blue-blue800-deep);
 }
 .btn-color-blue:hover {
-  background-color: var(--button-blue-background-hover);
+  background-color: var(--button-blue-solid-hover);
 }
 .btn-color-green {
   background-color: var(--base-colors-green-green700);
@@ -63,35 +63,63 @@
   background-color: var(--base-colors-purple-purple600);
 }
 
+.btn-color-grey {
+  background-color: var(--base-colors-neutral-neutral200);
+  color: var(--base-colors-neutral-neutral550);
+  font-weight: 600;
+}
+
+.btn-color-white {
+  background-color: var(--button-outline-background);
+  color: var(--button-outline-text);
+  border: 1px solid var(--button-outline-border);
+}
+
 .btn-variant-contained {
   border: none;
 }
 
+.btn-variant-contained-grey {
+  border: none;
+}
+
+.btn-variant-contained-grey.btn-color-red {
+  background-color: var(--button-red-background-none);
+  color: var(--base-colors-red-red800);
+}
+.btn-variant-contained-grey.btn-color-blue {
+  background-color: var(--button-red-background-none);
+  color: var(--base-colors-blue-blue800-deep);
+}
+
 // Outlined variant: color별로 border, text color 적용
 .btn-variant-outlined {
-  background-color: transparent;
+  // background-color: transparent;
   border-width: 1px;
   border-style: solid;
 }
 .btn-variant-outlined.btn-color-primary {
-  border-color: var(--button-primary-background);
-  color: var(--button-primary-background);
+  border-color: var(--base-colors-primary-primary800);
+  color: var(--base-colors-primary-primary-deep);
+  background-color: var(--base-colors-primary-primary100);
 }
 .btn-variant-outlined.btn-color-red {
   border-color: var(--base-colors-red-red800);
   color: var(--base-colors-red-red800);
+  background-color: var(--base-colors-red-red050);
 }
 .btn-variant-outlined.btn-color-blue {
   border-color: var(--base-colors-blue-blue800-deep);
   color: var(--base-colors-blue-blue800-deep);
+  background-color: var(--base-colors-blue-blue050);
 }
 .btn-variant-outlined.btn-color-green {
   border-color: var(--base-colors-green-green700);
-  color: var(--base-colors-green-green700);
+  color: var(--font-color-white);
 }
 .btn-variant-outlined.btn-color-cancel {
   border-color: var(--base-colors-purple-purple600);
-  color: var(--base-colors-purple-purple600);
+  color: var(--font-color-white);
 }
 .btn-variant-outlined.btn-color-primary:hover {
   background-color: var(--button-primary-background-deep);
@@ -159,7 +187,6 @@
   font-weight: 500;
   white-space: nowrap;
   pointer-events: none;
-
 }
 .btn-size-lg .btn-label {
   font-size: 16px;
@@ -174,23 +201,37 @@
   line-height: 16px;
 }
 
+// subLabel이 있을 경우 mainLabel 텍스트 스타일
+.btn-size-large .btn-main-label {
+  font-size: 14px;
+  line-height: 18px;
+}
+.btn-size-medium .btn-main-label {
+  font-size: 12px;
+  line-height: 16px;
+}
+.btn-size-small .btn-main-label {
+  font-size: 10px;
+  line-height: 14px;
+}
+
 // subLabel(서브텍스트) 스타일 - label보다 2px 크게, 세미볼드(600)
-.btn-sub-text {
+.btn-sub-label {
   font-weight: 600;
   white-space: nowrap;
   pointer-events: none;
 }
-.btn-size-lg .btn-sub-text {
-  font-size: 18px;
-  line-height: 22px;
-}
-.btn-size-md .btn-sub-text {
+.btn-size-large .btn-sub-label {
   font-size: 16px;
   line-height: 20px;
 }
-.btn-size-sm .btn-sub-text {
-  font-size: 15px;
+.btn-size-medium .btn-sub-label {
+  font-size: 14px;
   line-height: 18px;
+}
+.btn-size-small .btn-sub-label {
+  font-size: 12px;
+  line-height: 16px;
 }
 
 // pill 스타일 (border-radius override)
@@ -208,5 +249,3 @@ a[role='button'][aria-disabled='true'] {
   opacity: 0.6;
   pointer-events: none;
 }
-
-

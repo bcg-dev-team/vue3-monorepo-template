@@ -29,7 +29,7 @@ const meta: Meta<typeof BaseButton> = {
       control: { type: 'select' },
       options: ['primary', 'red', 'blue', 'green', 'cancel'],
       table: {
-        type: { summary: 'primary | red | blue | green | cancel' },
+        type: { summary: 'primary | red | blue | green | cancel | string' },
         defaultValue: { summary: 'primary' },
         category: 'Props',
       },
@@ -351,6 +351,125 @@ export const KeyboardNavigation: Story = {
     docs: {
       description: {
         story: 'Tab으로 포커스, Enter/Space로 클릭 이벤트가 정상 동작하는지 확인하세요.',
+      },
+    },
+  },
+};
+
+
+
+// Figma 디자인 기반 커스텀 색상 버튼
+export const CustomGreen: Story = {
+  args: {
+    variant: 'contained',
+    size: 'medium',
+    label: '인증완료',
+    rightIcon: { name: 'check-circle', color: 'currentColor' },
+  },
+  render: (args) => ({
+    components: { BaseButton },
+    setup() {
+      return { args };
+    },
+    template: `
+      <BaseButton
+        v-bind="args"
+        :style="{
+          backgroundColor: 'var(--base-colors-green-green050)',
+          color: 'var(--base-colors-green-green800)',
+          borderColor: 'var(--base-colors-green-green800)'
+        }"
+        class="btn-no-events"
+      />
+    `,
+  }),
+  parameters: {
+          docs: {
+        description: {
+          story: 'Figma 디자인 기반의 인증완료 버튼입니다. 연한 초록색 배경에 진한 초록색 텍스트와 테두리를 가지며, 이벤트가 비활성화되어 있습니다.',
+        },
+      },
+  },
+};
+
+// 커스텀 단색 버튼
+export const CustomSolid: Story = {
+  args: {
+    variant: 'contained',
+    size: 'large',
+    label: '커스텀 단색 버튼',
+  },
+  render: (args) => ({
+    components: { BaseButton },
+    setup() {
+      return { args };
+    },
+    template: `
+      <div>
+        <style>
+          .custom-solid {
+            background-color: #ff6b6b !important;
+            color: #ffffff !important;
+            border-color: #ff6b6b !important;
+            transition: all 0.2s ease !important;
+          }
+          .custom-solid:hover {
+            background-color: #e55a5a !important;
+            border-color: #e55a5a !important;
+          }
+        </style>
+        <BaseButton
+          v-bind="args"
+          :customClass="'custom-solid'"
+        />
+      </div>
+    `,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story: '단색 배경을 사용한 커스텀 버튼입니다. 호버 시 색상이 어두워집니다.',
+      },
+    },
+  },
+};
+
+// 커스텀 그라데이션 버튼
+export const CustomGradient: Story = {
+  args: {
+    variant: 'contained',
+    size: 'large',
+    label: '그라데이션 버튼',
+  },
+  render: (args) => ({
+    components: { BaseButton },
+    setup() {
+      return { args };
+    },
+    template: `
+      <div>
+        <style>
+          .custom-gradient {
+            background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%) !important;
+            color: #ffffff !important;
+            border-color: transparent !important;
+            transition: all 0.2s ease !important;
+          }
+          .custom-gradient:hover {
+            background: linear-gradient(135deg, #9bb0ff 0%, #2e1f85 100%) !important;
+          }
+        </style>
+        <BaseButton
+          v-bind="args"
+          :customClass="'custom-gradient'"
+        />
+      </div>
+    `,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story: '그라데이션 배경을 사용한 커스텀 버튼입니다. 호버 시 그라데이션이 어두워집니다.',
       },
     },
   },

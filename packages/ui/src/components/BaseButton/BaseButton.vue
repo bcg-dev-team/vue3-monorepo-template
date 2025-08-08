@@ -11,15 +11,21 @@
  * @emits click - 클릭 이벤트
  * @figma Button (node-id: 32-244)
  */
-import type { ComponentSize, IconName } from '../../types/components';
+import type { ComponentSize } from '../../types/components';
+import type { IconName } from '../../types/icons';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { computed } from 'vue';
 import './BaseButton.scss';
 
+/**
+ * 버튼 색상 타입
+ */
+export type ButtonColor = 'primary' | 'red' | 'blue' | 'green' | 'cancel';
+
 // 버튼 아이콘 props 타입 (BaseButton 전용)
 interface ButtonIconProps {
   name: IconName;
-  size?: ComponentSize | 'xl';
+  size?: ComponentSize;
   color?: string;
 }
 
@@ -79,6 +85,10 @@ interface Props {
    * 그 외 경우 <button>
    */
   href?: string;
+  /**
+   * 커스텀 클래스 (button/a에 직접 적용)
+   */
+  customClass?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -95,40 +105,29 @@ const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void;
 }>();
 
+// 미리 정의된 색상 목록
+const predefinedColors: readonly ButtonColor[] = ['primary', 'red', 'blue', 'green', 'cancel'];
+
 // 버튼 클래스 계산
 const buttonClasses = computed(() => {
   const classes = [
-    // 기본 클래스
     'inline-flex items-center justify-center gap-2.5',
     'transition-all duration-200',
     'select-none',
     'focus:outline-none',
     props.fullWidth ? 'w-full' : '',
+    `btn-variant-${props.variant}`,
+    `btn-size-${props.size}`,
   ];
-
-  // variant 클래스
-  const variantClass = `btn-variant-${props.variant}`;
-  classes.push(variantClass);
-
-  // color 클래스
-  const colorClass = `btn-color-${props.color}`;
-  classes.push(colorClass);
-
-  // 크기 클래스
-  const sizeClass = `btn-size-${props.size}`;
-  classes.push(sizeClass);
-
-  // 비활성화 상태
-  if (props.disabled) {
-    classes.push('btn-disabled');
+  if (props.disabled) classes.push('btn-disabled');
+  if (props.pill) classes.push('btn-pill');
+  // customClass가 없을 때만 color 클래스 적용
+  if (!props.customClass && predefinedColors.includes(props.color as ButtonColor)) {
+    classes.push(`btn-color-${props.color}`);
   }
-
-  // pill 스타일 (항상 마지막에 push)
-  if (props.pill) {
-    classes.push('btn-pill');
-  }
-
-  return classes.join(' ');
+  // customClass는 항상 마지막에 push (우선순위 보장)
+  if (props.customClass) classes.push(props.customClass);
+  return classes;
 });
 
 // 아이콘 크기 매핑
@@ -194,7 +193,8 @@ function handleKeydown(e: KeyboardEvent) {
     :href="props.href"
     role="button"
     :type="props.href ? undefined : 'button'"
-    :class="[buttonClasses, 'focus-ring']"
+    :class="[...buttonClasses, 'focus-ring']"
+    :style="!predefinedColors.includes(props.color as ButtonColor) ? { '--button-custom-color': props.color } : {}"
     :aria-label="props.label"
     :aria-disabled="props.disabled ? 'true' : undefined"
     :tabindex="props.disabled ? -1 : 0"

@@ -8,6 +8,7 @@
 -->
 <script setup lang="ts">
 import type { TabItem, ComponentSize } from '../../types/components';
+import type { Component } from 'vue';
 import { computed, ref } from 'vue';
 import './BaseTabs.scss';
 
@@ -234,7 +235,8 @@ const spacerClasses = computed(() => {
           :class="getPanelClasses(index)"
         >
           <slot name="content" :tab="tab" :index="index" :is-selected="modelValue === tab.value">
-            <div v-if="tab.content" v-html="tab.content"></div>
+            <component v-if="tab.content && typeof tab.content !== 'string'" :is="tab.content" />
+            <div v-else-if="tab.content" v-html="tab.content"></div>
             <div v-else class="text-center text-gray-500">{{ tab.label }} 컨텐츠</div>
           </slot>
         </div>
@@ -265,7 +267,8 @@ const spacerClasses = computed(() => {
           class="tab-panel tab-panel-individual"
         >
           <slot name="content" :tab="tab" :index="index" :is-selected="modelValue === tab.value">
-            <div v-if="tab.content" v-html="tab.content"></div>
+            <component v-if="tab.content && typeof tab.content !== 'string'" :is="tab.content" />
+            <div v-else-if="tab.content" v-html="tab.content"></div>
             <div v-else class="text-center text-gray-500">{{ tab.label }} 컨텐츠</div>
           </slot>
         </div>
@@ -296,7 +299,8 @@ const spacerClasses = computed(() => {
           class="tab-panel tab-panel-card"
         >
           <slot name="content" :tab="tab" :index="index" :is-selected="modelValue === tab.value">
-            <div v-if="tab.content" v-html="tab.content"></div>
+            <component v-if="tab.content && typeof tab.content !== 'string'" :is="tab.content" />
+            <div v-else-if="tab.content" v-html="tab.content"></div>
             <div v-else class="text-center text-gray-500">{{ tab.label }} 컨텐츠</div>
           </slot>
         </div>

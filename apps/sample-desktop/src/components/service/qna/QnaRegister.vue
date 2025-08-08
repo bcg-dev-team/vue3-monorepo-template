@@ -42,8 +42,8 @@
       </table>
     </div>
     <div class="gap-size-12 pt-padding-24 flex justify-center">
-      <BaseButton label="등록하기" size="large" variant="contained" />
-      <BaseButton label="취소" size="large" variant="outlined" @click="type = null" />
+      <BaseButton label="등록하기" size="lg" variant="contained" />
+      <BaseButton label="취소" size="lg" variant="outlined" @click="type = null" />
     </div>
   </div>
 </template>

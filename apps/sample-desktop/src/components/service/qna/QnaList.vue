@@ -9,12 +9,7 @@
       @rowSelect="handleRowSelect"
     />
     <div class="flex justify-end">
-      <BaseButton
-        label="1:1 문의하기"
-        size="large"
-        variant="contained"
-        @click="type = 'register'"
-      />
+      <BaseButton label="1:1 문의하기" size="lg" variant="contained" @click="type = 'register'" />
     </div>
   </div>
 </template>

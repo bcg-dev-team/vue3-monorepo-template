@@ -23,7 +23,7 @@
             <span class="text-font-14"> 모든 법인대표들의 여권 사본을 각각 제출해주세요. </span>
             <BaseFileUploadButton status="hover" />
             <BaseButton
-              size="small"
+              size="sm"
               label=""
               variant="contained"
               :rightIcon="{ name: 'plus' }"
@@ -34,7 +34,7 @@
         </div>
         <div class="mt-[33px]">
           <BaseButton
-            size="large"
+            size="lg"
             label="제출하기"
             variant="contained"
             color="primary"

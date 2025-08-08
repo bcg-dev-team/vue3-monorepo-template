@@ -26,7 +26,7 @@
         </div>
         <div class="">
           <BaseButton
-            size="large"
+            size="lg"
             label="제출하기"
             variant="contained"
             color="primary"

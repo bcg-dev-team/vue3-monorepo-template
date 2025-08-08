@@ -36,7 +36,7 @@
         </div>
         <div class="gap-size-12 mt-[33px] flex items-center">
           <BaseButton
-            size="large"
+            size="lg"
             label="다음"
             variant="contained"
             color="primary"

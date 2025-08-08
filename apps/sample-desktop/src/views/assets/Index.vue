@@ -1,7 +1,7 @@
 <template>
   <div class="mx-auto w-[1920px] py-4">
     <CardLayoutVertical gap="gap-3">
-      <MainCardContent class="p-6" title="내 자산" size="large">
+      <MainCardContent class="p-6" title="내 자산" size="lg">
         <template #content>
           <div>
             <div></div>
@@ -27,7 +27,7 @@
         </MainCardContent>
       </CardLayoutHorizontal>
 
-      <MainCardContent class="p-6" size="large">
+      <MainCardContent class="p-6" size="lg">
         <template #content>
           <div>
             증거금 내역

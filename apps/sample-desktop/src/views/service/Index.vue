@@ -1,6 +1,6 @@
 <template>
   <div class="mx-auto w-[1440px] py-4">
-    <MainCardContent class="p-6" title="고객지원" size="large">
+    <MainCardContent class="p-6" title="고객지원" size="lg">
       <template #content>
         <div>
           <BaseTabs
@@ -26,7 +26,7 @@ import Faq from '@/components/service/faq/Faq.vue';
 import { BaseTabs } from '@template/ui';
 import { ref } from 'vue';
 
-const modelValue = ref('guide');
+const modelValue = ref('notice');
 const tabs = [
   { value: 'notice', label: '공지사항', content: Notice },
   { value: 'event', label: '이벤트', content: Event },

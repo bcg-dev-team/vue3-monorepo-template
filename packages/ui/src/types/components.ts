@@ -40,16 +40,9 @@ export interface TabItem {
 // BaseChip
 export type ChipVariant = 'grey' | 'red' | 'green' | 'blue' | 'yellow' | 'purple';
 
-// BaseChip 접근성 관련 타입
-export type ChipRole = 'button';
-
 // BaseChip 확장 타입
 export interface ChipData {
   label: string;
   variant: ChipVariant;
-  draggable?: boolean;
   icon?: string;
-  avatar?: string;
-  role?: ChipRole;
-  tabindex?: number;
 }

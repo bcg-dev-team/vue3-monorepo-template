@@ -21,10 +21,9 @@
             v-else
             size="large"
             label="인증완료"
-            variant="outlined"
-            color="green"
             full-width
-            :rightIcon="{ name: 'arrow-right-thin' }"
+            :rightIcon="{ name: 'check-circle', color: 'currentColor' }"
+            :customClass="'custom-green-auth-complete'"
           />
         </div>
         <div class="mt-[33px] flex flex-col">

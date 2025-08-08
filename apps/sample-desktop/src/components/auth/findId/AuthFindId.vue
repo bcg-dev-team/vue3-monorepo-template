@@ -15,7 +15,7 @@
           <FormField label="휴대폰 번호">
             <div class="gap-size-8 flex items-center justify-between">
               <BaseInput size="md" placeholder="'-' 없이 입력" />
-              <BaseButton size="large" label="인증번호 발송" variant="contained" color="primary" />
+              <BaseButton size="lg" label="인증번호 발송" variant="contained" color="primary" />
             </div>
           </FormField>
           <FormField label="인증번호">
@@ -28,7 +28,7 @@
         </div>
         <div class="mt-[33px]">
           <BaseButton
-            size="large"
+            size="lg"
             label="다음"
             variant="contained"
             color="primary"

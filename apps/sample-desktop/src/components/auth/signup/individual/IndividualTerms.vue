@@ -58,7 +58,7 @@
         </div>
         <div class="mt-[33px]">
           <BaseButton
-            size="large"
+            size="lg"
             label="가입하기"
             variant="contained"
             color="primary"

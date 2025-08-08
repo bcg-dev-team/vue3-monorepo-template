@@ -36,14 +36,14 @@
 
         <div class="gap-size-12 mt-[33px] flex items-center">
           <BaseButton
-            size="large"
+            size="lg"
             label="인증번호 전송"
             variant="contained"
             color="primary"
             full-width
             @click="step = 2"
           />
-          <BaseButton size="large" label="취소" variant="contained" color="cancel" full-width />
+          <BaseButton size="lg" label="취소" variant="contained" color="cancel" full-width />
         </div>
         <div class="mt-size-16 flex items-center justify-center">
           <span class="text-font-14 cursor-pointer font-medium underline">인증번호 재전송</span>

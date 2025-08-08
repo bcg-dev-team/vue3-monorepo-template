@@ -23,7 +23,7 @@
         </div>
         <div class="mt-[33px]">
           <BaseButton
-            size="large"
+            size="lg"
             label="다음"
             variant="contained"
             color="primary"

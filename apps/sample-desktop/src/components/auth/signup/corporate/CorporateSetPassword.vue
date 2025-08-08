@@ -38,7 +38,7 @@
         </div>
         <div class="gap-size-12 mt-[33px] flex items-center">
           <BaseButton
-            size="large"
+            size="lg"
             label="가입 신청하기"
             variant="contained"
             color="primary"

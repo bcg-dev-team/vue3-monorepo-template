@@ -20,7 +20,7 @@ import './BaseButton.scss';
 /**
  * 버튼 색상 타입
  */
-export type ButtonColor = 'primary' | 'red' | 'blue' | 'green' | 'cancel';
+export type ButtonColor = 'primary' | 'red' | 'blue' | 'green' | 'cancel' | 'grey' | 'white';
 
 // 버튼 아이콘 props 타입 (BaseButton 전용)
 interface ButtonIconProps {
@@ -35,7 +35,7 @@ interface Props {
    * - contained: 채움(기본)
    * - outlined: 외곽선
    */
-  variant?: 'contained' | 'outlined';
+  variant?: 'contained' | 'contained-grey' | 'outlined';
   /**
    * 버튼 컬러
    * - primary: 기본 노란색
@@ -44,7 +44,7 @@ interface Props {
    * - green: 초록색
    * - cancel: 보라색
    */
-  color?: 'primary' | 'red' | 'blue' | 'green' | 'cancel';
+  color?: 'primary' | 'red' | 'blue' | 'green' | 'cancel' | 'grey' | 'white';
   /**
    * 버튼 크기
    * - lg: large (48px)
@@ -106,7 +106,15 @@ const emit = defineEmits<{
 }>();
 
 // 미리 정의된 색상 목록
-const predefinedColors: readonly ButtonColor[] = ['primary', 'red', 'blue', 'green', 'cancel'];
+const predefinedColors: readonly ButtonColor[] = [
+  'primary',
+  'red',
+  'blue',
+  'green',
+  'cancel',
+  'grey',
+  'white',
+];
 
 // 버튼 클래스 계산
 const buttonClasses = computed(() => {
@@ -155,17 +163,25 @@ const getIconColor = (iconProps: ButtonIconProps | undefined, color: string) => 
   // color별 기본 아이콘 색상 (디자인 토큰 사용)
   switch (color) {
     case 'primary':
-      return 'var(--button-primary-text)';
+      return props.variant === 'contained'
+        ? 'var(--button-primary-text)'
+        : 'var(--base-colors-primary-primary800)';
     case 'red':
-      return 'var(--button-red-text)';
+      return props.variant === 'contained'
+        ? 'var(--font-color-white)'
+        : 'var(--base-colors-red-red800)';
     case 'blue':
-      return 'var(--button-blue-text)';
+      return props.variant === 'contained'
+        ? 'var(--font-color-white)'
+        : 'var(--base-colors-blue-blue800-deep)';
     case 'green':
-      return 'var(--base-colors-neutral-neutral000)';
+      return 'var(--font-color-white)';
     case 'cancel':
-      return 'var(--base-colors-neutral-neutral000)';
+      return 'var(--font-color-white)';
+    case 'white':
+      return 'var(--base-colors-neutral-neutral750)';
     case 'disabled':
-      return 'var(--button-disabled-text)';
+      return 'veear(--button-disabled-text)';
     default:
       return 'currentColor';
   }
@@ -194,7 +210,11 @@ function handleKeydown(e: KeyboardEvent) {
     role="button"
     :type="props.href ? undefined : 'button'"
     :class="[...buttonClasses, 'focus-ring']"
-    :style="!predefinedColors.includes(props.color as ButtonColor) ? { '--button-custom-color': props.color } : {}"
+    :style="
+      !predefinedColors.includes(props.color as ButtonColor)
+        ? { '--button-custom-color': props.color }
+        : {}
+    "
     :aria-label="props.label"
     :aria-disabled="props.disabled ? 'true' : undefined"
     :tabindex="props.disabled ? -1 : 0"
@@ -213,8 +233,10 @@ function handleKeydown(e: KeyboardEvent) {
 
     <!-- 텍스트 영역 -->
     <div class="flex flex-col items-center justify-center">
-      <span class="btn-label font-medium">{{ props.label }}</span>
-      <span v-if="props.subLabel" class="btn-sub-text font-semibold">
+      <span :class="['font-medium', props.subLabel ? 'btn-main-label' : 'btn-label']">{{
+        props.label
+      }}</span>
+      <span v-if="props.subLabel" class="btn-sub-label font-semibold">
         {{ props.subLabel }}
       </span>
     </div>

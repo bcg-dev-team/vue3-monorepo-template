@@ -1,33 +1,31 @@
 <template>
-  <div class="flex items-center gap-4">
-    <div class="flex items-center gap-12">
+  <div class="gap-size-24 flex items-center">
+    <div class="gap-size-48 flex items-center">
       <dl
         v-for="metric in financialMetrics"
         :key="metric.id"
         class="flex flex-col items-start gap-1"
       >
-        <dt class="text-divider-muted text-font-10 tracking-0">{{ metric.label }}</dt>
+        <dt class="text-default-muted tracking-0 text-[11px]">{{ metric.label }}</dt>
         <dd class="tracking-3 font-semibold text-white">{{ metric.value }}</dd>
       </dl>
     </div>
-    <span class="text-divider-muted text-2xl">|</span>
+    <divider class="h-size-20 border-bg-divider-muted border" />
     <div class="flex items-center gap-4">
-      <!-- <button class="icon-btn p-2 hover:bg-gray-100 rounded-lg transition-colors">
-        <MyPageIcon class="w-5 h-5 text-gray-700" />
-      </button>
-      <button class="icon-btn p-2 hover:bg-gray-100 rounded-lg transition-colors">
-        <ModeLightIcon class="w-5 h-5 text-gray-700" />
-      </button>
-      <button class="icon-btn p-2 hover:bg-gray-100 rounded-lg transition-colors">
-        <LogoutIcon class="w-5 h-5 text-gray-700" />
-      </button> -->
-      <p class="text-white">아이콘 영역</p>
+      <div
+        class="bg-bg-bg-surface-muted flex h-[34px] w-[34px] items-center justify-center rounded-full"
+      >
+        <BaseIcon name="person" color="black" />
+      </div>
+      <BaseIcon name="mode-light" color="white" />
+      <BaseIcon name="notification" color="white" />
+      <BaseIcon name="logout" color="white" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-// import { MyPageIcon, ModeLightIcon, LogoutIcon } from '@template/ui';
+import { BaseIcon } from '@template/ui';
 
 interface FinancialMetric {
   id: string;

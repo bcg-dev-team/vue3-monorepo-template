@@ -43,7 +43,7 @@ interface Props {
   direction?: 'horizontal' | 'vertical';
 
   /**
-   * 탭 그룹의 크기 (sm, md, lg)
+   * 탭 그룹의 크기 (lg, md, sm)
    *
    * 기본값은 'md'입니다.
    */
@@ -95,7 +95,7 @@ const sizeClasses = {
 const containerClasses = computed(() => {
   const baseClasses = ['w-full', `tabs-variant-${props.variant}`].join(' ');
   const directionClass = directionClasses[props.direction];
-  const sizeClass = sizeClasses[props.size];
+  const sizeClass = sizeClasses[props.size || 'md'];
 
   return `${baseClasses} ${directionClass} ${sizeClass}`;
 });

@@ -36,6 +36,9 @@ interface Props {
   variant?: ChipVariant;
   /**
    * 칩 크기
+   * - lg: large (40px)
+   * - md: medium (32px)
+   * - sm: small (24px)
    * @default 'md'
    */
   size?: ComponentSize;

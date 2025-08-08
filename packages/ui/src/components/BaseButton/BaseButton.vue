@@ -2,7 +2,7 @@
 /**
  * BaseButton - Figma 버튼 컴포넌트 1:1 구현
  * @props variant - 버튼 스타일 (primary, outline, red, blue, pill, light-solid, red-solid, blue-solid, green-solid, cancel-solid, disabled)
- * @props size - 버튼 크기 (regular, small, pill, small-inner)
+ * @props size - 버튼 크기 (lg, md, sm)
  * @props disabled - 비활성화 여부
  * @props leftIcon - 좌측 아이콘 정보 (name, size, color)
  * @props rightIcon - 우측 아이콘 정보 (name, size, color)
@@ -47,11 +47,11 @@ interface Props {
   color?: 'primary' | 'red' | 'blue' | 'green' | 'cancel';
   /**
    * 버튼 크기
-   * - large: 48px
-   * - medium: 40px
-   * - small: 32px
+   * - lg: large (48px)
+   * - md: medium (40px)
+   * - sm: small (32px)
    */
-  size?: 'large' | 'medium' | 'small';
+  size?: ComponentSize;
   /**
    * pill 스타일 여부 (둥근 모서리)
    */
@@ -94,7 +94,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   variant: 'contained',
   color: 'primary',
-  size: 'large',
+  size: 'lg',
   pill: false,
   disabled: false,
   fullWidth: false,
@@ -133,11 +133,11 @@ const buttonClasses = computed(() => {
 // 아이콘 크기 매핑
 const getIconSize = (size: string) => {
   switch (size) {
-    case 'large':
-    case 'medium': {
+    case 'lg':
+    case 'md': {
       return 'md'; // 24px
     }
-    case 'small': {
+    case 'sm': {
       return 'sm'; // 16px
     }
     default: {

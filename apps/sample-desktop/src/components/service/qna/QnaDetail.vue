@@ -69,7 +69,7 @@
     </div>
   </div>
   <div class="mt-size-24 flex justify-center">
-    <BaseButton label="확인" size="large" @click="type = null" />
+    <BaseButton label="확인" size="lg" @click="type = null" />
   </div>
 </template>
 <script setup lang="ts">

@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="mt-[33px]">
-          <BaseButton size="large" label="로그인" variant="contained" color="primary" full-width />
+          <BaseButton size="lg" label="로그인" variant="contained" color="primary" full-width />
         </div>
         <div class="mt-6 flex justify-center">
           <a class="font-regular cursor-pointer text-[13px] underline" href="/auth/sign-up"

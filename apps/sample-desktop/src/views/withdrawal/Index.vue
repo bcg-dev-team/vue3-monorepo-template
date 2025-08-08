@@ -1,7 +1,7 @@
 <template>
   <div class="mx-auto w-[1920px] py-6">
     <CardLayoutVertical gap="gap-6">
-      <MainCardContent class="p-6" title="출금신청" size="large">
+      <MainCardContent class="p-6" title="출금신청" size="lg">
         <template #content>
           <div class="flex items-center gap-3">
             <SubCardContent title="계좌번호" class="p-6">
@@ -27,26 +27,21 @@
                   <BaseInputText
                     class="w-[140px]"
                     type="number"
-                    size="small"
+                    size="sm"
                     v-model="amount"
                     :showIcon="false"
                   />
-                  <BaseButton
-                    variant="outline"
-                    size="small"
-                    label="전액"
-                    class="whitespace-nowrap"
-                  />
+                  <BaseButton variant="outlined" size="sm" label="전액" class="whitespace-nowrap" />
                 </div>
               </template>
             </SubCardContent>
             <p>></p>
-            <BaseButton class="px-[43px]" variant="primary" label="신청하기" />
+            <BaseButton class="px-[43px]" variant="contained" label="신청하기" />
           </div>
         </template>
       </MainCardContent>
 
-      <MainCardContent class="p-6" title="신청내역" size="large">
+      <MainCardContent class="p-6" title="신청내역" size="lg">
         <template #content>
           <BaseTable
             :headers="headers"

@@ -4,13 +4,15 @@
   피그마 디자인 토큰 기반으로 구현
 -->
 <script setup lang="ts">
-import type { BaseInputProps } from './types';
+import type { CommonInputProps } from './types';
 import { computed } from 'vue';
+import './BaseInput.scss';
 
 /**
  * BaseInput - 공통 스타일/상태/slot만 담당하는 베이스 컴포넌트
  * @props modelValue - 입력값 (v-model)
  * @props placeholder - 플레이스홀더 텍스트
+ * @props type - 입력 타입 (기본값: 'text')
  * @props disabled - 비활성화 여부
  * @props readonly - 읽기 전용 여부
  * @props fullWidth - 입력창을 부모의 100% 너비로 확장할지 여부 (기본값: false, false일 때는 w-[200px])
@@ -21,8 +23,12 @@ import { computed } from 'vue';
  * @slot suffix - 입력창 내부 오른쪽
  * @slot append - 입력창 외부 오른쪽(타이머, 버튼 등)
  */
-interface Props extends BaseInputProps {
-  // BaseInput 고유 props (현재는 없음)
+interface Props extends CommonInputProps {
+  /**
+   * 입력 타입
+   * @default 'text'
+   */
+  type?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {

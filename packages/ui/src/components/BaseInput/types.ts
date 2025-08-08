@@ -1,7 +1,7 @@
 /**
  * BaseInput 컴포넌트의 공통 Props 타입 정의
  */
-export interface BaseInputProps {
+export interface CommonInputProps {
   /**
    * 입력값 (v-model)
    */
@@ -10,10 +10,6 @@ export interface BaseInputProps {
    * 플레이스홀더 텍스트
    */
   placeholder?: string;
-  /**
-   * 입력 타입
-   */
-  type?: string;
   /**
    * 비활성화 여부
    * @default false
@@ -29,4 +25,25 @@ export interface BaseInputProps {
    * @default false
    */
   fullWidth?: boolean;
+}
+
+/**
+ * 텍스트 입력 컴포넌트용 Props
+ */
+export interface TextInputProps extends CommonInputProps {
+  type?: 'text' | 'email' | 'password' | 'search' | 'tel';
+}
+
+/**
+ * 숫자 입력 컴포넌트용 Props
+ */
+export interface NumberInputProps extends CommonInputProps {
+  type?: 'number';
+}
+
+/**
+ * 날짜 입력 컴포넌트용 Props
+ */
+export interface DateInputProps extends CommonInputProps {
+  type?: 'date' | 'datetime-local';
 }

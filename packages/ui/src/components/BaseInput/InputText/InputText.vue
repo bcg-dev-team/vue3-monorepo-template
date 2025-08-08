@@ -3,9 +3,9 @@
   BaseInput을 확장한 텍스트 입력 컴포넌트 (text 타입 전용)
 -->
 <script setup lang="ts">
-import BaseIcon from '../BaseIcon/BaseIcon.vue';
-import type { BaseInputProps } from './types';
-import BaseInput from './BaseInput.vue';
+import BaseIcon from '../../BaseIcon/BaseIcon.vue';
+import type { TextInputProps } from '../types';
+import BaseInput from '../BaseInput.vue';
 import { computed } from 'vue';
 import './InputText.scss';
 
@@ -18,6 +18,7 @@ import './InputText.scss';
  * @props disabled - 비활성화 여부
  * @props readonly - 읽기 전용 여부
  * @props fullWidth - 입력창을 부모의 100% 너비로 확장할지 여부
+ * @props type - 입력 타입 (text, email, password, search, tel)
  * @props label - 라벨 텍스트
  * @props helperText - 헬퍼 텍스트
  * @props errorMessage - 에러 메시지
@@ -33,7 +34,7 @@ import './InputText.scss';
  * @emits blur - 블러 시 발생
  * @emits clear - clear 버튼 클릭 시 발생
  */
-interface Props extends Omit<BaseInputProps, 'type'> {
+interface Props extends TextInputProps {
   label?: string;
   helperText?: string;
   errorMessage?: string;
@@ -49,6 +50,7 @@ interface Props extends Omit<BaseInputProps, 'type'> {
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
   placeholder: '',
+  type: 'text',
   disabled: false,
   readonly: false,
   fullWidth: true, // InputText는 일반적으로 전체 너비 사용

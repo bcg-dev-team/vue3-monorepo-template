@@ -49,11 +49,13 @@
 </template>
 
 <script setup lang="ts">
-import BasePasswordStrength from '../BasePasswordStrength/BasePasswordStrength.vue';
+import BasePasswordStrength from '../../BasePasswordStrength/BasePasswordStrength.vue';
 import type { PasswordStrengthDisplay } from '@template/types';
-import BaseIcon from '../BaseIcon/BaseIcon.vue';
+import BaseIcon from '../../BaseIcon/BaseIcon.vue';
+import type { CommonInputProps } from '../types';
 import { ref, computed, watch } from 'vue';
-import BaseInput from './BaseInput.vue';
+import BaseInput from '../BaseInput.vue';
+import './InputPassword.scss';
 
 interface Props {
   /** 입력값 */

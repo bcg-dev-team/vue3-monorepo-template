@@ -32,12 +32,16 @@ const config: StorybookConfig = {
       },
     };
 
-    // TypeScript 지원
+    // TypeScript 지원 및 의존성 최적화 설정
     config.optimizeDeps = {
       ...config.optimizeDeps,
       include: ['vue', '@template/types', '@template/theme'],
+      exclude: ['@storybook/addon-docs', '@storybook/blocks'],
       force: true,
     };
+
+    // 캐시 설정
+    config.cacheDir = resolve(__dirname, '../node_modules/.vite-storybook');
 
     // PostCSS 설정 추가
     config.css = {

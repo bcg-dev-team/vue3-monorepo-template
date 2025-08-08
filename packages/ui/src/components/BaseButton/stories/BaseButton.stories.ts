@@ -17,9 +17,9 @@ const meta: Meta<typeof BaseButton> = {
     variant: {
       description: '버튼 스타일',
       control: { type: 'select' },
-      options: ['contained', 'outlined'],
+      options: ['contained', 'contained-grey', 'outlined'],
       table: {
-        type: { summary: 'contained | outlined' },
+        type: { summary: 'contained | contained-grey | outlined' },
         defaultValue: { summary: 'contained' },
         category: 'Props',
       },
@@ -27,9 +27,9 @@ const meta: Meta<typeof BaseButton> = {
     color: {
       description: '버튼 컬러',
       control: { type: 'select' },
-      options: ['primary', 'red', 'blue', 'green', 'cancel'],
+      options: ['primary', 'red', 'blue', 'green', 'cancel', 'grey', 'white'],
       table: {
-        type: { summary: 'primary | red | blue | green | cancel' },
+        type: { summary: 'primary | red | blue | green | cancel | grey | white' },
         defaultValue: { summary: 'primary' },
         category: 'Props',
       },
@@ -174,6 +174,22 @@ export const Cancel: Story = {
     label: 'Cancel',
   },
 };
+export const Grey: Story = {
+  args: {
+    variant: 'contained',
+    color: 'grey',
+    size: 'large',
+    label: 'Grey',
+  },
+};
+export const White: Story = {
+  args: {
+    variant: 'contained',
+    color: 'white',
+    size: 'large',
+    label: 'White',
+  },
+};
 
 // 크기별 버튼
 export const Large: Story = {
@@ -282,6 +298,8 @@ export const WithSubLabel: Story = {
     size: 'lg',
     label: 'Label',
     subLabel: 'SubLabel',
+    leftIcon: { name: 'plus' },
+    rightIcon: { name: 'plus' },
   },
 };
 
@@ -303,6 +321,150 @@ export const Complex: Story = {
     docs: {
       description: {
         story: '모든 주요 속성이 조합된 복잡한 버튼 예시입니다.',
+      },
+    },
+  },
+};
+
+// Variant 비교 스토리
+export const VariantComparison: Story = {
+  render: () => ({
+    components: { BaseButton },
+    template: `
+      <div class="space-y-8">
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold">Contained</h3>
+          <div class="flex flex-wrap gap-4">
+            <div class="space-y-2">
+              <p class="text-sm font-medium text-gray-600">Primary</p>
+              <BaseButton
+                variant="contained"
+                color="primary"
+                size="large"
+                label="Primary"
+              />
+            </div>
+            <div class="space-y-2">
+              <p class="text-sm font-medium text-gray-600">Red</p>
+              <BaseButton
+                variant="contained"
+                color="red"
+                size="large"
+                label="Red"
+              />
+            </div>
+            <div class="space-y-2">
+              <p class="text-sm font-medium text-gray-600">Blue</p>
+              <BaseButton
+                variant="contained"
+                color="blue"
+                size="large"
+                label="Blue"
+              />
+            </div>
+            <div class="space-y-2">
+              <p class="text-sm font-medium text-gray-600">Green</p>
+              <BaseButton
+                variant="contained"
+                color="green"
+                size="large"
+                label="Green"
+              />
+            </div>
+            <div class="space-y-2">
+              <p class="text-sm font-medium text-gray-600">Cancel</p>
+              <BaseButton
+                variant="contained"
+                color="cancel"
+                size="large"
+                label="Cancel"
+              />
+            </div>
+            <div class="space-y-2">
+              <p class="text-sm font-medium text-gray-600">Grey</p>
+              <BaseButton
+                variant="contained"
+                color="grey"
+                size="large"
+                label="Grey"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold">Contained Grey</h3>
+          <div class="flex flex-wrap gap-4">
+            <div class="space-y-2">
+              <p class="text-sm font-medium text-gray-600">Red</p>
+              <BaseButton
+                variant="contained-grey"
+                color="red"
+                size="large"
+                label="Red"
+              />
+            </div>
+            <div class="space-y-2">
+              <p class="text-sm font-medium text-gray-600">Blue</p>
+              <BaseButton
+                variant="contained-grey"
+                color="blue"
+                size="large"
+                label="Blue"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold">Outlined</h3>
+          <div class="flex flex-wrap gap-4">
+            <div class="space-y-2">
+              <p class="text-sm font-medium text-gray-600">Primary</p>
+              <BaseButton
+                variant="outlined"
+                color="primary"
+                size="large"
+                label="Primary"
+              />
+            </div>
+            <div class="space-y-2">
+              <p class="text-sm font-medium text-gray-600">Red</p>
+              <BaseButton
+                variant="outlined"
+                color="red"
+                size="large"
+                label="Red"
+              />
+            </div>
+            <div class="space-y-2">
+              <p class="text-sm font-medium text-gray-600">Blue</p>
+              <BaseButton
+                variant="outlined"
+                color="blue"
+                size="large"
+                label="Blue"
+              />
+            </div>
+            <div class="space-y-2">
+              <p class="text-sm font-medium text-gray-600">White</p>
+              <BaseButton
+                variant="outlined"
+                color="white"
+                size="large"
+                label="White"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    `,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '모든 variant(contained, contained-grey, outlined)를 색상별로 비교할 수 있습니다. 각 variant의 스타일 차이를 확인하세요.',
       },
     },
   },
@@ -380,8 +542,6 @@ export const KeyboardNavigation: Story = {
   },
 };
 
-
-
 // Figma 디자인 기반 커스텀 색상 버튼
 export const CustomGreen: Story = {
   args: {
@@ -408,11 +568,12 @@ export const CustomGreen: Story = {
     `,
   }),
   parameters: {
-          docs: {
-        description: {
-          story: 'Figma 디자인 기반의 인증완료 버튼입니다. 연한 초록색 배경에 진한 초록색 텍스트와 테두리를 가지며, 이벤트가 비활성화되어 있습니다.',
-        },
+    docs: {
+      description: {
+        story:
+          'Figma 디자인 기반의 인증완료 버튼입니다. 연한 초록색 배경에 진한 초록색 텍스트와 테두리를 가지며, 이벤트가 비활성화되어 있습니다.',
       },
+    },
   },
 };
 
@@ -432,7 +593,7 @@ export const CustomSolid: Story = {
         borderColor: '#ff6b6b',
         transition: 'all 0.2s ease',
       };
-      
+
       const handleMouseEnter = (event: Event) => {
         const target = event.target as HTMLElement;
         if (target) {
@@ -440,7 +601,7 @@ export const CustomSolid: Story = {
           target.style.borderColor = '#e55a5a';
         }
       };
-      
+
       const handleMouseLeave = (event: Event) => {
         const target = event.target as HTMLElement;
         if (target) {
@@ -448,7 +609,7 @@ export const CustomSolid: Story = {
           target.style.borderColor = '#ff6b6b';
         }
       };
-      
+
       return { args, customStyles, handleMouseEnter, handleMouseLeave };
     },
     template: `
@@ -487,21 +648,21 @@ export const CustomGradient: Story = {
         borderColor: 'transparent',
         transition: 'all 0.2s ease',
       };
-      
+
       const handleMouseEnter = (event: Event) => {
         const target = event.target as HTMLElement;
         if (target) {
           target.style.background = 'linear-gradient(135deg, #9bb0ff 0%, #2e1f85 100%)';
         }
       };
-      
+
       const handleMouseLeave = (event: Event) => {
         const target = event.target as HTMLElement;
         if (target) {
           target.style.background = 'linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%)';
         }
       };
-      
+
       return { args, customStyles, handleMouseEnter, handleMouseLeave };
     },
     template: `
@@ -599,7 +760,8 @@ export const CenterIconCustomColor: Story = {
   parameters: {
     docs: {
       description: {
-        story: '커스텀 색상을 사용한 중앙 아이콘 버튼입니다. 별표 아이콘과 노란색 배경을 사용합니다. 아이콘은 currentColor로 설정되어 검은색으로 표시됩니다.',
+        story:
+          '커스텀 색상을 사용한 중앙 아이콘 버튼입니다. 별표 아이콘과 노란색 배경을 사용합니다. 아이콘은 currentColor로 설정되어 검은색으로 표시됩니다.',
       },
     },
   },

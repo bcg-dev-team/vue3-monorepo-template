@@ -21,15 +21,16 @@ import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import Notice from '@/components/service/notice/Notice.vue';
 import Event from '@/components/service/event/Event.vue';
 import QnA from '@/components/service/qna/QnaMain.vue';
+import Faq from '@/components/service/faq/Faq.vue';
 import { BaseTabs } from '@template/ui';
 import { ref } from 'vue';
 
-const modelValue = ref('qna');
+const modelValue = ref('faq');
 const tabs = [
   { value: 'notice', label: '공지사항', content: Notice },
   { value: 'event', label: '이벤트', content: Event },
   { value: 'qna', label: '1:1 문의', content: QnA },
-  { value: 'faq', label: '자주 묻는 질문' },
+  { value: 'faq', label: '자주 묻는 질문', content: Faq },
   { value: 'guide', label: '이용가이드' },
 ];
 </script>

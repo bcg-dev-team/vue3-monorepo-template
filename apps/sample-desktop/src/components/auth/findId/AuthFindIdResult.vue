@@ -34,13 +34,13 @@
         </div>
         <div class="gap-size-8 mt-[33px] flex w-full items-center justify-center">
           <BaseButton
-            size="large"
+            size="lg"
             label="비밀번호 재설정"
             variant="outlined"
             color="primary"
             full-width
           />
-          <BaseButton size="large" label="로그인" variant="contained" color="primary" full-width />
+          <BaseButton size="lg" label="로그인" variant="contained" color="primary" full-width />
         </div>
       </div>
     </template>

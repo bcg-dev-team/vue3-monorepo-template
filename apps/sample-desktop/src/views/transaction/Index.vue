@@ -1,7 +1,7 @@
 <template>
   <div class="mx-auto w-[1920px] py-4">
     <CardLayoutVertical gap="gap-3">
-      <MainCardContent class="p-6" title="거래내역" size="large">
+      <MainCardContent class="p-6" title="거래내역" size="lg">
         <template #content>
           <div>
             <div></div>
@@ -9,7 +9,7 @@
         </template>
       </MainCardContent>
 
-      <MainCardContent class="p-6" size="large">
+      <MainCardContent class="p-6" size="lg">
         <template #content>
           <div>
             요약

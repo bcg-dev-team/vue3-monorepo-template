@@ -33,14 +33,14 @@
 
         <div class="gap-size-12 mt-[33px] flex items-center">
           <BaseButton
-            size="large"
+            size="lg"
             label="인증 메일 재전송"
             variant="outlined"
             color="primary"
             full-width
           />
           <BaseButton
-            size="large"
+            size="lg"
             label="다음"
             variant="contained"
             color="primary"

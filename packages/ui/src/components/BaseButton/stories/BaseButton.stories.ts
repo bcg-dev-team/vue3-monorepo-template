@@ -182,14 +182,6 @@ export const Grey: Story = {
     label: 'Grey',
   },
 };
-export const White: Story = {
-  args: {
-    variant: 'contained',
-    color: 'white',
-    size: 'large',
-    label: 'White',
-  },
-};
 
 // 크기별 버튼
 export const Large: Story = {

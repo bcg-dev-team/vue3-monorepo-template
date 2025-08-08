@@ -19,8 +19,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import type { ComponentSize } from '@template/ui';
+import { computed } from 'vue';
 
 interface MainCardContentProps {
   title?: string;
@@ -41,7 +41,7 @@ const titleSizeClass = computed(() => {
     case 'md':
       return 'text-xl font-medium';
     case 'lg':
-      return 'text-3xl font-semibold';
+      return 'text-font-24 font-semibold';
   }
 });
 </script>

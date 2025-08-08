@@ -8,6 +8,7 @@
  */
 
 import type { IconName } from './icons';
+import type { Component } from 'vue';
 
 /**
  * [사용법]
@@ -74,7 +75,7 @@ export interface TabItem {
   value: string | number;
   label: string;
   disabled?: boolean;
-  content?: string;
+  content?: string | Component;
 }
 
 // BaseChip

@@ -12,8 +12,11 @@ export { default as BaseFileUploadButton } from './BaseButton/BaseFileUploadButt
 export * from './BasePagination';
 export * from './BaseTable';
 export * from './BaseIcon';
+<<<<<<< HEAD
 export * from './BasePopup';
 export * from './BaseSkeleton';
+=======
+>>>>>>> d50ce6a (refactor(packages/ui): 사이즈 타입 정의 및 사용법 통일)
 
 // 타입 export
 export * from '../types/components';

@@ -13,6 +13,7 @@
  * @figma Button (node-id: 32-244)
  */
 import type { ComponentSize, ButtonIconProps } from '../../types/components';
+import BaseSkeleton from '../BaseSkeleton/BaseSkeleton.vue';
 import type { IconName } from '../../types/icons';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { computed } from 'vue';
@@ -170,7 +171,6 @@ const getIconColor = (iconProps: ButtonIconProps | undefined, color: string) => 
 
   // 모든 아이콘은 기본적으로 currentColor 사용 (버튼 텍스트 색상과 일치)
   return 'currentColor';
-
   // // color별 기본 아이콘 색상 (디자인 토큰 사용)
   // switch (color) {
   //   case 'primary':

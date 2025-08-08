@@ -18,16 +18,17 @@
 </template>
 <script setup lang="ts">
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
-import Notice from '@/components/service/Notice.vue';
+import Notice from '@/components/service/notice/Notice.vue';
+import Event from '@/components/service/event/Event.vue';
 import { BaseTabs } from '@template/ui';
 import { ref } from 'vue';
 
-const modelValue = ref('tab1');
+const modelValue = ref('notice');
 const tabs = [
-  { value: 'tab1', label: '공지사항', content: Notice },
-  { value: 'tab2', label: '이벤트', content: 'dd' },
-  { value: 'tab3', label: '1:1 문의' },
-  { value: 'tab4', label: '자주 묻는 질문' },
-  { value: 'tab5', label: '이용가이드' },
+  { value: 'notice', label: '공지사항', content: Notice },
+  { value: 'event', label: '이벤트', content: Event },
+  { value: 'qna', label: '1:1 문의' },
+  { value: 'faq', label: '자주 묻는 질문' },
+  { value: 'guide', label: '이용가이드' },
 ];
 </script>

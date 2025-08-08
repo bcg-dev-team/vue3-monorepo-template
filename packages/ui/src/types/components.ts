@@ -9,9 +9,37 @@
 
 import type { IconName } from './icons';
 
+/**
+ * [사용법]
+ * - 일부 사이즈들만 쓰고 싶은 경우: Extract를 사용
+ *   e.g. type ButtonSize = Extract<ComponentSize, 'lg' | 'sm'>;
+ *
+ * - 확장 사이즈를 함께 쓰고 싶은 경우: 유니온으로 결합
+ *   e.g. type IconButtonSize = ComponentSize | ExtendedSize;
+ *
+ * - 특정 컴포넌트 전용 별칭으로 정의
+ *   e.g. type TabsSize = Extract<ComponentSize, 'md' | 'lg'>;
+ */
+
+/**
+ * UI 컴포넌트 기본 사이즈 타입
+ * - lg: large (48px)
+ * - md: medium (40px)
+ * - sm: small (32px)
+ */
+export type ComponentSize = 'lg' | 'md' | 'sm';
+
+/**
+ * 확장 사이즈 타입 (필요시 확장)
+ * - xl: extra large
+ * - xxl: extra extra large
+ * - xs: extra small
+ * - xxs: extra extra small
+ */
+export type ExtendedSize = 'xl' | 'xxl' | 'xs' | 'xxs';
+
 // 공통 타입들 (여러 컴포넌트에서 사용)
 export type TextAlign = 'left' | 'center' | 'right';
-export type ComponentSize = 'sm' | 'md' | 'lg';
 
 // IconName re-export
 export type { IconName };

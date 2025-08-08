@@ -270,13 +270,13 @@ function getUserById(id: any): any {
     example: `// 좋은 예시 - Props 인터페이스 정의
 interface Props {
   variant: 'primary' | 'secondary';
-  size: 'small' | 'medium' | 'large';
+  size: ComponentSize; // 'lg' | 'md' | 'sm'
   disabled?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   variant: 'primary',
-  size: 'medium',
+  size: 'md',
   disabled: false
 });`,
   },

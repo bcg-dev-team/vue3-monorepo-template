@@ -6,6 +6,7 @@
 import { computed } from 'vue';
 import './BaseCheckbox.scss';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
+import type { ComponentSize } from '../../types/components';
 
 /**
  * BaseCheckbox - 체크박스 컴포넌트
@@ -13,6 +14,7 @@ import BaseIcon from '../BaseIcon/BaseIcon.vue';
  * @props modelValue - 체크 여부 (v-model)
  * @props disabled - 비활성화 여부
  * @props indeterminate - 부분 선택 상태 (3-state checkbox)
+ * @props size - 컴포넌트 크기 (sm: 20px, md: 22px, lg: 24px)
  * @emits update:modelValue - 값 변경 시 발생
  */
 interface Props {
@@ -30,11 +32,20 @@ interface Props {
    * @default false
    */
   indeterminate?: boolean;
+  /**
+   * 컴포넌트 크기
+   * - sm: 20px
+   * - md: 22px (기본)
+   * - lg: 24px
+   * @default 'md'
+   */
+  size?: ComponentSize;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   indeterminate: false,
+  size: 'md',
 });
 
 const emit = defineEmits<{
@@ -61,7 +72,7 @@ const checkboxStyles = computed(() => {
       styles.borderColor = 'var(--base-colors-neutral-neutral400)';
     }
   } else {
-    if (isChecked.value || isIndeterminate.value) {
+    if (isChecked.value) {
       // Enabled + Checked/Indeterminate
       styles.backgroundColor = 'var(--base-colors-primary-primary800)';
       styles.borderColor = 'var(--base-colors-primary-primary800)';
@@ -74,6 +85,31 @@ const checkboxStyles = computed(() => {
 
   return styles;
 });
+
+// 크기별 스타일 계산
+const sizeToBoxSize: Record<ComponentSize, number> = {
+  sm: 20,
+  md: 22,
+  lg: 24,
+};
+
+// 패딩은 크기에 따라 미세 조정 (디자인 반영)
+const sizeToPaddingPx: Record<ComponentSize, number> = {
+  sm: 1.67,
+  md: 1.83,
+  lg: 2.0,
+};
+
+const containerBoxStyle = computed(() => {
+  const widthHeightPx = sizeToBoxSize[props.size];
+  const paddingPx = sizeToPaddingPx[props.size];
+  return {
+    width: `${widthHeightPx}px`,
+    height: `${widthHeightPx}px`,
+    padding: `${paddingPx}px`,
+  } as Record<string, string>;
+});
+
 
 // 이벤트 핸들러
 const handleClick = () => {
@@ -101,7 +137,7 @@ const handleKeydown = (event: KeyboardEvent) => {
     :aria-checked="isIndeterminate ? 'mixed' : isChecked"
     :aria-disabled="isDisabled"
   >
-    <div class="flex items-center justify-center w-[22px] h-[22px] p-[1.83px]">
+    <div class="flex items-center justify-center" :style="containerBoxStyle">
       <!-- 체크박스 박스 -->
       <div class="w-full h-full rounded-[3px] border-[1.5px] border flex items-center justify-center" :style="checkboxStyles">
         <!-- 체크 아이콘 (체크된 상태) -->
@@ -113,7 +149,7 @@ const handleKeydown = (event: KeyboardEvent) => {
 
         <!-- 부분 선택 아이콘 (indeterminate 상태) -->
         <BaseIcon
-          v-if="isIndeterminate"
+          v-if="isChecked && isIndeterminate"
           name="minus"
           color="var(--base-colors-neutral-neutral000)"
         />

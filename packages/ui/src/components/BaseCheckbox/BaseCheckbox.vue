@@ -3,10 +3,10 @@
   https://www.figma.com/design/5OJPsmnkEgZZnkHtNbk1wK/-MODA--Draft-250514-?node-id=29-405&m=dev
 -->
 <script setup lang="ts">
+import type { ComponentSize } from '../../types/components';
+import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { computed, onMounted, ref } from 'vue';
 import './BaseCheckbox.scss';
-import BaseIcon from '../BaseIcon/BaseIcon.vue';
-import type { ComponentSize } from '../../types/components';
 
 /**
  * BaseCheckbox - 체크박스 컴포넌트
@@ -110,7 +110,6 @@ const containerBoxStyle = computed(() => {
   } as Record<string, string>;
 });
 
-
 // 이벤트 핸들러
 const handleClick = () => {
   if (!isDisabled.value) {
@@ -134,8 +133,6 @@ onMounted(() => {
     hiddenInput.value.indeterminate = props.indeterminate;
   }
 });
-
-
 </script>
 
 <template>
@@ -151,7 +148,10 @@ onMounted(() => {
   >
     <div class="flex items-center justify-center" :style="containerBoxStyle">
       <!-- 체크박스 박스 -->
-      <div class="w-full h-full rounded-[3px] border-[1.5px] border flex items-center justify-center" :style="checkboxStyles">
+      <div
+        class="flex h-full w-full items-center justify-center rounded-[3px] border border-[1.5px]"
+        :style="checkboxStyles"
+      >
         <!-- 체크 아이콘 (체크된 상태) -->
         <BaseIcon
           v-if="isChecked && !isIndeterminate"

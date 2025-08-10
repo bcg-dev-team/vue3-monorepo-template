@@ -12,7 +12,7 @@
  * @emits click - 클릭 이벤트
  * @figma Button (node-id: 32-244)
  */
-import type { ComponentSize } from '../../types/components';
+import type { ComponentSize, ButtonIconProps } from '../../types/components';
 import type { IconName } from '../../types/icons';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import BaseSkeleton from '../BaseSkeleton/BaseSkeleton.vue';
@@ -23,13 +23,6 @@ import './BaseButton.scss';
  * 버튼 색상 타입
  */
 export type ButtonColor = 'primary' | 'red' | 'blue' | 'green' | 'cancel';
-
-// 버튼 아이콘 props 타입 (BaseButton 전용)
-interface ButtonIconProps {
-  name: IconName;
-  size?: ComponentSize;
-  color?: string;
-}
 
 interface Props {
   /**

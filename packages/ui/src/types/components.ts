@@ -44,6 +44,18 @@ export type TextAlign = 'left' | 'center' | 'right';
 // IconName re-export
 export type { IconName };
 
+// BaseButton
+export type ButtonVariant = 'contained' | 'outlined';
+
+/**
+ * 버튼 아이콘 props 타입 (BaseButton, BasePopup 등에서 공통 사용)
+ */
+export interface ButtonIconProps {
+  name: IconName;
+  size?: ComponentSize;
+  color?: string;
+}
+
 // BaseTable
 export interface TableHeader {
   key: string;
@@ -90,20 +102,12 @@ export interface PopupState {
 
 export interface PopupAction {
   label: string;
-  variant?: 'primary' | 'outline' | 'red' | 'blue' | 'pill' | 'light-solid' | 'red-solid' | 'blue-solid' | 'green-solid' | 'cancel-solid' | 'disabled';
-  size?: 'regular' | 'small' | 'pill' | 'small-inner';
+  variant?: ButtonVariant;
+  size?: ComponentSize;
   disabled?: boolean;
   loading?: boolean;
-  leftIcon?: {
-    name: IconName;
-    size?: ComponentSize | 'xl';
-    color?: string;
-  };
-  rightIcon?: {
-    name: IconName;
-    size?: ComponentSize | 'xl';
-    color?: string;
-  };
+  leftIcon?: ButtonIconProps;
+  rightIcon?: ButtonIconProps;
 }
 
 export interface PopupConfig {

@@ -132,8 +132,8 @@ export function usePopup(initialState: Partial<PopupStateExtended> = {}) {
       description,
       confirmText = '확인',
       cancelText = '취소',
-      confirmVariant = 'primary',
-      cancelVariant = 'outline',
+      confirmVariant = 'contained',
+      cancelVariant = 'outlined',
       size = 'md',
     } = options;
 
@@ -141,12 +141,12 @@ export function usePopup(initialState: Partial<PopupStateExtended> = {}) {
       {
         label: cancelText,
         variant: cancelVariant,
-        size: 'regular',
+        size: 'md',
       },
       {
         label: confirmText,
         variant: confirmVariant,
-        size: 'regular',
+        size: 'md',
       },
     ];
 
@@ -189,15 +189,15 @@ export function usePopup(initialState: Partial<PopupStateExtended> = {}) {
     const getButtonVariant = (alertVariant: string): PopupAction['variant'] => {
       switch (alertVariant) {
         case 'success':
-          return 'green-solid';
+          return 'contained';
         case 'info':
-          return 'blue-solid';
+          return 'contained';
         case 'warning':
-          return 'primary';
+          return 'contained';
         case 'error':
-          return 'red-solid';
+          return 'contained';
         default:
-          return 'primary';
+          return 'contained';
       }
     };
 
@@ -205,7 +205,7 @@ export function usePopup(initialState: Partial<PopupStateExtended> = {}) {
       {
         label: confirmText,
         variant: getButtonVariant(variant),
-        size: 'regular',
+        size: 'md',
       },
     ];
 

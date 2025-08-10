@@ -6,6 +6,7 @@
  * @props disabled - 비활성화 여부
  * @props leftIcon - 좌측 아이콘 정보 (name, size, color)
  * @props rightIcon - 우측 아이콘 정보 (name, size, color)
+ * @props centerIcon - 중앙 아이콘 정보 (name, size, color) - 중앙 아이콘 사용 시 label과 subLabel은 무시됩니다
  * @props label - 버튼 텍스트
  * @props subLabel - 서브 텍스트 (optional)
  * @emits click - 클릭 이벤트
@@ -69,6 +70,10 @@ interface Props {
    */
   rightIcon?: ButtonIconProps;
   /**
+   * 중앙 아이콘 정보 (중앙 아이콘 사용 시 label과 subLabel은 무시됩니다)
+   */
+  centerIcon?: ButtonIconProps;
+  /**
    * 버튼 텍스트
    */
   label: string;
@@ -99,6 +104,7 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   fullWidth: false,
   href: undefined,
+  centerIcon: undefined,
 });
 
 const emit = defineEmits<{
@@ -107,6 +113,11 @@ const emit = defineEmits<{
 
 // 미리 정의된 색상 목록
 const predefinedColors: readonly ButtonColor[] = ['primary', 'red', 'blue', 'green', 'cancel'];
+
+// 텍스트 영역 표시 여부 계산
+const showText = computed(() => {
+  return !props.centerIcon && (props.label || props.subLabel);
+});
 
 // 버튼 클래스 계산
 const buttonClasses = computed(() => {
@@ -152,23 +163,8 @@ const getIconColor = (iconProps: ButtonIconProps | undefined, color: string) => 
     return iconProps.color;
   }
 
-  // color별 기본 아이콘 색상 (디자인 토큰 사용)
-  switch (color) {
-    case 'primary':
-      return 'var(--button-primary-text)';
-    case 'red':
-      return 'var(--button-red-text)';
-    case 'blue':
-      return 'var(--button-blue-text)';
-    case 'green':
-      return 'var(--base-colors-neutral-neutral000)';
-    case 'cancel':
-      return 'var(--base-colors-neutral-neutral000)';
-    case 'disabled':
-      return 'var(--button-disabled-text)';
-    default:
-      return 'currentColor';
-  }
+  // 모든 아이콘은 기본적으로 currentColor 사용 (버튼 텍스트 색상과 일치)
+  return 'currentColor';
 };
 
 // 마우스 클릭 핸들러
@@ -195,33 +191,42 @@ function handleKeydown(e: KeyboardEvent) {
     :type="props.href ? undefined : 'button'"
     :class="[...buttonClasses, 'focus-ring']"
     :style="!predefinedColors.includes(props.color as ButtonColor) ? { '--button-custom-color': props.color } : {}"
-    :aria-label="props.label"
+    :aria-label="props.centerIcon ? props.centerIcon.name : props.label"
     :aria-disabled="props.disabled ? 'true' : undefined"
     :tabindex="props.disabled ? -1 : 0"
     :disabled="!props.href && props.disabled"
     @click="handleClick"
     @keydown="props.href ? handleKeydown : undefined"
   >
-    <!-- 좌측 아이콘 -->
+    <!-- 좌측 아이콘 (중앙 아이콘이 없을 때만) -->
     <BaseIcon
-      v-if="props.leftIcon"
+      v-if="props.leftIcon && !props.centerIcon"
       :name="props.leftIcon.name"
       :size="getIconSize(props.size)"
       :color="getIconColor(props.leftIcon, props.color)"
       class="icon"
     />
 
-    <!-- 텍스트 영역 -->
-    <div class="flex flex-col items-center justify-center">
+    <!-- 중앙 아이콘 -->
+    <BaseIcon
+      v-if="props.centerIcon"
+      :name="props.centerIcon.name"
+      :size="getIconSize(props.size)"
+      :color="getIconColor(props.centerIcon, props.color)"
+      class="icon"
+    />
+
+    <!-- 텍스트 영역 (중앙 아이콘이 없을 때만) -->
+    <div v-if="showText" class="flex flex-col items-center justify-center">
       <span class="btn-label font-medium">{{ props.label }}</span>
       <span v-if="props.subLabel" class="btn-sub-text font-semibold">
         {{ props.subLabel }}
       </span>
     </div>
 
-    <!-- 우측 아이콘 -->
+    <!-- 우측 아이콘 (중앙 아이콘이 없을 때만) -->
     <BaseIcon
-      v-if="props.rightIcon"
+      v-if="props.rightIcon && !props.centerIcon"
       :name="props.rightIcon.name"
       :size="getIconSize(props.size)"
       :color="getIconColor(props.rightIcon, props.color)"

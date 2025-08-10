@@ -62,6 +62,30 @@ const meta: Meta<typeof BaseButton> = {
         category: 'Props',
       },
     },
+    leftIcon: {
+      description: '좌측 아이콘 정보',
+      control: { type: 'object' },
+      table: {
+        type: { summary: 'ButtonIconProps' },
+        category: 'Props',
+      },
+    },
+    rightIcon: {
+      description: '우측 아이콘 정보',
+      control: { type: 'object' },
+      table: {
+        type: { summary: 'ButtonIconProps' },
+        category: 'Props',
+      },
+    },
+    centerIcon: {
+      description: '중앙 아이콘 정보 (중앙 아이콘 사용 시 label과 subLabel은 무시됩니다)',
+      control: { type: 'object' },
+      table: {
+        type: { summary: 'ButtonIconProps' },
+        category: 'Props',
+      },
+    },
     label: {
       description: '버튼 텍스트',
       control: { type: 'text' },
@@ -495,6 +519,87 @@ export const CustomGradient: Story = {
     docs: {
       description: {
         story: '그라데이션 배경을 사용한 커스텀 버튼입니다. 호버 시 그라데이션이 어두워집니다.',
+      },
+    },
+  },
+};
+
+// 중앙 아이콘만 있는 버튼들
+export const CenterIcon: Story = {
+  args: {
+    variant: 'contained',
+    color: 'primary',
+    size: 'lg',
+    centerIcon: { name: 'plus' },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '중앙에 아이콘만 있는 기본 버튼입니다. label과 subLabel은 무시됩니다.',
+      },
+    },
+  },
+};
+
+export const CenterIconOutlined: Story = {
+  args: {
+    variant: 'outlined',
+    color: 'primary',
+    size: 'lg',
+    centerIcon: { name: 'plus' },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '중앙에 아이콘만 있는 outlined 스타일 버튼입니다.',
+      },
+    },
+  },
+};
+
+export const CenterIconPill: Story = {
+  args: {
+    variant: 'contained',
+    color: 'primary',
+    size: 'lg',
+    pill: true,
+    centerIcon: { name: 'plus' },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '중앙에 아이콘만 있는 pill 스타일 버튼입니다.',
+      },
+    },
+  },
+};
+
+export const CenterIconCustomColor: Story = {
+  args: {
+    variant: 'contained',
+    size: 'lg',
+    centerIcon: { name: 'star' },
+  },
+  render: (args) => ({
+    components: { BaseButton },
+    setup() {
+      return { args };
+    },
+    template: `
+      <BaseButton
+        v-bind="args"
+        :style="{
+          backgroundColor: '#FFD700',
+          color: '#ff0000',
+          borderColor: '#FFD700'
+        }"
+      />
+    `,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story: '커스텀 색상을 사용한 중앙 아이콘 버튼입니다. 별표 아이콘과 노란색 배경을 사용합니다. 아이콘은 currentColor로 설정되어 검은색으로 표시됩니다.',
       },
     },
   },

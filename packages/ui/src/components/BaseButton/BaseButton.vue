@@ -13,7 +13,6 @@
  * @figma Button (node-id: 32-244)
  */
 import type { ComponentSize, ButtonIconProps } from '../../types/components';
-import BaseSkeleton from '../BaseSkeleton/BaseSkeleton.vue';
 import type { IconName } from '../../types/icons';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { computed } from 'vue';

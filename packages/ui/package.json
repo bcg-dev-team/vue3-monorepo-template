@@ -27,11 +27,15 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm run build:theme && vite build",
-    "build:theme": "cd ../theme && pnpm build",
-    "dev": "pnpm run build:theme && vite build --watch",
+    "build": "vite build",
+    "build:fast": "vite build --config vite.config.fast.ts",
+    "build:dev": "vite build --mode development",
+    "build:prod": "vite build --mode production",
+    "build:analyze": "vite build --mode production && npx vite-bundle-analyzer dist",
+    "dev": "vite build --watch",
     "clean": "rimraf dist",
     "type-check": "tsc --noEmit",
+    "type-check:watch": "tsc --noEmit --watch",
     "storybook": "storybook dev -p 6006",
     "storybook:external": "storybook dev -p 6006 --host 0.0.0.0",
     "build-storybook": "storybook build",
@@ -49,7 +53,11 @@
     "postcss": "^8.4.0",
     "tailwindcss": "^3.4.0",
     "vite-plugin-sass-dts": "^1.3.31",
-    "vite-svg-loader": "^5.1.0"
+    "vite-svg-loader": "^5.1.0",
+    "vite-plugin-dts": "^3.0.0",
+    "sass": "^1.69.0",
+    "rimraf": "^5.0.0",
+    "cssnano": "^6.0.0"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

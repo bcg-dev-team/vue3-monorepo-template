@@ -10,8 +10,18 @@
     "jsxImportSource": "vue",
     "baseUrl": "./src",
     "paths": {
-      "@template/types": ["../../types/dist/index.d.ts"]
-    }
+      "@template/types": [
+        "../../types/dist/index.d.ts"
+      ]
+    },
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
   },
   "include": [
     "src/**/*",
@@ -19,9 +29,17 @@
   ],
   "exclude": [
     "dist",
-    "node_modules"
+    "node_modules",
+    "**/*.stories.ts",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/*.stories.vue",
+    "**/*.test.vue",
+    "**/*.spec.vue"
   ],
   "references": [
-    { "path": "../types" }
+    {
+      "path": "../types"
+    }
   ]
-} 
+}

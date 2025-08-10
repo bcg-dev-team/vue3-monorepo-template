@@ -51,6 +51,45 @@ import { BaseButton } from '@template/ui/components/BaseButton'
 import { BaseInput } from '@template/ui/components/BaseInput'
 ```
 
+## 🛠️ 빌드 및 개발
+
+### 빌드 스크립트
+
+```bash
+# 기본 빌드
+pnpm build
+
+# 개발 환경 빌드 (소스맵 포함, 미니파이 없음)
+pnpm build:dev
+
+# 프로덕션 환경 빌드 (최적화된 번들)
+pnpm build:prod
+
+# 번들 분석 (프로덕션 빌드 후)
+pnpm build:analyze
+
+# 개발 모드 (파일 변경 감지)
+pnpm dev
+
+# 타입 체크
+pnpm type-check
+
+# 타입 체크 (감시 모드)
+pnpm type-check:watch
+```
+
+### 빌드 최적화
+
+- **Tree Shaking**: 사용하지 않는 컴포넌트는 자동으로 제거됩니다
+- **CSS 번들링**: 모든 스타일이 하나의 CSS 파일로 번들링됩니다
+- **타입 생성**: TypeScript 타입 정의가 자동으로 생성됩니다
+- **코드 분할**: Vue, Types, Theme이 별도 청크로 분리됩니다
+
+### 환경별 설정
+
+- **개발 환경**: 소스맵 포함, 미니파이 없음, 개발 도구 활성화
+- **프로덕션 환경**: 최적화된 번들, 소스맵 없음, 개발 도구 비활성화
+
 ## 📁 파일 구조
 
 ```

@@ -219,12 +219,16 @@
   white-space: nowrap;
   pointer-events: none;
 }
-.btn-size-large .btn-sub-label {
+.btn-size-lg .btn-sub-text {
+  font-size: 18px;
+  line-height: 22px;
+}
+.btn-size-md .btn-sub-text {
   font-size: 16px;
   line-height: 20px;
 }
-.btn-size-medium .btn-sub-label {
-  font-size: 14px;
+.btn-size-sm .btn-sub-text {
+  font-size: 15px;
   line-height: 18px;
 }
 .btn-size-small .btn-sub-label {

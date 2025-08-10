@@ -94,11 +94,10 @@ export const Default: Story = {
     template: `
       <div>
         <BaseButton 
-          variant="outline"
-          size="regular"
+          variant="contained"
+          size="md"
           label="기본 팝업 열기"
           @click="openPopup"
-          style="color: #3b82f6; border-color: #3b82f6;"
         />
         
         <BasePopup 
@@ -140,11 +139,10 @@ export const DefaultWithContent: Story = {
     template: `
       <div>
         <BaseButton 
-          variant="outline"
-          size="regular"
+          variant="contained"
+          size="md"
           label="기본 팝업 열기"
           @click="openPopup"
-          style="color: #3b82f6; border-color: #3b82f6;"
         />
         
         <BasePopup 
@@ -187,11 +185,10 @@ export const Small: Story = {
     template: `
       <div>
         <BaseButton 
-          variant="outline"
-          size="regular"
+          variant="contained"
+          size="md"
           label="작은 팝업 열기"
           @click="openPopup"
-          style="color: #3b82f6; border-color: #3b82f6;"
         />
         
         <BasePopup 
@@ -233,11 +230,10 @@ export const Large: Story = {
     template: `
       <div>
         <BaseButton 
-          variant="outline"
-          size="regular"
+          variant="contained"
+          size="md"
           label="큰 팝업 열기"
           @click="openPopup"
-          style="color: #3b82f6; border-color: #3b82f6;"
         />
         
         <BasePopup 
@@ -272,13 +268,13 @@ export const Confirm: Story = {
     actions: [
       {
         label: '취소',
-        variant: 'outline',
-        size: 'regular',
+        variant: 'outlined',
+        size: 'md',
       },
       {
         label: '확인',
-        variant: 'primary',
-        size: 'regular',
+        variant: 'contained',
+        size: 'md',
       },
     ],
   },
@@ -294,11 +290,10 @@ export const Confirm: Story = {
     template: `
       <div>
         <BaseButton 
-          variant="outline"
-          size="regular"
+          variant="contained"
+          size="md"
           label="확인 팝업 열기"
           @click="openPopup"
-          style="color: #3b82f6; border-color: #3b82f6;"
         />
         
         <BasePopup 
@@ -331,8 +326,8 @@ export const AlertSuccess: Story = {
     actions: [
       {
         label: '확인',
-        variant: 'green-solid',
-        size: 'regular',
+        variant: 'contained',
+        size: 'md',
       },
     ],
   },
@@ -348,11 +343,10 @@ export const AlertSuccess: Story = {
     template: `
       <div>
         <BaseButton 
-          variant="outline"
-          size="regular"
+          variant="contained"
+          size="md"
           label="성공 알림 열기"
           @click="openPopup"
-          style="color: #10b981; border-color: #10b981;"
         />
         
         <BasePopup 
@@ -385,8 +379,8 @@ export const AlertError: Story = {
     actions: [
       {
         label: '확인',
-        variant: 'red-solid',
-        size: 'regular',
+        variant: 'contained',
+        size: 'md',
       },
     ],
   },
@@ -402,11 +396,10 @@ export const AlertError: Story = {
     template: `
       <div>
         <BaseButton 
-          variant="outline"
-          size="regular"
+          variant="contained"
+          size="md"
           label="오류 알림 열기"
           @click="openPopup"
-          style="color: #ef4444; border-color: #ef4444;"
         />
         
         <BasePopup 
@@ -448,11 +441,10 @@ export const WithCustomFooter: Story = {
     template: `
       <div>
         <BaseButton 
-          variant="outline"
-          size="regular"
+          variant="contained"
+          size="md"
           label="커스텀 푸터 팝업 열기"
           @click="openPopup"
-          style="color: #3b82f6; border-color: #3b82f6;"
         />
         
         <BasePopup 
@@ -463,14 +455,14 @@ export const WithCustomFooter: Story = {
           <p>커스텀 푸터가 있는 팝업입니다.</p>
           <template #footer>
             <BaseButton 
-              variant="outline"
-              size="regular"
+              variant="outlined"
+              size="md"
               label="취소"
-              style="margin-right: 8px; color: #6b7280; border-color: #6b7280;"
+              style="margin-right: 8px;"
             />
             <BaseButton 
-              variant="primary"
-              size="regular"
+              variant="contained"
+              size="md"
               label="확인"
             />
           </template>

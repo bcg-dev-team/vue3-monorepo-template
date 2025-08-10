@@ -12,6 +12,7 @@ import type {
   PopupVariant, 
   AlertVariant, 
   PopupAction,
+  ButtonIconProps,
   IconName 
 } from '../../types/components';
 import { Dialog, DialogPanel, DialogTitle, DialogDescription } from '@headlessui/vue';
@@ -182,8 +183,8 @@ const handleClose = () => {
               <BaseButton
                 v-for="(action, index) in actions"
                 :key="index"
-                :variant="action.variant || 'outline'"
-                :size="action.size || 'regular'"
+                :variant="action.variant || 'contained'"
+                :size="action.size || 'lg'"
                 :label="action.label"
                 :disabled="action.disabled"
                 :is-loading="action.loading"

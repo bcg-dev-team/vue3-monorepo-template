@@ -103,7 +103,6 @@ const props = withDefaults(defineProps<Props>(), {
   fullWidth: false,
   href: undefined,
   centerIcon: undefined,
-  isLoading: false,
 });
 
 const emit = defineEmits<{
@@ -172,6 +171,32 @@ const getIconColor = (iconProps: ButtonIconProps | undefined, color: string) => 
 
   // 모든 아이콘은 기본적으로 currentColor 사용 (버튼 텍스트 색상과 일치)
   return 'currentColor';
+
+  // // color별 기본 아이콘 색상 (디자인 토큰 사용)
+  // switch (color) {
+  //   case 'primary':
+  //     return props.variant === 'contained'
+  //       ? 'var(--button-primary-text)'
+  //       : 'var(--base-colors-primary-primary800)';
+  //   case 'red':
+  //     return props.variant === 'contained'
+  //       ? 'var(--font-color-white)'
+  //       : 'var(--base-colors-red-red800)';
+  //   case 'blue':
+  //     return props.variant === 'contained'
+  //       ? 'var(--font-color-white)'
+  //       : 'var(--base-colors-blue-blue800-deep)';
+  //   case 'green':
+  //     return 'var(--font-color-white)';
+  //   case 'cancel':
+  //     return 'var(--font-color-white)';
+  //   case 'white':
+  //     return 'var(--base-colors-neutral-neutral750)';
+  //   case 'disabled':
+  //     return 'veear(--button-disabled-text)';
+  //   default:
+  //     return 'currentColor';
+  // }
 };
 
 // 마우스 클릭 핸들러

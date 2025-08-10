@@ -3,7 +3,7 @@
   https://www.figma.com/design/5OJPsmnkEgZZnkHtNbk1wK/-MODA--Draft-250514-?node-id=29-405&m=dev
 -->
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import './BaseCheckbox.scss';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import type { ComponentSize } from '../../types/components';
@@ -72,8 +72,8 @@ const checkboxStyles = computed(() => {
       styles.borderColor = 'var(--base-colors-neutral-neutral400)';
     }
   } else {
-    if (isChecked.value) {
-      // Enabled + Checked/Indeterminate
+    if (isChecked.value || isIndeterminate.value) {
+      // Enabled + Checked or Indeterminate
       styles.backgroundColor = 'var(--base-colors-primary-primary800)';
       styles.borderColor = 'var(--base-colors-primary-primary800)';
     } else {
@@ -124,17 +124,29 @@ const handleKeydown = (event: KeyboardEvent) => {
     handleClick();
   }
 };
+
+// hidden input 요소에 대한 참조
+const hiddenInput = ref<HTMLInputElement>();
+
+// indeterminate 속성을 실제 DOM 요소에 설정
+onMounted(() => {
+  if (hiddenInput.value) {
+    hiddenInput.value.indeterminate = props.indeterminate;
+  }
+});
+
+
 </script>
 
 <template>
   <div
-    class="inline-flex cursor-pointer select-none items-center"
+    class="inline-flex cursor-pointer select-none items-center gap-1"
     :class="{ 'cursor-not-allowed': isDisabled }"
     @click="handleClick"
     @keydown="handleKeydown"
     tabindex="0"
     role="checkbox"
-    :aria-checked="isIndeterminate ? 'mixed' : isChecked"
+    :aria-checked="isIndeterminate ? 'mixed' : isChecked ? 'true' : 'false'"
     :aria-disabled="isDisabled"
   >
     <div class="flex items-center justify-center" :style="containerBoxStyle">
@@ -149,7 +161,7 @@ const handleKeydown = (event: KeyboardEvent) => {
 
         <!-- 부분 선택 아이콘 (indeterminate 상태) -->
         <BaseIcon
-          v-if="isChecked && isIndeterminate"
+          v-if="isIndeterminate"
           name="minus"
           color="var(--base-colors-neutral-neutral000)"
         />
@@ -164,6 +176,7 @@ const handleKeydown = (event: KeyboardEvent) => {
       :disabled="isDisabled"
       :indeterminate="isIndeterminate"
       @change="(e) => emit('update:modelValue', (e.target as HTMLInputElement).checked)"
+      ref="hiddenInput"
     />
 
     <!-- 라벨 슬롯 -->

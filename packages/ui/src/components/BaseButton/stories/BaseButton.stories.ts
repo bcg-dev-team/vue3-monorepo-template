@@ -29,7 +29,7 @@ const meta: Meta<typeof BaseButton> = {
       control: { type: 'select' },
       options: ['primary', 'red', 'blue', 'green', 'cancel'],
       table: {
-        type: { summary: 'primary | red | blue | green | cancel | string' },
+        type: { summary: 'primary | red | blue | green | cancel' },
         defaultValue: { summary: 'primary' },
         category: 'Props',
       },
@@ -37,10 +37,10 @@ const meta: Meta<typeof BaseButton> = {
     size: {
       description: '버튼 크기',
       control: { type: 'select' },
-      options: ['large', 'medium', 'small'],
+      options: ['lg', 'md', 'sm'],
       table: {
-        type: { summary: 'large | medium | small' },
-        defaultValue: { summary: 'large' },
+        type: { summary: 'lg | md | sm' },
+        defaultValue: { summary: 'lg' },
         category: 'Props',
       },
     },
@@ -88,7 +88,7 @@ export const Base: Story = {
   args: {
     variant: 'contained',
     color: 'primary',
-    size: 'large',
+    size: 'lg',
     label: '기본 버튼',
   },
   parameters: {
@@ -105,7 +105,7 @@ export const Outlined: Story = {
   args: {
     variant: 'outlined',
     color: 'primary',
-    size: 'large',
+    size: 'lg',
     label: '외곽선 버튼',
   },
   parameters: {
@@ -122,7 +122,7 @@ export const Red: Story = {
   args: {
     variant: 'contained',
     color: 'red',
-    size: 'large',
+    size: 'lg',
     label: 'Red',
   },
 };
@@ -130,7 +130,7 @@ export const Blue: Story = {
   args: {
     variant: 'contained',
     color: 'blue',
-    size: 'large',
+    size: 'lg',
     label: 'Blue',
   },
 };
@@ -138,7 +138,7 @@ export const Green: Story = {
   args: {
     variant: 'contained',
     color: 'green',
-    size: 'large',
+    size: 'lg',
     label: 'Green',
   },
 };
@@ -146,7 +146,7 @@ export const Cancel: Story = {
   args: {
     variant: 'contained',
     color: 'cancel',
-    size: 'large',
+    size: 'lg',
     label: 'Cancel',
   },
 };
@@ -156,7 +156,7 @@ export const Large: Story = {
   args: {
     variant: 'contained',
     color: 'primary',
-    size: 'large',
+    size: 'lg',
     label: 'Large',
   },
 };
@@ -164,7 +164,7 @@ export const Medium: Story = {
   args: {
     variant: 'contained',
     color: 'primary',
-    size: 'medium',
+    size: 'md',
     label: 'Medium',
   },
 };
@@ -172,7 +172,7 @@ export const Small: Story = {
   args: {
     variant: 'contained',
     color: 'primary',
-    size: 'small',
+    size: 'sm',
     label: 'Small',
   },
 };
@@ -182,7 +182,7 @@ export const Pill: Story = {
   args: {
     variant: 'contained',
     color: 'primary',
-    size: 'large',
+    size: 'lg',
     pill: true,
     label: 'Pill',
   },
@@ -193,7 +193,7 @@ export const DisabledContained: Story = {
   args: {
     variant: 'contained',
     color: 'primary',
-    size: 'large',
+    size: 'lg',
     label: 'Disabled',
     disabled: true,
   },
@@ -203,7 +203,7 @@ export const DisabledOutlined: Story = {
   args: {
     variant: 'outlined',
     color: 'primary',
-    size: 'large',
+    size: 'lg',
     label: 'Disabled',
     disabled: true,
   },
@@ -214,7 +214,7 @@ export const LeftIcon: Story = {
   args: {
     variant: 'contained',
     color: 'primary',
-    size: 'large',
+    size: 'lg',
     label: 'Left Icon',
     leftIcon: { name: 'plus' },
   },
@@ -223,7 +223,7 @@ export const RightIcon: Story = {
   args: {
     variant: 'contained',
     color: 'primary',
-    size: 'large',
+    size: 'lg',
     label: 'Right Icon',
     rightIcon: { name: 'plus' },
   },
@@ -232,7 +232,7 @@ export const BothIcons: Story = {
   args: {
     variant: 'contained',
     color: 'primary',
-    size: 'large',
+    size: 'lg',
     label: 'Both Icons',
     leftIcon: { name: 'plus' },
     rightIcon: { name: 'plus' },
@@ -244,7 +244,7 @@ export const FullWidth: Story = {
   args: {
     variant: 'contained',
     color: 'primary',
-    size: 'large',
+    size: 'lg',
     label: 'Full Width',
     fullWidth: true,
   },
@@ -255,7 +255,7 @@ export const WithSubLabel: Story = {
   args: {
     variant: 'contained',
     color: 'primary',
-    size: 'large',
+    size: 'lg',
     label: 'Label',
     subLabel: 'SubLabel',
   },
@@ -266,7 +266,7 @@ export const Complex: Story = {
   args: {
     variant: 'outlined',
     color: 'red',
-    size: 'large',
+    size: 'lg',
     pill: true,
     disabled: false,
     fullWidth: true,
@@ -289,7 +289,7 @@ export const AriaLabelCustom: Story = {
   args: {
     variant: 'contained',
     color: 'primary',
-    size: 'large',
+    size: 'lg',
     label: '실제 버튼 텍스트',
     // aria-label은 label로 자동 부여됨
   },
@@ -307,7 +307,7 @@ export const AsLinkButton: Story = {
   args: {
     variant: 'contained',
     color: 'primary',
-    size: 'large',
+    size: 'lg',
     label: '링크 버튼',
     href: 'https://blockchainglobal.co.kr/',
   },
@@ -325,7 +325,7 @@ export const DisabledLinkButton: Story = {
   args: {
     variant: 'contained',
     color: 'primary',
-    size: 'large',
+    size: 'lg',
     label: '비활성화 링크 버튼',
     href: 'https://blockchainglobal.co.kr/',
     disabled: true,
@@ -344,7 +344,7 @@ export const KeyboardNavigation: Story = {
   args: {
     variant: 'contained',
     color: 'primary',
-    size: 'large',
+    size: 'lg',
     label: 'Tab/Enter/Space로 테스트',
   },
   parameters: {
@@ -362,7 +362,7 @@ export const KeyboardNavigation: Story = {
 export const CustomGreen: Story = {
   args: {
     variant: 'contained',
-    size: 'medium',
+    size: 'md',
     label: '인증완료',
     rightIcon: { name: 'check-circle', color: 'currentColor' },
   },
@@ -396,31 +396,44 @@ export const CustomGreen: Story = {
 export const CustomSolid: Story = {
   args: {
     variant: 'contained',
-    size: 'large',
+    size: 'lg',
     label: '커스텀 단색 버튼',
   },
   render: (args) => ({
     components: { BaseButton },
     setup() {
-      return { args };
+      const customStyles = {
+        backgroundColor: '#ff6b6b',
+        color: '#ffffff',
+        borderColor: '#ff6b6b',
+        transition: 'all 0.2s ease',
+      };
+      
+      const handleMouseEnter = (event: Event) => {
+        const target = event.target as HTMLElement;
+        if (target) {
+          target.style.backgroundColor = '#e55a5a';
+          target.style.borderColor = '#e55a5a';
+        }
+      };
+      
+      const handleMouseLeave = (event: Event) => {
+        const target = event.target as HTMLElement;
+        if (target) {
+          target.style.backgroundColor = '#ff6b6b';
+          target.style.borderColor = '#ff6b6b';
+        }
+      };
+      
+      return { args, customStyles, handleMouseEnter, handleMouseLeave };
     },
     template: `
       <div>
-        <style>
-          .custom-solid {
-            background-color: #ff6b6b !important;
-            color: #ffffff !important;
-            border-color: #ff6b6b !important;
-            transition: all 0.2s ease !important;
-          }
-          .custom-solid:hover {
-            background-color: #e55a5a !important;
-            border-color: #e55a5a !important;
-          }
-        </style>
         <BaseButton
           v-bind="args"
-          :customClass="'custom-solid'"
+          :style="customStyles"
+          @mouseenter="handleMouseEnter"
+          @mouseleave="handleMouseLeave"
         />
       </div>
     `,
@@ -438,30 +451,42 @@ export const CustomSolid: Story = {
 export const CustomGradient: Story = {
   args: {
     variant: 'contained',
-    size: 'large',
+    size: 'lg',
     label: '그라데이션 버튼',
   },
   render: (args) => ({
     components: { BaseButton },
     setup() {
-      return { args };
+      const customStyles = {
+        background: 'linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%)',
+        color: '#ffffff',
+        borderColor: 'transparent',
+        transition: 'all 0.2s ease',
+      };
+      
+      const handleMouseEnter = (event: Event) => {
+        const target = event.target as HTMLElement;
+        if (target) {
+          target.style.background = 'linear-gradient(135deg, #9bb0ff 0%, #2e1f85 100%)';
+        }
+      };
+      
+      const handleMouseLeave = (event: Event) => {
+        const target = event.target as HTMLElement;
+        if (target) {
+          target.style.background = 'linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%)';
+        }
+      };
+      
+      return { args, customStyles, handleMouseEnter, handleMouseLeave };
     },
     template: `
       <div>
-        <style>
-          .custom-gradient {
-            background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%) !important;
-            color: #ffffff !important;
-            border-color: transparent !important;
-            transition: all 0.2s ease !important;
-          }
-          .custom-gradient:hover {
-            background: linear-gradient(135deg, #9bb0ff 0%, #2e1f85 100%) !important;
-          }
-        </style>
         <BaseButton
           v-bind="args"
-          :customClass="'custom-gradient'"
+          :style="customStyles"
+          @mouseenter="handleMouseEnter"
+          @mouseleave="handleMouseLeave"
         />
       </div>
     `,

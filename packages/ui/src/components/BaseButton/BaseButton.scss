@@ -118,21 +118,21 @@
 }
 
 // 크기별 스타일
-.btn-size-large {
+.btn-size-lg {
   padding: 12px 16px;
   font-size: 16px;
   line-height: 20px;
   letter-spacing: -0.35px;
   border-radius: var(--radius-md);
 }
-.btn-size-medium {
+.btn-size-md {
   padding: 6px 20px;
   font-size: 14px;
   line-height: 18px;
   letter-spacing: 0;
   border-radius: var(--radius-sm);
 }
-.btn-size-small {
+.btn-size-sm {
   padding: 10px 12px;
   font-size: 13px;
   line-height: 16px;
@@ -141,15 +141,15 @@
 }
 
 // 아이콘 크기 조정
-.btn-size-large .icon {
+.btn-size-lg .icon {
   width: 24px;
   height: 24px;
 }
-.btn-size-medium .icon {
+.btn-size-md .icon {
   width: 24px;
   height: 24px;
 }
-.btn-size-small .icon {
+.btn-size-sm .icon {
   width: 16px;
   height: 16px;
 }
@@ -161,15 +161,15 @@
   pointer-events: none;
 
 }
-.btn-size-large .btn-label {
+.btn-size-lg .btn-label {
   font-size: 16px;
   line-height: 20px;
 }
-.btn-size-medium .btn-label {
+.btn-size-md .btn-label {
   font-size: 14px;
   line-height: 18px;
 }
-.btn-size-small .btn-label {
+.btn-size-sm .btn-label {
   font-size: 13px;
   line-height: 16px;
 }
@@ -180,15 +180,15 @@
   white-space: nowrap;
   pointer-events: none;
 }
-.btn-size-large .btn-sub-text {
+.btn-size-lg .btn-sub-text {
   font-size: 18px;
   line-height: 22px;
 }
-.btn-size-medium .btn-sub-text {
+.btn-size-md .btn-sub-text {
   font-size: 16px;
   line-height: 20px;
 }
-.btn-size-small .btn-sub-text {
+.btn-size-sm .btn-sub-text {
   font-size: 15px;
   line-height: 18px;
 }
@@ -208,3 +208,5 @@ a[role='button'][aria-disabled='true'] {
   opacity: 0.6;
   pointer-events: none;
 }
+
+

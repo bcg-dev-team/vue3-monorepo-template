@@ -8,33 +8,34 @@ const meta: Meta<typeof BaseCheckbox> = {
   parameters: {
     docs: {
       description: {
-        component: '체크박스 컴포넌트입니다. 피그마의 Input/Checkbox 디자인을 기반으로 구현되었으며, 체크/언체크 상태와 비활성화 상태를 지원합니다.'
-      }
-    }
+        component:
+          '체크박스 컴포넌트입니다. 피그마의 Input/Checkbox 디자인을 기반으로 구현되었으며, 체크/언체크 상태와 비활성화 상태를 지원합니다.',
+      },
+    },
   },
   argTypes: {
     modelValue: {
       description: '체크 여부 (v-model)',
-      control: 'boolean'
+      control: 'boolean',
     },
     disabled: {
       description: '비활성화 여부',
-      control: 'boolean'
+      control: 'boolean',
     },
     indeterminate: {
       description: '부분 선택 상태 (3-state checkbox)',
-      control: 'boolean'
+      control: 'boolean',
     },
     size: {
       description: '컴포넌트 크기 (sm: 20px, md: 22px, lg: 24px)',
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
       table: {
-        defaultValue: { summary: 'md' }
-      }
-    }
+        defaultValue: { summary: 'md' },
+      },
+    },
   },
-  tags: ['autodocs']
+  tags: ['autodocs'],
 };
 
 export default meta;
@@ -56,8 +57,8 @@ export const Default: Story = {
       <BaseCheckbox v-bind="args">
         기본 체크박스
       </BaseCheckbox>
-    `
-  })
+    `,
+  }),
 };
 
 // 체크된 상태
@@ -76,8 +77,8 @@ export const Checked: Story = {
       <BaseCheckbox v-bind="args">
         체크된 체크박스
       </BaseCheckbox>
-    `
-  })
+    `,
+  }),
 };
 
 // 비활성화 상태 (체크 안됨)
@@ -96,8 +97,8 @@ export const DisabledUnchecked: Story = {
       <BaseCheckbox v-bind="args">
         비활성화된 체크박스 (체크 안됨)
       </BaseCheckbox>
-    `
-  })
+    `,
+  }),
 };
 
 // 비활성화 상태 (체크됨)
@@ -116,8 +117,8 @@ export const DisabledChecked: Story = {
       <BaseCheckbox v-bind="args">
         비활성화된 체크박스 (체크됨)
       </BaseCheckbox>
-    `
-  })
+    `,
+  }),
 };
 
 // 부분 선택 상태 (indeterminate) - 실제 사용 예시
@@ -129,7 +130,7 @@ export const Indeterminate: Story = {
       const child1 = ref(false);
       const child2 = ref(true);
       const child3 = ref(false);
-      
+
       // 부모 체크박스의 상태 계산
       const parentChecked = computed(() => child1.value && child2.value && child3.value);
       const parentIndeterminate = computed(() => {
@@ -137,7 +138,7 @@ export const Indeterminate: Story = {
         const allChecked = child1.value && child2.value && child3.value;
         return hasChecked && !allChecked;
       });
-      
+
       // 부모 체크박스 클릭 시 모든 하위 체크박스를 토글
       const handleParentClick = () => {
         const newValue = !parentChecked.value;
@@ -145,14 +146,14 @@ export const Indeterminate: Story = {
         child2.value = newValue;
         child3.value = newValue;
       };
-      
+
       return {
         child1,
         child2,
         child3,
         parentChecked,
         parentIndeterminate,
-        handleParentClick
+        handleParentClick,
       };
     },
     template: `
@@ -183,8 +184,8 @@ export const Indeterminate: Story = {
           </div>
         </div>
       </div>
-    `
-  })
+    `,
+  }),
 };
 
 // 모든 상태 비교
@@ -231,8 +232,8 @@ export const AllStates: Story = {
           </BaseCheckbox>
         </div>
       </div>
-    `
-  })
+    `,
+  }),
 };
 
 // 사이즈 비교
@@ -268,8 +269,8 @@ export const AllSizes: Story = {
           </BaseCheckbox>
         </div>
       </div>
-    `
-  })
+    `,
+  }),
 };
 
 // 실제 사용 예시
@@ -361,8 +362,8 @@ export const UsageExample: Story = {
           </div>
         </div>
       </div>
-    `
-  })
+    `,
+  }),
 };
 
 // 접근성 테스트
@@ -400,9 +401,9 @@ export const Accessibility: Story = {
         item3.value = newValue;
       };
 
-      return { 
-        first, 
-        second, 
+      return {
+        first,
+        second,
         third,
         allItems,
         item1,
@@ -410,7 +411,7 @@ export const Accessibility: Story = {
         item3,
         itemsIndeterminate,
         itemsChecked,
-        toggleAllItems
+        toggleAllItems,
       };
     },
     template: `
@@ -456,6 +457,6 @@ export const Accessibility: Story = {
           </div>
         </div>
       </div>
-    `
-  })
+    `,
+  }),
 };

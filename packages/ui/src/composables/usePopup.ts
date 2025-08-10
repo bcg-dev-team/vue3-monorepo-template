@@ -1,12 +1,49 @@
 import { ref, computed, readonly } from 'vue';
-import type { PopupState, PopupConfig, PopupAction } from '../types/components';
 
 /**
  * 팝업 상태 타입 정의
  */
-export interface PopupStateExtended extends PopupState {
+export interface PopupStateExtended {
+  isOpen: boolean;
+  title?: string;
+  content?: string;
   description?: string;
+  data?: unknown;
   config?: PopupConfig;
+}
+
+/**
+ * 팝업 설정 타입 정의
+ */
+export interface PopupConfig {
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  variant?: 'default' | 'confirm' | 'alert';
+  closeOnOverlayClick?: boolean;
+  closeOnEscape?: boolean;
+  showCloseButton?: boolean;
+  actions?: PopupAction[];
+  alertVariant?: 'success' | 'info' | 'warning' | 'error';
+}
+
+/**
+ * 팝업 액션 타입 정의
+ */
+export interface PopupAction {
+  label: string;
+  variant?: 'contained' | 'outlined';
+  size?: 'lg' | 'md' | 'sm';
+  disabled?: boolean;
+  loading?: boolean;
+  leftIcon?: {
+    name: string;
+    size?: 'lg' | 'md' | 'sm';
+    color?: string;
+  };
+  rightIcon?: {
+    name: string;
+    size?: 'lg' | 'md' | 'sm';
+    color?: string;
+  };
 }
 
 /**

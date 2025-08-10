@@ -348,7 +348,7 @@ async function main(): Promise<void> {
 
   console.log(`💡 빌드 대상 패키지: ${buildablePackages.join(', ')}\n`);
 
-  // 순환참조 검사
+  // 순환참조 검사 (빌드 후에 수행)
   checkCircularDependencies();
 
   // 순서대로 빌드
@@ -366,6 +366,8 @@ async function main(): Promise<void> {
   buildablePackages.forEach((pkg) => {
     console.log(`   ✅ ${pkg}`);
   });
+
+
 }
 
 // 스크립트 실행

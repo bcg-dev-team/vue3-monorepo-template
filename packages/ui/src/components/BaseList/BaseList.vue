@@ -250,7 +250,7 @@ const getItemAriaAttributes = (itemId: string | number, index: number) => ({
           @click.stop="handleItemSelect(item.id, !isItemSelected(item.id))"
         >
           <BaseIcon
-            :name="isItemSelected(item.id) ? 'check-circle' : 'circle'"
+            :name="isItemSelected(item.id) ? 'check-circle' : 'check-circle'"
             size="sm"
             :color="isItemSelected(item.id) ? 'var(--color-primary)' : 'var(--color-grey-400)'"
           />

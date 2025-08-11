@@ -24,7 +24,7 @@ const headers: TableHeader[] = [
   { key: 'no', title: '번호', width: '100px', align: 'center' },
   { key: 'category', title: '카테고리', width: '160px', align: 'center' },
   { key: 'title', title: '제목', align: 'center' },
-  { key: 'createAt', title: '작성일시', width: '200px', align: 'text-center' },
+  { key: 'createAt', title: '작성일시', width: '200px', align: 'center' },
   { key: 'answerAt', title: '답변일시', width: '200px', align: 'center' },
   { key: 'state', title: '답변상태', width: '200px', align: 'center' },
 ];

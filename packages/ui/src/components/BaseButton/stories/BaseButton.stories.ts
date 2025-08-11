@@ -178,7 +178,7 @@ export const Grey: Story = {
   args: {
     variant: 'contained',
     color: 'grey',
-    size: 'large',
+    size: 'lg',
     label: 'Grey',
   },
 };
@@ -332,7 +332,7 @@ export const VariantComparison: Story = {
               <BaseButton
                 variant="contained"
                 color="primary"
-                size="large"
+                size="lg"
                 label="Primary"
               />
             </div>
@@ -341,7 +341,7 @@ export const VariantComparison: Story = {
               <BaseButton
                 variant="contained"
                 color="red"
-                size="large"
+                size="lg"
                 label="Red"
               />
             </div>
@@ -350,7 +350,7 @@ export const VariantComparison: Story = {
               <BaseButton
                 variant="contained"
                 color="blue"
-                size="large"
+                size="lg"
                 label="Blue"
               />
             </div>
@@ -359,7 +359,7 @@ export const VariantComparison: Story = {
               <BaseButton
                 variant="contained"
                 color="green"
-                size="large"
+                size="lg"
                 label="Green"
               />
             </div>
@@ -368,7 +368,7 @@ export const VariantComparison: Story = {
               <BaseButton
                 variant="contained"
                 color="cancel"
-                size="large"
+                size="lg"
                 label="Cancel"
               />
             </div>
@@ -377,7 +377,7 @@ export const VariantComparison: Story = {
               <BaseButton
                 variant="contained"
                 color="grey"
-                size="large"
+                size="lg"
                 label="Grey"
               />
             </div>
@@ -392,7 +392,7 @@ export const VariantComparison: Story = {
               <BaseButton
                 variant="contained-grey"
                 color="red"
-                size="large"
+                size="lg"
                 label="Red"
               />
             </div>
@@ -401,7 +401,7 @@ export const VariantComparison: Story = {
               <BaseButton
                 variant="contained-grey"
                 color="blue"
-                size="large"
+                size="lg"
                 label="Blue"
               />
             </div>
@@ -416,7 +416,7 @@ export const VariantComparison: Story = {
               <BaseButton
                 variant="outlined"
                 color="primary"
-                size="large"
+                size="lg"
                 label="Primary"
               />
             </div>
@@ -425,7 +425,7 @@ export const VariantComparison: Story = {
               <BaseButton
                 variant="outlined"
                 color="red"
-                size="large"
+                size="lg"
                 label="Red"
               />
             </div>
@@ -434,7 +434,7 @@ export const VariantComparison: Story = {
               <BaseButton
                 variant="outlined"
                 color="blue"
-                size="large"
+                size="lg"
                 label="Blue"
               />
             </div>
@@ -443,7 +443,7 @@ export const VariantComparison: Story = {
               <BaseButton
                 variant="outlined"
                 color="white"
-                size="large"
+                size="lg"
                 label="White"
               />
             </div>

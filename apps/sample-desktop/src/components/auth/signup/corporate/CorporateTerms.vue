@@ -13,47 +13,72 @@
         </div>
         <div class="mt-6">
           <div class="p-size-12 border-bg-outline rounded-[10px] border">
-            <CheckBoxLabel v-model:isChecked="isChecked">
+            <BaseCheckbox
+              v-model="isAllChecked"
+              :indeterminate="isIndeterminate"
+              @click="toggleAll"
+            >
               <span class="text-font-15 font-semibold">모든 약관에 동의합니다.</span>
-            </CheckBoxLabel>
+            </BaseCheckbox>
           </div>
           <div class="gap-size-8 px-size-12 mt-size-8 flex flex-col">
-            <CheckBoxLabel v-model:isChecked="isChecked">
+            <BaseCheckbox v-model="state.serviceAgreement">
               <div class="text-font-12 flex w-full items-center justify-between">
                 <div>
                   서비스 이용 약관 동의
                   <span class="text-red font-medium">(필수)</span>
                 </div>
-                <div class="gap-size-2 flex items-center">
+                <div
+                  class="gap-size-2 flex items-center"
+                  @click.stop="
+                    () => {
+                      console.log('상세보기');
+                    }
+                  "
+                >
                   상세보기
                   <BaseIcon name="arrow-right-thin" size="md" />
                 </div>
               </div>
-            </CheckBoxLabel>
-            <CheckBoxLabel v-model:isChecked="isChecked">
+            </BaseCheckbox>
+            <BaseCheckbox v-model="state.personalInfoAgreement">
               <div class="text-font-12 flex w-full items-center justify-between">
                 <div>
                   개인정보 수집 및 이용 동의
                   <span class="text-red font-medium">(필수)</span>
                 </div>
-                <div class="gap-size-2 flex items-center">
+                <div
+                  class="gap-size-2 flex items-center"
+                  @click.stop="
+                    () => {
+                      console.log('상세보기');
+                    }
+                  "
+                >
                   상세보기
                   <BaseIcon name="arrow-right-thin" size="md" />
                 </div>
               </div>
-            </CheckBoxLabel>
-            <CheckBoxLabel v-model:isChecked="isChecked">
+            </BaseCheckbox>
+            <BaseCheckbox v-model="state.marketingAgreement">
               <div class="text-font-12 flex w-full items-center justify-between">
                 <div>
                   마케팅 활용 및 광고성 정보 수신 동의
                   <span class="text-default-muted font-medium">(선택)</span>
                 </div>
-                <div class="gap-size-2 flex items-center">
+                <div
+                  class="gap-size-2 flex items-center"
+                  @click.stop="
+                    () => {
+                      console.log('상세보기');
+                    }
+                  "
+                >
                   상세보기
                   <BaseIcon name="arrow-right-thin" size="md" />
                 </div>
               </div>
-            </CheckBoxLabel>
+            </BaseCheckbox>
           </div>
         </div>
         <div class="mt-[33px]">
@@ -62,6 +87,7 @@
             label="가입하기"
             variant="contained"
             color="primary"
+            :disabled="!state.serviceAgreement || !state.personalInfoAgreement"
             full-width
             @click="step = 1"
           />
@@ -71,12 +97,33 @@
   </AuthContent>
 </template>
 <script lang="ts" setup>
-import { BaseIcon, BasePaginationJoin, BaseButton } from '@template/ui';
-import CheckBoxLabel from '@/components/auth/common/CheckBoxLabel.vue';
+import { BaseIcon, BasePaginationJoin, BaseButton, BaseCheckbox } from '@template/ui';
 import AuthContent from '@/components/auth/AuthContent.vue';
-import { ref } from 'vue';
+import { reactive, computed } from 'vue';
 
-const isChecked = ref(false);
+const state = reactive({
+  serviceAgreement: false,
+  personalInfoAgreement: false,
+  marketingAgreement: false,
+});
+
+const isAllChecked = computed(() => {
+  return state.serviceAgreement && state.personalInfoAgreement && state.marketingAgreement;
+});
+
+const isIndeterminate = computed(() => {
+  return (
+    (state.serviceAgreement || state.personalInfoAgreement || state.marketingAgreement) &&
+    !isAllChecked.value
+  );
+});
+
+const toggleAll = () => {
+  const newValue = !isAllChecked.value;
+  state.serviceAgreement = newValue;
+  state.personalInfoAgreement = newValue;
+  state.marketingAgreement = newValue;
+};
 
 const step = defineModel<number>('step', { required: true });
 </script>

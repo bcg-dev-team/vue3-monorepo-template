@@ -106,7 +106,11 @@ const containerBoxStyle = computed(() => {
   return {
     width: `${widthHeightPx}px`,
     height: `${widthHeightPx}px`,
+    minWidth: `${widthHeightPx}px`,
+    minHeight: `${widthHeightPx}px`,
+    flexShrink: '0',
     padding: `${paddingPx}px`,
+    boxSizing: 'border-box',
   } as Record<string, string>;
 });
 
@@ -137,7 +141,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="inline-flex cursor-pointer select-none items-center gap-1"
+    class="inline-flex min-w-fit flex-shrink-0 cursor-pointer select-none items-center gap-1 align-top leading-none"
     :class="{ 'cursor-not-allowed': isDisabled }"
     @click="handleClick"
     @keydown="handleKeydown"
@@ -149,7 +153,7 @@ onMounted(() => {
     <div class="flex items-center justify-center" :style="containerBoxStyle">
       <!-- 체크박스 박스 -->
       <div
-        class="flex h-full w-full items-center justify-center rounded-[3px] border border-[1.5px]"
+        class="box-border flex h-full w-full items-center justify-center rounded-[3px] border border-[1.5px]"
         :style="checkboxStyles"
       >
         <!-- 체크 아이콘 (체크된 상태) -->

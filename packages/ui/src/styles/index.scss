@@ -19,9 +19,6 @@
 @use '../components/BaseTable/BaseTableRow.scss';
 @use '../components/BaseTable/TableWithPagination.scss';
 
-// BaseTabs 컴포넌트 스타일
-@use '../components/BaseTabs/BaseTabs.scss';
-
 // BasePagination 컴포넌트 스타일
 @use '../components/BasePagination/BasePaginationArrow.scss';
 @use '../components/BasePagination/BasePaginationNumber.scss';
@@ -40,7 +37,7 @@
 @use '../components/BaseChips/BaseChip.scss';
 
 // BaseIcon 컴포넌트 스타일
-@use '../components/BaseIcon/BaseIcon.scss'; 
+@use '../components/BaseIcon/BaseIcon.scss';
 
 // BasePopup 컴포넌트 스타일
 @use '../components/BasePopup/BasePopup.scss';

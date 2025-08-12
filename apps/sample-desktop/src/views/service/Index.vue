@@ -3,14 +3,7 @@
     <MainCardContent class="p-6" title="고객지원" size="lg">
       <template #content>
         <div>
-          <BaseTabs
-            direction="horizontal"
-            v-model="modelValue"
-            showContent
-            size="md"
-            variant="connected"
-            :tabs="tabs"
-          />
+          <BaseTabs variant="underline" size="lg" :tabs="tabs" v-model="selectedTab" />
         </div>
       </template>
     </MainCardContent>
@@ -26,12 +19,28 @@ import { BaseTabs, type TabItem } from '@template/ui';
 import Faq from '@/components/service/faq/Faq.vue';
 import { ref } from 'vue';
 
-const modelValue = ref('notice');
-const tabs = [
-  { value: 'notice', label: '공지사항', content: Notice },
-  { value: 'event', label: '이벤트', content: Event },
-  { value: 'qna', label: '1:1 문의', content: QnA },
-  { value: 'faq', label: '자주 묻는 질문', content: Faq },
-  { value: 'guide', label: '이용가이드', content: UserGuide },
-] as TabItem[];
+const selectedTab = ref('notice');
+
+const tabs = {
+  공지사항: {
+    value: 'notice',
+    component: Notice,
+  },
+  이벤트: {
+    value: 'event',
+    component: Event,
+  },
+  '1:1 문의': {
+    value: 'qna',
+    component: QnA,
+  },
+  '자주 묻는 질문': {
+    value: 'faq',
+    component: Faq,
+  },
+  이용가이드: {
+    value: 'guide',
+    component: UserGuide,
+  },
+};
 </script>

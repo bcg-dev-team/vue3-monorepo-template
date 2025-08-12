@@ -60,7 +60,7 @@ const getTabButtonClasses = (selected: boolean): string => {
   if (props.variant === 'inner') {
     return [
       baseClasses,
-      'px-3 py-1.5 text-[13px] leading-[16px] tracking-tight',
+      'px-3 py-1.5 text-[13px] leading-[16px] tracking-tight ',
       selected
         ? 'bg-[var(--button-tab-button-on)] text-[var(--button-tab-text-on)] rounded-xs font-medium'
         : 'text-[var(--button-tab-text-off)]',
@@ -69,7 +69,7 @@ const getTabButtonClasses = (selected: boolean): string => {
 
   // Underline variant 스타일 (기본)
   const sizeClasses =
-    props.size === 'lg' ? 'p-[10px] text-base font-semibold' : 'px-4 py-3 text-sm font-medium';
+    props.size === 'lg' ? 'py-3 px-6 text-base font-semibold' : 'px-4 py-3 text-sm font-medium';
 
   const textColorClasses = selected
     ? 'bg-bg-bg-default text-default'
@@ -98,7 +98,7 @@ const getTabButtonClasses = (selected: boolean): string => {
  */
 const getContainerClasses = (): string => {
   if (props.variant === 'inner') {
-    return 'flex p-1 bg-neutral-neutral050 rounded-[6px]';
+    return 'flex p-1 bg-neutral-neutral050 rounded-[6px] gap-x-[10px]';
   }
   return 'flex flex-nowrap';
 };

@@ -5,66 +5,71 @@
 
     <div class="components-grid">
       <div class="component-card">
-        <h3>BaseTabs - 연결된 탭 (Connected)</h3>
+        <h3>BaseTabs - Underline 스타일</h3>
         <p class="component-description">
-          탭들이 서로 연결되어 있으며, 컨텐츠 영역도 선택된 탭과 같은 색상으로 변경됩니다.
+          밑줄 스타일의 탭입니다. 선택된 탭에 밑줄이 표시되며, 각 탭의 컨텐츠가 TabPanel로
+          렌더링됩니다.
         </p>
         <div class="component-demo">
           <BaseTabs
             :tabs="tabs"
-            v-model="selectedTabConnected"
-            variant="connected"
-            :show-content="true"
+            v-model="selectedTabUnderline"
+            variant="underline"
+            size="lg"
+            underline
           />
         </div>
         <div class="component-code">
           <pre><code>&lt;BaseTabs
   :tabs="tabs"
   v-model="selectedTab"
-  variant="connected"
-  :show-content="true"
+  variant="underline"
+  size="lg"
+  underline
 /&gt;</code></pre>
         </div>
       </div>
 
       <div class="component-card">
-        <h3>BaseTabs - 개별 탭 (Individual)</h3>
+        <h3>BaseTabs - Inner 스타일</h3>
         <p class="component-description">
-          각 탭이 독립적으로 표시되며, 선택된 탭만 색상이 변경됩니다.
+          알약 형태의 탭입니다. 선택된 탭이 배경색으로 강조되며, 컴팩트한 디자인을 제공합니다.
+        </p>
+        <div class="component-demo">
+          <BaseTabs :tabs="tabs" v-model="selectedTabInner" variant="inner" />
+        </div>
+        <div class="component-code">
+          <pre><code>&lt;BaseTabs
+  :tabs="tabs"
+  v-model="selectedTab"
+  variant="inner"
+  size="md"
+/&gt;</code></pre>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <h3>BaseTabs - Background 옵션</h3>
+        <p class="component-description">
+          배경색이 있는 underline 스타일입니다. hasBackground 옵션으로 탭의 배경색을 조정할 수
+          있습니다.
         </p>
         <div class="component-demo">
           <BaseTabs
             :tabs="tabs"
-            v-model="selectedTabIndividual"
-            variant="individual"
-            :show-content="true"
+            v-model="selectedTabBackground"
+            variant="underline"
+            size="md"
+            :has-background="true"
           />
         </div>
         <div class="component-code">
           <pre><code>&lt;BaseTabs
   :tabs="tabs"
   v-model="selectedTab"
-  variant="individual"
-  :show-content="true"
-/&gt;</code></pre>
-        </div>
-      </div>
-
-      <div class="component-card">
-        <h3>BaseTabs - 카드 탭 (Card)</h3>
-        <p class="component-description">
-          각 탭이 카드처럼 표시되며, 선택 시 그림자 효과와 함께 위로 올라가는 애니메이션이
-          적용됩니다.
-        </p>
-        <div class="component-demo">
-          <BaseTabs :tabs="tabs" v-model="selectedTabCard" variant="card" :show-content="true" />
-        </div>
-        <div class="component-code">
-          <pre><code>&lt;BaseTabs
-  :tabs="tabs"
-  v-model="selectedTab"
-  variant="card"
-  :show-content="true"
+  variant="underline"
+  size="md"
+  :has-background="true"
 /&gt;</code></pre>
         </div>
       </div>
@@ -76,47 +81,61 @@
         <pre><code>// 컴포넌트 임포트
 import { BaseTabs } from '@template/ui'
 
-// 탭 데이터 정의
-const tabs = [
-  { value: 'tab1', label: '첫 번째 탭', content: '빨간색 탭의 컨텐츠입니다.' },
-  { value: 'tab2', label: '두 번째 탭', content: '파란색 탭의 컨텐츠입니다.' },
-  { value: 'tab3', label: '세 번째 탭', content: '초록색 탭의 컨텐츠입니다.' },
-  { value: 'tab4', label: '네 번째 탭', content: '보라색 탭의 컨텐츠입니다.' },
-];
+// 탭 데이터 정의 (새로운 형식)
+const tabs = {
+  '첫 번째 탭': {
+    value: 'tab1',
+    component: FirstTabComponent,
+  },
+  '두 번째 탭': {
+    value: 'tab2', 
+    component: SecondTabComponent,
+  },
+  '세 번째 탭': {
+    value: 'tab3',
+    component: ThirdTabComponent,
+  },
+  '네 번째 탭': {
+    value: 'tab4',
+    component: FourthTabComponent,
+  },
+};
 
-// 1. 연결된 탭 형태 (기본값) - 탭들이 서로 연결됨
+// 1. Underline 스타일 탭 (밑줄)
 &lt;BaseTabs
   :tabs="tabs"
   v-model="selectedTab"
-  variant="connected"
-  :show-content="true"
+  variant="underline"
+  size="lg"
+  underline
 /&gt;
 
-// 2. 개별 탭 형태 - 각 탭이 독립적으로 표시됨
+// 2. Inner 스타일 탭 (알약 형태)
 &lt;BaseTabs
   :tabs="tabs"
   v-model="selectedTab"
-  variant="individual"
-  :show-content="true"
+  variant="inner"
+  size="md"
 /&gt;
 
-// 3. 카드 형태 탭 - 카드 스타일의 탭
+// 3. 배경색이 있는 underline 탭
 &lt;BaseTabs
   :tabs="tabs"
   v-model="selectedTab"
-  variant="card"
-  :show-content="true"
+  variant="underline"
+  size="md"
+  :has-background="true"
 /&gt;
 
-// 추가 옵션들
+// 모든 옵션
 &lt;BaseTabs
   :tabs="tabs"
   v-model="selectedTab"
-  variant="connected"
-  direction="horizontal"  // horizontal | vertical
-  size="md"              // sm | md | lg
-  :show-content="true"   // true | false
-  @tab-click="handleTabClick"
+  variant="underline"          // underline | inner
+  size="lg"                   // lg | md
+  underline="true"           // underline variant에서 밑
+  :has-background="false"     // underline variant에서 배경색 여부
+  aria-label="탭 목록"        // 접근성을 위한 라벨
 /&gt;</code></pre>
       </div>
     </div>
@@ -125,42 +144,46 @@ const tabs = [
       <h2>BaseTabs 디자인 특징</h2>
       <div class="features-grid">
         <div class="feature-item">
-          <h4>🔗 연결된 탭 (Connected)</h4>
+          <h4>📏 Underline 스타일</h4>
           <p>
-            탭들이 서로 연결되어 하나의 그룹처럼 보입니다. 선택된 탭과 컨텐츠 영역이 같은 색상으로
-            통일되어 시각적 일관성을 제공합니다.
+            밑줄로 선택된 탭을 표시하는 클래식한 스타일입니다. size(lg/md)와 underline,
+            hasBackground 옵션으로 다양하게 커스터마이징할 수 있습니다.
           </p>
         </div>
         <div class="feature-item">
-          <h4>🔘 개별 탭 (Individual)</h4>
+          <h4>💊 Inner 스타일</h4>
           <p>
-            각 탭이 독립적인 버튼처럼 표시됩니다. 선택된 탭만 색상이 변경되어 명확한 상태 표시를
-            제공합니다.
+            선택된 탭이 배경색으로 강조되는 알약 형태의 컴팩트한 디자인입니다. 좁은 공간에서
+            효과적으로 사용할 수 있습니다.
           </p>
         </div>
         <div class="feature-item">
-          <h4>🃏 카드 탭 (Card)</h4>
+          <h4>🎨 Design Token 기반</h4>
           <p>
-            각 탭이 카드처럼 표시되며, 호버와 선택 시 그림자 효과와 애니메이션이 적용됩니다. 더
-            현대적이고 인터랙티브한 느낌을 제공합니다.
+            디자인 시스템의 색상 토큰을 활용하여 일관성 있는 시각적 스타일을 제공합니다. CSS 변수를
+            통해 테마 변경이 용이합니다.
           </p>
         </div>
         <div class="feature-item">
-          <h4>🌈 색상 순환 시스템</h4>
+          <h4>🧩 컴포넌트 기반 컨텐츠</h4>
           <p>
-            탭 순서에 따라 빨간색(Trade Long) → 파란색(Trade Short) → 초록색(Trade Correct) →
-            보라색(Trade Cancel) 순으로 색상이 순환됩니다.
+            각 탭의 컨텐츠를 Vue 컴포넌트로 정의할 수 있어, 복잡한 UI도 깔끔하게 구성할 수 있습니다.
+            component 속성을 통한 동적 렌더링을 지원합니다.
           </p>
         </div>
         <div class="feature-item">
           <h4>♿ 접근성 지원</h4>
           <p>
-            키보드 네비게이션, 스크린 리더 지원, 포커스 표시 등 웹 접근성 가이드라인을 준수합니다.
+            Headless UI의 Tab 컴포넌트를 기반으로 하여 키보드 네비게이션, 스크린 리더 지원, ARIA
+            속성 등 웹 접근성 가이드라인을 준수합니다.
           </p>
         </div>
         <div class="feature-item">
-          <h4>📱 반응형 디자인</h4>
-          <p>다양한 화면 크기에 대응하며, 세로/가로 방향과 크기 옵션을 지원합니다.</p>
+          <h4>⚡ 타입 안전성</h4>
+          <p>
+            TypeScript로 작성되어 컴파일 시점에 타입 검사를 수행하며, props와 이벤트에 대한 완전한
+            타입 정의를 제공합니다.
+          </p>
         </div>
       </div>
     </div>
@@ -168,36 +191,74 @@ const tabs = [
 </template>
 
 <script setup lang="ts">
-import { BaseButton, BaseTabs } from '@template/ui';
-import { ref } from 'vue';
+import { ref, defineComponent } from 'vue';
+import { BaseTabs } from '@template/ui';
 
 // BaseTabs 관련 상태
-const selectedTabConnected = ref('tab1');
-const selectedTabIndividual = ref('tab1');
-const selectedTabCard = ref('tab1');
+const selectedTabUnderline = ref('tab1');
+const selectedTabInner = ref('tab1');
+const selectedTabBackground = ref('tab1');
 
-const tabs = [
-  {
+// 탭 컨텐츠 컴포넌트들
+const FirstTabContent = defineComponent({
+  name: 'FirstTabContent',
+  template: `
+    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+      <h3 class="text-lg font-semibold text-red-800 mb-2">첫 번째 탭</h3>
+      <p class="text-red-700">이것은 첫 번째 탭의 컨텐츠입니다. 새로운 BaseTabs 컴포넌트로 렌더링되고 있습니다.</p>
+    </div>
+  `,
+});
+
+const SecondTabContent = defineComponent({
+  name: 'SecondTabContent',
+  template: `
+    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+      <h3 class="text-lg font-semibold text-blue-800 mb-2">두 번째 탭</h3>
+      <p class="text-blue-700">이것은 두 번째 탭의 컨텐츠입니다. 각 탭은 독립적인 Vue 컴포넌트를 가질 수 있습니다.</p>
+    </div>
+  `,
+});
+
+const ThirdTabContent = defineComponent({
+  name: 'ThirdTabContent',
+  template: `
+    <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+      <h3 class="text-lg font-semibold text-green-800 mb-2">세 번째 탭</h3>
+      <p class="text-green-700">이것은 세 번째 탭의 컨텐츠입니다. 복잡한 로직과 상태를 가진 컴포넌트도 사용할 수 있습니다.</p>
+    </div>
+  `,
+});
+
+const FourthTabContent = defineComponent({
+  name: 'FourthTabContent',
+  template: `
+    <div class="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+      <h3 class="text-lg font-semibold text-purple-800 mb-2">네 번째 탭</h3>
+      <p class="text-purple-700">이것은 네 번째 탭의 컨텐츠입니다. TabCategories 인터페이스를 사용하여 구조화되었습니다.</p>
+    </div>
+  `,
+});
+
+// 새로운 탭 데이터 구조 (TabCategories 형식)
+const tabs = {
+  '첫 번째 탭': {
     value: 'tab1',
-    label: '첫 번째 탭',
-    content: '빨간색 탭의 컨텐츠입니다. 이 탭은 Trade Long 색상을 사용합니다.',
+    component: FirstTabContent,
   },
-  {
+  '두 번째 탭': {
     value: 'tab2',
-    label: '두 번째 탭',
-    content: '파란색 탭의 컨텐츠입니다. 이 탭은 Trade Short 색상을 사용합니다.',
+    component: SecondTabContent,
   },
-  {
+  '세 번째 탭': {
     value: 'tab3',
-    label: '세 번째 탭',
-    content: '초록색 탭의 컨텐츠입니다. 이 탭은 Trade Correct 색상을 사용합니다.',
+    component: ThirdTabContent,
   },
-  {
+  '네 번째 탭': {
     value: 'tab4',
-    label: '네 번째 탭',
-    content: '보라색 탭의 컨텐츠입니다. 이 탭은 Trade Cancel 색상을 사용합니다.',
+    component: FourthTabContent,
   },
-];
+};
 </script>
 
 <style scoped>

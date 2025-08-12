@@ -2,6 +2,7 @@
  * BaseListItemAvatar 컴포넌트 Storybook 스토리
  */
 import BaseListItemAvatar from '../BaseListItemAvatar.vue';
+import BaseListItemText from '../BaseListItemText.vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof BaseListItemAvatar> = {
@@ -491,6 +492,136 @@ export const InListItem: Story = {
             iconColor="#ffffff"
           />
           <span style="font-size: 16px; font-weight: 500;">Alice Brown</span>
+        </div>
+      </div>
+    `,
+  }),
+};
+
+// BaseListItemText와 함께 사용
+export const WithListItemText: Story = {
+  render: () => ({
+    components: { BaseListItemAvatar, BaseListItemText },
+    setup() {
+      return {};
+    },
+    template: `
+      <div style="max-width: 600px; margin: 0 auto;">
+        <h3 style="margin-bottom: 16px; color: #333;">BaseListItemText와 함께 사용하는 예시</h3>
+        
+        <!-- 기본 아바타 + 텍스트 -->
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 12px;">
+          <BaseListItemAvatar fallback="JD" color="primary" />
+          <BaseListItemText 
+            primary="John Doe"
+            secondary="john.doe@example.com"
+            inset
+          />
+        </div>
+        
+        <!-- 이미지 아바타 + 오른쪽 텍스트 -->
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 12px;">
+          <BaseListItemAvatar 
+            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+            alt="사용자 프로필"
+            size="lg"
+          />
+          <BaseListItemText 
+            primary="Jane Smith"
+            secondary="jane.smith@example.com"
+            rightPrimary="2024-01-15"
+            rightSecondary="온라인"
+            inset
+          />
+        </div>
+        
+        <!-- 아이콘 아바타 + 여러 줄 텍스트 -->
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 12px;">
+          <BaseListItemAvatar 
+            :icon="{ name: 'settings', size: 'md' }"
+            color="blue"
+            variant="rounded"
+          />
+          <BaseListItemText 
+            primary="시스템 설정"
+            secondary="시스템 전반적인 설정을 관리합니다. 매우 긴 설명 텍스트입니다."
+            inset
+            multiline
+          />
+        </div>
+        
+        <!-- 커스텀 색상 아바타 + 줄바꿈 방지 텍스트 -->
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+          <BaseListItemAvatar 
+            fallback="AB"
+            color="custom"
+            backgroundColor="#ff6b6b"
+            iconColor="#ffffff"
+            variant="square"
+          />
+          <BaseListItemText 
+            primary="매우 긴 사용자 이름입니다. 이 텍스트는 한 줄로만 표시됩니다."
+            secondary="매우 긴 이메일 주소입니다. 이 텍스트도 한 줄로만 표시됩니다."
+            inset
+            :noWrap="true"
+          />
+        </div>
+      </div>
+    `,
+  }),
+};
+
+// 다양한 크기와 스타일 조합
+export const SizeVariantCombinations: Story = {
+  render: () => ({
+    components: { BaseListItemAvatar, BaseListItemText },
+    setup() {
+      return {};
+    },
+    template: `
+      <div style="max-width: 800px; margin: 0 auto;">
+        <h3 style="margin-bottom: 16px; color: #333;">크기와 스타일 조합 예시</h3>
+        
+        <!-- Small Circular -->
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 12px;">
+          <BaseListItemAvatar size="sm" variant="circular" fallback="SC" color="primary" />
+          <BaseListItemText 
+            primary="Small Circular Avatar"
+            secondary="40px 크기의 원형 아바타"
+          />
+        </div>
+        
+        <!-- Medium Rounded -->
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 12px;">
+          <BaseListItemAvatar size="md" variant="rounded" fallback="MR" color="green" />
+          <BaseListItemText 
+            primary="Medium Rounded Avatar"
+            secondary="44px 크기의 둥근 모서리 아바타"
+          />
+        </div>
+        
+        <!-- Large Square -->
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 12px;">
+          <BaseListItemAvatar size="lg" variant="square" fallback="LS" color="purple" />
+          <BaseListItemText 
+            primary="Large Square Avatar"
+            secondary="48px 크기의 사각형 아바타"
+          />
+        </div>
+        
+        <!-- 이미지 + 아이콘 폴백 -->
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
+          <BaseListItemAvatar 
+            src="invalid-url"
+            :fallback="{ name: 'person', size: 'md' }"
+            size="md"
+            variant="circular"
+            color="red"
+          />
+          <BaseListItemText 
+            primary="이미지 로드 실패 시 아이콘 폴백"
+            secondary="이미지 URL이 유효하지 않을 때 아이콘이 표시됩니다"
+          />
         </div>
       </div>
     `,

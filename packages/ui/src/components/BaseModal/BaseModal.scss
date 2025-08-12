@@ -110,30 +110,24 @@
   line-height: 1.4;
 }
 
-.modal-description {
-  font-size: 14px;
-  color: var(--modal-description-color, #6b7280);
-  margin: 0 0 16px 0;
-  line-height: 1.5;
-}
-
+// 헤더 버튼 공통 스타일 (뒤로가기, 닫기)
+.modal-back-button,
 .modal-close-button {
   background: none;
   border: none;
   padding: 8px;
   border-radius: 6px;
   cursor: pointer;
-  color: var(--modal-close-button-color, #6b7280);
+  color: var(--input-icon-default);
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: var(--modal-close-button-hover-background, #f3f4f6);
-    color: var(--modal-close-button-hover-color, #374151);
+    background-color: var(--modal-header-button-hover-background, #f3f4f6);
+    color: var(--modal-header-button-hover-color, #111827);
   }
 
   &:focus {
-    outline: 2px solid var(--modal-close-button-focus-outline, #3b82f6);
-    outline-offset: 2px;
+    outline: none;
   }
 }
 

@@ -17,8 +17,8 @@ import type {
 } from '../../types/components';
 import { Dialog, DialogPanel, DialogTitle, DialogDescription } from '@headlessui/vue';
 import BaseButton from '../BaseButton/BaseButton.vue';
+import { computed, ref, watch, nextTick } from 'vue';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
-import { computed } from 'vue';
 
 interface Props {
   /**
@@ -80,6 +80,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>();
 
+// 모달 컨테이너 ref
+const modalContainer = ref<HTMLElement>();
+
 // 모달 크기 클래스 계산
 const modalSizeClass = computed(() => `modal-size-${props.size}`);
 
@@ -115,6 +118,18 @@ const handleActionClick = (action: ModalAction, index: number) => {
 const handleClose = () => {
   emit('close');
 };
+
+// 모달이 열릴 때 포커스 설정
+watch(
+  () => props.isOpen,
+  async (isOpen) => {
+    if (isOpen && modalContainer.value) {
+      await nextTick();
+      // 모달이 열릴 때 모달 컨테이너에 포커스
+      modalContainer.value.focus();
+    }
+  }
+);
 </script>
 
 <template>
@@ -124,12 +139,28 @@ const handleClose = () => {
 
     <!-- 모달 컨테이너 -->
     <div class="modal-container-wrapper">
-      <DialogPanel :class="['modal-container', modalSizeClass, modalVariantClass]">
+      <DialogPanel
+        ref="modalContainer"
+        :class="['modal-container', modalSizeClass, modalVariantClass]"
+      >
         <!-- 헤더 영역 -->
         <div v-if="title || showCloseButton" class="modal-header">
+          <!-- 왼쪽: 뒤로가기 버튼 -->
+          <button
+            type="button"
+            class="modal-back-button"
+            @click="handleClose"
+            aria-label="뒤로가기"
+          >
+            <BaseIcon name="arrow-backward" size="md" />
+          </button>
+
+          <!-- 중앙: 제목 -->
           <DialogTitle v-if="title" class="modal-title">
             {{ title }}
           </DialogTitle>
+
+          <!-- 오른쪽: 닫기 버튼 -->
           <button
             v-if="showCloseButton"
             type="button"
@@ -137,7 +168,7 @@ const handleClose = () => {
             @click="handleClose"
             aria-label="모달 닫기"
           >
-            <BaseIcon name="arrow-close" size="md" />
+            <BaseIcon name="close" size="md" />
           </button>
         </div>
 

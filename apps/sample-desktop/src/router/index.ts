@@ -69,10 +69,10 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/assets/Index.vue'),
   },
   {
-    path: '/withdrawal',
-    name: 'Withdrawal',
+    path: '/account-management',
+    name: 'AccountManagement',
     meta: { layout: MainLayout },
-    component: () => import('@/views/withdrawal/Index.vue'),
+    component: () => import('@/views/accountManagement/Index.vue'),
   },
   {
     path: '/service',

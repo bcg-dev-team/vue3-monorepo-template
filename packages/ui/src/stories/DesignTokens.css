@@ -14,7 +14,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  z-index: 1000;
+  z-index: var(--z-index-max);
   background: rgba(255, 255, 255, 0.9);
   padding: 0.5rem;
   border-radius: 0.5rem;

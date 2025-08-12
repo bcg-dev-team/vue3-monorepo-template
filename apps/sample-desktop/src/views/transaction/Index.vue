@@ -20,13 +20,16 @@
         <template #content>
           <OrderTableContent v-if="modelValue === 'order'" />
           <ClearTableContent v-if="modelValue === 'clear'" />
+          <HistoryTableContent v-if="modelValue === 'history'" />
         </template>
       </MainCardContent>
     </CardLayoutVertical>
   </div>
 </template>
 <script setup lang="ts">
+import HistoryTableContent from '@/components/transaction/history/HistoryTableContent.vue';
 import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
+import HistorySearchBox from '@/components/transaction/history/HistorySearchBox.vue';
 import OrderTableContent from '@/components/transaction/order/OrderTableContent.vue';
 import ClearTableContent from '@/components/transaction/clear/ClearTbaleContent.vue';
 import OrderSearchBox from '@/components/transaction/order/OrderSearchBox.vue';
@@ -39,6 +42,6 @@ const modelValue = ref('order');
 const tabs = [
   { value: 'order', label: '주문체결', content: OrderSearchBox },
   { value: 'clear', label: '청산손익', content: ClearSearchBox },
-  { value: 'history', label: '결제내역', content: '' },
+  { value: 'history', label: '결제내역', content: HistorySearchBox },
 ] as TabItem[];
 </script>

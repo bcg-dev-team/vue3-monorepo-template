@@ -11,7 +11,7 @@
       </LabelContent>
     </div>
     <div>
-      <LabelContent label="상세내역역" size="lg">
+      <LabelContent label="상세내역" size="lg">
         <BaseTable
           :headers="detailHeaders"
           :data="detailData"

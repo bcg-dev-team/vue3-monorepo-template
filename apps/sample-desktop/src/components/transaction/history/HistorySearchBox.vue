@@ -4,7 +4,7 @@
       <LabelContent label="계좌번호" size="md">
         <BaseInput size="sm" placeholder="input select 들어올 예정" />
       </LabelContent>
-      <LabelContent label="청산일자" size="md">청산일자 탭 </LabelContent>
+      <LabelContent label="결제일자" size="md">결제일자 탭 </LabelContent>
     </div>
     <div>
       <BaseButton variant="contained" label="조회하기" size="sm" />

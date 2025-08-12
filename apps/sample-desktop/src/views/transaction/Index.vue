@@ -19,6 +19,7 @@
       <MainCardContent class="p-6" size="lg">
         <template #content>
           <OrderTableContent v-if="modelValue === 'order'" />
+          <ClearTableContent v-if="modelValue === 'clear'" />
         </template>
       </MainCardContent>
     </CardLayoutVertical>
@@ -27,7 +28,9 @@
 <script setup lang="ts">
 import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
 import OrderTableContent from '@/components/transaction/order/OrderTableContent.vue';
+import ClearTableContent from '@/components/transaction/clear/ClearTbaleContent.vue';
 import OrderSearchBox from '@/components/transaction/order/OrderSearchBox.vue';
+import ClearSearchBox from '@/components/transaction/clear/ClearSearchBox.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import { BaseTabs, type TabItem } from '@template/ui';
 import { ref } from 'vue';
@@ -35,7 +38,7 @@ import { ref } from 'vue';
 const modelValue = ref('order');
 const tabs = [
   { value: 'order', label: '주문체결', content: OrderSearchBox },
-  { value: 'sell', label: '청산손익', content: '' },
+  { value: 'clear', label: '청산손익', content: ClearSearchBox },
   { value: 'history', label: '결제내역', content: '' },
 ] as TabItem[];
 </script>

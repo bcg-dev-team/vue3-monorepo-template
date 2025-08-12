@@ -267,7 +267,7 @@ const onFormSubmit = async (values: FormData) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: var(--z-index-modal);
 }
 
 .modal {

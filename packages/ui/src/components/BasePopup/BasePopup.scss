@@ -6,7 +6,7 @@
 // Headless UI Dialog 래퍼
 .popup-dialog {
     position: relative;
-    z-index: var(--popup-z-index, 1000);
+    z-index: var(--z-index-modal);
 }
 
 // 오버레이 스타일
@@ -17,7 +17,7 @@
     right: 0;
     bottom: 0;
     background-color: var(--popup-overlay-background, rgba(0, 0, 0, 0.5));
-    z-index: var(--popup-overlay-z-index, 1000);
+    z-index: var(--z-index-overlay);
 }
 
 // 팝업 컨테이너 래퍼
@@ -31,7 +31,7 @@
     align-items: center;
     justify-content: center;
     padding: 16px;
-    z-index: var(--popup-container-z-index, 1001);
+    z-index: var(--z-index-modal);
 }
 
 // 팝업 컨테이너 기본 스타일

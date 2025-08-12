@@ -86,6 +86,11 @@ const routes: RouteRecordRaw[] = [
     meta: { layout: MainLayout },
     component: () => import('@/views/myPage/Index.vue'),
   },
+  {
+    path: '/markup',
+    name: 'Markup',
+    component: () => import('@/views/markup/Index.vue'),
+  },
 ];
 
 const router = createRouter({

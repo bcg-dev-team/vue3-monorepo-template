@@ -350,4 +350,17 @@
   --button-red-solid-text: var(--font-color-white);
   --table-chip-background: var(--background-bg-surface);
   --popup-text: var(--font-color-default);
+
+  --z-index-base: 0;
+  --z-index-dropdown: 100;
+  --z-index-sticky: 200;
+  --z-index-overlay: 300;
+  --z-index-fab: 1050;
+  --z-index-speed-dial: 1050;
+  --z-index-app-bar: 1100;
+  --z-index-drawer: 1200;
+  --z-index-modal: 1300;
+  --z-index-snackbar: 1400;
+  --z-index-tooltip: 1500;
+  --z-index-max: 9999;
 }

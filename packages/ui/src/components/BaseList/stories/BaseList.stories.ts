@@ -13,65 +13,7 @@ const meta: Meta<typeof BaseList> = {
   parameters: {
     docs: {
       description: {
-        component: `BaseList는 접근성과 기능성을 고려한 리스트 컨테이너 컴포넌트입니다.
-        
-## 사용법
-BaseList는 단독으로 사용할 수 없으며, 반드시 BaseListItem들을 자식으로 포함해야 합니다.
-
-\`\`\`vue
-<BaseList>
-  <BaseListItem>
-    <BaseIcon name="user" />
-    <span>사용자 관리</span>
-  </BaseListItem>
-  <BaseListItem :secondary-action="{ name: 'edit' }">
-    <BaseIcon name="settings" />
-    <span>시스템 설정</span>
-  </BaseListItem>
-</BaseList>
-\`\`\`
-
-## Props
-- **subheader**: 서브헤더 텍스트
-- **dense**: 조밀한 간격 사용 여부
-- **gap**: 리스트 아이템 간격 (CSS gap 값)
-
-## BaseListItem Props
-- **clickable**: 클릭 가능 여부
-- **secondaryAction**: 우측에 표시할 BaseIcon (ButtonIconProps)
-
-## 주의사항
-- BaseList는 반드시 BaseListItem들을 자식으로 포함해야 합니다
-- 빈 BaseList는 렌더링되지 않거나 오류가 발생할 수 있습니다
-        `,
-      },
-    },
-  },
-  argTypes: {
-    subheader: {
-      description: '서브헤더 텍스트',
-      control: { type: 'text' },
-      table: {
-        type: { summary: 'string' },
-        category: 'Props',
-      },
-    },
-    dense: {
-      description: '조밀한 간격 사용 여부',
-      control: { type: 'boolean' },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-        category: 'Props',
-      },
-    },
-    gap: {
-      description: '리스트 아이템 간격 (CSS gap 값)',
-      control: { type: 'text' },
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: '0px' },
-        category: 'Props',
+        component: `BaseList는 접근성과 기능성을 고려한 리스트 컨테이너 컴포넌트입니다.`,
       },
     },
   },
@@ -95,16 +37,22 @@ export const Default: Story = {
     template: `
       <BaseList v-bind="args">
         <BaseListItem>
-          <BaseIcon name="user" />
-          <span>사용자 관리</span>
+          <template #content>
+            <BaseIcon name="user" />
+            <span>사용자 관리</span>
+          </template>
         </BaseListItem>
         <BaseListItem>
-          <BaseIcon name="settings" />
-          <span>시스템 설정</span>
+          <template #content>
+            <BaseIcon name="settings" />
+            <span>시스템 설정</span>
+          </template>
         </BaseListItem>
         <BaseListItem>
-          <BaseIcon name="chart" />
-          <span>통계 대시보드</span>
+          <template #content>
+            <BaseIcon name="chart" />
+            <span>통계 대시보드</span>
+          </template>
         </BaseListItem>
       </BaseList>
     `,
@@ -121,16 +69,22 @@ export const Clickable: Story = {
     template: `
       <BaseList v-bind="args">
         <BaseListItem :clickable="true">
-          <BaseIcon name="user" />
-          <span>사용자 관리</span>
+          <template #content>
+            <BaseIcon name="user" />
+            <span>사용자 관리</span>
+          </template>
         </BaseListItem>
         <BaseListItem :clickable="true">
-          <BaseIcon name="settings" />
-          <span>시스템 설정</span>
+          <template #content>
+            <BaseIcon name="settings" />
+            <span>시스템 설정</span>
+          </template>
         </BaseListItem>
         <BaseListItem :clickable="true">
-          <BaseIcon name="chart" />
-          <span>통계 대시보드</span>
+          <template #content>
+            <BaseIcon name="chart" />
+            <span>통계 대시보드</span>
+          </template>
         </BaseListItem>
       </BaseList>
     `,
@@ -147,16 +101,22 @@ export const WithSecondaryActions: Story = {
     template: `
       <BaseList v-bind="args">
         <BaseListItem :secondary-action="{ name: 'edit' }">
-          <BaseIcon name="user" />
-          <span>사용자 관리</span>
+          <template #content>
+            <BaseIcon name="user" />
+            <span>사용자 관리</span>
+          </template>
         </BaseListItem>
         <BaseListItem :secondary-action="{ name: 'delete' }">
-          <BaseIcon name="settings" />
-          <span>시스템 설정</span>
+          <template #content>
+            <BaseIcon name="settings" />
+            <span>시스템 설정</span>
+          </template>
         </BaseListItem>
         <BaseListItem :secondary-action="{ name: 'visibility' }">
-          <BaseIcon name="chart" />
-          <span>통계 대시보드</span>
+          <template #content>
+            <BaseIcon name="chart" />
+            <span>통계 대시보드</span>
+          </template>
         </BaseListItem>
       </BaseList>
     `,
@@ -176,16 +136,22 @@ export const Dense: Story = {
     template: `
       <BaseList v-bind="args">
         <BaseListItem>
-          <BaseIcon name="user" />
-          <span>사용자 관리</span>
+          <template #content>
+            <BaseIcon name="user" />
+            <span>사용자 관리</span>
+          </template>
         </BaseListItem>
         <BaseListItem>
-          <BaseIcon name="settings" />
-          <span>시스템 설정</span>
+          <template #content>
+            <BaseIcon name="settings" />
+            <span>시스템 설정</span>
+          </template>
         </BaseListItem>
         <BaseListItem>
-          <BaseIcon name="chart" />
-          <span>통계 대시보드</span>
+          <template #content>
+            <BaseIcon name="chart" />
+            <span>통계 대시보드</span>
+          </template>
         </BaseListItem>
       </BaseList>
     `,
@@ -205,16 +171,22 @@ export const WithGap: Story = {
     template: `
       <BaseList v-bind="args">
         <BaseListItem>
-          <BaseIcon name="user" />
-          <span>사용자 관리</span>
+          <template #content>
+            <BaseIcon name="user" />
+            <span>사용자 관리</span>
+          </template>
         </BaseListItem>
         <BaseListItem>
-          <BaseIcon name="settings" />
-          <span>시스템 설정</span>
+          <template #content>
+            <BaseIcon name="settings" />
+            <span>시스템 설정</span>
+          </template>
         </BaseListItem>
         <BaseListItem>
-          <BaseIcon name="chart" />
-          <span>통계 대시보드</span>
+          <template #content>
+            <BaseIcon name="chart" />
+            <span>통계 대시보드</span>
+          </template>
         </BaseListItem>
       </BaseList>
     `,
@@ -235,16 +207,22 @@ export const DenseWithGap: Story = {
     template: `
       <BaseList v-bind="args">
         <BaseListItem>
-          <BaseIcon name="user" />
-          <span>사용자 관리</span>
+          <template #content>
+            <BaseIcon name="user" />
+            <span>사용자 관리</span>
+          </template>
         </BaseListItem>
         <BaseListItem>
-          <BaseIcon name="settings" />
-          <span>시스템 설정</span>
+          <template #content>
+            <BaseIcon name="settings" />
+            <span>시스템 설정</span>
+          </template>
         </BaseListItem>
         <BaseListItem>
-          <BaseIcon name="chart" />
-          <span>통계 대시보드</span>
+          <template #content>
+            <BaseIcon name="chart" />
+            <span>통계 대시보드</span>
+          </template>
         </BaseListItem>
       </BaseList>
     `,
@@ -264,16 +242,22 @@ export const WithSubheader: Story = {
     template: `
       <BaseList v-bind="args">
         <BaseListItem>
-          <BaseIcon name="user" />
-          <span>사용자 관리</span>
+          <template #content>
+            <BaseIcon name="user" />
+            <span>사용자 관리</span>
+          </template>
         </BaseListItem>
         <BaseListItem>
-          <BaseIcon name="settings" />
-          <span>시스템 설정</span>
+          <template #content>
+            <BaseIcon name="settings" />
+            <span>시스템 설정</span>
+          </template>
         </BaseListItem>
         <BaseListItem>
-          <BaseIcon name="chart" />
-          <span>통계 대시보드</span>
+          <template #content>
+            <BaseIcon name="chart" />
+            <span>통계 대시보드</span>
+          </template>
         </BaseListItem>
       </BaseList>
     `,
@@ -295,16 +279,22 @@ export const Complete: Story = {
     template: `
       <BaseList v-bind="args">
         <BaseListItem :clickable="true" :secondary-action="{ name: 'edit' }">
-          <BaseIcon name="user" />
-          <span>사용자 관리</span>
+          <template #content>
+            <BaseIcon name="user" />
+            <span>사용자 관리</span>
+          </template>
         </BaseListItem>
         <BaseListItem :clickable="true" :secondary-action="{ name: 'delete' }">
-          <BaseIcon name="settings" />
-          <span>시스템 설정</span>
+          <template #content>
+            <BaseIcon name="settings" />
+            <span>시스템 설정</span>
+          </template>
         </BaseListItem>
         <BaseListItem :clickable="true" :secondary-action="{ name: 'visibility' }">
-          <BaseIcon name="chart" />
-          <span>통계 대시보드</span>
+          <template #content>
+            <BaseIcon name="chart" />
+            <span>통계 대시보드</span>
+          </template>
         </BaseListItem>
       </BaseList>
     `,

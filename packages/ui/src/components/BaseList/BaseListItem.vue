@@ -130,7 +130,7 @@ const handleKeyDown = (event: KeyboardEvent) => {
   >
     <!-- 기본 슬롯 -->
     <div class="list-item__content">
-      <slot />
+      <slot name="content" />
     </div>
 
     <!-- 보조 액션 (BaseIcon만 허용) -->

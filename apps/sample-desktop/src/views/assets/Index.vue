@@ -12,16 +12,14 @@
         <MainCardContent class="p-6">
           <template #content>
             <div>
-              보유 포지션
-              <div></div>
+              <HoldPosition />
             </div>
           </template>
         </MainCardContent>
         <MainCardContent class="p-6">
           <template #content>
             <div>
-              자산구성
-              <div></div>
+              <AssetsComposition />
             </div>
           </template>
         </MainCardContent>
@@ -42,5 +40,7 @@
 import CardLayoutHorizontal from '@/components/layout/fragments/CardLayoutHorizontal.vue';
 import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
+import AssetsComposition from '@/components/assets/AssetsComposition.vue';
 import AssetsSummary from '@/components/assets/AssetsSummary.vue';
+import HoldPosition from '@/components/assets/HoldPosition.vue';
 </script>

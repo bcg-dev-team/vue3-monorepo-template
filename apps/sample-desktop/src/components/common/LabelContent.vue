@@ -1,7 +1,10 @@
 <template>
   <div class="flex flex-col" :class="gapSize">
-    <span :class="sizeClass">{{ props.label }}</span>
-    <slot />
+    <div class="gap-size-8 flex items-center">
+      <span :class="sizeClass">{{ props.label }}</span>
+      <slot name="count" />
+    </div>
+    <slot name="content" />
   </div>
 </template>
 <script setup lang="ts">

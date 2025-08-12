@@ -27,20 +27,41 @@
 
       <MainCardContent class="p-6" size="lg">
         <template #content>
-          <div>
-            증거금 내역
-            <div></div>
-          </div>
+          <LabelContent label="증거금 내역" size="lg">
+            <template #content>
+              <BaseTabs
+                direction="horizontal"
+                v-model="modelValue"
+                showContent
+                size="md"
+                variant="connected"
+                :tabs="tabs"
+              />
+            </template>
+          </LabelContent>
         </template>
       </MainCardContent>
     </CardLayoutVertical>
   </div>
 </template>
 <script setup lang="ts">
+import PositionTableContent from '@/components/assets/marginDetails/PositionTableContent.vue';
 import CardLayoutHorizontal from '@/components/layout/fragments/CardLayoutHorizontal.vue';
+import OrderTableContent from '@/components/assets/marginDetails/OrderTableContent.vue';
+import ClearTableContnet from '@/components/assets/marginDetails/ClearTableContnet.vue';
 import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import AssetsComposition from '@/components/assets/AssetsComposition.vue';
 import AssetsSummary from '@/components/assets/AssetsSummary.vue';
+import LabelContent from '@/components/common/LabelContent.vue';
 import HoldPosition from '@/components/assets/HoldPosition.vue';
+import { BaseTabs, type TabItem } from '@template/ui';
+import { ref } from 'vue';
+
+const modelValue = ref('position');
+const tabs = [
+  { value: 'position', label: '포지션', content: PositionTableContent },
+  { value: 'clear', label: '청산', content: ClearTableContnet },
+  { value: 'order', label: '주문', content: OrderTableContent },
+] as TabItem[];
 </script>

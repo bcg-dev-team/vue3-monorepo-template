@@ -1,17 +1,17 @@
 <!--
-  Figma 컴포넌트: Popup
+  Figma 컴포넌트: Modal
   - Headless UI Dialog 기반으로 구현
-  - 단일 컴포넌트로 모든 팝업 타입 지원 (default, confirm, alert)
-  - variant prop으로 팝업 타입 구분
+  - 단일 컴포넌트로 모든 모달 타입 지원 (default, confirm, alert)
+  - variant prop으로 모달 타입 구분
   - actions prop으로 동적 버튼 구성
-  @figma Popup (node-id: 1801-17801, 1801-18102, 1801-18147)
+  @figma Modal (node-id: 1801-17801, 1801-18102, 1801-18147)
 -->
 <script setup lang="ts">
 import type {
-  PopupSize,
-  PopupVariant,
+  ModalSize,
+  ModalVariant,
   AlertVariant,
-  PopupAction,
+  ModalAction,
   ButtonIconProps,
   IconName,
 } from '../../types/components';
@@ -22,25 +22,25 @@ import { computed } from 'vue';
 
 interface Props {
   /**
-   * 팝업 열림 상태
+   * 모달 열림 상태
    */
   isOpen: boolean;
   /**
-   * 팝업 제목
+   * 모달 제목
    */
   title?: string;
   /**
-   * 팝업 설명 (접근성용)
+   * 모달 설명 (접근성용)
    */
   description?: string;
   /**
-   * 팝업 크기
+   * 모달 크기
    */
-  size?: PopupSize;
+  size?: ModalSize;
   /**
-   * 팝업 타입
+   * 모달 타입
    */
-  variant?: PopupVariant;
+  variant?: ModalVariant;
   /**
    * 알림 타입 (variant가 'alert'일 때만 사용)
    */
@@ -58,14 +58,14 @@ interface Props {
    */
   showCloseButton?: boolean;
   /**
-   * 팝업 액션 버튼들
+   * 모달 액션 버튼들
    */
-  actions?: PopupAction[];
+  actions?: ModalAction[];
 }
 
 interface Emits {
   (e: 'close'): void;
-  (e: 'action', action: PopupAction, index: number): void;
+  (e: 'action', action: ModalAction, index: number): void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -80,11 +80,11 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>();
 
-// 팝업 크기 클래스 계산
-const popupSizeClass = computed(() => `popup-size-${props.size}`);
+// 모달 크기 클래스 계산
+const modalSizeClass = computed(() => `modal-size-${props.size}`);
 
-// 팝업 타입 클래스 계산
-const popupVariantClass = computed(() => `popup-variant-${props.variant}`);
+// 모달 타입 클래스 계산
+const modalVariantClass = computed(() => `modal-variant-${props.variant}`);
 
 // 알림 아이콘 매핑
 const getAlertIcon = (variant: AlertVariant): IconName => {
@@ -106,7 +106,7 @@ const getAlertIcon = (variant: AlertVariant): IconName => {
 const getAlertColorClass = (variant: AlertVariant) => `alert-${variant}`;
 
 // 액션 버튼 클릭 핸들러
-const handleActionClick = (action: PopupAction, index: number) => {
+const handleActionClick = (action: ModalAction, index: number) => {
   emit('action', action, index);
   emit('close');
 };
@@ -118,32 +118,32 @@ const handleClose = () => {
 </script>
 
 <template>
-  <Dialog :open="isOpen" @close="handleClose" class="popup-dialog">
+  <Dialog :open="isOpen" @close="handleClose" class="modal-dialog">
     <!-- 배경 오버레이 -->
-    <div class="popup-overlay" aria-hidden="true" />
+    <div class="modal-overlay" aria-hidden="true" />
 
-    <!-- 팝업 컨테이너 -->
-    <div class="popup-container-wrapper">
-      <DialogPanel :class="['popup-container', popupSizeClass, popupVariantClass]">
+    <!-- 모달 컨테이너 -->
+    <div class="modal-container-wrapper">
+      <DialogPanel :class="['modal-container', modalSizeClass, modalVariantClass]">
         <!-- 헤더 영역 -->
-        <div v-if="title || showCloseButton" class="popup-header">
-          <DialogTitle v-if="title" class="popup-title">
+        <div v-if="title || showCloseButton" class="modal-header">
+          <DialogTitle v-if="title" class="modal-title">
             {{ title }}
           </DialogTitle>
           <button
             v-if="showCloseButton"
             type="button"
-            class="popup-close-button"
+            class="modal-close-button"
             @click="handleClose"
-            aria-label="팝업 닫기"
+            aria-label="모달 닫기"
           >
             <BaseIcon name="arrow-close" size="md" />
           </button>
         </div>
 
         <!-- 컨텐츠 영역 -->
-        <div class="popup-content">
-          <!-- 알림 팝업 아이콘 -->
+        <div class="modal-content">
+          <!-- 알림 모달 아이콘 -->
           <div
             v-if="variant === 'alert' && alertVariant"
             :class="['alert-icon-container', getAlertColorClass(alertVariant)]"
@@ -156,25 +156,25 @@ const handleClose = () => {
           </div>
 
           <!-- 설명 (접근성용) -->
-          <DialogDescription v-if="description" class="popup-description">
+          <DialogDescription v-if="description" class="modal-description">
             {{ description }}
           </DialogDescription>
 
           <!-- 기본 컨텐츠 -->
-          <div v-if="$slots.default" class="popup-default-content">
+          <div v-if="$slots.default" class="modal-default-content">
             <slot />
           </div>
 
           <!-- 텍스트 컨텐츠 (alert, confirm variant용) -->
-          <p v-else-if="variant === 'alert' || variant === 'confirm'" class="popup-message">
+          <p v-else-if="variant === 'alert' || variant === 'confirm'" class="modal-message">
             <slot>{{ $attrs.content || '' }}</slot>
           </p>
         </div>
 
         <!-- 푸터 영역 (액션 버튼들) -->
-        <div v-if="actions.length > 0 || $slots.footer" class="popup-footer">
+        <div v-if="actions.length > 0 || $slots.footer" class="modal-footer">
           <slot name="footer">
-            <div class="popup-actions">
+            <div class="modal-actions">
               <BaseButton
                 v-for="(action, index) in actions"
                 :key="index"

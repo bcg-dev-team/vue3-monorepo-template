@@ -1,42 +1,43 @@
 import BaseButton from '../BaseButton/BaseButton.vue';
+import BaseButton from '../BaseButton/BaseButton.vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
-import BasePopup from '../BasePopup/BasePopup.vue';
+import BaseModal from '../BaseModal/BaseModal.vue';
 import { ref } from 'vue';
 
-const meta: Meta<typeof BasePopup> = {
-  title: 'Components/BasePopup',
-  component: BasePopup,
+const meta: Meta<typeof BaseModal> = {
+  title: 'Components/BaseModal',
+  component: BaseModal,
   tags: ['autodocs'],
   parameters: {
     docs: {
       description: {
         component:
-          'Headless UI Dialog 기반의 재사용 가능한 팝업 컴포넌트입니다. 기본, 확인, 알림 타입을 모두 지원하며 접근성이 완벽하게 구현되어 있습니다.\n\n[Figma 링크](https://www.figma.com/design/5OJPsmnkEgZZnkHtNbk1wK/-MODA--Draft-250514-?node-id=1801-17801&m=dev)',
+          'Headless UI Dialog 기반의 재사용 가능한 모달 컴포넌트입니다. 기본, 확인, 알림 타입을 모두 지원하며 접근성이 완벽하게 구현되어 있습니다.\n\n[Figma 링크](https://www.figma.com/design/5OJPsmnkEgZZnkHtNbk1wK/-MODA--Draft-250514-?node-id=1801-17801&m=dev)',
       },
     },
   },
   argTypes: {
     isOpen: {
       control: 'boolean',
-      description: '팝업 열림 상태',
+      description: '모달 열림 상태',
     },
     title: {
       control: 'text',
-      description: '팝업 제목',
+      description: '모달 제목',
     },
     description: {
       control: 'text',
-      description: '팝업 설명 (접근성용)',
+      description: '모달 설명 (접근성용)',
     },
     size: {
       control: 'select',
       options: ['sm', 'md', 'lg', 'xl'],
-      description: '팝업 크기',
+      description: '모달 크기',
     },
     variant: {
       control: 'select',
       options: ['default', 'confirm', 'alert'],
-      description: '팝업 타입',
+      description: '모달 타입',
     },
     alertVariant: {
       control: 'select',
@@ -57,13 +58,13 @@ const meta: Meta<typeof BasePopup> = {
     },
     actions: {
       control: 'object',
-      description: '팝업 액션 버튼들',
+      description: '모달 액션 버튼들',
     },
   },
   args: {
     isOpen: false,
-    title: '팝업 제목',
-    description: '팝업에 대한 설명입니다.',
+    title: '모달 제목',
+    description: '모달에 대한 설명입니다.',
     size: 'md',
     variant: 'default',
     closeOnOverlayClick: true,
@@ -79,39 +80,39 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     isOpen: false,
-    title: '기본 팝업',
-    description: '기본 팝업의 설명입니다.',
+    title: '기본 모달',
+    description: '기본 모달의 설명입니다.',
     variant: 'default',
   },
   render: (args) => ({
-    components: { BasePopup, BaseButton },
+    components: { BaseModal, BaseButton },
     setup() {
       const isOpen = ref(false);
-      const openPopup = () => {
+      const openModal = () => {
         isOpen.value = true;
       };
-      const closePopup = () => {
+      const closeModal = () => {
         isOpen.value = false;
       };
 
-      return { args, isOpen, openPopup, closePopup };
+      return { args, isOpen, openModal, closeModal };
     },
     template: `
       <div>
         <BaseButton 
           variant="contained"
           size="md"
-          label="기본 팝업 열기"
-          @click="openPopup"
+          label="기본 모달 열기"
+          @click="openModal"
         />
         
-        <BasePopup 
+        <BaseModal 
           v-bind="args" 
           :is-open="isOpen"
-          @close="closePopup"
+          @close="closeModal"
         >
-          <p>기본 팝업의 내용입니다.</p>
-        </BasePopup>
+          <p>기본 모달의 내용입니다.</p>
+        </BaseModal>
       </div>
     `,
   }),
@@ -119,50 +120,50 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          'Headless UI Dialog 기반의 기본 팝업입니다. 제목, 설명, 내용을 포함할 수 있으며 접근성이 완벽하게 구현되어 있습니다. 버튼을 클릭하여 팝업을 열어보세요.',
+          'Headless UI Dialog 기반의 기본 모달입니다. 제목, 설명, 내용을 포함할 수 있으며 접근성이 완벽하게 구현되어 있습니다. 버튼을 클릭하여 모달을 열어보세요.',
       },
     },
   },
 };
 
-// 기본 팝업 with 컨텐츠
+// 기본 모달 with 컨텐츠
 export const DefaultWithContent: Story = {
   args: {
     isOpen: false,
-    title: '기본 팝업',
-    description: '기본 팝업에 대한 상세한 설명입니다.',
+    title: '기본 모달',
+    description: '기본 모달에 대한 상세한 설명입니다.',
     variant: 'default',
   },
   render: (args) => ({
-    components: { BasePopup, BaseButton },
+    components: { BaseModal, BaseButton },
     setup() {
       const isOpen = ref(false);
-      const openPopup = () => {
+      const openModal = () => {
         isOpen.value = true;
       };
-      const closePopup = () => {
+      const closeModal = () => {
         isOpen.value = false;
       };
 
-      return { args, isOpen, openPopup, closePopup };
+      return { args, isOpen, openModal, closeModal };
     },
     template: `
       <div>
         <BaseButton 
           variant="contained"
           size="md"
-          label="기본 팝업 열기"
-          @click="openPopup"
+          label="기본 모달 열기"
+          @click="openModal"
         />
         
-        <BasePopup 
+        <BaseModal 
           v-bind="args" 
           :is-open="isOpen"
-          @close="closePopup"
+          @close="closeModal"
         >
-          <p>이것은 기본 팝업의 내용입니다.</p>
+          <p>이것은 기본 모달의 내용입니다.</p>
           <p>여러 줄의 텍스트를 포함할 수 있습니다.</p>
-        </BasePopup>
+        </BaseModal>
       </div>
     `,
   }),
@@ -170,7 +171,7 @@ export const DefaultWithContent: Story = {
     docs: {
       description: {
         story:
-          '기본 팝업에 내용이 포함된 예시입니다. Headless UI의 DialogTitle과 DialogDescription을 사용하여 접근성을 향상시켰습니다. 버튼을 클릭하여 팝업을 열어보세요.',
+          '기본 모달에 내용이 포함된 예시입니다. Headless UI의 DialogTitle과 DialogDescription을 사용하여 접근성을 향상시켰습니다. 버튼을 클릭하여 모달을 열어보세요.',
       },
     },
   },
@@ -179,40 +180,40 @@ export const DefaultWithContent: Story = {
 export const Small: Story = {
   args: {
     isOpen: false,
-    title: '작은 팝업',
-    description: '작은 크기의 팝업입니다.',
+    title: '작은 모달',
+    description: '작은 크기의 모달입니다.',
     size: 'sm',
     variant: 'default',
   },
   render: (args) => ({
-    components: { BasePopup, BaseButton },
+    components: { BaseModal, BaseButton },
     setup() {
       const isOpen = ref(false);
-      const openPopup = () => {
+      const openModal = () => {
         isOpen.value = true;
       };
-      const closePopup = () => {
+      const closeModal = () => {
         isOpen.value = false;
       };
 
-      return { args, isOpen, openPopup, closePopup };
+      return { args, isOpen, openModal, closeModal };
     },
     template: `
       <div>
         <BaseButton 
           variant="contained"
           size="md"
-          label="작은 팝업 열기"
-          @click="openPopup"
+          label="작은 모달 열기"
+          @click="openModal"
         />
         
-        <BasePopup 
+        <BaseModal 
           v-bind="args" 
           :is-open="isOpen"
-          @close="closePopup"
+          @close="closeModal"
         >
-          <p>작은 크기의 팝업입니다.</p>
-        </BasePopup>
+          <p>작은 크기의 모달입니다.</p>
+        </BaseModal>
       </div>
     `,
   }),
@@ -220,7 +221,7 @@ export const Small: Story = {
     docs: {
       description: {
         story:
-          '작은 크기의 팝업입니다. Headless UI Dialog의 접근성 기능이 모든 크기에서 동일하게 작동합니다. 버튼을 클릭하여 팝업을 열어보세요.',
+          '작은 크기의 모달입니다. Headless UI Dialog의 접근성 기능이 모든 크기에서 동일하게 작동합니다. 버튼을 클릭하여 모달을 열어보세요.',
       },
     },
   },
@@ -229,44 +230,44 @@ export const Small: Story = {
 export const Large: Story = {
   args: {
     isOpen: false,
-    title: '큰 팝업',
-    description: '큰 크기의 팝업으로 더 많은 내용을 포함할 수 있습니다.',
+    title: '큰 모달',
+    description: '큰 크기의 모달로 더 많은 내용을 포함할 수 있습니다.',
     size: 'lg',
     variant: 'default',
   },
   render: (args) => ({
-    components: { BasePopup, BaseButton },
+    components: { BaseModal, BaseButton },
     setup() {
       const isOpen = ref(false);
-      const openPopup = () => {
+      const openModal = () => {
         isOpen.value = true;
       };
-      const closePopup = () => {
+      const closeModal = () => {
         isOpen.value = false;
       };
 
-      return { args, isOpen, openPopup, closePopup };
+      return { args, isOpen, openModal, closeModal };
     },
     template: `
       <div>
         <BaseButton 
           variant="contained"
           size="md"
-          label="큰 팝업 열기"
-          @click="openPopup"
+          label="큰 모달 열기"
+          @click="openModal"
         />
         
-        <BasePopup 
+        <BaseModal 
           v-bind="args" 
           :is-open="isOpen"
-          @close="closePopup"
+          @close="closeModal"
         >
-          <p>큰 크기의 팝업입니다.</p>
+          <p>큰 크기의 모달입니다.</p>
           <p>더 많은 내용을 포함할 수 있습니다.</p>
           <div style="height: 200px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; margin: 16px 0;">
             스크롤 가능한 영역
           </div>
-        </BasePopup>
+        </BaseModal>
       </div>
     `,
   }),
@@ -274,7 +275,7 @@ export const Large: Story = {
     docs: {
       description: {
         story:
-          '큰 크기의 팝업입니다. 더 많은 내용을 포함할 수 있으며, Headless UI Dialog의 포커스 트랩핑과 스크롤 락 기능이 완벽하게 작동합니다. 버튼을 클릭하여 팝업을 열어보세요.',
+          '큰 크기의 모달입니다. 더 많은 내용을 포함할 수 있으며, Headless UI Dialog의 포커스 트랩핑과 스크롤 락 기능이 완벽하게 작동합니다. 버튼을 클릭하여 모달을 열어보세요.',
       },
     },
   },
@@ -284,7 +285,7 @@ export const Confirm: Story = {
   args: {
     isOpen: false,
     title: '확인',
-    description: '작업을 확인하는 팝업입니다.',
+    description: '작업을 확인하는 모달입니다.',
     variant: 'confirm',
     actions: [
       {
@@ -300,35 +301,35 @@ export const Confirm: Story = {
     ],
   },
   render: (args) => ({
-    components: { BasePopup, BaseButton },
+    components: { BaseModal, BaseButton },
     setup() {
       const isOpen = ref(false);
-      const openPopup = () => {
+      const openModal = () => {
         isOpen.value = true;
       };
-      const closePopup = () => {
+      const closeModal = () => {
         isOpen.value = false;
       };
 
-      return { args, isOpen, openPopup, closePopup };
+      return { args, isOpen, openModal, closeModal };
     },
     template: `
       <div>
         <BaseButton 
           variant="contained"
           size="md"
-          label="확인 팝업 열기"
-          @click="openPopup"
+          label="확인 모달 열기"
+          @click="openModal"
         />
         
-        <BasePopup 
+        <BaseModal 
           v-bind="args" 
           :is-open="isOpen"
-          @close="closePopup"
-          @action="(action, index) => { console.log('Action clicked:', action, index); closePopup(); }"
+          @close="closeModal"
+          @action="(action, index) => { console.log('Action clicked:', action, index); closeModal(); }"
         >
           정말로 이 작업을 수행하시겠습니까?
-        </BasePopup>
+        </BaseModal>
       </div>
     `,
   }),
@@ -336,7 +337,7 @@ export const Confirm: Story = {
     docs: {
       description: {
         story:
-          '확인/취소 버튼이 있는 팝업입니다. Headless UI Dialog의 키보드 네비게이션과 포커스 관리 기능이 완벽하게 작동합니다. 버튼을 클릭하여 팝업을 열어보세요.',
+          '확인/취소 버튼이 있는 모달입니다. Headless UI Dialog의 키보드 네비게이션과 포커스 관리 기능이 완벽하게 작동합니다. 버튼을 클릭하여 모달을 열어보세요.',
       },
     },
   },
@@ -358,17 +359,17 @@ export const AlertSuccess: Story = {
     ],
   },
   render: (args) => ({
-    components: { BasePopup, BaseButton },
+    components: { BaseModal, BaseButton },
     setup() {
       const isOpen = ref(false);
-      const openPopup = () => {
+      const openModal = () => {
         isOpen.value = true;
       };
-      const closePopup = () => {
+      const closeModal = () => {
         isOpen.value = false;
       };
 
-      return { args, isOpen, openPopup, closePopup };
+      return { args, isOpen, openModal, closeModal };
     },
     template: `
       <div>
@@ -376,17 +377,17 @@ export const AlertSuccess: Story = {
           variant="contained"
           size="md"
           label="성공 알림 열기"
-          @click="openPopup"
+          @click="openModal"
         />
         
-        <BasePopup 
+        <BaseModal 
           v-bind="args" 
           :is-open="isOpen"
-          @close="closePopup"
-          @action="(action, index) => { console.log('Action clicked:', action, index); closePopup(); }"
+          @close="closeModal"
+          @action="(action, index) => { console.log('Action clicked:', action, index); closeModal(); }"
         >
           작업이 성공적으로 완료되었습니다.
-        </BasePopup>
+        </BaseModal>
       </div>
     `,
   }),
@@ -394,7 +395,7 @@ export const AlertSuccess: Story = {
     docs: {
       description: {
         story:
-          '성공 알림 팝업입니다. Headless UI Dialog의 접근성 기능과 함께 아이콘과 색상으로 상태를 명확하게 표현합니다. 버튼을 클릭하여 팝업을 열어보세요.',
+          '성공 알림 모달입니다. Headless UI Dialog의 접근성 기능과 함께 아이콘과 색상으로 상태를 명확하게 표현합니다. 버튼을 클릭하여 모달을 열어보세요.',
       },
     },
   },
@@ -416,17 +417,17 @@ export const AlertError: Story = {
     ],
   },
   render: (args) => ({
-    components: { BasePopup, BaseButton },
+    components: { BaseModal, BaseButton },
     setup() {
       const isOpen = ref(false);
-      const openPopup = () => {
+      const openModal = () => {
         isOpen.value = true;
       };
-      const closePopup = () => {
+      const closeModal = () => {
         isOpen.value = false;
       };
 
-      return { args, isOpen, openPopup, closePopup };
+      return { args, isOpen, openModal, closeModal };
     },
     template: `
       <div>
@@ -434,17 +435,17 @@ export const AlertError: Story = {
           variant="contained"
           size="md"
           label="오류 알림 열기"
-          @click="openPopup"
+          @click="openModal"
         />
         
-        <BasePopup 
+        <BaseModal 
           v-bind="args" 
           :is-open="isOpen"
-          @close="closePopup"
-          @action="(action, index) => { console.log('Action clicked:', action, index); closePopup(); }"
+          @close="closeModal"
+          @action="(action, index) => { console.log('Action clicked:', action, index); closeModal(); }"
         >
           작업 중 오류가 발생했습니다.
-        </BasePopup>
+        </BaseModal>
       </div>
     `,
   }),
@@ -452,7 +453,7 @@ export const AlertError: Story = {
     docs: {
       description: {
         story:
-          '오류 알림 팝업입니다. Headless UI Dialog의 접근성 기능과 함께 오류 상태를 명확하게 표현합니다. 버튼을 클릭하여 팝업을 열어보세요.',
+          '오류 알림 모달입니다. Headless UI Dialog의 접근성 기능과 함께 오류 상태를 명확하게 표현합니다. 버튼을 클릭하여 모달을 열어보세요.',
       },
     },
   },
@@ -462,37 +463,37 @@ export const WithCustomFooter: Story = {
   args: {
     isOpen: false,
     title: '커스텀 푸터',
-    description: '커스텀 푸터가 있는 팝업입니다.',
+    description: '커스텀 푸터가 있는 모달입니다.',
     variant: 'default',
   },
   render: (args) => ({
-    components: { BasePopup, BaseButton },
+    components: { BaseModal, BaseButton },
     setup() {
       const isOpen = ref(false);
-      const openPopup = () => {
+      const openModal = () => {
         isOpen.value = true;
       };
-      const closePopup = () => {
+      const closeModal = () => {
         isOpen.value = false;
       };
 
-      return { args, isOpen, openPopup, closePopup };
+      return { args, isOpen, openModal, closeModal };
     },
     template: `
       <div>
         <BaseButton 
           variant="contained"
           size="md"
-          label="커스텀 푸터 팝업 열기"
-          @click="openPopup"
+          label="커스텀 푸터 모달 열기"
+          @click="openModal"
         />
         
-        <BasePopup 
+        <BaseModal 
           v-bind="args" 
           :is-open="isOpen"
-          @close="closePopup"
+          @close="closeModal"
         >
-          <p>커스텀 푸터가 있는 팝업입니다.</p>
+          <p>커스텀 푸터가 있는 모달입니다.</p>
           <template #footer>
             <BaseButton 
               variant="outlined"
@@ -506,7 +507,7 @@ export const WithCustomFooter: Story = {
               label="확인"
             />
           </template>
-        </BasePopup>
+        </BaseModal>
       </div>
     `,
   }),
@@ -514,7 +515,7 @@ export const WithCustomFooter: Story = {
     docs: {
       description: {
         story:
-          '커스텀 푸터가 있는 팝업입니다. Headless UI Dialog의 구조를 활용하면서도 유연한 커스터마이징이 가능합니다. 버튼을 클릭하여 팝업을 열어보세요.',
+          '커스텀 푸터가 있는 모달입니다. Headless UI Dialog의 구조를 활용하면서도 유연한 커스터마이징이 가능합니다. 버튼을 클릭하여 모달을 열어보세요.',
       },
     },
   },

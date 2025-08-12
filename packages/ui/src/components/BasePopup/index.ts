@@ -1,1 +1,0 @@
-export { default as BasePopup } from './BasePopup.vue';

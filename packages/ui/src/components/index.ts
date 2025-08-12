@@ -13,7 +13,7 @@ export { default as BaseStepper } from './BaseStepper/BaseStepper.vue';
 export * from './BasePagination';
 export * from './BaseTable';
 export * from './BaseIcon';
-export * from './BasePopup';
+export * from './BaseModal';
 export * from './BaseSkeleton';
 export * from './BaseStepper';
 

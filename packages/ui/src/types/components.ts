@@ -49,7 +49,7 @@ export type { IconName };
 export type ButtonVariant = 'contained' | 'outlined';
 
 /**
- * 버튼 아이콘 props 타입 (BaseButton, BasePopup 등에서 공통 사용)
+ * 버튼 아이콘 props 타입 (BaseButton, BaseModal 등에서 공통 사용)
  */
 export interface ButtonIconProps {
   name: IconName;
@@ -103,12 +103,12 @@ export interface ChipData {
   icon?: string;
 }
 
-// BasePopup
-export type PopupSize = 'sm' | 'md' | 'lg' | 'xl';
-export type PopupVariant = 'default' | 'confirm' | 'alert';
+// BaseModal
+export type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
+export type ModalVariant = 'default' | 'confirm' | 'alert';
 export type AlertVariant = 'success' | 'info' | 'warning' | 'error';
 
-export interface PopupState {
+export interface ModalState {
   isOpen: boolean;
   title?: string;
   content?: string;
@@ -116,7 +116,7 @@ export interface PopupState {
   data?: unknown;
 }
 
-export interface PopupAction {
+export interface ModalAction {
   label: string;
   variant?: ButtonVariant;
   size?: ComponentSize;
@@ -126,13 +126,13 @@ export interface PopupAction {
   rightIcon?: ButtonIconProps;
 }
 
-export interface PopupConfig {
-  size?: PopupSize;
-  variant?: PopupVariant;
+export interface ModalConfig {
+  size?: ModalSize;
+  variant?: ModalVariant;
   closeOnOverlayClick?: boolean;
   closeOnEscape?: boolean;
   showCloseButton?: boolean;
-  actions?: PopupAction[];
+  actions?: ModalAction[];
   alertVariant?: AlertVariant;
 }
 // BaseSkeleton

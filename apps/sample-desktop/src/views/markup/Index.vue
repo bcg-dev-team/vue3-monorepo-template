@@ -155,7 +155,7 @@ const markupPages: MarkupPage[] = [
     name: '계좌관리',
     description: '계좌 관리 페이지',
     worker: '박철진',
-    firstPublishStatus: '대기',
+    firstPublishStatus: '진행중',
     finalStatus: '대기',
     route: '/withdrawal',
   },
@@ -166,7 +166,7 @@ const markupPages: MarkupPage[] = [
     worker: '박철진',
     firstPublishStatus: '완료',
     finalStatus: '대기',
-    route: '/service',
+    route: '/account-management',
   },
   {
     id: 'my-page',

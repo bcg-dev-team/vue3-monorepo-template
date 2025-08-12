@@ -8,6 +8,7 @@ import { computed } from 'vue';
 interface TabItem {
   value: string | number;
   component?: Component;
+  icon?: string;
 }
 
 interface TabCategories {

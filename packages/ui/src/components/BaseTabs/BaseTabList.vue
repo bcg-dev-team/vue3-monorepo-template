@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import type { ComponentSize } from 'types/components';
+import type { IconName } from '../../types/icons';
+import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { Tab } from '@headlessui/vue';
 import type { Component } from 'vue';
 
 interface TabItem {
   value: string | number;
   component?: Component;
+  icon?: IconName;
 }
 
 interface TabCategories {
@@ -54,7 +57,7 @@ const props = withDefaults(defineProps<Props>(), {
  * @returns CSS 클래스 문자열
  */
 const getTabButtonClasses = (selected: boolean): string => {
-  const baseClasses = 'focus:outline-none focus:ring-0 ';
+  const baseClasses = 'focus:outline-none focus:ring-0 flex items-center gap-x-2 ';
 
   // inner variant 스타일
   if (props.variant === 'inner') {
@@ -108,6 +111,7 @@ const getContainerClasses = (): string => {
   <div :class="getContainerClasses()">
     <Tab v-for="tab in Object.keys(tabs)" as="template" :key="tab" v-slot="{ selected }">
       <button :class="getTabButtonClasses(selected)">
+        <BaseIcon v-if="tabs[tab].icon" :name="tabs[tab].icon" />
         {{ tab }}
       </button>
     </Tab>

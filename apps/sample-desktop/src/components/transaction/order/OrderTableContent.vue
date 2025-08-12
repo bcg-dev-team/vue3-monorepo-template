@@ -2,22 +2,26 @@
   <div class="gap-size-36 flex flex-col">
     <div class="w-[1000px]">
       <LabelContent label="요약" size="lg">
-        <BaseTable
-          :headers="summaryHeaders"
-          :data="summaryData"
-          :selectable="true"
-          :sortable="true"
-        />
+        <template #content>
+          <BaseTable
+            :headers="summaryHeaders"
+            :data="summaryData"
+            :selectable="true"
+            :sortable="true"
+          />
+        </template>
       </LabelContent>
     </div>
     <div>
       <LabelContent label="상세내역역" size="lg">
-        <BaseTable
-          :headers="detailHeaders"
-          :data="detailData"
-          :selectable="true"
-          :sortable="true"
-        />
+        <template #content>
+          <BaseTable
+            :headers="detailHeaders"
+            :data="detailData"
+            :selectable="true"
+            :sortable="true"
+          />
+        </template>
       </LabelContent>
     </div>
   </div>

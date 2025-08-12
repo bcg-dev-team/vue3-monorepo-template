@@ -12,7 +12,7 @@ export { default as BaseFileUploadButton } from './BaseButton/BaseFileUploadButt
 export * from './BasePagination';
 export * from './BaseTable';
 export * from './BaseIcon';
-export * from './BasePopup';
+export * from './BaseModal';
 export * from './BaseSkeleton';
 
 // 타입 export

@@ -14,6 +14,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import LabelContent from '@/components/transaction/common/LabelContent.vue';
+import LabelContent from '@/components/common/LabelContent.vue';
 import { BaseInput, BaseButton } from '@template/ui';
 </script>

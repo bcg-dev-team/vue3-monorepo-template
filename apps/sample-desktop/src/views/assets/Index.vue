@@ -4,7 +4,7 @@
       <MainCardContent class="p-6" title="내 자산" size="lg">
         <template #content>
           <div>
-            <div></div>
+            <AssetsSummary />
           </div>
         </template>
       </MainCardContent>
@@ -42,4 +42,5 @@
 import CardLayoutHorizontal from '@/components/layout/fragments/CardLayoutHorizontal.vue';
 import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
+import AssetsSummary from '@/components/assets/AssetsSummary.vue';
 </script>

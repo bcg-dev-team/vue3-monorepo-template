@@ -1,9 +1,12 @@
 <template>
-  <div class="bg-bg-innerframe rounded-[8px]">
-    <div v-if="title">
-      <span class="text-md leading-xl font-semibold tracking-wide">{{ props.title }}</span>
+  <div class="bg-bg-bg-innerframe w-full rounded-md">
+    <div v-if="title || $slots.title">
+      <span v-if="title" class="text-md leading-xl font-semibold tracking-wide">{{
+        props.title
+      }}</span>
+      <slot name="title" />
     </div>
-    <div :class="!title ? 'mt-0' : 'mt-4'">
+    <div>
       <slot name="content" />
     </div>
   </div>

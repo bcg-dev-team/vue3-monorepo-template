@@ -25,14 +25,17 @@ const tabs = {
   공지사항: {
     value: 'notice',
     component: Notice,
+    icon: 'send',
   },
   이벤트: {
     value: 'event',
     component: Event,
+    icon: 'description',
   },
   '1:1 문의': {
     value: 'qna',
     component: QnA,
+    icon: 'card',
   },
   '자주 묻는 질문': {
     value: 'faq',

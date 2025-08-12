@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import BaseTab from '../BaseTab.vue';
+import BaseTabs from '../BaseTabs.vue';
 
 /**
  * BaseTab 컴포넌트
@@ -7,9 +7,9 @@ import BaseTab from '../BaseTab.vue';
  * Headless UI의 Tab 컴포넌트를 기반으로 한 탭 인터페이스입니다.
  * 카테고리별로 콘텐츠를 구분하여 표시할 수 있습니다.
  */
-const meta: Meta<typeof BaseTab> = {
-  title: 'Components/BaseTab',
-  component: BaseTab,
+const meta: Meta<typeof BaseTabs> = {
+  title: 'Components/BaseTabs',
+  component: BaseTabs,
   parameters: {
     layout: 'centered',
     docs: {
@@ -78,6 +78,38 @@ export const Default: Story = {
       description: {
         story:
           '기본적인 탭 인터페이스를 보여줍니다. Limit, Stop, Stop Limit, Profit & Loss 카테고리가 있으며, 각각 관련 컨텐츠를 표시합니다.',
+      },
+    },
+  },
+};
+
+export const WithIcons: Story = {
+  args: {
+    tabs: {
+      계좌개설: {
+        value: 'notice',
+        icon: 'card',
+      },
+      '출금/이체/입금': {
+        value: 'event',
+        icon: 'send',
+      },
+      입출금내역: {
+        value: 'qna',
+        icon: 'description',
+      },
+    },
+    modelValue: 'notice',
+    variant: 'underline',
+    size: 'lg',
+    underline: true,
+    ariaLabel: '고객지원 탭',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '아이콘이 포함된 탭 인터페이스입니다. 각 탭에 관련 아이콘이 표시되어 사용자가 더 쉽게 구분할 수 있습니다.',
       },
     },
   },

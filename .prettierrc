@@ -6,7 +6,7 @@
   "printWidth": 100,
   "bracketSpacing": true,
   "arrowParens": "always",
-  "endOfLine": "auto",
+  "endOfLine": "lf",
   "vueIndentScriptAndStyle": false,
   "plugins": ["prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"]
 }

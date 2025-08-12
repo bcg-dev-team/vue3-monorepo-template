@@ -1,0 +1,37 @@
+<template>
+  <div class="flex flex-col" :class="gapSize">
+    <span :class="sizeClass">{{ props.label }}</span>
+    <slot />
+  </div>
+</template>
+<script setup lang="ts">
+import type { ComponentSize } from '@template/ui';
+import { computed } from 'vue';
+
+const props = defineProps<{
+  label: string;
+  size?: ComponentSize;
+}>();
+
+const sizeClass = computed(() => {
+  switch (props.size) {
+    case 'sm':
+      return 'text-font-12 font-medium';
+    case 'md':
+      return 'text-font-14 font-medium';
+    case 'lg':
+      return 'text-font-16 font-semibold';
+  }
+});
+
+const gapSize = computed(() => {
+  switch (props.size) {
+    case 'sm':
+      return 'gap-size-2';
+    case 'md':
+      return 'gap-size-4';
+    case 'lg':
+      return 'gap-size-8';
+  }
+});
+</script>

@@ -22,8 +22,8 @@ import UserGuide from '@/components/service/guide/UserGuide.vue';
 import Notice from '@/components/service/notice/Notice.vue';
 import Event from '@/components/service/event/Event.vue';
 import QnA from '@/components/service/qna/QnaMain.vue';
+import { BaseTabs, type TabItem } from '@template/ui';
 import Faq from '@/components/service/faq/Faq.vue';
-import { BaseTabs } from '@template/ui';
 import { ref } from 'vue';
 
 const modelValue = ref('notice');
@@ -33,5 +33,5 @@ const tabs = [
   { value: 'qna', label: '1:1 문의', content: QnA },
   { value: 'faq', label: '자주 묻는 질문', content: Faq },
   { value: 'guide', label: '이용가이드', content: UserGuide },
-];
+] as TabItem[];
 </script>

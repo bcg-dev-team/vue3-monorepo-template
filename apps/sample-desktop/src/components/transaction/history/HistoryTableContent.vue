@@ -1,7 +1,14 @@
 <template>
   <div>
     <LabelContent label="상세내역" size="lg">
-      <BaseTable :headers="detailHeaders" :data="detailData" :selectable="true" :sortable="true" />
+      <template #content>
+        <BaseTable
+          :headers="detailHeaders"
+          :data="detailData"
+          :selectable="true"
+          :sortable="true"
+        />
+      </template>
     </LabelContent>
   </div>
 </template>

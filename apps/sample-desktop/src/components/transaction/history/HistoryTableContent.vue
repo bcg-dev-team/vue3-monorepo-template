@@ -6,8 +6,8 @@
   </div>
 </template>
 <script setup lang="ts">
-import LabelContent from '@/components/transaction/common/LabelContent.vue';
 import { BaseTable, type TableHeader, type TableRow } from '@template/ui';
+import LabelContent from '@/components/common/LabelContent.vue';
 
 const detailHeaders: TableHeader[] = [
   { key: 'settlementDate', title: '결제일자', width: '120px', align: 'center' },

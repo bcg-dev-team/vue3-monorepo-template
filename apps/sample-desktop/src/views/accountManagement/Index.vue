@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto w-[1920px] py-6">
+  <div class="mx-auto w-[1440px] py-6">
     <MainCardContent class="p-6" title="계좌관리" size="lg">
       <template #content>
         <BaseTabs

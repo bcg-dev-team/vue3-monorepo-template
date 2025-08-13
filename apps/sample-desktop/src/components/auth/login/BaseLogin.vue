@@ -11,9 +11,9 @@
           </FormField>
           <div class="flex items-center justify-between">
             <div>
-              <CheckBoxLabel v-model:isChecked="isChecked">
-                <span class="text-font-13">아이디 저장</span>
-              </CheckBoxLabel>
+              <BaseCheckbox v-model="isChecked"
+                ><span class="text-font-13">아이디 저장</span>
+              </BaseCheckbox>
             </div>
             <div class="gap-size-12 text-font-13 flex items-center">
               <a class="cursor-pointer underline" href="/auth/find-id">아이디 찾기</a>
@@ -36,10 +36,9 @@
 </template>
 
 <script lang="ts" setup>
-import CheckBoxLabel from '@/components/auth/common/CheckBoxLabel.vue';
+import { BaseInput, BaseButton, BaseCheckbox } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
 import AuthContent from '@/components/auth/AuthContent.vue';
-import { BaseInput, BaseButton } from '@template/ui';
 import { ref } from 'vue';
 
 const isChecked = ref<boolean>(false);

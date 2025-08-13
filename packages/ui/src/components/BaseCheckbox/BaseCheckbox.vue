@@ -14,7 +14,7 @@ import './BaseCheckbox.scss';
  * @props modelValue - 체크 여부 (v-model)
  * @props disabled - 비활성화 여부
  * @props indeterminate - 부분 선택 상태 (3-state checkbox)
- * @props size - 컴포넌트 크기 (sm: 20px, md: 22px, lg: 24px)
+ * @props size - 컴포넌트 크기 (sm: 16px, md: 18px, lg: 20px)
  * @emits update:modelValue - 값 변경 시 발생
  */
 interface Props {
@@ -34,9 +34,9 @@ interface Props {
   indeterminate?: boolean;
   /**
    * 컴포넌트 크기
-   * - sm: 20px
-   * - md: 22px (기본)
-   * - lg: 24px
+   * - sm: 16px
+   * - md: 18px (기본)
+   * - lg: 20px
    * @default 'md'
    */
   size?: ComponentSize;
@@ -60,6 +60,9 @@ const isIndeterminate = computed(() => props.indeterminate);
 // 체크박스 스타일 계산
 const checkboxStyles = computed(() => {
   const styles: Record<string, string> = {};
+
+  styles.width = `${sizeToBoxSize[props.size]}`;
+  styles.height = `${sizeToBoxSize[props.size]}`;
 
   if (isDisabled.value) {
     if (isChecked.value) {
@@ -88,28 +91,14 @@ const checkboxStyles = computed(() => {
 
 // 크기별 스타일 계산
 const sizeToBoxSize: Record<ComponentSize, number> = {
-  sm: 20,
-  md: 22,
-  lg: 24,
-};
-
-// 패딩은 크기에 따라 미세 조정 (디자인 반영)
-const sizeToPaddingPx: Record<ComponentSize, number> = {
-  sm: 1.67,
-  md: 1.83,
-  lg: 2.0,
+  sm: 'var(--base-size-size-16)',
+  md: 'var(--base-size-size-18)',
+  lg: 'var(--base-size-size-20)',
 };
 
 const containerBoxStyle = computed(() => {
-  const widthHeightPx = sizeToBoxSize[props.size];
-  const paddingPx = sizeToPaddingPx[props.size];
   return {
-    width: `${widthHeightPx}px`,
-    height: `${widthHeightPx}px`,
-    minWidth: `${widthHeightPx}px`,
-    minHeight: `${widthHeightPx}px`,
     flexShrink: '0',
-    padding: `${paddingPx}px`,
     boxSizing: 'border-box',
   } as Record<string, string>;
 });
@@ -150,7 +139,7 @@ onMounted(() => {
     :aria-checked="isIndeterminate ? 'mixed' : isChecked ? 'true' : 'false'"
     :aria-disabled="isDisabled"
   >
-    <div class="flex items-center justify-center" :style="containerBoxStyle">
+    <div class="flex items-center justify-center">
       <!-- 체크박스 박스 -->
       <div
         class="box-border flex h-full w-full items-center justify-center rounded-[3px] border border-[1.5px]"

@@ -16,18 +16,19 @@
 </template>
 
 <script setup lang="ts">
+import TransferAccountMain from '@/components/accountManagement/transfer/TransferAccountMain.vue';
 import CreateAccountMain from '@/components/accountManagement/create/CreateAccountMain.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import { BaseTabs, type TabItem } from '@template/ui';
 import { ref } from 'vue';
 
-const modelValue = ref('create-account');
+const modelValue = ref('transfer');
 const tabs = [
   { value: 'create-account', label: '계좌개설', content: CreateAccountMain },
-  { value: 'withdrawal-apply', label: '출금신청', content: '' },
-  { value: 'account-history', label: '입출금내역', content: '' },
-  { value: 'deposit-info', label: '입금안내', content: '' },
+  { value: 'transfer', label: '출금/이체/입금', content: TransferAccountMain },
+  { value: 'deposit-history', label: '입금안내', content: '' },
 ] as TabItem[];
 </script>
 
 <style scoped></style>
+/

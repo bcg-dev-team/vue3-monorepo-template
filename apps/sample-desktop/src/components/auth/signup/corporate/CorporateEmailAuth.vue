@@ -6,7 +6,7 @@
     <template #header>
       <div class="flex items-center justify-between">
         <BaseIcon name="arrow-backward" size="md" />
-        <BasePaginationJoin :count="4" :current="2" />
+        <BaseStepper :count="4" :current="2" />
       </div>
     </template>
     <template #content>
@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts" setup>
-import { BaseIcon, BasePaginationJoin, BaseInput, BaseButton } from '@template/ui';
+import { BaseIcon, BaseStepper, BaseInput, BaseButton } from '@template/ui';
 import AuthContent from '@/components/auth/AuthContent.vue';
 const step = defineModel<number>('step', { required: true });
 </script>

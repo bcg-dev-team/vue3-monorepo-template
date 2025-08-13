@@ -90,7 +90,7 @@ const checkboxStyles = computed(() => {
 });
 
 // 크기별 스타일 계산
-const sizeToBoxSize: Record<ComponentSize, number> = {
+const sizeToBoxSize: Record<ComponentSize, string> = {
   sm: 'var(--base-size-size-16)',
   md: 'var(--base-size-size-18)',
   lg: 'var(--base-size-size-20)',

@@ -62,6 +62,11 @@ const routes: RouteRecordRaw[] = [
     name: 'LightChartTest',
     component: () => import('../views/LightChartTestView.vue'),
   },
+  {
+    path: '/trading-platform',
+    name: 'TradingPlatform',
+    component: () => import('../views/TradingPlatformView.vue'),
+  },
 ];
 
 const router = createRouter({

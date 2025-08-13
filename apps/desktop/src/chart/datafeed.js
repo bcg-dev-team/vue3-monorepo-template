@@ -7,6 +7,44 @@ import { subscribeOnStream, unsubscribeFromStream } from './streaming.js';
 
 const lastBarsCache = new Map();
 
+// 마지막 바 데이터를 가져오는 함수
+export const getLastBar = (symbolName) => {
+  console.log(`[getLastBar] ${symbolName} 검색 시작`);
+  console.log(`[getLastBar] 현재 캐시된 심볼들:`, Array.from(lastBarsCache.keys()));
+
+  // 다양한 심볼 형식으로 시도
+  let lastBar = lastBarsCache.get(symbolName);
+
+  if (!lastBar) {
+    // full_name 형식으로 시도 (예: FX:GBPUSD)
+    const fullName = `FX:${symbolName}`;
+    console.log(`[getLastBar] ${fullName} 형식으로 검색 시도`);
+    lastBar = lastBarsCache.get(fullName);
+  }
+
+  if (!lastBar) {
+    // 다른 거래소 형식으로 시도
+    const exchanges = ['FX', 'INDEX', 'COMMODITY'];
+    for (const exchange of exchanges) {
+      const fullName = `${exchange}:${symbolName}`;
+      console.log(`[getLastBar] ${fullName} 형식으로 검색 시도`);
+      lastBar = lastBarsCache.get(fullName);
+      if (lastBar) break;
+    }
+  }
+
+  if (lastBar) {
+    console.log(`[getLastBar] ${symbolName}에서 마지막 바 데이터 찾음:`, lastBar);
+  } else {
+    console.log(`[getLastBar] ${symbolName}에서 마지막 바 데이터를 찾을 수 없음`);
+  }
+
+  return lastBar;
+};
+
+// lastBarsCache를 외부에서 접근할 수 있도록 export
+export { lastBarsCache };
+
 export default {
   onReady: (callback) => {
     console.log('[onReady]: Method call');
@@ -43,18 +81,48 @@ export default {
       onResolveErrorCallback('Cannot resolve symbol');
       return;
     }
+
+    // 심볼 타입에 따른 설정
+    let pricescale = 100;
+    let minmov = 1;
+    let session = '24x7';
+
+    switch (symbolItem.type) {
+      case 'forex':
+        pricescale = 100000; // 외환: 소수점 5자리 (예: 1.12345)
+        minmov = 1;
+        session = '24x7';
+        break;
+      case 'index':
+        pricescale = 100; // 지수: 소수점 2자리 (예: 5000.50)
+        minmov = 1;
+        session = '24x7';
+        break;
+      case 'commodity':
+        pricescale = 1000; // 상품: 소수점 3자리 (예: 0.123)
+        minmov = 1;
+        session = '24x7';
+        break;
+      case 'crypto':
+      default:
+        pricescale = 100; // 암호화폐: 소수점 2자리 (예: 50000.12)
+        minmov = 1;
+        session = '24x7';
+        break;
+    }
+
     // Symbol information object
     const symbolInfo = {
       ticker: symbolItem.ticker,
       name: symbolItem.symbol,
       description: symbolItem.description,
       type: symbolItem.type,
-      session: '24x7',
+      session: session,
       timezone: 'Etc/UTC',
       exchange: symbolItem.exchange,
-      minmov: 1,
-      pricescale: 100, // 소수점 2자리 (예: 50000.12)
-      has_intraday: true, // ETH/EUR은 분 단위 데이터 지원
+      minmov: minmov,
+      pricescale: pricescale,
+      has_intraday: true,
       visible_plots_set: 'ohlc',
       has_weekly_and_monthly: false,
       // 심볼별 지원 시간 간격 설정
@@ -69,7 +137,9 @@ export default {
       '[resolveSymbol]: 가격 스케일 설정 - pricescale:',
       symbolInfo.pricescale,
       'minmov:',
-      symbolInfo.minmov
+      symbolInfo.minmov,
+      'type:',
+      symbolInfo.type
     );
     onSymbolResolvedCallback(symbolInfo);
   },
@@ -78,12 +148,34 @@ export default {
     console.log('[getBars]: Method call', symbolInfo, resolution, from, to);
     console.log('[getBars]: full_name:', symbolInfo.full_name);
     console.log('[getBars]: resolution:', resolution);
+    console.log('[getBars]: exchange:', symbolInfo.exchange);
+    console.log('[getBars]: type:', symbolInfo.type);
+
     const parsedSymbol = parseFullSymbol(symbolInfo.full_name);
     console.log('[getBars]: parsedSymbol:', parsedSymbol);
 
     if (!parsedSymbol) {
       console.error('[getBars]: 심볼 파싱 실패:', symbolInfo.full_name);
       onErrorCallback(new Error('Invalid symbol format'));
+      return;
+    }
+
+    // 외환, 지수, 상품 심볼에 대해서는 모킹된 데이터 제공
+    if (symbolInfo.exchange !== 'Bitfinex') {
+      console.log(`[getBars]: ${symbolInfo.exchange} 거래소에 대해 모킹 데이터 생성 시작`);
+      const mockBars = generateMockBars(symbolInfo, resolution, from, to);
+      console.log(`[getBars]: 생성된 모킹 데이터:`, mockBars.length, '개 바');
+      console.log(`[getBars]: 첫 번째 바:`, mockBars[0]);
+      console.log(`[getBars]: 마지막 바:`, mockBars[mockBars.length - 1]);
+
+      if (firstDataRequest) {
+        const lastBarData = { ...mockBars[mockBars.length - 1] };
+        lastBarsCache.set(symbolInfo.full_name, lastBarData);
+        console.log(`[getBars] ${symbolInfo.full_name}에 마지막 바 데이터 캐시 저장:`, lastBarData);
+        console.log(`[getBars] 현재 캐시된 심볼들:`, Array.from(lastBarsCache.keys()));
+      }
+      console.log(`[getBars]: returned ${mockBars.length} mock bar(s) for ${symbolInfo.exchange}`);
+      onHistoryCallback(mockBars, { noData: false });
       return;
     }
 
@@ -192,13 +284,20 @@ const configurationData = {
   supported_resolutions: ['1', '5', '30', '60', '240', '1D', '1W', '1M'],
   // The `exchanges` arguments are used for the `searchSymbols` method if a user selects the exchange
   // 사용자가 거래소를 선택할 경우 searchSymbols 메서드에서 사용되는 거래소 목록입니다
-  // exchanges: [
-  //   { value: 'Bitfinex', name: 'Bitfinex', desc: 'Bitfinex' },
-  //   { value: 'Binance', name: 'Binance', desc: 'Binance' },
-  // ],
+  exchanges: [
+    { value: 'Bitfinex', name: 'Bitfinex', desc: 'Bitfinex' },
+    { value: 'FX', name: 'FX', desc: 'Forex' },
+    { value: 'INDEX', name: 'INDEX', desc: 'Index' },
+    { value: 'COMMODITY', name: 'COMMODITY', desc: 'Commodity' },
+  ],
   // The `symbols_types` arguments are used for the `searchSymbols` method if a user selects this symbol type
   // 사용자가 심볼 타입을 선택할 경우 searchSymbols 메서드에서 사용되는 심볼 타입 목록입니다
-  symbols_types: [{ name: 'crypto', value: 'crypto' }],
+  symbols_types: [
+    { name: 'crypto', value: 'crypto' },
+    { name: 'forex', value: 'forex' },
+    { name: 'index', value: 'index' },
+    { name: 'commodity', value: 'commodity' },
+  ],
   // Additional configuration for better price scale display
   supports_marks: false,
   supports_timescale_marks: false,
@@ -209,12 +308,92 @@ const configurationData = {
 
 // 시간 간격 매핑 함수
 function getSupportedResolutions(symbol) {
-  // ETH/EUR에 대해서는 이미지 메시지와 일치하는 시간 간격 설정
-  if (symbol === 'ETH/EUR') {
-    return ['1', '5', '15', '30', '60', '240', '1D', '1W', '1M'];
+  // 모든 심볼에 대해 동일한 시간 간격 지원
+  return ['1', '5', '15', '30', '60', '240', '1D', '1W', '1M'];
+}
+
+// 모킹된 차트 데이터 생성 함수
+function generateMockBars(symbolInfo, resolution, from, to) {
+  console.log(`[generateMockBars]: ${symbolInfo.symbol} 심볼에 대한 모킹 데이터 생성 시작`);
+  console.log(`[generateMockBars]: resolution: ${resolution}, from: ${from}, to: ${to}`);
+
+  const bars = [];
+
+  // 심볼별 기본 가격 설정
+  let basePrice = 1.0;
+
+  switch (symbolInfo.type) {
+    case 'crypto':
+      if (symbolInfo.symbol.includes('ETH')) {
+        basePrice = 50000; // ETH/EUR 기준
+      } else if (symbolInfo.symbol.includes('BTC')) {
+        basePrice = 80000; // BTC/EUR 기준
+      } else {
+        basePrice = 50000;
+      }
+      break;
+    case 'forex':
+      if (symbolInfo.symbol.includes('GBP')) {
+        basePrice = 1.26;
+      } else if (symbolInfo.symbol.includes('EUR')) {
+        basePrice = 1.08;
+      } else if (symbolInfo.symbol.includes('NZD')) {
+        basePrice = 0.61;
+      } else if (symbolInfo.symbol.includes('AUD')) {
+        basePrice = 0.66;
+      } else {
+        basePrice = 1.2;
+      }
+      break;
+    case 'index':
+      basePrice = 5000;
+      break;
+    case 'commodity':
+      basePrice = 0.85;
+      break;
+    default:
+      basePrice = 50000;
+      break;
   }
-  // 다른 심볼들은 기본 설정 사용
-  return configurationData.supported_resolutions;
+
+  console.log(`[generateMockBars]: 기본 가격: ${basePrice}`);
+
+  // ChartView와 동일한 수준의 데이터 생성 (100-200개 정도)
+  const dataPoints = Math.min(150, Math.floor((to - from) / (1000 * 60 * 5))); // 5분 간격으로 150개 제한
+
+  let currentTime = from;
+  let currentPrice = basePrice;
+
+  console.log(`[generateMockBars]: 생성할 데이터 포인트: ${dataPoints}개`);
+
+  for (let i = 0; i < dataPoints; i++) {
+    // 가격 변동 시뮬레이션 (ChartView 수준)
+    const change = (Math.random() - 0.5) * 0.01;
+    currentPrice = Math.max(currentPrice * (1 + change), currentPrice * 0.99);
+
+    // OHLC 데이터 생성
+    const open = currentPrice;
+    const high = currentPrice * (1 + Math.random() * 0.005);
+    const low = currentPrice * (1 - Math.random() * 0.005);
+    const close = currentPrice * (1 + (Math.random() - 0.5) * 0.003);
+
+    bars.push({
+      time: currentTime,
+      open: parseFloat(open.toFixed(2)),
+      high: parseFloat(high.toFixed(2)),
+      low: parseFloat(low.toFixed(2)),
+      close: parseFloat(close.toFixed(2)),
+    });
+
+    // 5분 간격으로 설정
+    currentTime += 5 * 60 * 1000; // 5분을 밀리초로
+  }
+
+  console.log(`[generateMockBars]: 생성 완료 - ${bars.length}개 바`);
+  console.log(`[generateMockBars]: 첫 번째 바:`, bars[0]);
+  console.log(`[generateMockBars]: 마지막 바:`, bars[bars.length - 1]);
+
+  return bars;
 }
 
 // Obtains all symbols for all exchanges supported by CryptoCompare API
@@ -222,6 +401,7 @@ function getSupportedResolutions(symbol) {
 async function getAllSymbols() {
   // MSW 환경에서는 하드코딩된 심볼 목록 사용
   return [
+    // 암호화폐 심볼
     {
       symbol: 'BTC/EUR',
       ticker: 'BTC/EUR',
@@ -249,6 +429,70 @@ async function getAllSymbols() {
       description: 'Ethereum / US Dollar',
       exchange: 'Bitfinex',
       type: 'crypto',
+    },
+    // 외환 심볼
+    {
+      symbol: 'NZDCAD',
+      ticker: 'NZDCAD',
+      description: 'New Zealand Dollar / Canadian Dollar',
+      exchange: 'FX',
+      type: 'forex',
+    },
+    {
+      symbol: 'GBPUSD',
+      ticker: 'GBPUSD',
+      description: 'British Pound / US Dollar',
+      exchange: 'FX',
+      type: 'forex',
+    },
+    {
+      symbol: 'US500',
+      ticker: 'US500',
+      description: 'US 500 Index',
+      exchange: 'INDEX',
+      type: 'index',
+    },
+    {
+      symbol: 'COTTON',
+      ticker: 'COTTON',
+      description: 'Cotton Futures',
+      exchange: 'COMMODITY',
+      type: 'commodity',
+    },
+    {
+      symbol: 'EURUSD',
+      ticker: 'EURUSD',
+      description: 'Euro / US Dollar',
+      exchange: 'FX',
+      type: 'forex',
+    },
+    {
+      symbol: 'USDJPY',
+      ticker: 'USDJPY',
+      description: 'US Dollar / Japanese Yen',
+      exchange: 'FX',
+      type: 'forex',
+    },
+    {
+      symbol: 'AUDUSD',
+      ticker: 'AUDUSD',
+      description: 'Australian Dollar / US Dollar',
+      exchange: 'FX',
+      type: 'forex',
+    },
+    {
+      symbol: 'USDCAD',
+      ticker: 'USDCAD',
+      description: 'US Dollar / Canadian Dollar',
+      exchange: 'FX',
+      type: 'forex',
+    },
+    {
+      symbol: 'NZDUSD',
+      ticker: 'NZDUSD',
+      description: 'New Zealand Dollar / US Dollar',
+      exchange: 'FX',
+      type: 'forex',
     },
   ];
 }

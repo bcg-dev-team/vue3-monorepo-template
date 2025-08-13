@@ -90,6 +90,15 @@ function handleMSWMessage(data) {
 function updateBarsForSymbol(symbol, realtimeBar) {
   let matchedCount = 0;
 
+  // window.lastChartData 업데이트 (TradingPlatformView와 동기화)
+  if (typeof window !== 'undefined' && window.lastChartData) {
+    if (!window.lastChartData[symbol]) {
+      window.lastChartData[symbol] = {};
+    }
+    window.lastChartData[symbol] = realtimeBar;
+    console.log(`[updateBarsForSymbol] window.lastChartData 업데이트: ${symbol}`, realtimeBar);
+  }
+
   // 해당 심볼의 모든 구독 찾기
   subscriptions.forEach((subscription, subscriberUID) => {
     if (subscription.symbol === symbol) {

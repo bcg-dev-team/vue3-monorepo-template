@@ -39,6 +39,7 @@
 
 // 네비게이션 라우트 정의
 const navRoutes = [
+  { name: 'TradingPlatform', path: '/trading-platform', label: '트레이딩 플랫폼' },
   { name: 'TradingViewTest', path: '/trading-view-test', label: 'TradingView 테스트 ' },
   { name: 'LightChartTest', path: '/light-chart-test', label: 'LightChart 테스트' },
 ];

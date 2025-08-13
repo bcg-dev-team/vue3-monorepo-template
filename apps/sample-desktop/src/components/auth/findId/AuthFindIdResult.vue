@@ -3,7 +3,7 @@
     <template #header>
       <div class="flex items-center justify-between">
         <BaseIcon name="arrow-backward" size="md" />
-        <BasePaginationJoin :count="3" :current="1" />
+        <BaseStepper :count="3" :current="1" />
       </div>
     </template>
     <template #content>
@@ -47,6 +47,6 @@
   </AuthContent>
 </template>
 <script setup lang="ts">
-import { BaseButton, BaseIcon, BasePaginationJoin } from '@template/ui';
+import { BaseButton, BaseIcon, BaseStepper } from '@template/ui';
 import AuthContent from '@/components/auth/AuthContent.vue';
 </script>

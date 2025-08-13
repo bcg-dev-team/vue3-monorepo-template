@@ -1,7 +1,7 @@
 <template>
   <div class="trading-platform">
-    <!-- 상단 툴바 -->
-    <div class="top-toolbar">
+    <!-- 상단 컨트롤 패널 -->
+    <div class="top-controls">
       <div class="left-controls">
         <div class="layout-controls">
           <button
@@ -37,25 +37,27 @@
     <!-- 메인 콘텐츠 영역 -->
     <div class="main-content">
       <!-- 차트 영역 -->
-      <div class="charts-container" :class="`layout-${currentLayout}`">
-        <div
-          v-for="(chart, index) in activeCharts"
-          :key="chart.id"
-          :class="['chart-wrapper', `chart-${index + 1}`]"
-        >
-          <div class="chart-header">
-            <div class="symbol-info">
-              <span class="symbol">{{ chart.symbol }}</span>
-              <span class="price">{{ chart.price }}</span>
-              <span class="change" :class="chart.change >= 0 ? 'positive' : 'negative'">
-                {{ chart.change >= 0 ? '+' : '' }}{{ chart.change }}%
-              </span>
+      <div class="chart-area">
+        <div class="chart-container" :class="getLayoutClass()">
+          <div v-for="(chart, index) in activeCharts" :key="chart.id" class="chart-item">
+            <div
+              class="chart-header"
+              @click="handleChartHeaderClick(chart.id)"
+              :class="getChartHeaderClass(chart.id)"
+            >
+              <div class="chart-info">
+                <span class="chart-symbol">{{ chart.symbol }}</span>
+                <span class="chart-price">{{ chart.price }}</span>
+                <span class="chart-change" :class="chart.change >= 0 ? 'positive' : 'negative'">
+                  {{ chart.change >= 0 ? '+' : '' }}{{ chart.change }}%
+                </span>
+              </div>
+              <div class="chart-controls">
+                <button class="control-btn" @click="removeChart(chart.id)">×</button>
+              </div>
             </div>
-            <div class="chart-controls">
-              <button class="control-btn" @click="removeChart(chart.id)">×</button>
-            </div>
+            <div :id="`chart_${chart.id}`" class="chart-wrapper"></div>
           </div>
-          <div :id="`chart_${chart.id}`" class="chart-container"></div>
         </div>
       </div>
 
@@ -94,7 +96,7 @@
         <div class="market-info">
           <div class="info-row">
             <span>스프레드:</span>
-            <span>{{ spread }}</span>
+            <span>{{ spreadValue }}</span>
           </div>
           <div class="info-row">
             <span>고가:</span>
@@ -182,13 +184,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, onUnmounted, watch } from 'vue';
+import { ref, reactive, onMounted, onUnmounted, watch, computed } from 'vue';
 // @ts-ignore - JavaScript 파일이므로 타입 체크 무시
 import Datafeed from '../chart/datafeed.js';
 // @ts-ignore - JavaScript 파일이므로 타입 체크 무시
 import { BrokerMinimal } from '../chart/broker';
-// @ts-ignore - JavaScript 파일이므로 타입 체크 무시
-import { getLastBar } from '../chart/datafeed.js';
 
 // 차트 레이아웃 정의
 const chartLayouts = [
@@ -236,23 +236,52 @@ const activeAccountTab = ref('liquidation');
 
 // 차트 관련 상태
 const activeCharts = ref([
-  {
-    id: 1,
-    symbol: 'ETH/EUR',
-    price: '0.00',
-    change: 0.0,
-    lastPrice: 0.0, // 실제 마지막 가격
-    previousPrice: 0.0, // 이전 가격 (변화율 계산용)
-  },
+  { id: 1, symbol: 'ETH/EUR', price: '50000.00', change: 0.03 },
+  { id: 2, symbol: 'BTC/EUR', price: '80000.00', change: -0.02 },
+  { id: 3, symbol: 'ETH/EUR', price: '50000.00', change: 0.03 }, // 첫 번째와 동일
+  { id: 4, symbol: 'BTC/EUR', price: '80000.00', change: -0.02 }, // 두 번째와 동일
 ]);
 
-// 가격 정보
-const currentPrice = ref('0.00000');
-const buyPrice = ref('0.00000');
-const sellPrice = ref('0.00000');
-const spread = ref('0.0');
-const highPrice = ref('0.00000');
-const lowPrice = ref('0.00000');
+// 선택된 차트 상태
+const selectedChartId = ref(1); // 기본적으로 첫 번째 차트 선택
+
+// 가격 정보 (선택된 차트 기준으로 동적 계산)
+const currentPrice = computed(() => {
+  const selectedChart = activeCharts.value.find((chart) => chart.id === selectedChartId.value);
+  return selectedChart ? selectedChart.price : '0.00';
+});
+
+const buyPrice = computed(() => {
+  const price = parseFloat(currentPrice.value);
+  const spread = parseFloat(spreadValue.value);
+  return (price - spread / 2).toFixed(5);
+});
+
+const sellPrice = computed(() => {
+  const price = parseFloat(currentPrice.value);
+  const spread = parseFloat(spreadValue.value);
+  return (price + spread / 2).toFixed(5);
+});
+
+// 스프레드 값 (고정)
+const spreadValue = ref('0.3');
+
+// 고가/저가 (선택된 차트 기준)
+const highPrice = computed(() => {
+  const selectedChart = activeCharts.value.find((chart) => chart.id === selectedChartId.value);
+  if (!selectedChart) return '0.00';
+
+  const basePrice = parseFloat(selectedChart.price);
+  return (basePrice * 1.02).toFixed(5); // 2% 높은 가격
+});
+
+const lowPrice = computed(() => {
+  const selectedChart = activeCharts.value.find((chart) => chart.id === selectedChartId.value);
+  if (!selectedChart) return '0.00';
+
+  const basePrice = parseFloat(selectedChart.price);
+  return (basePrice * 0.98).toFixed(5); // 2% 낮은 가격
+});
 
 // 거래 정보
 const quantity = ref(2.0);
@@ -291,38 +320,50 @@ const closedPositions = [
 const tvWidgets = ref<any[]>([]);
 
 // 메서드들
+// 레이아웃 변경 함수
 const setChartLayout = (layoutId: string) => {
+  console.log('[setChartLayout] 레이아웃 변경:', layoutId);
   currentLayout.value = layoutId;
+
+  // 레이아웃에 따른 차트 개수 조정
   const layout = chartLayouts.find((l) => l.id === layoutId);
   if (layout) {
-    // 차트 개수에 맞게 activeCharts 조정
-    if (layout.charts < activeCharts.value.length) {
-      activeCharts.value = activeCharts.value.slice(0, layout.charts);
-    } else if (layout.charts > activeCharts.value.length) {
-      // 추가 차트 생성
-      const symbols = ['EURUSD', 'GBPUSD', 'USDJPY', 'AUDUSD', 'USDCAD', 'NZDUSD'];
-      for (let i = activeCharts.value.length; i < layout.charts; i++) {
-        const symbol = symbols[i % symbols.length];
-        activeCharts.value.push({
-          id: Date.now() + i,
-          symbol,
-          price: '0.00',
-          change: 0.0,
-          lastPrice: 0.0,
-          previousPrice: 0.0,
-        });
+    const targetChartCount = layout.charts;
+
+    if (activeCharts.value.length < targetChartCount) {
+      // 차트 추가
+      for (let i = activeCharts.value.length; i < targetChartCount; i++) {
+        const newChart = {
+          id: i + 1,
+          symbol: activeCharts.value[i % activeCharts.value.length].symbol,
+          price: activeCharts.value[i % activeCharts.value.length].price,
+          change: activeCharts.value[i % activeCharts.value.length].change,
+        };
+        activeCharts.value.push(newChart);
       }
+    } else if (activeCharts.value.length > targetChartCount) {
+      // 차트 제거
+      activeCharts.value = activeCharts.value.slice(0, targetChartCount);
     }
 
-    // 차트 레이아웃 재구성
-    setTimeout(() => {
-      initializeCharts();
+    // 차트 재초기화
+    initializeCharts();
+  }
+};
 
-      // 레이아웃 변경 후 추가 지연을 두고 차트 크기 재조정
-      setTimeout(() => {
-        resizeAllCharts();
-      }, 200);
-    }, 100);
+// 레이아웃 CSS 클래스 반환 함수
+const getLayoutClass = () => {
+  switch (currentLayout.value) {
+    case 'single':
+      return 'single';
+    case '2x2':
+      return 'two-by-two';
+    case '1x3':
+      return 'one-by-three';
+    case '3x1':
+      return 'three-by-one';
+    default:
+      return 'single';
   }
 };
 
@@ -382,17 +423,23 @@ const initializeCharts = () => {
 
   // 기존 차트들 제거
   tvWidgets.value.forEach((widget) => {
-    if (widget && typeof widget.remove === 'function') {
+    if (widget) {
       widget.remove();
     }
   });
   tvWidgets.value = [];
 
-  // 첫 번째 차트만 즉시 생성
-  if (activeCharts.value.length > 0) {
-    console.log('[initializeCharts] 첫 번째 차트 생성:', activeCharts.value[0].symbol);
-    createChart(activeCharts.value[0], 0);
-  }
+  // 모든 차트를 순차적으로 생성 (비동기 처리)
+  activeCharts.value.forEach((chart, index) => {
+    console.log(
+      `[initializeCharts] ${chart.symbol} 차트 생성 중... (${index + 1}/${activeCharts.value.length})`
+    );
+
+    // 각 차트 생성 사이에 약간의 지연을 두어 충돌 방지
+    setTimeout(() => {
+      createChart(chart, index);
+    }, index * 500); // 500ms 간격으로 차트 생성
+  });
 };
 
 const createChart = (chart: any, index: number) => {
@@ -405,21 +452,7 @@ const createChart = (chart: any, index: number) => {
   }
 
   waitForTradingView(() => {
-    console.log(`[createChart] ${chart.symbol} 차트 생성 시작`);
-
-    // 차트 컨테이너 요소 가져오기
-    const container = document.getElementById(`chart_${chart.id}`);
-    if (!container) {
-      console.error(`[createChart] 차트 컨테이너를 찾을 수 없습니다: chart_${chart.id}`);
-      return;
-    }
-
-    // 컨테이너 크기 계산
-    const containerRect = container.getBoundingClientRect();
-    const width = containerRect.width || 400;
-    const height = containerRect.height || 300;
-
-    console.log(`[createChart] 컨테이너 크기: ${width}x${height}`);
+    console.log(`[createChart] ${chart.symbol} 차트 생성 시작 (차트 ${index + 1})`);
 
     // ChartView.vue와 동일한 설정 사용
     const widget = new window.TradingView.widget({
@@ -429,8 +462,8 @@ const createChart = (chart: any, index: number) => {
       container: `chart_${chart.id}`,
       datafeed: Datafeed,
       library_path: '/charting_library/',
-      width: width,
-      height: height,
+      width: 600, // 차트 크기 증가
+      height: 400, // 차트 크기 증가
       locale: 'ko',
       debug: false,
       enabled_features: [
@@ -481,7 +514,7 @@ const createChart = (chart: any, index: number) => {
 
     // ChartView.vue와 동일한 방식으로 차트 로드 완료 처리
     widget.onChartReady(() => {
-      console.log(`[TradingView] 차트 ${chart.symbol} 로드 완료`);
+      console.log(`[TradingView] 차트 ${chart.symbol} 로드 완료 (차트 ${index + 1})`);
 
       // 차트가 완전히 로드될 때까지 잠시 대기
       setTimeout(() => {
@@ -498,39 +531,51 @@ const createChart = (chart: any, index: number) => {
               const priceScale = firstPane.getRightPriceScale();
 
               if (priceScale) {
-                console.log(`[TradingView] ${chart.symbol} 가격 스케일 설정 적용`);
+                console.log(
+                  `[TradingView] ${chart.symbol} 차트 ${index + 1} 가격 스케일 설정 적용`
+                );
                 priceScale.setAutoScale(true);
                 priceScale.setVisible(true);
               } else {
-                console.warn(`[TradingView] ${chart.symbol} 가격 스케일을 찾을 수 없습니다.`);
+                console.warn(
+                  `[TradingView] ${chart.symbol} 차트 ${index + 1} 가격 스케일을 찾을 수 없습니다.`
+                );
               }
             } else {
               console.warn(
-                `[TradingView] ${chart.symbol} getRightPriceScale 메서드를 사용할 수 없습니다.`
+                `[TradingView] ${chart.symbol} 차트 ${index + 1} getRightPriceScale 메서드를 사용할 수 없습니다.`
               );
             }
           } else {
-            console.warn(`[TradingView] ${chart.symbol} 차트 패널을 찾을 수 없습니다.`);
+            console.warn(
+              `[TradingView] ${chart.symbol} 차트 ${index + 1} 차트 패널을 찾을 수 없습니다.`
+            );
           }
 
           // 심볼 정보 확인
           if (chartInstance && typeof chartInstance.symbolExt === 'function') {
             const symbolInfo = chartInstance.symbolExt();
-            console.log(`[TradingView] ${chart.symbol} 현재 심볼 정보:`, symbolInfo);
+            console.log(
+              `[TradingView] ${chart.symbol} 차트 ${index + 1} 현재 심볼 정보:`,
+              symbolInfo
+            );
           }
 
           // 시간 축 설정 강제 적용
           if (chartInstance && typeof chartInstance.timeScale === 'function') {
             const timeScale = chartInstance.timeScale();
             if (timeScale) {
-              console.log(`[TradingView] ${chart.symbol} 시간 축 설정 적용`);
+              console.log(`[TradingView] ${chart.symbol} 차트 ${index + 1} 시간 축 설정 적용`);
               timeScale.setVisible(true);
               timeScale.setTimeVisible(true);
               timeScale.setSecondsVisible(false);
 
               // 현재 간격에 따른 시간 표시 형식 설정
               const currentInterval = currentTimeframe.value;
-              console.log(`[TradingView] ${chart.symbol} 현재 간격:`, currentInterval);
+              console.log(
+                `[TradingView] ${chart.symbol} 차트 ${index + 1} 현재 간격:`,
+                currentInterval
+              );
 
               // 시간 축 새로고침
               timeScale.refresh();
@@ -539,264 +584,21 @@ const createChart = (chart: any, index: number) => {
 
           // 차트 스타일 강제 새로고침
           if (chartInstance && typeof chartInstance.refresh === 'function') {
-            console.log(`[TradingView] ${chart.symbol} 차트 새로고침 실행`);
+            console.log(`[TradingView] ${chart.symbol} 차트 ${index + 1} 차트 새로고침 실행`);
             chartInstance.refresh();
           }
 
           // 차트에 주문 라인 그리기 기능 추가
           addOrderLineDrawing(widget, chart.symbol);
-
-          // 차트 크기 조정
-          resizeChart(widget, container);
-
-          // 초기 차트 데이터 로드
-          loadInitialChartData(widget, chart);
-
-          // 실시간 데이터 변경 감지
-          setupRealtimeDataListener(widget, chart);
         } catch (error) {
-          console.error(`[TradingView] ${chart.symbol} 차트 설정 중 오류 발생:`, error);
+          console.error(
+            `[TradingView] ${chart.symbol} 차트 ${index + 1} 차트 설정 중 오류 발생:`,
+            error
+          );
         }
       }, 1000); // 1초 대기
     });
-
-    // 리사이즈 이벤트 리스너 추가
-    const resizeObserver = new ResizeObserver(() => {
-      resizeChart(widget, container);
-    });
-    resizeObserver.observe(container);
   });
-};
-
-// 실시간 데이터 변경 감지 설정
-const setupRealtimeDataListener = (widget: any, chart: any) => {
-  try {
-    const chartInstance = widget.chart();
-    if (chartInstance && typeof chartInstance.subscribeCrosshairMove === 'function') {
-      // 크로스헤어 이동 시 데이터 업데이트
-      chartInstance.subscribeCrosshairMove((param: any) => {
-        if (param.time && param.seriesPrices) {
-          const currentPrice = param.seriesPrices.get(chartInstance.getVisibleRange().from);
-          if (currentPrice && currentPrice !== chart.lastPrice) {
-            // 가격이 변경된 경우에만 업데이트
-            updateChartPriceData(widget, chart);
-          }
-        }
-      });
-
-      // 차트 데이터 변경 감지
-      if (typeof chartInstance.subscribeDataChanged === 'function') {
-        chartInstance.subscribeDataChanged(() => {
-          // 새로운 데이터가 추가되면 가격 정보 업데이트
-          updateChartPriceData(widget, chart);
-        });
-      }
-    }
-  } catch (error) {
-    console.error(
-      `[setupRealtimeDataListener] ${chart.symbol} 실시간 데이터 리스너 설정 중 오류:`,
-      error
-    );
-  }
-};
-
-// 차트에서 실제 가격 데이터 가져오기
-const updateChartPriceData = (widget: any, chart: any) => {
-  try {
-    const chartInstance = widget.chart();
-    if (chartInstance && typeof chartInstance.getVisibleRange === 'function') {
-      const visibleRange = chartInstance.getVisibleRange();
-      if (visibleRange && visibleRange.to) {
-        // 차트의 마지막 데이터 포인트에서 가격 가져오기
-        const lastBar = chartInstance.getLastBar();
-        if (lastBar && lastBar.close) {
-          const newPrice = lastBar.close;
-          const previousPrice = chart.lastPrice || newPrice;
-
-          // 가격 업데이트
-          chart.lastPrice = newPrice;
-          chart.previousPrice = previousPrice;
-          chart.price = newPrice.toFixed(5);
-
-          // 변화율 계산
-          if (previousPrice > 0) {
-            const changePercent = ((newPrice - previousPrice) / previousPrice) * 100;
-            chart.change = parseFloat(changePercent.toFixed(2));
-          }
-
-          console.log(`[updateChartPriceData] ${chart.symbol} 가격 업데이트:`, {
-            price: chart.price,
-            change: chart.change,
-            lastPrice: chart.lastPrice,
-          });
-
-          // 첫 번째 차트인 경우 현재 가격 정보도 업데이트
-          if (chart.id === activeCharts.value[0].id) {
-            updateCurrentPriceInfo(chart);
-          }
-        }
-      }
-    }
-  } catch (error) {
-    console.error(`[updateChartPriceData] ${chart.symbol} 가격 데이터 업데이트 중 오류:`, error);
-  }
-};
-
-// 차트 초기 로드 시 시고저종 데이터 가져오기
-const loadInitialChartData = (widget: any, chart: any) => {
-  try {
-    const chartInstance = widget.chart();
-    if (chartInstance && typeof chartInstance.getVisibleRange === 'function') {
-      // 차트에 충분한 데이터가 로드될 때까지 대기
-      setTimeout(() => {
-        try {
-          // datafeed에서 마지막 바 데이터 가져오기
-          const symbolName = chart.symbol;
-          const lastBar = getLastBar(symbolName);
-
-          if (lastBar && lastBar.close) {
-            // 초기 가격 데이터 설정
-            chart.lastPrice = lastBar.close;
-            chart.previousPrice = lastBar.close;
-            chart.price = lastBar.close.toFixed(5);
-            chart.change = 0.0;
-
-            // datafeed에서 가져온 고가/저가 사용
-            chart.highPrice = lastBar.high;
-            chart.lowPrice = lastBar.low;
-
-            console.log(`[loadInitialChartData] ${chart.symbol} 초기 데이터 로드:`, {
-              price: chart.price,
-              highPrice: chart.highPrice,
-              lowPrice: chart.lowPrice,
-              source: 'datafeed',
-            });
-
-            // 첫 번째 차트인 경우 현재 가격 정보도 업데이트
-            if (chart.id === activeCharts.value[0].id) {
-              updateCurrentPriceInfo(chart);
-            }
-          } else {
-            // datafeed에서 데이터를 가져올 수 없는 경우 차트 인스턴스에서 가져오기
-            console.log(
-              `[loadInitialChartData] ${chart.symbol} datafeed에서 데이터를 찾을 수 없음, 차트 인스턴스에서 가져오기`
-            );
-            const chartLastBar = chartInstance.getLastBar();
-            if (chartLastBar && chartLastBar.close) {
-              // 초기 가격 데이터 설정
-              chart.lastPrice = chartLastBar.close;
-              chart.previousPrice = chartLastBar.close;
-              chart.price = chartLastBar.close.toFixed(5);
-              chart.change = 0.0;
-
-              // 고가/저가 데이터 수집 (최근 100개 캔들 기준)
-              let highPrice = chartLastBar.high;
-              let lowPrice = chartLastBar.low;
-
-              // 차트에서 최근 데이터 포인트들을 가져와서 고가/저가 계산
-              const visibleRange = chartInstance.getVisibleRange();
-              if (visibleRange) {
-                // 최근 100개 캔들 데이터 수집
-                const dataPoints = chartInstance.getVisibleLogicalRange();
-                if (dataPoints) {
-                  const endIndex = Math.floor(dataPoints.to);
-                  const startIndex = Math.max(0, endIndex - 100);
-
-                  for (let i = startIndex; i <= endIndex; i++) {
-                    const bar = chartInstance.getBar(i);
-                    if (bar) {
-                      if (bar.high > highPrice) highPrice = bar.high;
-                      if (bar.low < lowPrice) lowPrice = bar.low;
-                    }
-                  }
-                }
-              }
-
-              // 차트 데이터 저장
-              chart.highPrice = highPrice;
-              chart.lowPrice = lowPrice;
-
-              console.log(
-                `[loadInitialChartData] ${chart.symbol} 차트 인스턴스에서 초기 데이터 로드:`,
-                {
-                  price: chart.price,
-                  highPrice: chart.highPrice,
-                  lowPrice: chart.lowPrice,
-                  source: 'chartInstance',
-                }
-              );
-
-              // 첫 번째 차트인 경우 현재 가격 정보도 업데이트
-              if (chart.id === activeCharts.value[0].id) {
-                updateCurrentPriceInfo(chart);
-              }
-            }
-          }
-        } catch (error) {
-          console.error(`[loadInitialChartData] ${chart.symbol} 초기 데이터 로드 중 오류:`, error);
-        }
-      }, 2000); // 차트 데이터 로드 완료까지 2초 대기
-    }
-  } catch (error) {
-    console.error(`[loadInitialChartData] ${chart.symbol} 초기 데이터 로드 중 오류:`, error);
-  }
-};
-
-// 현재 가격 정보 업데이트
-const updateCurrentPriceInfo = (chart: any) => {
-  if (chart.lastPrice > 0) {
-    const price = chart.lastPrice;
-    const spreadValue = 0.00016; // 스프레드 값
-
-    currentPrice.value = price.toFixed(5);
-    buyPrice.value = (price - spreadValue).toFixed(5);
-    sellPrice.value = (price + spreadValue).toFixed(5);
-
-    // 실제 차트 데이터에서 가져온 고가/저가 사용
-    if (chart.highPrice && chart.lowPrice) {
-      highPrice.value = chart.highPrice.toFixed(5);
-      lowPrice.value = chart.lowPrice.toFixed(5);
-    } else {
-      // 백업: 현재 가격 기준으로 계산
-      highPrice.value = (price + Math.random() * 0.01).toFixed(5);
-      lowPrice.value = (price - Math.random() * 0.01).toFixed(5);
-    }
-
-    // 스프레드 업데이트
-    spread.value = (spreadValue * 2 * 10000).toFixed(1); // pip 단위로 변환
-
-    console.log(`[updateCurrentPriceInfo] 현재 가격 정보 업데이트:`, {
-      currentPrice: currentPrice.value,
-      buyPrice: buyPrice.value,
-      sellPrice: sellPrice.value,
-      highPrice: highPrice.value,
-      lowPrice: lowPrice.value,
-    });
-  }
-};
-
-// 차트 크기 조정 함수
-const resizeChart = (widget: any, container: HTMLElement) => {
-  try {
-    const containerRect = container.getBoundingClientRect();
-    const width = Math.max(containerRect.width, 100);
-    const height = Math.max(containerRect.height, 100);
-
-    console.log(`[resizeChart] 차트 크기 조정: ${width}x${height}`);
-
-    // 위젯 크기 조정
-    if (widget && typeof widget.resize === 'function') {
-      widget.resize(width, height);
-    }
-
-    // 차트 인스턴스 크기 조정
-    const chartInstance = widget.chart();
-    if (chartInstance && typeof chartInstance.resize === 'function') {
-      chartInstance.resize(width, height);
-    }
-  } catch (error) {
-    console.error('[resizeChart] 차트 크기 조정 중 오류 발생:', error);
-  }
 };
 
 // 주문 라인 그리기 기능
@@ -833,515 +635,629 @@ const addOrderLineDrawing = (widget: any, symbol: string) => {
   }
 };
 
+// 차트 선택 함수
+const selectChart = (chartId: number) => {
+  console.log(`[selectChart] 차트 ${chartId} 선택됨`);
+  selectedChartId.value = chartId;
+
+  // 선택된 차트의 심볼을 우측 패널에 표시
+  const selectedChart = activeCharts.value.find((chart) => chart.id === chartId);
+  if (selectedChart) {
+    selectedSymbol.value = selectedChart.symbol;
+  }
+};
+
+// 실시간 가격 업데이트 함수
+const updateChartPrices = () => {
+  activeCharts.value.forEach((chart, index) => {
+    // 각 차트마다 약간 다른 가격 변동 시뮬레이션
+    const change = (Math.random() - 0.5) * 0.01; // -0.5% ~ +0.5% 변동
+    const currentPrice = parseFloat(chart.price);
+    const newPrice = Math.max(currentPrice * (1 + change), currentPrice * 0.99);
+
+    // 가격 업데이트
+    chart.price = newPrice.toFixed(2);
+
+    // 변화율 업데이트 (간단한 시뮬레이션)
+    chart.change = parseFloat((Math.random() * 4 - 2).toFixed(2)); // -2% ~ +2%
+  });
+
+  console.log('[updateChartPrices] 차트 가격 업데이트 완료:', activeCharts.value);
+};
+
+// 차트 헤더 클릭 이벤트 추가
+const handleChartHeaderClick = (chartId: number) => {
+  selectChart(chartId);
+};
+
+// 차트 헤더 클래스 계산
+const getChartHeaderClass = (chartId: number) => {
+  return {
+    'chart-header': true,
+    selected: chartId === selectedChartId.value,
+    clickable: true,
+  };
+};
+
 // 심볼 변경 감지
 watch(selectedSymbol, (newSymbol) => {
-  // 선택된 심볼이 변경되면 해당 차트를 찾아서 가격 정보 업데이트
-  const targetChart = activeCharts.value.find((chart) => chart.symbol === newSymbol);
-  if (targetChart && targetChart.lastPrice > 0) {
-    updateCurrentPriceInfo(targetChart);
-  }
+  // 우측 패널의 심볼 정보 업데이트
+  currentPrice.value = (Math.random() * 2 + 0.5).toFixed(5);
+  buyPrice.value = (parseFloat(currentPrice.value) - 0.00016).toFixed(5);
+  sellPrice.value = (parseFloat(currentPrice.value) + 0.00016).toFixed(5);
+
+  // 스프레드는 고정값이므로 업데이트하지 않음
+  console.log('[updatePrices] 가격 업데이트 완료');
 });
 
-// 컴포넌트 마운트 시 차트 초기화
+// 생명주기 훅
 onMounted(() => {
-  setTimeout(() => {
-    initializeCharts();
-  }, 500);
-});
+  console.log('[TradingPlatformView] 컴포넌트 마운트됨');
 
-// 컴포넌트 언마운트 시 정리
-onUnmounted(() => {
-  // 모든 차트 위젯 정리
-  tvWidgets.value.forEach((widget) => {
-    if (widget && typeof widget.remove === 'function') {
-      widget.remove();
-    }
-  });
-  tvWidgets.value = [];
-});
+  // 차트 초기화
+  initializeCharts();
 
-// 모든 차트 크기 재조정
-const resizeAllCharts = () => {
-  activeCharts.value.forEach((chart, index) => {
-    const container = document.getElementById(`chart_${chart.id}`);
-    if (container && tvWidgets.value[index]) {
-      resizeChart(tvWidgets.value[index], container);
-    }
+  // 실시간 가격 업데이트 타이머 설정 (3초마다)
+  const priceUpdateTimer = setInterval(() => {
+    updateChartPrices();
+  }, 3000);
+
+  // 컴포넌트 언마운트 시 타이머 정리
+  onUnmounted(() => {
+    clearInterval(priceUpdateTimer);
   });
-};
+});
 </script>
 
 <style scoped>
+/* 메인 레이아웃 */
 .trading-platform {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: #f5f5f5;
+  background: #f8f9fa;
 }
 
-/* 상단 툴바 */
-.top-toolbar {
+/* 상단 컨트롤 패널 */
+.top-controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e0e0e0;
+  padding: 1rem 1.5rem;
+  background: white;
+  border-bottom: 1px solid #e9ecef;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .left-controls {
   display: flex;
-  gap: 16px;
+  gap: 2rem;
+  align-items: center;
 }
 
-.layout-controls,
-.timeframe-controls {
+.layout-controls {
   display: flex;
-  gap: 4px;
+  gap: 0.5rem;
 }
 
-.layout-btn,
-.timeframe-btn {
-  padding: 6px 12px;
-  border: 1px solid #d0d0d0;
-  background-color: #ffffff;
-  border-radius: 4px;
+.layout-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #dee2e6;
+  background: white;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 12px;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
-.layout-btn:hover,
-.timeframe-btn:hover {
-  background-color: #f0f0f0;
+.layout-btn:hover {
+  background: #f8f9fa;
+  border-color: #adb5bd;
 }
 
-.layout-btn.active,
-.timeframe-btn.active {
-  background-color: #007bff;
+.layout-btn.active {
+  background: #007bff;
   color: white;
   border-color: #007bff;
 }
 
-.account-dropdown {
-  padding: 6px 12px;
-  border: 1px solid #d0d0d0;
-  border-radius: 4px;
-  background-color: #ffffff;
-  font-size: 12px;
+.timeframe-controls {
+  display: flex;
+  gap: 0.5rem;
 }
 
-/* 메인 콘텐츠 */
+.timeframe-btn {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #dee2e6;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
+}
+
+.timeframe-btn:hover {
+  background: #f8f9fa;
+}
+
+.timeframe-btn.active {
+  background: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+
+/* 메인 콘텐츠 영역 */
 .main-content {
   display: flex;
   flex: 1;
-  gap: 16px;
-  padding: 16px;
+  gap: 1rem;
+  padding: 1rem;
   overflow: hidden;
-  min-height: 0; /* Flexbox 오버플로우 방지 */
 }
 
-/* 차트 컨테이너 */
-.charts-container {
+/* 차트 영역 */
+.chart-area {
   flex: 1;
-  display: grid;
-  gap: 16px;
-  overflow: hidden;
-  min-height: 0; /* Grid 오버플로우 방지 */
-  height: 100%; /* 전체 높이 사용 */
-  align-items: stretch; /* 차트를 동일한 높이로 정렬 */
-}
-
-.layout-single {
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-}
-
-.layout-2x2 {
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-}
-
-.layout-1x3 {
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-}
-
-.layout-3x1 {
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr;
-}
-
-/* 반응형 그리드 레이아웃 */
-@media (max-width: 1200px) {
-  .layout-2x2 {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-  }
-
-  .layout-3x1 {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .main-content {
-    flex-direction: column;
-    gap: 12px;
-    padding: 12px;
-  }
-
-  .order-panel {
-    width: 100%;
-    order: -1; /* 모바일에서는 주문 패널을 상단에 배치 */
-  }
-
-  .charts-container {
-    gap: 12px;
-  }
-
-  .chart-wrapper {
-    min-height: 300px; /* 모바일에서 최소 높이 보장 */
-  }
-}
-
-.chart-wrapper {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
-  min-height: 0; /* Flexbox 오버플로우 방지 */
-  height: 100%; /* 전체 높이 사용 */
-  position: relative; /* 차트 컨테이너의 기준점 */
+  min-height: 0;
+}
+
+.chart-container {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  min-height: 600px;
+  overflow: auto;
+}
+
+.chart-container.single {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+.chart-container.two-by-two {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  min-height: 700px;
+}
+
+.chart-container.one-by-three {
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  min-height: 500px;
+}
+
+.chart-container.three-by-one {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  min-height: 800px;
+}
+
+.chart-item {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1rem;
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.chart-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-color: #007bff;
 }
 
 .chart-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #e9ecef;
-  flex-shrink: 0; /* 헤더 크기 고정 */
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f1f3f4;
+  transition: all 0.2s ease;
 }
 
-.symbol-info {
+.chart-header.clickable {
+  cursor: pointer;
+}
+
+.chart-header.clickable:hover {
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 0.5rem;
+  margin: -0.5rem -0.5rem 0.5rem -0.5rem;
+}
+
+.chart-header.selected {
+  background: #e3f2fd;
+  border-color: #2196f3;
+  border-radius: 6px;
+  padding: 0.5rem;
+  margin: -0.5rem -0.5rem 0.5rem -0.5rem;
+}
+
+.chart-header.selected .chart-symbol {
+  color: #1976d2;
+  font-weight: 700;
+}
+
+.chart-info {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap; /* 긴 심볼명 처리 */
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-.symbol {
+.chart-symbol {
   font-weight: 600;
-  font-size: 14px;
-  white-space: nowrap; /* 심볼명 줄바꿈 방지 */
+  font-size: 1rem;
+  color: #212529;
 }
 
-.price {
-  font-size: 12px;
-  color: #666;
+.chart-price {
+  font-size: 0.875rem;
+  color: #6c757d;
 }
 
-.change {
-  font-size: 12px;
+.chart-change {
+  font-size: 0.75rem;
   font-weight: 500;
+  padding: 0.125rem 0.5rem;
+  border-radius: 4px;
 }
 
-.change.positive {
-  color: #28a745;
+.chart-change.positive {
+  background: #d4edda;
+  color: #155724;
 }
 
-.change.negative {
-  color: #dc3545;
+.chart-change.negative {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.chart-controls {
+  display: flex;
+  gap: 0.5rem;
 }
 
 .control-btn {
   width: 24px;
   height: 24px;
-  border: none;
-  background-color: #dc3545;
-  color: white;
-  border-radius: 50%;
+  border: 1px solid #dee2e6;
+  background: white;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
-  line-height: 1;
-  flex-shrink: 0; /* 버튼 크기 고정 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: #6c757d;
+  transition: all 0.2s ease;
 }
 
-.chart-container {
+.control-btn:hover {
+  background: #f8f9fa;
+  border-color: #adb5bd;
+  color: #495057;
+}
+
+.chart-wrapper {
   flex: 1;
-  min-height: 0; /* Flexbox 오버플로우 방지 */
-  width: 100%;
+  min-height: 300px;
   position: relative;
-  overflow: hidden; /* 차트 오버플로우 방지 */
-  display: flex; /* 차트를 컨테이너에 맞춤 */
-  align-items: center; /* 차트를 중앙 정렬 */
-  justify-content: center; /* 차트를 중앙 정렬 */
+  border-radius: 4px;
+  overflow: hidden;
 }
 
 /* 우측 주문 패널 */
 .order-panel {
   width: 320px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  overflow-y: auto;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .panel-header {
-  margin-bottom: 20px;
   text-align: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e9ecef;
 }
 
 .panel-header h3 {
-  margin: 0 0 8px 0;
-  font-size: 18px;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
   font-weight: 600;
+  color: #212529;
 }
 
 .current-price {
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #007bff;
 }
 
 /* 주문 타입 탭 */
 .order-type-tabs {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 4px;
-  margin-bottom: 20px;
+  display: flex;
+  gap: 0.5rem;
+  border-radius: 8px;
+  padding: 0.25rem;
+  background: #f8f9fa;
 }
 
 .order-tab {
-  padding: 8px 12px;
-  border: 1px solid #d0d0d0;
-  background-color: #ffffff;
-  border-radius: 4px;
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 12px;
-  text-align: center;
-  transition: all 0.2s;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .order-tab:hover {
-  background-color: #f0f0f0;
+  background: #e9ecef;
 }
 
 .order-tab.active {
-  background-color: #007bff;
+  background: #007bff;
   color: white;
-  border-color: #007bff;
 }
 
 /* 매수/매도 버튼 */
 .trade-buttons {
   display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 1rem;
 }
 
 .buy-btn,
 .sell-btn {
   flex: 1;
-  padding: 16px;
+  padding: 1rem;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
+  transition: all 0.2s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  transition: all 0.2s;
+  gap: 0.25rem;
 }
 
 .buy-btn {
-  background-color: #dc3545;
+  background: #28a745;
   color: white;
 }
 
 .buy-btn:hover {
-  background-color: #c82333;
+  background: #218838;
+  transform: translateY(-1px);
 }
 
 .sell-btn {
-  background-color: #007bff;
+  background: #dc3545;
   color: white;
 }
 
 .sell-btn:hover {
-  background-color: #0056b3;
+  background: #c82333;
+  transform: translateY(-1px);
 }
 
 .btn-label {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .btn-price {
-  font-size: 16px;
+  font-size: 1.125rem;
 }
 
 /* 시장 정보 */
 .market-info {
-  margin-bottom: 20px;
-  padding: 16px;
-  background-color: #f8f9fa;
-  border-radius: 6px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
 }
 
 .info-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 8px;
-  font-size: 12px;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e9ecef;
 }
 
 .info-row:last-child {
-  margin-bottom: 0;
+  border-bottom: none;
 }
 
-/* 수량 섹션 */
+.info-row span:first-child {
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+
+.info-row span:last-child {
+  font-weight: 600;
+  color: #212529;
+}
+
+/* 수량 입력 */
 .quantity-section {
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .quantity-section label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
+  color: #212529;
+  font-size: 0.875rem;
 }
 
 .quantity-controls {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 1rem;
   justify-content: center;
 }
 
 .quantity-controls button {
   width: 32px;
   height: 32px;
-  border: 1px solid #d0d0d0;
-  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  background: white;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.quantity-controls button:hover {
+  background: #f8f9fa;
+  border-color: #adb5bd;
 }
 
 .quantity-controls span {
-  font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
+  color: #212529;
   min-width: 80px;
   text-align: center;
 }
 
 /* 주문 실행 버튼 */
 .execute-order-btn {
-  width: 100%;
-  padding: 16px;
-  background-color: #ffc107;
-  color: #212529;
+  padding: 1rem;
   border: none;
+  background: #007bff;
+  color: white;
   border-radius: 8px;
-  font-size: 16px;
   font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
 }
 
 .execute-order-btn:hover {
-  background-color: #e0a800;
+  background: #0056b3;
+  transform: translateY(-1px);
 }
 
-/* 하단 패널 */
+/* 하단 계정 정보 패널 */
 .bottom-panel {
-  background-color: #ffffff;
-  border-top: 1px solid #e0e0e0;
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  background: white;
+  border-radius: 12px;
+  margin: 0 1rem 1rem 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .panel-tabs {
   display: flex;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e9ecef;
 }
 
 .tab-btn {
-  padding: 12px 24px;
+  padding: 1rem 1.5rem;
   border: none;
-  background-color: transparent;
+  background: transparent;
   cursor: pointer;
-  font-size: 14px;
+  font-weight: 500;
+  color: #6c757d;
+  transition: all 0.2s ease;
   border-bottom: 2px solid transparent;
-  transition: all 0.2s;
 }
 
 .tab-btn:hover {
-  background-color: #f8f9fa;
+  color: #495057;
+  background: #f8f9fa;
 }
 
 .tab-btn.active {
-  border-bottom-color: #007bff;
   color: #007bff;
-  font-weight: 500;
+  border-bottom-color: #007bff;
 }
 
 .tab-content {
-  padding: 20px;
-  max-height: 300px;
-  overflow-y: auto;
+  padding: 1.5rem;
 }
 
 /* 청산 테이블 */
 .liquidation-table table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
 }
 
 .liquidation-table th,
 .liquidation-table td {
-  padding: 8px 12px;
+  padding: 0.75rem;
   text-align: left;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e9ecef;
 }
 
 .liquidation-table th {
-  background-color: #f8f9fa;
-  font-weight: 500;
-  color: #666;
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.875rem;
 }
 
-.position-type {
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 10px;
-  font-weight: 500;
+.liquidation-table td {
+  color: #212529;
+  font-size: 0.875rem;
 }
 
-.position-type.long {
-  background-color: #dc3545;
-  color: white;
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+  .order-panel {
+    width: 280px;
+  }
+
+  .chart-container.two-by-two {
+    min-height: 600px;
+  }
 }
 
-.position-type.short {
-  background-color: #007bff;
-  color: white;
-}
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+  }
 
-.positive {
-  color: #28a745;
-}
+  .order-panel {
+    width: 100%;
+  }
 
-.negative {
-  color: #dc3545;
+  .chart-container {
+    min-height: 400px;
+  }
+
+  .chart-container.two-by-two {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+  }
+
+  .chart-container.one-by-three {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+
+  .chart-container.three-by-one {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
 }
 </style>

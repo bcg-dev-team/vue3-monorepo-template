@@ -7,44 +7,6 @@ import { subscribeOnStream, unsubscribeFromStream } from './streaming.js';
 
 const lastBarsCache = new Map();
 
-// 마지막 바 데이터를 가져오는 함수
-export const getLastBar = (symbolName) => {
-  console.log(`[getLastBar] ${symbolName} 검색 시작`);
-  console.log(`[getLastBar] 현재 캐시된 심볼들:`, Array.from(lastBarsCache.keys()));
-
-  // 다양한 심볼 형식으로 시도
-  let lastBar = lastBarsCache.get(symbolName);
-
-  if (!lastBar) {
-    // full_name 형식으로 시도 (예: FX:GBPUSD)
-    const fullName = `FX:${symbolName}`;
-    console.log(`[getLastBar] ${fullName} 형식으로 검색 시도`);
-    lastBar = lastBarsCache.get(fullName);
-  }
-
-  if (!lastBar) {
-    // 다른 거래소 형식으로 시도
-    const exchanges = ['FX', 'INDEX', 'COMMODITY'];
-    for (const exchange of exchanges) {
-      const fullName = `${exchange}:${symbolName}`;
-      console.log(`[getLastBar] ${fullName} 형식으로 검색 시도`);
-      lastBar = lastBarsCache.get(fullName);
-      if (lastBar) break;
-    }
-  }
-
-  if (lastBar) {
-    console.log(`[getLastBar] ${symbolName}에서 마지막 바 데이터 찾음:`, lastBar);
-  } else {
-    console.log(`[getLastBar] ${symbolName}에서 마지막 바 데이터를 찾을 수 없음`);
-  }
-
-  return lastBar;
-};
-
-// lastBarsCache를 외부에서 접근할 수 있도록 export
-export { lastBarsCache };
-
 export default {
   onReady: (callback) => {
     console.log('[onReady]: Method call');
@@ -88,26 +50,35 @@ export default {
     let session = '24x7';
 
     switch (symbolItem.type) {
+      case 'crypto':
+        if (symbolItem.symbol.includes('ETH') || symbolItem.symbol.includes('BTC')) {
+          pricescale = 100; // 암호화폐: 소수점 2자리 (예: 50000.12)
+          minmov = 1;
+        } else {
+          pricescale = 100;
+          minmov = 1;
+        }
+        break;
       case 'forex':
-        pricescale = 100000; // 외환: 소수점 5자리 (예: 1.12345)
-        minmov = 1;
-        session = '24x7';
+        if (symbolItem.symbol.includes('GBP') || symbolItem.symbol.includes('EUR')) {
+          pricescale = 100000; // 외환: 소수점 5자리 (예: 1.12345)
+          minmov = 1;
+        } else {
+          pricescale = 100000;
+          minmov = 1;
+        }
         break;
       case 'index':
         pricescale = 100; // 지수: 소수점 2자리 (예: 5000.50)
         minmov = 1;
-        session = '24x7';
         break;
       case 'commodity':
         pricescale = 1000; // 상품: 소수점 3자리 (예: 0.123)
         minmov = 1;
-        session = '24x7';
         break;
-      case 'crypto':
       default:
-        pricescale = 100; // 암호화폐: 소수점 2자리 (예: 50000.12)
+        pricescale = 100;
         minmov = 1;
-        session = '24x7';
         break;
     }
 
@@ -115,6 +86,7 @@ export default {
     const symbolInfo = {
       ticker: symbolItem.ticker,
       name: symbolItem.symbol,
+      full_name: symbolItem.symbol, // full_name 추가
       description: symbolItem.description,
       type: symbolItem.type,
       session: session,
@@ -169,10 +141,9 @@ export default {
       console.log(`[getBars]: 마지막 바:`, mockBars[mockBars.length - 1]);
 
       if (firstDataRequest) {
-        const lastBarData = { ...mockBars[mockBars.length - 1] };
-        lastBarsCache.set(symbolInfo.full_name, lastBarData);
-        console.log(`[getBars] ${symbolInfo.full_name}에 마지막 바 데이터 캐시 저장:`, lastBarData);
-        console.log(`[getBars] 현재 캐시된 심볼들:`, Array.from(lastBarsCache.keys()));
+        lastBarsCache.set(symbolInfo.full_name, {
+          ...mockBars[mockBars.length - 1],
+        });
       }
       console.log(`[getBars]: returned ${mockBars.length} mock bar(s) for ${symbolInfo.exchange}`);
       onHistoryCallback(mockBars, { noData: false });
@@ -319,44 +290,50 @@ function generateMockBars(symbolInfo, resolution, from, to) {
 
   const bars = [];
 
-  // 심볼별 기본 가격 설정
+  // 심볼별 기본 가격 및 특성 설정
   let basePrice = 1.0;
+  let volatility = 0.01; // 기본 변동성
 
   switch (symbolInfo.type) {
     case 'crypto':
       if (symbolInfo.symbol.includes('ETH')) {
         basePrice = 50000; // ETH/EUR 기준
+        volatility = 0.015; // ETH는 변동성이 높음
       } else if (symbolInfo.symbol.includes('BTC')) {
         basePrice = 80000; // BTC/EUR 기준
+        volatility = 0.02; // BTC는 변동성이 매우 높음
       } else {
         basePrice = 50000;
+        volatility = 0.01;
       }
       break;
     case 'forex':
       if (symbolInfo.symbol.includes('GBP')) {
-        basePrice = 1.26;
-      } else if (symbolInfo.symbol.includes('EUR')) {
-        basePrice = 1.08;
-      } else if (symbolInfo.symbol.includes('NZD')) {
-        basePrice = 0.61;
-      } else if (symbolInfo.symbol.includes('AUD')) {
-        basePrice = 0.66;
+        basePrice = 1.26; // GBP/USD
+        volatility = 0.008; // 외환은 상대적으로 낮은 변동성
+      } else if (symbolInfo.symbol.includes('EUR') && !symbolInfo.symbol.includes('GBP')) {
+        basePrice = 1.08; // EUR/USD
+        volatility = 0.006; // EUR/USD는 안정적
       } else {
         basePrice = 1.2;
+        volatility = 0.01;
       }
       break;
     case 'index':
       basePrice = 5000;
+      volatility = 0.012;
       break;
     case 'commodity':
       basePrice = 0.85;
+      volatility = 0.018;
       break;
     default:
       basePrice = 50000;
+      volatility = 0.01;
       break;
   }
 
-  console.log(`[generateMockBars]: 기본 가격: ${basePrice}`);
+  console.log(`[generateMockBars]: 기본 가격: ${basePrice}, 변동성: ${volatility}`);
 
   // ChartView와 동일한 수준의 데이터 생성 (100-200개 정도)
   const dataPoints = Math.min(150, Math.floor((to - from) / (1000 * 60 * 5))); // 5분 간격으로 150개 제한
@@ -364,25 +341,39 @@ function generateMockBars(symbolInfo, resolution, from, to) {
   let currentTime = from;
   let currentPrice = basePrice;
 
-  console.log(`[generateMockBars]: 생성할 데이터 포인트: ${dataPoints}개`);
+  // 각 차트마다 약간 다른 시작 가격과 변동성을 주기 위해 랜덤 시드 생성
+  const randomSeed = Math.random() * 0.1 - 0.05; // -5% ~ +5% 변동
+  currentPrice = basePrice * (1 + randomSeed);
+
+  console.log(
+    `[generateMockBars]: 생성할 데이터 포인트: ${dataPoints}개, 시작 가격: ${currentPrice}`
+  );
 
   for (let i = 0; i < dataPoints; i++) {
-    // 가격 변동 시뮬레이션 (ChartView 수준)
-    const change = (Math.random() - 0.5) * 0.01;
+    // 심볼별 특성을 반영한 가격 변동 시뮬레이션
+    const change = (Math.random() - 0.5) * volatility;
     currentPrice = Math.max(currentPrice * (1 + change), currentPrice * 0.99);
 
-    // OHLC 데이터 생성
+    // OHLC 데이터 생성 (심볼별 특성 반영)
     const open = currentPrice;
-    const high = currentPrice * (1 + Math.random() * 0.005);
-    const low = currentPrice * (1 - Math.random() * 0.005);
-    const close = currentPrice * (1 + (Math.random() - 0.5) * 0.003);
+    const high = currentPrice * (1 + Math.random() * volatility * 0.5);
+    const low = currentPrice * (1 - Math.random() * volatility * 0.5);
+    const close = currentPrice * (1 + (Math.random() - 0.5) * volatility * 0.3);
+
+    // 소수점 자릿수 조정 (심볼별로 다름)
+    let precision = 2;
+    if (symbolInfo.symbol.includes('GBP') || symbolInfo.symbol.includes('EUR')) {
+      precision = 5; // 외환은 5자리
+    } else if (symbolInfo.symbol.includes('ETH') || symbolInfo.symbol.includes('BTC')) {
+      precision = 2; // 암호화폐는 2자리
+    }
 
     bars.push({
       time: currentTime,
-      open: parseFloat(open.toFixed(2)),
-      high: parseFloat(high.toFixed(2)),
-      low: parseFloat(low.toFixed(2)),
-      close: parseFloat(close.toFixed(2)),
+      open: parseFloat(open.toFixed(precision)),
+      high: parseFloat(high.toFixed(precision)),
+      low: parseFloat(low.toFixed(precision)),
+      close: parseFloat(close.toFixed(precision)),
     });
 
     // 5분 간격으로 설정
@@ -410,27 +401,28 @@ async function getAllSymbols() {
       type: 'crypto',
     },
     {
-      symbol: 'BTC/USD',
-      ticker: 'BTC/USD',
-      description: 'Bitcoin / US Dollar',
-      exchange: 'Bitfinex',
-      type: 'crypto',
-    },
-    {
       symbol: 'ETH/EUR',
       ticker: 'ETH/EUR',
       description: 'Ethereum / Euro',
       exchange: 'Bitfinex',
       type: 'crypto',
     },
+    // 외환 심볼 (슬래시 형식)
     {
-      symbol: 'ETH/USD',
-      ticker: 'ETH/USD',
-      description: 'Ethereum / US Dollar',
-      exchange: 'Bitfinex',
-      type: 'crypto',
+      symbol: 'GBP/USD',
+      ticker: 'GBP/USD',
+      description: 'British Pound / US Dollar',
+      exchange: 'FX',
+      type: 'forex',
     },
-    // 외환 심볼
+    {
+      symbol: 'EUR/USD',
+      ticker: 'EUR/USD',
+      description: 'Euro / US Dollar',
+      exchange: 'FX',
+      type: 'forex',
+    },
+    // 외환 심볼 (연결 형식)
     {
       symbol: 'NZDCAD',
       ticker: 'NZDCAD',
@@ -442,27 +434,6 @@ async function getAllSymbols() {
       symbol: 'GBPUSD',
       ticker: 'GBPUSD',
       description: 'British Pound / US Dollar',
-      exchange: 'FX',
-      type: 'forex',
-    },
-    {
-      symbol: 'US500',
-      ticker: 'US500',
-      description: 'US 500 Index',
-      exchange: 'INDEX',
-      type: 'index',
-    },
-    {
-      symbol: 'COTTON',
-      ticker: 'COTTON',
-      description: 'Cotton Futures',
-      exchange: 'COMMODITY',
-      type: 'commodity',
-    },
-    {
-      symbol: 'EURUSD',
-      ticker: 'EURUSD',
-      description: 'Euro / US Dollar',
       exchange: 'FX',
       type: 'forex',
     },
@@ -493,6 +464,21 @@ async function getAllSymbols() {
       description: 'New Zealand Dollar / US Dollar',
       exchange: 'FX',
       type: 'forex',
+    },
+    // 지수 및 상품
+    {
+      symbol: 'US500',
+      ticker: 'US500',
+      description: 'US 500 Index',
+      exchange: 'INDEX',
+      type: 'index',
+    },
+    {
+      symbol: 'COTTON',
+      ticker: 'COTTON',
+      description: 'Cotton Futures',
+      exchange: 'COMMODITY',
+      type: 'commodity',
     },
   ];
 }

@@ -8,12 +8,14 @@ export { default as BasePasswordStrength } from './BasePasswordStrength/BasePass
 export { default as BaseChip } from './BaseChips/BaseChip.vue';
 export { default as BaseCheckbox } from './BaseCheckbox/BaseCheckbox.vue';
 export { default as BaseFileUploadButton } from './BaseButton/BaseFileUploadButton.vue';
+export { default as BaseStepper } from './BaseStepper/BaseStepper.vue';
 
 export * from './BasePagination';
 export * from './BaseTable';
 export * from './BaseIcon';
 export * from './BasePopup';
 export * from './BaseSkeleton';
+export * from './BaseStepper';
 
 // 타입 export
 export * from '../types/components';

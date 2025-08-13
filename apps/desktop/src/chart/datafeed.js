@@ -285,8 +285,8 @@ function getSupportedResolutions(symbol) {
 
 // 모킹된 차트 데이터 생성 함수
 function generateMockBars(symbolInfo, resolution, from, to) {
-  console.log(`[generateMockBars]: ${symbolInfo.symbol} 심볼에 대한 모킹 데이터 생성 시작`);
-  console.log(`[generateMockBars]: resolution: ${resolution}, from: ${from}, to: ${to}`);
+  console.log(`[generateMockBars] ${symbolInfo.symbol} 심볼에 대한 모킹 데이터 생성 시작`);
+  console.log(`[generateMockBars] resolution: ${resolution}, from: ${from}, to: ${to}`);
 
   const bars = [];
 
@@ -333,7 +333,7 @@ function generateMockBars(symbolInfo, resolution, from, to) {
       break;
   }
 
-  console.log(`[generateMockBars]: 기본 가격: ${basePrice}, 변동성: ${volatility}`);
+  console.log(`[generateMockBars] 기본 가격: ${basePrice}, 변동성: ${volatility}`);
 
   // ChartView와 동일한 수준의 데이터 생성 (100-200개 정도)
   const dataPoints = Math.min(150, Math.floor((to - from) / (1000 * 60 * 5))); // 5분 간격으로 150개 제한
@@ -346,7 +346,7 @@ function generateMockBars(symbolInfo, resolution, from, to) {
   currentPrice = basePrice * (1 + randomSeed);
 
   console.log(
-    `[generateMockBars]: 생성할 데이터 포인트: ${dataPoints}개, 시작 가격: ${currentPrice}`
+    `[generateMockBars] 생성할 데이터 포인트: ${dataPoints}개, 시작 가격: ${currentPrice}`
   );
 
   for (let i = 0; i < dataPoints; i++) {
@@ -380,9 +380,9 @@ function generateMockBars(symbolInfo, resolution, from, to) {
     currentTime += 5 * 60 * 1000; // 5분을 밀리초로
   }
 
-  console.log(`[generateMockBars]: 생성 완료 - ${bars.length}개 바`);
-  console.log(`[generateMockBars]: 첫 번째 바:`, bars[0]);
-  console.log(`[generateMockBars]: 마지막 바:`, bars[bars.length - 1]);
+  console.log(`[generateMockBars] 생성 완료 - ${bars.length}개 바`);
+  console.log(`[generateMockBars] 첫 번째 바:`, bars[0]);
+  console.log(`[generateMockBars] 마지막 바:`, bars[bars.length - 1]);
 
   return bars;
 }

@@ -91,12 +91,96 @@ function updateBarsForSymbol(symbol, realtimeBar) {
   let matchedCount = 0;
 
   // window.lastChartData 업데이트 (TradingPlatformView와 동기화)
-  if (typeof window !== 'undefined' && window.lastChartData) {
-    if (!window.lastChartData[symbol]) {
-      window.lastChartData[symbol] = {};
+  if (typeof window !== 'undefined') {
+    if (!window.lastChartData) {
+      window.lastChartData = {};
     }
     window.lastChartData[symbol] = realtimeBar;
     console.log(`[updateBarsForSymbol] window.lastChartData 업데이트: ${symbol}`, realtimeBar);
+
+    // window.chartData도 업데이트 (ChartView와 동기화)
+    if (!window.chartData) {
+      window.chartData = {};
+    }
+
+    // 심볼 형식 통일 (슬래시 포함)
+    let normalizedSymbol = symbol;
+    if (symbol.length === 6 && !symbol.includes('/')) {
+      // 6자리 연결 형식을 슬래시 형식으로 변환
+      normalizedSymbol = `${symbol.substring(0, 3)}/${symbol.substring(3)}`;
+    }
+
+    // 기존 데이터가 있으면 업데이트, 없으면 새로 생성
+    if (!window.chartData[normalizedSymbol]) {
+      window.chartData[normalizedSymbol] = {};
+    }
+
+    // 차트별 데이터 저장
+    if (!window.chartData[normalizedSymbol].charts) {
+      window.chartData[normalizedSymbol].charts = {};
+    }
+
+    // 모든 관련 차트에 대해 데이터 업데이트
+    const relatedCharts = [
+      normalizedSymbol, // ETH/EUR 형식
+      symbol, // ETHEUR 형식
+      symbol.replace('/', ''), // 슬래시 제거된 형식
+    ];
+
+    // 각 구독자별로 차트 데이터 생성
+    subscriptions.forEach((subscription, subscriberUID) => {
+      if (subscription.symbol === symbol) {
+        const chartKey = `chart_${subscriberUID}`;
+
+        // 차트별로 약간 다른 가격 생성 (실제 거래소처럼)
+        const priceVariation = (subscriberUID.charCodeAt(0) % 5) * 0.001; // 0~0.5% 변동
+        const chartPrice = realtimeBar.close * (1 + priceVariation);
+
+        relatedCharts.forEach((chartSymbol) => {
+          if (chartSymbol) {
+            if (!window.chartData[normalizedSymbol].charts[chartKey]) {
+              window.chartData[normalizedSymbol].charts[chartKey] = {};
+            }
+
+            window.chartData[normalizedSymbol].charts[chartKey][chartSymbol] = {
+              symbol: chartSymbol,
+              price: chartPrice,
+              time: realtimeBar.time,
+              timestamp: Date.now(),
+              source: 'streaming',
+              subscriberUID: subscriberUID,
+            };
+          }
+        });
+      }
+    });
+
+    // 전체 심볼의 최신 가격 정보 업데이트
+    window.chartData[normalizedSymbol].latestPrice = realtimeBar.close;
+    window.chartData[normalizedSymbol].lastUpdate = Date.now();
+    window.chartData[normalizedSymbol].symbol = normalizedSymbol;
+
+    // 차트 데이터 변경 이벤트 발생
+    window.dispatchEvent(
+      new CustomEvent('chartDataUpdate', {
+        detail: {
+          symbol: normalizedSymbol,
+          data: {
+            symbol: normalizedSymbol,
+            price: realtimeBar.close,
+            time: realtimeBar.time,
+            timestamp: Date.now(),
+            source: 'streaming',
+            allCharts: window.chartData[normalizedSymbol].charts,
+          },
+        },
+      })
+    );
+
+    console.log(
+      `[updateBarsForSymbol] window.chartData 업데이트: ${normalizedSymbol}`,
+      window.chartData[normalizedSymbol]
+    );
   }
 
   // 해당 심볼의 모든 구독 찾기
@@ -296,9 +380,13 @@ export function subscribeOnStream(
   const parsedSymbol = parseFullSymbol(symbolInfo.full_name);
   const symbol = `${parsedSymbol.fromSymbol}${parsedSymbol.toSymbol}`;
 
-  // 기본 가격 설정
+  // 기본 가격 설정 (차트별로 약간 다른 가격)
   const currentTime = Math.floor(Date.now() / 1000);
-  const defaultPrice = parsedSymbol.fromSymbol === 'ETH' ? 2800 : 50000; // ETH는 2800, BTC는 50000
+  let defaultPrice = parsedSymbol.fromSymbol === 'ETH' ? 2800 : 50000; // ETH는 2800, BTC는 50000
+
+  // subscriberUID를 기반으로 차트별 가격 변동
+  const chartVariation = (subscriberUID.charCodeAt(0) % 10) * 0.01; // 0~9% 변동
+  defaultPrice = defaultPrice * (1 + chartVariation);
 
   // WebSocket 구독 상태 확인 (구독 추가 전에 확인)
   const symbolSubscribed = Array.from(subscriptions.values()).some((sub) => sub.symbol === symbol);
@@ -315,6 +403,7 @@ export function subscribeOnStream(
       volume: 1000,
     },
     callback: onRealtimeCallback,
+    subscriberUID, // 구독자 ID 추가
   };
 
   subscriptions.set(subscriberUID, subscription);

@@ -3,24 +3,98 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, onUnmounted } from 'vue';
 // @ts-ignore - JavaScript 파일이므로 타입 체크 무시
 import Datafeed from '../chart/datafeed.js';
 import { BrokerMinimal } from '../chart/broker';
 
+// window 객체에 chartData 속성 추가를 위한 타입 확장
+declare global {
+  interface Window {
+    chartData?: Record<string, any>;
+  }
+}
+
 interface Props {
   symbol?: string;
   interval?: string;
+  chartId?: string; // 차트별 고유 식별자 추가
 }
 
 const props = withDefaults(defineProps<Props>(), {
   symbol: 'ETH/EUR', // datafeed.js의 getAllSymbols()와 일치하도록 수정
   interval: '1', // 1분 간격으로 변경 (지원되는 시간 간격 중 하나)
+  chartId: 'default', // 기본 차트 ID
 });
 
 const tvWidget = ref<any>(null);
 const currentSymbol = ref<string>(props.symbol);
 const currentSubscriberUID = ref<string | null>(null);
+
+// 차트 데이터를 전역으로 공유하기 위한 상태
+const currentChartData = ref<any>(null);
+
+// 차트 데이터를 전역으로 공유하는 함수
+const shareChartData = (data: any) => {
+  currentChartData.value = data;
+
+  // window 객체를 통해 다른 컴포넌트에서 접근 가능하도록 설정
+  if (typeof window !== 'undefined') {
+    if (!window.chartData) {
+      window.chartData = {};
+    }
+
+    // 심볼 형식 통일 (슬래시 포함)
+    const normalizedSymbol = props.symbol;
+
+    // 기존 데이터가 있으면 업데이트, 없으면 새로 생성
+    if (!window.chartData[normalizedSymbol]) {
+      window.chartData[normalizedSymbol] = {};
+    }
+
+    // 차트별 데이터 저장 (시간별로 구분)
+    const timestamp = Date.now();
+    if (!window.chartData[normalizedSymbol].charts) {
+      window.chartData[normalizedSymbol].charts = {};
+    }
+
+    // 현재 차트의 데이터 저장 (chartId 사용)
+    const chartKey = props.chartId || props.symbol;
+    window.chartData[normalizedSymbol].charts[chartKey] = {
+      ...data,
+      chartId: chartKey,
+      symbol: props.symbol,
+      lastUpdate: timestamp,
+    };
+
+    // 전체 심볼의 최신 가격 정보 업데이트
+    window.chartData[normalizedSymbol].latestPrice = data.price;
+    window.chartData[normalizedSymbol].lastUpdate = timestamp;
+    window.chartData[normalizedSymbol].symbol = normalizedSymbol;
+
+    // 차트 데이터 변경 이벤트 발생
+    window.dispatchEvent(
+      new CustomEvent('chartDataUpdate', {
+        detail: {
+          symbol: normalizedSymbol,
+          data: {
+            ...data,
+            symbol: normalizedSymbol,
+            chartId: chartKey,
+            latestPrice: data.price,
+            timestamp: timestamp,
+          },
+        },
+      })
+    );
+  }
+
+  console.log('[ChartView] 차트 데이터 공유:', {
+    symbol: props.symbol,
+    chartId: props.chartId,
+    data,
+  });
+};
 
 // 심볼 변경 감지 및 즉시 구독 해제
 watch(
@@ -77,8 +151,8 @@ onMounted(() => {
       container: 'tv_chart_container',
       datafeed: Datafeed,
       library_path: '/charting_library/',
-      width: 1000,
-      height: 700,
+      width: '100%',
+      height: '100%',
       locale: 'ko',
       debug: false,
       enabled_features: [
@@ -217,6 +291,76 @@ onMounted(() => {
             console.log('[TradingView] 차트 새로고침 실행');
             chart.refresh();
           }
+
+          // 차트 데이터 구독 설정
+          if (chart && typeof chart.subscribeCrosshairMove === 'function') {
+            chart.subscribeCrosshairMove((param: any) => {
+              if (param.time && param.seriesPrices) {
+                const prices = param.seriesPrices;
+                const mainSeries = chart.getVisibleRange();
+
+                if (mainSeries && mainSeries.from) {
+                  const currentPrice = prices.get(mainSeries.from);
+                  if (currentPrice) {
+                    const chartData = {
+                      symbol: props.symbol,
+                      price: currentPrice,
+                      time: param.time,
+                      timestamp: Date.now(),
+                    };
+                    shareChartData(chartData);
+                  }
+                }
+              }
+            });
+          }
+
+          // 실시간 가격 데이터 구독 (크로스헤어 이동과 관계없이)
+          if (chart && typeof chart.subscribeVisibleRangeChange === 'function') {
+            chart.subscribeVisibleRangeChange(() => {
+              // 차트의 마지막 가격 정보 가져오기
+              const mainSeries = chart.getVisibleRange();
+              if (mainSeries && mainSeries.from) {
+                const lastPrice = chart.getLastPrice();
+                if (lastPrice) {
+                  const chartData = {
+                    symbol: props.symbol,
+                    price: lastPrice,
+                    time: Date.now(),
+                    timestamp: Date.now(),
+                  };
+                  shareChartData(chartData);
+                }
+              }
+            });
+          }
+
+          // 주기적으로 차트 데이터 공유 (1초마다)
+          const chartDataInterval = setInterval(() => {
+            try {
+              if (chart && typeof chart.getLastPrice === 'function') {
+                const lastPrice = chart.getLastPrice();
+                if (lastPrice && typeof lastPrice === 'number' && !isNaN(lastPrice)) {
+                  const chartData = {
+                    symbol: props.symbol,
+                    price: lastPrice,
+                    time: Date.now(),
+                    timestamp: Date.now(),
+                  };
+                  shareChartData(chartData);
+                }
+              }
+            } catch (error) {
+              console.warn('[ChartView] 주기적 가격 데이터 가져오기 실패:', error);
+            }
+          }, 1000);
+
+          // 컴포넌트 언마운트 시 인터벌 정리
+          onUnmounted(() => {
+            if (chartDataInterval) {
+              clearInterval(chartDataInterval);
+            }
+          });
         } catch (error) {
           console.error('[TradingView] 차트 설정 중 오류 발생:', error);
         }

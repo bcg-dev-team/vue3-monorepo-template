@@ -42,7 +42,7 @@
             </NSpace>
           </div>
 
-          <div class="">
+          <div class="chart-container">
             <ChartView ref="chartRef" />
           </div>
         </NSpace>
@@ -419,8 +419,10 @@ onUnmounted(() => {
 
 <style scoped>
 .trading-view-test {
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 1.5rem;
 }
 
 .chart-container {
@@ -428,6 +430,10 @@ onUnmounted(() => {
   border: 1px solid #e5e5e5;
   border-radius: 8px;
   overflow: hidden;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .log-container {

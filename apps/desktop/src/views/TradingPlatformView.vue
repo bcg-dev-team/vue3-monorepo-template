@@ -184,11 +184,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, onUnmounted, watch, computed } from 'vue';
+import { ref, reactive, onMounted, onUnmounted, watch, computed, nextTick } from 'vue';
 // @ts-ignore - JavaScript 파일이므로 타입 체크 무시
 import Datafeed from '../chart/datafeed.js';
 // @ts-ignore - JavaScript 파일이므로 타입 체크 무시
 import { BrokerMinimal } from '../chart/broker';
+
+// window 객체에 추가 속성들을 위한 타입 확장
+declare global {
+  interface Window {
+    chartData?: Record<string, any>;
+    lastChartData?: Record<string, any>;
+  }
+}
 
 // 차트 레이아웃 정의
 const chartLayouts = [
@@ -231,40 +239,35 @@ const currentLayout = ref('2x2');
 const currentTimeframe = ref('1');
 const selectedAccount = ref('account1');
 const selectedOrderType = ref('market');
-const selectedSymbol = ref('GBPUSD');
+const selectedSymbol = ref('ETH/EUR'); // ChartView와 일치하도록 수정
 const activeAccountTab = ref('liquidation');
 
 // 차트 관련 상태
 const activeCharts = ref([
-  { id: 1, symbol: 'ETH/EUR', price: '50000.00', change: 0.03 },
-  { id: 2, symbol: 'BTC/EUR', price: '80000.00', change: -0.02 },
-  { id: 3, symbol: 'ETH/EUR', price: '50000.00', change: 0.03 }, // 첫 번째와 동일
-  { id: 4, symbol: 'BTC/EUR', price: '80000.00', change: -0.02 }, // 두 번째와 동일
+  { id: 1, symbol: 'ETH/EUR', price: '50000.00', change: 0.03, chartId: 'chart_1' },
+  { id: 2, symbol: 'BTC/EUR', price: '80000.00', change: -0.02, chartId: 'chart_2' },
+  { id: 3, symbol: 'GBP/USD', price: '1.26000', change: 0.01, chartId: 'chart_3' },
+  { id: 4, symbol: 'EUR/USD', price: '1.08000', change: -0.005, chartId: 'chart_4' },
 ]);
 
 // 선택된 차트 상태
 const selectedChartId = ref(1); // 기본적으로 첫 번째 차트 선택
 
 // 가격 정보 (선택된 차트 기준으로 동적 계산)
-const currentPrice = computed(() => {
-  const selectedChart = activeCharts.value.find((chart) => chart.id === selectedChartId.value);
-  return selectedChart ? selectedChart.price : '0.00';
-});
+const currentPrice = ref('0.00');
 
-const buyPrice = computed(() => {
-  const price = parseFloat(currentPrice.value);
-  const spread = parseFloat(spreadValue.value);
-  return (price - spread / 2).toFixed(5);
-});
-
-const sellPrice = computed(() => {
-  const price = parseFloat(currentPrice.value);
-  const spread = parseFloat(spreadValue.value);
-  return (price + spread / 2).toFixed(5);
-});
+const buyPrice = ref('0.00000');
+const sellPrice = ref('0.00000');
 
 // 스프레드 값 (고정)
 const spreadValue = ref('0.3');
+
+// 매수/매도 가격 계산 함수
+const calculateOrderPrices = (basePrice: number) => {
+  const spread = parseFloat(spreadValue.value);
+  buyPrice.value = (basePrice - spread / 2).toFixed(5);
+  sellPrice.value = (basePrice + spread / 2).toFixed(5);
+};
 
 // 고가/저가 (선택된 차트 기준)
 const highPrice = computed(() => {
@@ -338,6 +341,7 @@ const setChartLayout = (layoutId: string) => {
           symbol: activeCharts.value[i % activeCharts.value.length].symbol,
           price: activeCharts.value[i % activeCharts.value.length].price,
           change: activeCharts.value[i % activeCharts.value.length].change,
+          chartId: `chart_${i + 1}`,
         };
         activeCharts.value.push(newChart);
       }
@@ -346,8 +350,12 @@ const setChartLayout = (layoutId: string) => {
       activeCharts.value = activeCharts.value.slice(0, targetChartCount);
     }
 
-    // 차트 재초기화
-    initializeCharts();
+    // 차트 재초기화 (DOM 업데이트 후)
+    nextTick(() => {
+      setTimeout(() => {
+        initializeCharts();
+      }, 100); // DOM 업데이트 후 약간의 지연
+    });
   }
 };
 
@@ -424,25 +432,43 @@ const initializeCharts = () => {
   // 기존 차트들 제거
   tvWidgets.value.forEach((widget) => {
     if (widget) {
-      widget.remove();
+      try {
+        widget.remove();
+      } catch (error) {
+        console.warn('[initializeCharts] 차트 제거 중 오류:', error);
+      }
     }
   });
   tvWidgets.value = [];
 
-  // 모든 차트를 순차적으로 생성 (비동기 처리)
-  activeCharts.value.forEach((chart, index) => {
-    console.log(
-      `[initializeCharts] ${chart.symbol} 차트 생성 중... (${index + 1}/${activeCharts.value.length})`
-    );
+  // 차트 컨테이너가 DOM에 렌더링될 때까지 대기
+  nextTick(() => {
+    // 모든 차트를 순차적으로 생성 (비동기 처리)
+    activeCharts.value.forEach((chart, index) => {
+      console.log(
+        `[initializeCharts] ${chart.symbol} 차트 생성 중... (${index + 1}/${activeCharts.value.length})`
+      );
 
-    // 각 차트 생성 사이에 약간의 지연을 두어 충돌 방지
-    setTimeout(() => {
-      createChart(chart, index);
-    }, index * 500); // 500ms 간격으로 차트 생성
+      // 각 차트 생성 사이에 약간의 지연을 두어 충돌 방지
+      setTimeout(() => {
+        createChart(chart, index);
+      }, index * 1000); // 1초 간격으로 차트 생성 (충돌 방지)
+    });
   });
 };
 
 const createChart = (chart: any, index: number) => {
+  // 차트 컨테이너가 존재하는지 확인
+  const containerId = `chart_${chart.id}`;
+  const container = document.getElementById(containerId);
+
+  if (!container) {
+    console.error(`[createChart] 컨테이너를 찾을 수 없음: ${containerId}`);
+    return;
+  }
+
+  console.log(`[createChart] 컨테이너 확인됨: ${containerId}`, container);
+
   function waitForTradingView(cb: () => void) {
     if (window.TradingView && window.TradingView.widget) {
       cb();
@@ -459,7 +485,7 @@ const createChart = (chart: any, index: number) => {
       symbol: chart.symbol,
       interval: currentTimeframe.value,
       fullscreen: false,
-      container: `chart_${chart.id}`,
+      container: containerId,
       datafeed: Datafeed,
       library_path: '/charting_library/',
       width: 600, // 차트 크기 증가
@@ -598,6 +624,11 @@ const createChart = (chart: any, index: number) => {
         }
       }, 1000); // 1초 대기
     });
+
+    // 차트 생성 실패 시 오류 처리
+    widget.onError((error: any) => {
+      console.error(`[createChart] ${chart.symbol} 차트 생성 실패:`, error);
+    });
   });
 };
 
@@ -644,25 +675,164 @@ const selectChart = (chartId: number) => {
   const selectedChart = activeCharts.value.find((chart) => chart.id === chartId);
   if (selectedChart) {
     selectedSymbol.value = selectedChart.symbol;
+    // 선택된 차트의 가격으로 currentPrice 업데이트
+    currentPrice.value = selectedChart.price;
+    // 매수/매도 가격 재계산
+    calculateOrderPrices(parseFloat(currentPrice.value));
   }
 };
 
-// 실시간 가격 업데이트 함수
+// 실시간 가격 업데이트 함수 (랜덤 업데이트 제거)
 const updateChartPrices = () => {
-  activeCharts.value.forEach((chart, index) => {
-    // 각 차트마다 약간 다른 가격 변동 시뮬레이션
-    const change = (Math.random() - 0.5) * 0.01; // -0.5% ~ +0.5% 변동
-    const currentPrice = parseFloat(chart.price);
-    const newPrice = Math.max(currentPrice * (1 + change), currentPrice * 0.99);
+  // 랜덤 가격 업데이트 제거 - 차트 데이터와의 동기화만 유지
+  console.log('[updateChartPrices] 차트 가격 업데이트 스킵 - 차트 데이터와 동기화 중');
+};
 
-    // 가격 업데이트
-    chart.price = newPrice.toFixed(2);
+// 심볼 형식 변환 함수 (ChartView와 TradingPlatformView 간의 심볼 매칭)
+const normalizeSymbol = (symbol: string): string => {
+  // 슬래시가 포함된 심볼을 연결 형식으로 변환
+  if (symbol.includes('/')) {
+    return symbol.replace('/', '');
+  }
+  // 연결 형식을 슬래시 형식으로 변환
+  if (symbol.length === 6) {
+    return `${symbol.substring(0, 3)}/${symbol.substring(3)}`;
+  }
+  return symbol;
+};
 
-    // 변화율 업데이트 (간단한 시뮬레이션)
-    chart.change = parseFloat((Math.random() * 4 - 2).toFixed(2)); // -2% ~ +2%
+// 차트 데이터 구독 및 가격 동기화 함수
+const subscribeToChartData = () => {
+  // 차트 데이터 변경 이벤트 리스너 등록
+  window.addEventListener('chartDataUpdate', (event: any) => {
+    const { symbol, data } = event.detail;
+
+    // 심볼 형식 변환하여 매칭
+    const normalizedChartSymbol = normalizeSymbol(symbol);
+    const normalizedSelectedSymbol = normalizeSymbol(selectedSymbol.value);
+
+    console.log('[subscribeToChartData] 심볼 매칭 시도:', {
+      chartSymbol: symbol,
+      normalizedChartSymbol,
+      selectedSymbol: selectedSymbol.value,
+      normalizedSelectedSymbol,
+      isMatch: normalizedChartSymbol === normalizedSelectedSymbol,
+      data: data,
+    });
+
+    // 현재 선택된 심볼과 일치하는 경우에만 가격 업데이트
+    if (normalizedChartSymbol === normalizedSelectedSymbol && data && data.price) {
+      console.log('[subscribeToChartData] 차트 데이터 수신:', { symbol, data });
+
+      // 현재 가격 업데이트
+      currentPrice.value = data.price.toFixed(5);
+
+      // 매수/매도 가격 재계산
+      const price = parseFloat(currentPrice.value);
+      calculateOrderPrices(price);
+
+      // 선택된 차트의 가격도 업데이트
+      const selectedChart = activeCharts.value.find(
+        (chart) => normalizeSymbol(chart.symbol) === normalizedSelectedSymbol
+      );
+      if (selectedChart) {
+        selectedChart.price = data.price.toFixed(5);
+      }
+
+      console.log('[subscribeToChartData] 가격 동기화 완료:', {
+        currentPrice: currentPrice.value,
+        buyPrice: buyPrice.value,
+        sellPrice: sellPrice.value,
+      });
+    }
+
+    // 모든 차트의 가격 업데이트 (선택된 심볼과 관계없이)
+    updateAllChartPrices(symbol, data);
   });
 
-  console.log('[updateChartPrices] 차트 가격 업데이트 완료:', activeCharts.value);
+  // window.chartData에서 기존 데이터 확인
+  if (window.chartData) {
+    // 모든 심볼에 대해 매칭 시도
+    Object.keys(window.chartData).forEach((chartSymbol) => {
+      const normalizedChartSymbol = normalizeSymbol(chartSymbol);
+      const normalizedSelectedSymbol = normalizeSymbol(selectedSymbol.value);
+
+      if (normalizedChartSymbol === normalizedSelectedSymbol) {
+        const existingData = window.chartData![chartSymbol];
+        if (existingData && existingData.latestPrice) {
+          currentPrice.value = existingData.latestPrice.toFixed(5);
+          const price = parseFloat(currentPrice.value);
+          calculateOrderPrices(price);
+
+          console.log('[subscribeToChartData] 기존 차트 데이터로 초기화:', {
+            chartSymbol,
+            normalizedChartSymbol,
+            currentPrice: currentPrice.value,
+            buyPrice: buyPrice.value,
+            sellPrice: sellPrice.value,
+          });
+        }
+      }
+    });
+  }
+
+  // window.lastChartData에서도 확인 (streaming.js와의 호환성)
+  if (window.lastChartData) {
+    Object.keys(window.lastChartData).forEach((chartSymbol) => {
+      const normalizedChartSymbol = normalizeSymbol(chartSymbol);
+      const normalizedSelectedSymbol = normalizeSymbol(selectedSymbol.value);
+
+      if (normalizedChartSymbol === normalizedSelectedSymbol) {
+        const existingData = window.lastChartData![chartSymbol];
+        if (
+          (existingData && existingData.close && !currentPrice.value) ||
+          currentPrice.value === '0.00000'
+        ) {
+          currentPrice.value = existingData.close.toFixed(5);
+          const price = parseFloat(currentPrice.value);
+          calculateOrderPrices(price);
+
+          console.log('[subscribeToChartData] streaming 데이터로 초기화:', {
+            chartSymbol,
+            normalizedChartSymbol,
+            currentPrice: currentPrice.value,
+            buyPrice: buyPrice.value,
+            sellPrice: sellPrice.value,
+          });
+        }
+      }
+    });
+  }
+};
+
+// 모든 차트의 가격을 업데이트하는 함수
+const updateAllChartPrices = (symbol: string, data: any) => {
+  if (!data || !data.price) return;
+
+  const normalizedChartSymbol = normalizeSymbol(symbol);
+
+  // 해당 심볼과 관련된 모든 차트 찾기
+  activeCharts.value.forEach((chart) => {
+    const normalizedChartSymbolInActive = normalizeSymbol(chart.symbol);
+
+    if (normalizedChartSymbol === normalizedChartSymbolInActive) {
+      // 차트 가격 업데이트
+      chart.price = data.price.toFixed(5);
+
+      // 변화율도 업데이트 (간단한 시뮬레이션)
+      const currentChange = parseFloat(chart.change.toString());
+      const newChange = currentChange + (Math.random() - 0.5) * 0.1; // -0.05% ~ +0.05% 변동
+      chart.change = parseFloat(newChange.toFixed(2));
+
+      console.log(`[updateAllChartPrices] 차트 ${chart.id} 가격 업데이트:`, {
+        symbol: chart.symbol,
+        chartId: chart.chartId,
+        oldPrice: chart.price,
+        newPrice: data.price.toFixed(5),
+        change: chart.change,
+      });
+    }
+  });
 };
 
 // 차트 헤더 클릭 이벤트 추가
@@ -682,9 +852,8 @@ const getChartHeaderClass = (chartId: number) => {
 // 심볼 변경 감지
 watch(selectedSymbol, (newSymbol) => {
   // 우측 패널의 심볼 정보 업데이트
-  currentPrice.value = (Math.random() * 2 + 0.5).toFixed(5);
-  buyPrice.value = (parseFloat(currentPrice.value) - 0.00016).toFixed(5);
-  sellPrice.value = (parseFloat(currentPrice.value) + 0.00016).toFixed(5);
+  // currentPrice.value = (Math.random() * 2 + 0.5).toFixed(5); // 랜덤 업데이트 제거
+  // calculateOrderPrices(parseFloat(currentPrice.value)); // 랜덤 업데이트 제거
 
   // 스프레드는 고정값이므로 업데이트하지 않음
   console.log('[updatePrices] 가격 업데이트 완료');
@@ -694,8 +863,28 @@ watch(selectedSymbol, (newSymbol) => {
 onMounted(() => {
   console.log('[TradingPlatformView] 컴포넌트 마운트됨');
 
-  // 차트 초기화
-  initializeCharts();
+  // 초기 가격 설정
+  const selectedChart = activeCharts.value.find((chart) => chart.id === selectedChartId.value);
+  if (selectedChart) {
+    currentPrice.value = selectedChart.price;
+    calculateOrderPrices(parseFloat(currentPrice.value));
+    console.log('[TradingPlatformView] 초기 가격 설정:', {
+      symbol: selectedChart.symbol,
+      price: currentPrice.value,
+      buyPrice: buyPrice.value,
+      sellPrice: sellPrice.value,
+    });
+  }
+
+  // 차트 초기화 (DOM 렌더링 완료 후)
+  nextTick(() => {
+    setTimeout(() => {
+      initializeCharts();
+    }, 500); // DOM 렌더링 완료 후 500ms 지연
+  });
+
+  // 차트 데이터 구독 시작
+  subscribeToChartData();
 
   // 실시간 가격 업데이트 타이머 설정 (3초마다)
   const priceUpdateTimer = setInterval(() => {
@@ -705,6 +894,8 @@ onMounted(() => {
   // 컴포넌트 언마운트 시 타이머 정리
   onUnmounted(() => {
     clearInterval(priceUpdateTimer);
+    // 이벤트 리스너 제거
+    window.removeEventListener('chartDataUpdate', () => {});
   });
 });
 </script>
@@ -802,6 +993,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   min-height: 0;
+  overflow: hidden;
 }
 
 .chart-container {
@@ -813,6 +1005,8 @@ onMounted(() => {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   min-height: 600px;
   overflow: auto;
+  width: 100%;
+  height: 100%;
 }
 
 .chart-container.single {
@@ -848,6 +1042,7 @@ onMounted(() => {
   flex-direction: column;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   transition: all 0.2s ease;
+  overflow: hidden;
 }
 
 .chart-item:hover {
@@ -863,6 +1058,7 @@ onMounted(() => {
   padding-bottom: 0.5rem;
   border-bottom: 1px solid #f1f3f4;
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .chart-header.clickable {
@@ -907,6 +1103,8 @@ onMounted(() => {
 }
 
 .chart-change {
+  width: 70px;
+  text-align: center;
   font-size: 0.75rem;
   font-weight: 500;
   padding: 0.125rem 0.5rem;
@@ -955,6 +1153,8 @@ onMounted(() => {
   position: relative;
   border-radius: 4px;
   overflow: hidden;
+  width: 100%;
+  height: 100%;
 }
 
 /* 우측 주문 패널 */

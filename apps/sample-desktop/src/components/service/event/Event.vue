@@ -2,14 +2,7 @@
   <div class="gap-size-64 flex">
     <div class="min-w-[500px]">
       <div class="gap-size-4 flex items-center">
-        <BaseTabs
-          direction="horizontal"
-          v-model="modelValue"
-          showContent
-          size="md"
-          variant="connected"
-          :tabs="tabs"
-        />
+        <BaseTabs variant="inner" :tabs="tabs" v-model="selectedTab" />
       </div>
     </div>
     <div
@@ -36,10 +29,17 @@ import { BaseChip, BaseTabs } from '@template/ui';
 
 import { ref } from 'vue';
 
-const modelValue = ref('inProgress');
-const tabs = [
-  { value: 'inProgress', label: '진행중' },
-  { value: 'end', label: '종료' },
-  { value: 'all', label: '전체' },
-];
+const selectedTab = ref('inProgress');
+
+const tabs = {
+  진행중: {
+    value: 'inProgress',
+  },
+  종료: {
+    value: 'end',
+  },
+  전체: {
+    value: 'all',
+  },
+};
 </script>

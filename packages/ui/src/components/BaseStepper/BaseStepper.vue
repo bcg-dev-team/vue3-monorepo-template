@@ -25,7 +25,7 @@ interface Props {
 const sampleStep = ['유형 선택', '금액 입력', '승인 완료'];
 
 const props = withDefaults(defineProps<Props>(), {
-  variant: 'label',
+  variant: 'dot',
   stepLabelList: () => [],
   count: 5,
   current: 0,

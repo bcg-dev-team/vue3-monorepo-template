@@ -13,7 +13,8 @@ import { computed } from 'vue';
 
 const props = defineProps<{
   label: string;
-  size?: ComponentSize;
+  size?: ComponentSize | 'custom';
+  style?: string;
 }>();
 
 const sizeClass = computed(() => {
@@ -24,6 +25,8 @@ const sizeClass = computed(() => {
       return 'text-font-14 font-medium';
     case 'lg':
       return 'text-font-16 font-semibold';
+    case 'custom':
+      return props.style;
   }
 });
 

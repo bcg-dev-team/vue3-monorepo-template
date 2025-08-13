@@ -1,58 +1,33 @@
 <template>
   <div class="mx-auto w-[1920px] py-6">
     <MainCardContent class="p-6" title="계좌관리" size="lg">
-      <template #content> </template>
+      <template #content>
+        <BaseTabs
+          direction="horizontal"
+          v-model="modelValue"
+          showContent
+          size="md"
+          variant="connected"
+          :tabs="tabs"
+        />
+      </template>
     </MainCardContent>
   </div>
 </template>
 
 <script setup lang="ts">
+import CreateAccountMain from '@/components/accountManagement/create/CreateAccountMain.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
-import type { TableHeader, TableRow } from '@template/ui';
+import { BaseTabs, type TabItem } from '@template/ui';
 import { ref } from 'vue';
 
-const amount = ref('0');
-const accountNumber = ref('');
-
-const headers: TableHeader[] = [
-  { key: 'date', title: '신청일자', width: '140px' },
-  { key: 'account', title: '계좌번호', width: '200px', align: 'center' },
-  { key: 'type', title: '구분', width: '422px', align: 'center' },
-  { key: 'amount', title: '금액($)', width: '422px', align: 'right' },
-  { key: 'apply', title: '신청일시', width: '220px', align: 'center' },
-  { key: 'complete', title: '처리일시', width: '220px' },
-  { key: 'note', title: '비고', width: '200px' },
-];
-
-const data: TableRow[] = [
-  {
-    id: 1,
-    date: '2025-05-22',
-    account: '002-01-000001',
-    type: '출금',
-    amount: '20,000',
-    apply: '2025-05-22 14:02:10',
-    complete: '2025-05-22 14:02:15',
-    note: '-',
-  },
-  {
-    id: 2,
-    date: '2025-05-22',
-    account: '002-01-000001',
-    type: '이체',
-    amount: '100',
-    apply: '2025-05-13 13:30:57',
-    complete: '2025-05-15 13:30:57',
-    note: '-',
-  },
-];
-
-const selectable = true;
-const sortable = true;
-
-const handleSort = (key: string, direction: 'asc' | 'desc') => {
-  console.log(`Sorting by ${key} in ${direction} direction`);
-};
+const modelValue = ref('create-account');
+const tabs = [
+  { value: 'create-account', label: '계좌개설', content: CreateAccountMain },
+  { value: 'withdrawal-apply', label: '출금신청', content: '' },
+  { value: 'account-history', label: '입출금내역', content: '' },
+  { value: 'deposit-info', label: '입금안내', content: '' },
+] as TabItem[];
 </script>
 
 <style scoped></style>

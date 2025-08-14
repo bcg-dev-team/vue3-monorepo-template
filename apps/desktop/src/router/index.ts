@@ -42,6 +42,11 @@ const routes: RouteRecordRaw[] = [
     name: 'ThemeTest',
     component: () => import('../views/ThemeTestView.vue'),
   },
+  {
+    path: '/input-test',
+    name: 'InputTest',
+    component: () => import('../views/InputTestView.vue'),
+  },
 ];
 
 const router = createRouter({

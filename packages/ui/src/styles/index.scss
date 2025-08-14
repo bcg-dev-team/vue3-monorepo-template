@@ -6,10 +6,15 @@
 
 // BaseInput 컴포넌트 스타일
 @use '../components/BaseInput/BaseInput.scss';
-@use '../components/BaseInput/BaseInputText.scss';
-@use '../components/BaseInput/BaseInputCalendar.scss';
-@use '../components/BaseInput/BaseInputSelect.scss';
-@use '../components/BaseInput/BaseInputStepper.scss';
+@use '../components/BaseInput/InputText/InputText.scss';
+@use '../components/BaseInput/InputCalendar/InputCalendar.scss';
+@use '../components/BaseInput/InputSelect/InputSelect.scss';
+@use '../components/BaseInput/InputStepper/InputStepper.scss';
+@use '../components/BaseInput/InputPassword/InputPassword.scss';
+@use '../components/BaseInput/InputTel/InputTel.scss';
+@use '../components/BaseInput/InputSearch/InputSearch.scss';
+@use '../components/BaseInput/InputEmail/InputEmail.scss';
+@use '../components/BaseInput/InputNumber/InputNumber.scss';
 
 // BaseTable 컴포넌트 스타일
 @use '../components/BaseTable/BaseTable.scss';

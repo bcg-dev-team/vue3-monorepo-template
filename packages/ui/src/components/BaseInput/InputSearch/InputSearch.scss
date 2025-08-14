@@ -1,0 +1,80 @@
+// InputSearch 컴포넌트 스타일
+// 검색 입력 필드와 자동완성 제안 스타일
+
+.input-search-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+// 검색 아이콘
+.search-icon {
+  color: var(--input-color-text-static);
+  width: 16px;
+  height: 16px;
+}
+
+// 지우기 버튼
+.clear-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--input-color-text-static);
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--input-color-text-primary);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+// 자동완성 제안 컨테이너
+.suggestions-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  margin-top: 4px;
+  background: white;
+  border: 1px solid var(--input-color-border-static);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.suggestions-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.suggestion-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: var(--input-color-text-primary);
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--input-color-bg-hover);
+  }
+
+  &:first-child {
+    border-radius: 6px 6px 0 0;
+  }
+
+  &:last-child {
+    border-radius: 0 0 6px 6px;
+  }
+}

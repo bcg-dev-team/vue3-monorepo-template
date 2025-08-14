@@ -4,29 +4,34 @@
   피그마 디자인 토큰 기반으로 구현
 -->
 <script setup lang="ts">
-import type { BaseInputProps } from './types';
+import type { CommonInputProps } from './types';
 import { computed } from 'vue';
+import './BaseInput.scss';
 
 /**
  * BaseInput - 공통 스타일/상태/slot만 담당하는 베이스 컴포넌트
- * @props modelValue - 입력값 (v-model)
  * @props placeholder - 플레이스홀더 텍스트
+ * @props type - 입력 타입 (기본값: 'text')
  * @props disabled - 비활성화 여부
  * @props readonly - 읽기 전용 여부
  * @props fullWidth - 입력창을 부모의 100% 너비로 확장할지 여부 (기본값: false, false일 때는 w-[200px])
- * @emits update:modelValue - 입력값 변경 시 발생
  * @emits focus - 포커스 시 발생
  * @emits blur - 블러 시 발생
+ * @emits prefix-click - prefix slot 클릭 시 발생
+ * @emits suffix-click - suffix slot 클릭 시 발생
  * @slot prefix - 입력창 내부 왼쪽
  * @slot suffix - 입력창 내부 오른쪽
  * @slot append - 입력창 외부 오른쪽(타이머, 버튼 등)
  */
-interface Props extends BaseInputProps {
-  // BaseInput 고유 props (현재는 없음)
+interface Props extends Omit<CommonInputProps, 'modelValue'> {
+  /**
+   * 입력 타입
+   * @default 'text'
+   */
+  type?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  modelValue: '',
   placeholder: '',
   type: 'text',
   disabled: false,
@@ -34,10 +39,15 @@ const props = withDefaults(defineProps<Props>(), {
   fullWidth: false,
 });
 
+// v-model을 위한 defineModel 사용
+const modelValue = defineModel<string>('modelValue', { default: '' });
+
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void;
   (e: 'focus', event: FocusEvent): void;
   (e: 'blur', event: FocusEvent): void;
+  (e: 'prefix-click', event: MouseEvent): void;
+  (e: 'suffix-click', event: MouseEvent): void;
 }>();
 
 // 상태별 클래스 계산
@@ -71,6 +81,9 @@ const innerClass = computed(() => {
 
 const handleInput = (event: Event) => {
   const target = event.target as HTMLInputElement;
+  // v-model 값 업데이트
+  modelValue.value = target.value;
+  // 부모 컴포넌트에도 이벤트 발생
   emit('update:modelValue', target.value);
 };
 
@@ -81,13 +94,25 @@ const handleFocus = (event: FocusEvent) => {
 const handleBlur = (event: FocusEvent) => {
   emit('blur', event);
 };
+
+const handlePrefixClick = (event: MouseEvent) => {
+  emit('prefix-click', event);
+};
+
+const handleSuffixClick = (event: MouseEvent) => {
+  emit('suffix-click', event);
+};
 </script>
 
 <template>
   <div :class="'base-input-main-row ' + mainRowClass">
     <div :class="stateClasses.join(' ') + ' ' + innerClass">
-      <!-- prefix slot: input 왼쪽, 오른쪽 마진(mr-2)으로 최소 공간 확보 -->
-      <div v-if="$slots.prefix" class="base-input-prefix mr-2 flex shrink-0 items-center">
+      <!-- prefix slot: input 왼쪽, 오른쪽 마진(mr-2)으로 최소 공간 확보, 클릭 이벤트 추가 -->
+      <div 
+        v-if="$slots.prefix" 
+        class="base-input-prefix mr-2 flex shrink-0 items-center cursor-pointer"
+        @click="handlePrefixClick"
+      >
         <slot name="prefix" />
       </div>
       <!-- 입력 필드 -->
@@ -104,8 +129,12 @@ const handleBlur = (event: FocusEvent) => {
         @blur="handleBlur"
         class="disabled:text-input-text-disable w-full flex-1 border-0 bg-transparent p-0 py-3.5 text-[16px] leading-[20px] tracking-[-0.35px] outline-none disabled:cursor-not-allowed"
       />
-      <!-- suffix slot: input 오른쪽, 왼쪽 마진(ml-2)으로 최소 공간 확보 -->
-      <div v-if="$slots.suffix" class="base-input-suffix ml-2 flex shrink-0 items-center">
+      <!-- suffix slot: input 오른쪽, 왼쪽 마진(ml-2)으로 최소 공간 확보, 클릭 이벤트 추가 -->
+      <div 
+        v-if="$slots.suffix" 
+        class="base-input-suffix ml-2 flex shrink-0 items-center cursor-pointer"
+        @click="handleSuffixClick"
+      >
         <slot name="suffix" />
       </div>
     </div>

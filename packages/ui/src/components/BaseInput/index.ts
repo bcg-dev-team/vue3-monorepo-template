@@ -1,7 +1,11 @@
 export { default as BaseInput } from './BaseInput.vue';
-export { default as InputText } from './InputText.vue';
-export { default as BaseInputSelect } from './BaseInputSelect.vue';
-export { default as BaseInputCalendar } from './BaseInputCalendar.vue';
-export { default as BaseInputStepper } from './BaseInputStepper.vue';
-export { default as BaseInputPassword } from './BaseInputPassword.vue';
+export { default as InputText } from './InputText/InputText.vue';
+export { default as InputSelect } from './InputSelect/InputSelect.vue';
+export { default as InputCalendar } from './InputCalendar/InputCalendar.vue';
+export { default as InputStepper } from './InputStepper/InputStepper.vue';
+export { default as InputPassword } from './InputPassword/InputPassword.vue';
+export { default as InputTel } from './InputTel/InputTel.vue';
+export { default as InputSearch } from './InputSearch/InputSearch.vue';
+export { default as InputEmail } from './InputEmail/InputEmail.vue';
+export { default as InputNumber } from './InputNumber/InputNumber.vue';
 export * from './types';

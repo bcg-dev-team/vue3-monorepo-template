@@ -7,14 +7,14 @@ import './BaseStepper.scss';
 /**
  * 페이지네이션 조인 컴포넌트 (점과 선으로 구성된 진행 상태 표시)
  *
- * @props variant - 변수 타입 (기본값: 'label')
+ * @props variant - 변수 타입 (기본값: 'dot')
  * @props stepLabelList - 스텝 라벨 리스트
  * @props count - 전체 인디케이터 개수 (기본값: 5)
  * @props current - 현재 활성 인덱스 (0부터 시작, 기본값: 0)
  */
 interface Props {
   /** 변수 타입 */
-  variant: 'label' | 'dot';
+  variant: 'dot' | 'label';
   /** 스텝 라벨 리스트 */
   stepLabelList?: string[];
   /** 전체 인디케이터 개수 */
@@ -22,7 +22,6 @@ interface Props {
   /** 현재 활성 인덱스 (0부터 시작) */
   current?: number;
 }
-const sampleStep = ['유형 선택', '금액 입력', '승인 완료'];
 
 const props = withDefaults(defineProps<Props>(), {
   variant: 'dot',

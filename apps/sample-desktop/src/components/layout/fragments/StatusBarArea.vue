@@ -10,7 +10,7 @@
         <dd class="tracking-3 font-semibold text-white">{{ metric.value }}</dd>
       </dl>
     </div>
-    <divider class="h-size-20 border-bg-divider-muted border" />
+    <div class="h-size-20 border-bg-divider-muted border" />
     <div class="flex items-center gap-4">
       <div
         class="bg-bg-bg-surface-muted flex h-[34px] w-[34px] items-center justify-center rounded-full"

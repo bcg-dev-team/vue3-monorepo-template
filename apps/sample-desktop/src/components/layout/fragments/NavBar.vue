@@ -24,7 +24,7 @@ const navMenus: NavMenu[] = [
   { id: 'order', text: '주문', to: '/order' },
   { id: 'trade', text: '거래', to: '/transaction' },
   { id: 'assets', text: '자산', to: '/assets' },
-  { id: 'withdrawal', text: '출금신청', to: '/withdrawal' },
+  { id: 'withdrawal', text: '계좌관리', to: '/account-management' },
   { id: 'support', text: '고객지원', to: '/service' },
 ];
 </script>

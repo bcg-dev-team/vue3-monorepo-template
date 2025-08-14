@@ -8,23 +8,27 @@
       :icon="menu.icon"
       :info="menu.info"
       :color="menu.color"
-      @click="menu.click"
+      @click="handleMenuClick(menu)"
     />
   </div>
 </template>
 
 <script setup lang="ts">
 import TransferMenuButton from '@/components/accountManagement/transfer/TransferMenuButton.vue';
-import { type IconName } from '@template/ui';
+import type { TransferMenuItem } from '@/components/accountManagement/accountManagement';
 
 const props = defineProps<{
-  menuList: Array<{
-    title: string;
-    description: string;
-    icon: IconName;
-    info: Array<{ icon: IconName; text: string }>;
-    color: 'blue' | 'green' | 'red';
-    click: () => void;
-  }>;
+  menuList: Array<TransferMenuItem>;
 }>();
+
+const emit = defineEmits<{
+  (e: 'menuClick', menu: TransferMenuItem): void;
+}>();
+
+/**
+ * 메뉴 클릭 시 이벤트 발생
+ */
+const handleMenuClick = (menu: TransferMenuItem) => {
+  emit('menuClick', menu);
+};
 </script>

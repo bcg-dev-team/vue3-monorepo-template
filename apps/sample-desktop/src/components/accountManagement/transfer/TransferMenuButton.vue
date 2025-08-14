@@ -4,6 +4,7 @@
       borderColorClasses[props.color] +
       ' p-padding-36 flex w-[320px] cursor-pointer flex-col items-center justify-center rounded-[10px] border'
     "
+    @click="emit('click')"
   >
     <div :class="colorClasses[props.color] + ' p-padding-16 rounded-[10px]'">
       <BaseIcon :name="props.icon" size="md" color="white" />
@@ -27,18 +28,14 @@
   </div>
 </template>
 <script setup lang="ts">
-import { BaseIcon, type IconName } from '@template/ui';
+import type { TransferMenuItem } from '@/components/accountManagement/accountManagement';
+import { BaseIcon } from '@template/ui';
 import { computed } from 'vue';
 
-const props = defineProps<{
-  title: string;
-  description: string;
-  icon: IconName;
-  color: 'blue' | 'green' | 'red';
-  info: Array<{
-    icon: IconName;
-    text: string;
-  }>;
+const props = defineProps<TransferMenuItem>();
+
+const emit = defineEmits<{
+  (e: 'click'): void;
 }>();
 
 const colorClasses = computed(() => ({

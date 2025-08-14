@@ -143,8 +143,8 @@
             </div>
             <div class="gap-size-4 flex flex-col text-center">
               <span class="text-font-14 font-semibold">파일을 선택하거나 드래그하세요</span>
-              <spna class="text-font-12 text-default-muted-dark"
-                >JPG, PNG, PDF 파일만 업로드 가능 (최대 10MB)</spna
+              <span class="text-font-12 text-default-muted-dark"
+                >JPG, PNG, PDF 파일만 업로드 가능 (최대 10MB)</span
               >
             </div>
           </div>

@@ -5,10 +5,14 @@
         <div class="flex items-center justify-center">stepper {{ menuState }}</div>
         <div class="gap-size-36 flex flex-col items-center justify-center">
           <div class="gap-size-8 flex flex-col items-center justify-center">
-            <span class="text-font-24 font-semibold">{{ menuTitle.main }}</span>
-            <span class="text-font-14 text-default-muted-dark">{{ menuTitle.sub }}</span>
+            <span class="text-font-24 font-semibold">{{ menuTitle.title }}</span>
+            <span class="text-font-14 text-default-muted-dark">{{ menuTitle.subTitle }}</span>
           </div>
-          <SelectTransferMenu v-if="menuState === 'select'" :menuList="menuList" />
+          <SelectTransferMenu
+            v-if="menuState === 'select'"
+            :menuList="menuList"
+            @menuClick="handleMenuClick"
+          />
           <ApplyWithdrawal v-if="menuState === 'withdraw'" />
           <Transfer v-if="menuState === 'transfer'" />
           <Deposit v-if="menuState === 'deposit'" />
@@ -42,14 +46,27 @@
 <script setup lang="ts">
 import SelectTransferMenu from '@/components/accountManagement/transfer/SelectTransferMenu.vue';
 import ApplyWithdrawal from '@/components/accountManagement/transfer/ApplyWithdrawal.vue';
+import type { TransferMenuItem } from '@/components/accountManagement/accountManagement';
 import Transfer from '@/components/accountManagement/transfer/Transfer.vue';
 import Complete from '@/components/accountManagement/transfer/Complete.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import Deposit from '@/components/accountManagement/transfer/Deposit.vue';
-import { BaseButton, type IconName } from '@template/ui';
+import { BaseButton } from '@template/ui';
 import { ref, computed } from 'vue';
 
-const menuState = ref<'select' | 'withdraw' | 'transfer' | 'deposit' | 'complete'>('select');
+interface TransferMenuTitle {
+  title: string;
+  subTitle: string;
+}
+
+interface TransferMenuButton {
+  label: string;
+  click: () => void;
+}
+
+type TransferMenuState = 'select' | 'withdraw' | 'transfer' | 'deposit' | 'complete';
+
+const menuState = ref<TransferMenuState>('select');
 
 const menuList = [
   {
@@ -62,9 +79,6 @@ const menuList = [
       { icon: 'check-sm', text: '최소금액: $10.00' },
     ],
     color: 'blue',
-    click: () => {
-      menuState.value = 'withdraw';
-    },
   },
   {
     title: '이체하기',
@@ -76,9 +90,6 @@ const menuList = [
       { icon: 'check-sm', text: '최소금액: $1.00' },
     ],
     color: 'green',
-    click: () => {
-      menuState.value = 'transfer';
-    },
   },
   {
     title: '입금하기',
@@ -90,49 +101,52 @@ const menuList = [
       { icon: 'check-sm', text: '최소금액: $10.00' },
     ],
     color: 'red',
-    click: () => {
-      menuState.value = 'deposit';
-    },
   },
-] as Array<{
-  title: string;
-  description: string;
-  icon: IconName;
-  info: Array<{ icon: IconName; text: string }>;
-  color: 'blue' | 'green' | 'red';
-  click: () => void;
-}>;
+] as Array<TransferMenuItem>;
 
-const menuTitle = computed(() => {
+/**
+ * 메뉴 클릭 시 상태 변경 처리
+ */
+const handleMenuClick = (menu: TransferMenuItem) => {
+  if (menu.title === '출금신청하기') {
+    menuState.value = 'withdraw';
+  } else if (menu.title === '이체하기') {
+    menuState.value = 'transfer';
+  } else if (menu.title === '입금하기') {
+    menuState.value = 'deposit';
+  }
+};
+
+const menuTitle = computed<TransferMenuTitle>(() => {
   if (menuState.value === 'withdraw') {
     return {
-      main: '출금신청 금액 입력',
-      sub: '출금 신청하실 금액을 입력해주세요',
+      title: '출금신청 금액 입력',
+      subTitle: '출금 신청하실 금액을 입력해주세요',
     };
   } else if (menuState.value === 'transfer') {
     return {
-      main: '이체금액 입력',
-      sub: '이체하실 계좌와 금액을 입력해주세요',
+      title: '이체금액 입력',
+      subTitle: '이체하실 계좌와 금액을 입력해주세요',
     };
   } else if (menuState.value === 'deposit') {
     return {
-      main: '입금정보 입력',
-      sub: '입금하신 정보를 정확히 입력해주세요',
+      title: '입금정보 입력',
+      subTitle: '입금하신 정보를 정확히 입력해주세요',
     };
   } else if (menuState.value === 'complete') {
     return {
-      main: '완료되었습니다.',
-      sub: '영업일 기준 1~3일 소요될 수 있습니다.',
+      title: '완료되었습니다.',
+      subTitle: '영업일 기준 1~3일 소요될 수 있습니다.',
     };
   } else {
     return {
-      main: '유형 선택',
-      sub: '입금과 출금, 이체 중 원하는 유형을 선택해주세요',
+      title: '유형 선택',
+      subTitle: '입금과 출금, 이체 중 원하는 유형을 선택해주세요',
     };
   }
 });
 
-const buttonData = computed(() => {
+const buttonData = computed<TransferMenuButton>(() => {
   if (menuState.value === 'withdraw') {
     return {
       label: '출금 신청하기',

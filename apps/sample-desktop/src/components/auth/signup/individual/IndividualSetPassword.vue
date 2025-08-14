@@ -3,7 +3,7 @@
     <template #header>
       <div class="flex items-center justify-between">
         <BaseIcon name="arrow-backward" size="md" />
-        <BasePaginationJoin :count="3" :current="2" />
+        <BaseStepper :count="3" :current="2" />
       </div>
     </template>
     <template #content>
@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts" setup>
-import { BaseIcon, BasePaginationJoin, BaseInput, BaseButton, BaseProgressBar } from '@template/ui';
+import { BaseIcon, BaseStepper, BaseInput, BaseButton, BaseProgressBar } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
 import AuthContent from '@/components/auth/AuthContent.vue';
 import { reactive } from 'vue';

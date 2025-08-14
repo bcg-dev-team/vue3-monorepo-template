@@ -13,16 +13,6 @@
   overflow: hidden;
   transition: all 0.2s ease-in-out;
 
-  // 조밀한 간격
-  &--dense {
-    .base-list__items {
-      .list-item {
-        min-height: 40px;
-        padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
-      }
-    }
-  }
-
   // 서브헤더
   &__subheader {
     padding: var(--spacing-3, 12px) var(--spacing-4, 16px);

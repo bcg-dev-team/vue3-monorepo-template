@@ -22,7 +22,6 @@ BaseListItem은 Material UI 스타일의 리스트 아이템 컴포넌트입니�
   },
   args: {
     clickable: false,
-    dense: false,
     disabled: false,
     divider: false,
     selected: false,
@@ -69,27 +68,6 @@ export const Clickable: Story = {
         <template #content>
           <BaseIcon name="settings" />
           <span>클릭 가능한 리스트 아이템</span>
-        </template>
-      </BaseListItem>
-    `,
-  }),
-};
-
-// 조밀한 간격
-export const Dense: Story = {
-  args: {
-    dense: true,
-  },
-  render: (args) => ({
-    components: { BaseListItem, BaseIcon },
-    setup() {
-      return { args };
-    },
-    template: `
-      <BaseListItem v-bind="args">
-        <template #content>
-          <BaseIcon name="chart" />
-          <span>조밀한 간격 리스트 아이템</span>
         </template>
       </BaseListItem>
     `,
@@ -283,14 +261,6 @@ export const AllStates: Story = {
           <template #content>
             <BaseIcon name="settings" />
             <span>클릭 가능한 상태</span>
-          </template>
-        </BaseListItem>
-        
-        <!-- 조밀한 간격 -->
-        <BaseListItem :dense="true">
-          <template #content>
-            <BaseIcon name="chart" />
-            <span>조밀한 간격 상태</span>
           </template>
         </BaseListItem>
         

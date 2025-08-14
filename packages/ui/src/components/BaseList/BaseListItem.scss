@@ -31,12 +31,6 @@
     }
   }
 
-  // 조밀한 간격
-  &.list-item--dense {
-    padding: var(--padding-padding-8) var(--padding-padding-16);
-    min-height: var(--base-size-size-40);
-  }
-
   // 비활성화
   &.list-item--disabled {
     opacity: 0.5;
@@ -133,10 +127,6 @@
   // 반응형 디자인
   @media (max-width: 768px) {
     padding: var(--padding-padding-10) var(--padding-padding-12);
-
-    &.list-item--dense {
-      padding: var(--base-size-size-6) var(--padding-padding-12);
-    }
 
     &__content {
       gap: var(--padding-padding-8);

@@ -6,7 +6,6 @@
  * 이 컴포넌트는 BaseList 내부에서 사용되어야 합니다.
  *
  * @props clickable - 클릭 가능 여부 (버튼 동작)
- * @props dense - 조밀한 간격 사용 여부
  * @props disabled - 비활성화 여부
  * @props divider - 하단 구분선 표시 여부
  * @props selected - 선택된 상태 여부
@@ -22,8 +21,6 @@ import './BaseListItem.scss';
 interface Props {
   /** 클릭 가능 여부 (버튼 동작) */
   clickable?: boolean;
-  /** 조밀한 간격 사용 여부 */
-  dense?: boolean;
   /** 비활성화 여부 */
   disabled?: boolean;
   /** 하단 구분선 표시 여부 */
@@ -41,7 +38,6 @@ interface Emits {
 
 const props = withDefaults(defineProps<Props>(), {
   clickable: false,
-  dense: false,
   disabled: false,
   divider: false,
   selected: false,
@@ -57,7 +53,6 @@ const itemClasses = computed(() => {
   const classes = ['list-item'];
 
   if (props.clickable) classes.push('list-item--clickable');
-  if (props.dense) classes.push('list-item--dense');
   if (props.disabled) classes.push('list-item--disabled');
   if (props.divider) classes.push('list-item--divider');
   if (props.selected) classes.push('list-item--selected');

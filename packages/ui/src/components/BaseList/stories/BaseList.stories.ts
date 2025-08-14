@@ -21,7 +21,6 @@ const meta: Meta<typeof BaseList> = {
   },
   args: {
     subheader: '',
-    dense: false,
     gap: '0px',
   },
 };
@@ -125,81 +124,10 @@ export const WithSecondaryActions: Story = {
   }),
 };
 
-// 조밀한 간격
-export const Dense: Story = {
-  args: {
-    dense: true,
-  },
-  render: (args) => ({
-    components: { BaseList, BaseListItem, BaseIcon },
-    setup() {
-      return { args };
-    },
-    template: `
-      <BaseList v-bind="args">
-        <BaseListItem>
-          <template #content>
-            <BaseIcon name="user" />
-            <span>사용자 관리</span>
-          </template>
-        </BaseListItem>
-        <BaseListItem>
-          <template #content>
-            <BaseIcon name="settings" />
-            <span>시스템 설정</span>
-          </template>
-        </BaseListItem>
-        <BaseListItem>
-          <template #content>
-            <BaseIcon name="chart" />
-            <span>통계 대시보드</span>
-          </template>
-        </BaseListItem>
-      </BaseList>
-    `,
-  }),
-};
-
 // 커스텀 간격
 export const WithGap: Story = {
   args: {
     gap: '16px',
-  },
-  render: (args) => ({
-    components: { BaseList, BaseListItem, BaseIcon },
-    setup() {
-      return { args };
-    },
-    template: `
-      <BaseList v-bind="args">
-        <BaseListItem>
-          <template #content>
-            <BaseIcon name="user" />
-            <span>사용자 관리</span>
-          </template>
-        </BaseListItem>
-        <BaseListItem>
-          <template #content>
-            <BaseIcon name="settings" />
-            <span>시스템 설정</span>
-          </template>
-        </BaseListItem>
-        <BaseListItem>
-          <template #content>
-            <BaseIcon name="chart" />
-            <span>통계 대시보드</span>
-          </template>
-        </BaseListItem>
-      </BaseList>
-    `,
-  }),
-};
-
-// 조밀한 간격 + 커스텀 간격
-export const DenseWithGap: Story = {
-  args: {
-    dense: true,
-    gap: '8px',
   },
   render: (args) => ({
     components: { BaseList, BaseListItem, BaseIcon },
@@ -270,7 +198,6 @@ export const WithSubheader: Story = {
 export const Complete: Story = {
   args: {
     subheader: '완전한 설정 예시',
-    dense: true,
     gap: '12px',
   },
   render: (args) => ({

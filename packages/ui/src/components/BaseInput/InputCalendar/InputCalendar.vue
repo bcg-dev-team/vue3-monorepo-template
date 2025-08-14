@@ -1,11 +1,10 @@
 <!--
   Figma 컴포넌트: Input/Calendar-SM
-  BaseInput을 확장한 캘린더 입력 컴포넌트
+  캘린더 입력 컴포넌트
 -->
 <script setup lang="ts">
 import BaseIcon from '../../BaseIcon/BaseIcon.vue';
 import type { CommonInputProps } from '../types';
-import BaseInput from '../BaseInput.vue';
 import { computed } from 'vue';
 import './InputCalendar.scss';
 
@@ -24,7 +23,8 @@ import './InputCalendar.scss';
  * @emits focus - 포커스 시 발생
  * @emits blur - 블러 시 발생
  */
-interface Props extends CommonInputProps {
+interface Props extends Omit<CommonInputProps, 'modelValue'> {
+  modelValue?: string;
   minDate?: string;
   maxDate?: string;
   format?: string;
@@ -88,8 +88,9 @@ const errorMessage = computed(() => {
 });
 
 // 이벤트 핸들러
-const handleInput = (value: string) => {
-  emit('update:modelValue', value);
+const handleInput = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  emit('update:modelValue', target.value);
 };
 
 const handleFocus = (event: FocusEvent) => {
@@ -100,61 +101,52 @@ const handleBlur = (event: FocusEvent) => {
   emit('blur', event);
 };
 
-// 아이콘 클릭 시 input 포커스
-const handleIconClick = () => {
-  if (!props.disabled && !props.readonly) {
-    const input = document.querySelector('input[type="date"]') as HTMLInputElement;
-    if (input) {
-      input.focus();
-      input.showPicker?.();
-    }
-  }
-};
+// 클래스 계산
+const inputClasses = computed(() => [
+  'input-calendar',
+  { 'w-full': props.fullWidth, 'w-[200px]': !props.fullWidth },
+  { error: !isValid.value },
+  { disabled: props.disabled },
+]);
 </script>
 
 <template>
-  <BaseInput
-    :model-value="modelValue"
-    :placeholder="placeholder"
-    :disabled="disabled"
-    :readonly="readonly"
-    :full-width="fullWidth"
-    type="date"
-    :min="minDate"
-    :max="maxDate"
-    :class="{ error: !isValid && modelValue }"
-    @update:model-value="handleInput"
-    @focus="handleFocus"
-    @blur="handleBlur"
-  >
-    <!-- 캘린더 아이콘 (suffix slot) -->
-    <template #suffix>
-      <BaseIcon 
-        name="calendar" 
-        size="sm" 
-        class="calendar-icon" 
-        @click="handleIconClick"
-      />
-    </template>
-  </BaseInput>
+  <div class="input-calendar-container">
+    <input
+      type="date"
+      :value="modelValue"
+      :placeholder="placeholder"
+      :disabled="disabled"
+      :readonly="readonly"
+      :min="minDate"
+      :max="maxDate"
+      :class="inputClasses"
+      @input="handleInput"
+      @focus="handleFocus"
+      @blur="handleBlur"
+    />
 
-  <!-- 에러 메시지 -->
-  <div v-if="errorMessage" class="input-calendar-error">
-    {{ errorMessage }}
+    <!-- 캘린더 아이콘 -->
+    <BaseIcon name="calendar" size="sm" class="calendar-icon" />
+
+    <!-- 에러 메시지 -->
+    <div v-if="!isValid && errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 // 기본 date input의 캘린더 아이콘 숨기기
-:deep(input[type="date"]::-webkit-calendar-picker-indicator) {
+:deep(input[type='date']::-webkit-calendar-picker-indicator) {
   display: none;
 }
 
-:deep(input[type="date"]::-webkit-inner-spin-button) {
+:deep(input[type='date']::-webkit-inner-spin-button) {
   display: none;
 }
 
-:deep(input[type="date"]::-webkit-clear-button) {
+:deep(input[type='date']::-webkit-clear-button) {
   display: none;
 }
 

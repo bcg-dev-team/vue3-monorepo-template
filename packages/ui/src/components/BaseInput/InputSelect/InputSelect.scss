@@ -1,94 +1,96 @@
-// BaseInputSelect 컴포넌트 스타일
-// 피그마의 Input/Select-SM 디자인 기반
-// 가이드: 피그마 HEX → 디자인 토큰 변환 적용
+// InputSelect 컴포넌트 스타일
+.input-select {
+  @apply rounded-md border border-gray-300 px-3 py-2 transition-all duration-200;
+  @apply text-sm text-gray-900 placeholder-gray-500;
+  @apply focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500;
+  @apply disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-500;
+  @apply disabled:border-gray-200;
+  @apply relative cursor-pointer text-left;
+  width: 200px; // 기본 너비
 
-.base-input-select {
-  // 셀렉트 박스에 특화된 스타일
-  position: relative;
-
-  // 숨겨진 실제 셀렉트 요소
-  .base-input-select-hidden {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
-    z-index: var(--z-index-dropdown);
-
-    &:disabled {
-      cursor: not-allowed;
-    }
+  // 선택된 값 텍스트
+  .block.truncate {
+    @apply pr-8; // 화살표 아이콘 공간 확보
   }
 
-  // 표시용 입력 필드 (읽기 전용)
-  input {
-    cursor: pointer;
-    user-select: none;
+  // 화살표 아이콘
+  .pointer-events-none {
+    @apply absolute inset-y-0 right-0 flex items-center pr-2;
 
-    &:disabled {
-      cursor: not-allowed;
-    }
-  }
-
-  // 화살표 아이콘 스타일
-  .base-input-suffix {
-    .base-icon {
-      color: var(--input-icon-default);
-      transition: transform 0.2s ease;
+    svg {
+      @apply h-5 w-5 text-gray-400 transition-transform duration-200;
     }
   }
 
   // 비활성화 상태
-  &.base-input-disabled {
-    .base-input-suffix {
-      .base-icon {
-        color: var(--input-color-text-disable);
-      }
+  &:disabled {
+    @apply cursor-not-allowed border-gray-200 bg-gray-100 text-gray-500;
+
+    .pointer-events-none svg {
+      @apply text-gray-300;
     }
   }
 
-  // 포커스 상태에서 화살표 회전 (선택사항)
-  &:focus-within {
-    .base-input-suffix {
-      .base-icon {
-        transform: rotate(180deg);
+  // 읽기 전용 상태
+  &[readonly] {
+    @apply cursor-default bg-gray-50;
+  }
+
+  // 포커스 상태
+  &:focus {
+    @apply border-blue-500 outline-none ring-2 ring-blue-500;
+  }
+
+  // 호버 상태 (비활성화가 아닐 때만)
+  &:not(:disabled):hover {
+    @apply border-gray-400;
+  }
+
+  // 전체 너비
+  &.w-full {
+    width: 100%;
+  }
+
+  // 기본 너비
+  &.w-\[200px\] {
+    width: 200px;
+  }
+}
+
+// 드롭다운 옵션 스타일
+.select-dropdown {
+  @apply absolute z-10 mt-1 w-full rounded-md bg-white shadow-lg;
+  @apply ring-1 ring-black ring-opacity-5 focus:outline-none;
+  @apply max-h-60 overflow-auto;
+
+  .dropdown-options {
+    @apply py-1;
+  }
+
+  .dropdown-option {
+    @apply relative cursor-pointer select-none py-2 pl-3 pr-9;
+    @apply text-gray-900 transition-colors duration-150;
+
+    &:hover {
+      @apply bg-blue-600 text-white;
+    }
+
+    &--selected {
+      background-color: #dbeafe;
+      color: #1e40af;
+      font-weight: 500;
+
+      &:hover {
+        @apply bg-blue-600 text-white;
       }
     }
-  }
-}
 
-// 크기별 스타일
-.base-input-select-sm {
-  input {
-    font-size: 13px;
-    line-height: 16px;
-    letter-spacing: -0.35px;
-  }
-}
+    &--disabled {
+      @apply cursor-not-allowed opacity-50;
 
-.base-input-select-md {
-  input {
-    font-size: 16px;
-    line-height: 20px;
-    letter-spacing: -0.35px;
-  }
-}
-
-// 셀렉트 옵션 스타일 (브라우저 기본 드롭다운)
-.base-input-select-hidden {
-  option {
-    font-size: 13px;
-    line-height: 16px;
-    letter-spacing: -0.35px;
-    color: var(--input-color-text-static);
-    background-color: var(--input-color-surface);
-    padding: 8px 12px;
-
-    &:disabled {
-      color: var(--input-color-text-disable);
-      background-color: var(--input-color-bg-disabled);
+      &:hover {
+        @apply bg-transparent text-gray-900;
+      }
     }
   }
 }

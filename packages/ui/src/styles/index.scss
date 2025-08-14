@@ -4,17 +4,12 @@
 // BaseButton 컴포넌트 스타일
 @use '../components/BaseButton/BaseButton.scss';
 
-// BaseInput 컴포넌트 스타일
-@use '../components/BaseInput/BaseInput.scss';
-@use '../components/BaseInput/InputText/InputText.scss';
+// BaseInput 컴포넌트 스타일 (Factory 패턴 적용)
+@use '../components/BaseInput/styles/_input-base.scss';
 @use '../components/BaseInput/InputCalendar/InputCalendar.scss';
 @use '../components/BaseInput/InputSelect/InputSelect.scss';
 @use '../components/BaseInput/InputStepper/InputStepper.scss';
 @use '../components/BaseInput/InputPassword/InputPassword.scss';
-@use '../components/BaseInput/InputTel/InputTel.scss';
-@use '../components/BaseInput/InputSearch/InputSearch.scss';
-@use '../components/BaseInput/InputEmail/InputEmail.scss';
-@use '../components/BaseInput/InputNumber/InputNumber.scss';
 
 // BaseTable 컴포넌트 스타일
 @use '../components/BaseTable/BaseTable.scss';
@@ -45,7 +40,7 @@
 @use '../components/BaseChips/BaseChip.scss';
 
 // BaseIcon 컴포넌트 스타일
-@use '../components/BaseIcon/BaseIcon.scss'; 
+@use '../components/BaseIcon/BaseIcon.scss';
 
 // BasePopup 컴포넌트 스타일
 @use '../components/BasePopup/BasePopup.scss';

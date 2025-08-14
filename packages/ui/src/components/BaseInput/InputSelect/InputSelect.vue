@@ -1,12 +1,11 @@
 <!--
   Figma 컴포넌트: Input/Select-SM
-  BaseInput을 확장한 셀렉트 박스 컴포넌트
+  Headless UI를 사용한 셀렉트 박스 컴포넌트
 -->
 <script setup lang="ts">
-import BaseIcon from '../../BaseIcon/BaseIcon.vue';
+import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue';
 import type { CommonInputProps } from '../types';
-import BaseInput from '../BaseInput.vue';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import './InputSelect.scss';
 
 /**
@@ -18,7 +17,6 @@ import './InputSelect.scss';
  * @props readonly - 읽기 전용 여부
  * @props fullWidth - 입력창을 부모의 100% 너비로 확장할지 여부
  * @props options - 선택 옵션들
- * @props multiple - 다중 선택 여부 (기본값: false)
  * @emits update:modelValue - 값 변경 시 발생
  * @emits focus - 포커스 시 발생
  * @emits blur - 블러 시 발생
@@ -30,10 +28,8 @@ interface Option {
 }
 
 interface Props extends Omit<CommonInputProps, 'modelValue'> {
-  // InputSelect 고유 props
-  modelValue?: string | string[];
-  options?: Option[];
-  multiple?: boolean;
+  modelValue?: string;
+  options: Option[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -43,117 +39,107 @@ const props = withDefaults(defineProps<Props>(), {
   readonly: false,
   fullWidth: false,
   options: () => [],
-  multiple: false,
 });
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string | string[]): void;
-  (e: 'focus', event: FocusEvent): void;
-  (e: 'blur', event: FocusEvent): void;
+  'update:modelValue': [value: string];
+  focus: [];
+  blur: [];
 }>();
 
+// 선택된 옵션
+const selectedOption = computed(() =>
+  props.options.find((option) => option.value === props.modelValue)
+);
+
 // 선택된 옵션 라벨
-const selectedLabel = computed(() => {
-  if (!props.modelValue) return '';
+const selectedLabel = computed(() => selectedOption.value?.label || props.placeholder);
 
-  if (props.multiple && Array.isArray(props.modelValue)) {
-    return props.modelValue
-      .map((value) => {
-        const option = props.options.find((opt) => opt.value === value);
-        return option ? option.label : value;
-      })
-      .join(', ');
-  }
-
-  const option = props.options.find((opt) => opt.value === props.modelValue);
-  return option ? option.label : (props.modelValue as string);
-});
-
-// 드롭다운 상태
-const isOpen = ref(false);
-
-// 이벤트 핸들러
-const handleSelect = (value: string) => {
-  if (props.multiple) {
-    const currentValues = Array.isArray(props.modelValue) ? props.modelValue : [];
-    const newValues = currentValues.includes(value) 
-      ? currentValues.filter(v => v !== value)
-      : [...currentValues, value];
-    emit('update:modelValue', newValues);
-  } else {
-    emit('update:modelValue', value);
-    isOpen.value = false;
-  }
-};
-
-const handleFocus = (event: FocusEvent) => {
-  emit('focus', event);
-};
-
-const handleBlur = (event: FocusEvent) => {
-  emit('blur', event);
-};
-
-const toggleDropdown = () => {
-  if (!props.disabled) {
-    isOpen.value = !isOpen.value;
-  }
-};
-
-const closeDropdown = () => {
-  isOpen.value = false;
-};
-
-// 옵션 선택 상태 확인
-const isOptionSelected = (value: string): boolean => {
-  if (props.multiple && Array.isArray(props.modelValue)) {
-    return props.modelValue.includes(value);
-  }
-  return props.modelValue === value;
-};
+// 클래스 계산
+const buttonClasses = computed(() => [
+  'input-select',
+  { 'w-full': props.fullWidth, 'w-[200px]': !props.fullWidth },
+  { disabled: props.disabled || props.readonly },
+]);
 </script>
 
 <template>
-  <div class="input-select-container" @blur="closeDropdown">
-    <BaseInput
-      :model-value="selectedLabel"
-      :placeholder="placeholder"
-      :disabled="disabled"
-      :readonly="true"
-      :full-width="fullWidth"
-      @focus="handleFocus"
-      @blur="handleBlur"
-    >
-      <!-- 셀렉트 아이콘 (suffix slot) -->
-      <template #suffix>
-        <BaseIcon 
-          name="arrow-down" 
-          size="sm" 
-          class="select-icon"
-          :class="{ 'select-icon--open': isOpen }"
-          @click="toggleDropdown"
-        />
-      </template>
-    </BaseInput>
+  <Listbox
+    :model-value="modelValue"
+    :disabled="disabled || readonly"
+    @update:model-value="(value) => emit('update:modelValue', value)"
+    @focus="emit('focus')"
+    @blur="emit('blur')"
+  >
+    <div class="relative">
+      <ListboxButton :class="buttonClasses" :disabled="disabled || readonly">
+        <span class="block truncate text-left">
+          {{ selectedLabel }}
+        </span>
+        <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+          <!-- ChevronDown 아이콘 -->
+          <svg
+            class="h-5 w-5 text-gray-400"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </span>
+      </ListboxButton>
 
-    <!-- 커스텀 드롭다운 메뉴 -->
-    <div v-if="isOpen" class="select-dropdown">
-      <div class="dropdown-options">
-        <div
-          v-for="option in options"
-          :key="option.value"
-          class="dropdown-option"
-          :class="{ 
-            'dropdown-option--selected': isOptionSelected(option.value),
-            'dropdown-option--disabled': option.disabled 
-          }"
-          @click="!option.disabled && handleSelect(option.value)"
+      <transition
+        leave-active-class="transition ease-in duration-100"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+        <ListboxOptions
+          class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
         >
-          {{ option.label }}
-        </div>
-      </div>
+          <ListboxOption
+            v-for="option in options"
+            :key="option.value"
+            :value="option.value"
+            :disabled="option.disabled"
+            v-slot="{ active, selected }"
+          >
+            <li
+              :class="[
+                'relative cursor-default select-none py-2 pl-3 pr-9',
+                active ? 'bg-blue-600 text-white' : 'text-gray-900',
+                option.disabled ? 'cursor-not-allowed opacity-50' : '',
+              ]"
+            >
+              <span :class="['block truncate', selected ? 'font-medium' : 'font-normal']">
+                {{ option.label }}
+              </span>
+              <span
+                v-if="selected"
+                :class="[
+                  'absolute inset-y-0 right-0 flex items-center pr-2',
+                  active ? 'text-white' : 'text-blue-600',
+                ]"
+              >
+                <!-- Check 아이콘 -->
+                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </span>
+            </li>
+          </ListboxOption>
+        </ListboxOptions>
+      </transition>
     </div>
-  </div>
+  </Listbox>
 </template>
 
 <style lang="scss" scoped>
@@ -165,7 +151,7 @@ const isOptionSelected = (value: string): boolean => {
   color: var(--color-neutral-600, #5a5c5e);
   cursor: pointer;
   transition: transform 0.2s ease;
-  
+
   &--open {
     transform: rotate(180deg);
   }
@@ -181,7 +167,9 @@ const isOptionSelected = (value: string): boolean => {
   background: white;
   border: 1px solid var(--color-neutral-300, #d1d5db);
   border-radius: 8px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
   max-height: 200px;
   overflow-y: auto;
 }
@@ -194,21 +182,21 @@ const isOptionSelected = (value: string): boolean => {
   padding: 8px 16px;
   cursor: pointer;
   transition: background-color 0.15s ease;
-  
+
   &:hover {
     background-color: var(--color-neutral-100, #f3f4f6);
   }
-  
+
   &--selected {
     background-color: var(--color-primary-50, #eff6ff);
     color: var(--color-primary-700, #1d4ed8);
     font-weight: 500;
   }
-  
+
   &--disabled {
     color: var(--color-neutral-400, #9ca3af);
     cursor: not-allowed;
-    
+
     &:hover {
       background-color: transparent;
     }

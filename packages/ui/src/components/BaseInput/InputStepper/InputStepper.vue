@@ -1,11 +1,10 @@
 <!--
   Figma 컴포넌트: Input/Stepper
-  BaseInput을 확장한 스테퍼 입력 컴포넌트
+  스테퍼 입력 컴포넌트
 -->
 <script setup lang="ts">
 import BaseIcon from '../../BaseIcon/BaseIcon.vue';
 import type { CommonInputProps } from '../types';
-import BaseInput from '../BaseInput.vue';
 import { computed } from 'vue';
 import './InputStepper.scss';
 
@@ -87,7 +86,10 @@ const decrease = () => {
 };
 
 // 입력값 처리 (MUI 방식)
-const handleInput = (value: string) => {
+const handleInput = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const value = target.value;
+
   // 빈 문자열이거나 숫자가 아닌 경우 0으로 처리
   if (!value || value.trim() === '') {
     emit('update:modelValue', 0);
@@ -95,23 +97,24 @@ const handleInput = (value: string) => {
   }
 
   const numValue = parseFloat(value);
-  
+
   // NaN인 경우 0으로 처리
   if (isNaN(numValue)) {
     emit('update:modelValue', 0);
     return;
   }
 
-  // 최소/최대값 제한
-  let clampedValue = numValue;
-  if (props.min !== undefined) {
-    clampedValue = Math.max(clampedValue, props.min);
-  }
-  if (props.max !== undefined) {
-    clampedValue = Math.min(clampedValue, props.max);
-  }
+  // 최소/최대값 체크
+  const minValue = props.min || 0;
+  const maxValue = props.max;
 
-  emit('update:modelValue', clampedValue);
+  if (numValue < minValue) {
+    emit('update:modelValue', minValue);
+  } else if (maxValue !== undefined && numValue > maxValue) {
+    emit('update:modelValue', maxValue);
+  } else {
+    emit('update:modelValue', numValue);
+  }
 };
 
 const handleFocus = (event: FocusEvent) => {
@@ -121,60 +124,74 @@ const handleFocus = (event: FocusEvent) => {
 const handleBlur = (event: FocusEvent) => {
   emit('blur', event);
 };
+
+// 클래스 계산
+const inputClasses = computed(() => [
+  'input-stepper',
+  { 'w-full': props.fullWidth, 'w-[200px]': !props.fullWidth },
+  { disabled: props.disabled },
+  { 'with-buttons': props.showButtons },
+  { 'buttons-inside': props.buttonPosition === 'inside' },
+  { 'buttons-outside': props.buttonPosition === 'outside' },
+]);
 </script>
 
 <template>
-  <BaseInput
-    :model-value="(modelValue || 0).toString()"
-    :placeholder="placeholder"
-    :disabled="disabled"
-    :readonly="readonly"
-    :full-width="fullWidth"
-    type="text"
-    @update:model-value="handleInput"
-    @focus="handleFocus"
-    @blur="handleBlur"
-  >
+  <div class="input-stepper-container" :class="{ 'buttons-outside': buttonPosition === 'outside' }">
+    <!-- 감소 버튼 -->
+    <button
+      v-if="showButtons"
+      type="button"
+      class="stepper-button stepper-button--decrease"
+      :class="{ disabled: !canDecrease }"
+      :disabled="!canDecrease"
+      @click="decrease"
+    >
+      <BaseIcon name="minus" size="sm" />
+    </button>
 
+    <!-- 입력 필드 -->
+    <input
+      type="number"
+      :value="modelValue"
+      :placeholder="placeholder"
+      :disabled="disabled"
+      :readonly="readonly"
+      :min="min"
+      :max="max"
+      :step="step"
+      :class="inputClasses"
+      @input="handleInput"
+      @focus="handleFocus"
+      @blur="handleBlur"
+    />
 
-    <!-- 내부 버튼들 (suffix slot) -->
-    <template #suffix>
-      <div v-if="showButtons && buttonPosition === 'inside'" class="stepper-buttons-inside">
-        <button
-          type="button"
-          class="stepper-button-inside decrease"
-          :disabled="!canDecrease"
-          @click.stop="decrease"
-          aria-label="값 감소"
-        >
-          <BaseIcon name="minus" size="sm" />
-        </button>
-        <button
-          type="button"
-          class="stepper-button-inside increase"
-          :disabled="!canIncrease"
-          @click.stop="increase"
-          aria-label="값 증가"
-        >
-          <BaseIcon name="plus" size="sm" />
-        </button>
-      </div>
-    </template>
-  </BaseInput>
+    <!-- 증가 버튼 -->
+    <button
+      v-if="showButtons"
+      type="button"
+      class="stepper-button stepper-button--increase"
+      :class="{ disabled: !canIncrease }"
+      :disabled="!canIncrease"
+      @click="increase"
+    >
+      <BaseIcon name="plus" size="sm" />
+    </button>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 // 브라우저 기본 number input 화살표 숨기기
-:deep(input[type="text"]) {
+:deep(input[type='text']) {
   // number input의 기본 화살표 숨기기
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
-  
+
   // Firefox용
-  &[type="number"] {
+  &[type='number'] {
     -moz-appearance: textfield;
   }
 }
@@ -198,12 +215,12 @@ const handleBlur = (event: FocusEvent) => {
   border-radius: 4px;
   transition: all 0.2s ease;
   color: var(--color-neutral-600, #5a5c5e);
-  
+
   &:hover:not(:disabled) {
     background-color: var(--color-neutral-50, #f9fafb);
     border-color: var(--color-neutral-400, #9ca3af);
   }
-  
+
   &:disabled {
     cursor: not-allowed;
     opacity: 0.5;

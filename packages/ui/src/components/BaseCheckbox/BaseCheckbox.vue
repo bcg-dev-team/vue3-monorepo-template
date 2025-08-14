@@ -81,7 +81,7 @@ const checkboxStyles = computed(() => {
       styles.borderColor = 'var(--base-colors-primary-primary800)';
     } else {
       // Enabled + Unchecked
-      styles.backgroundColor = 'var(--base-colors-neutral-neutral000)';
+      styles.backgroundColor = 'var(--input-check-radio-active-bg)';
       styles.borderColor = 'var(--base-colors-neutral-neutral400)';
     }
   }
@@ -146,18 +146,10 @@ onMounted(() => {
         :style="checkboxStyles"
       >
         <!-- 체크 아이콘 (체크된 상태) -->
-        <BaseIcon
-          v-if="isChecked && !isIndeterminate"
-          name="check-sm"
-          color="var(--base-colors-neutral-neutral000)"
-        />
+        <BaseIcon v-if="isChecked && !isIndeterminate" name="check-sm" color="white" />
 
         <!-- 부분 선택 아이콘 (indeterminate 상태) -->
-        <BaseIcon
-          v-if="isIndeterminate"
-          name="minus"
-          color="var(--base-colors-neutral-neutral000)"
-        />
+        <BaseIcon v-if="isIndeterminate" name="minus" color="white" />
       </div>
     </div>
 

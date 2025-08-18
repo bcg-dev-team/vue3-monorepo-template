@@ -25,21 +25,24 @@
 </template>
 
 <script setup lang="ts">
-import { BaseChip, BaseTabs } from '@template/ui';
+import { BaseChip, BaseTabs, type TabItem } from '@template/ui';
 
 import { ref } from 'vue';
 
 const selectedTab = ref('inProgress');
 
-const tabs = {
-  진행중: {
-    value: 'inProgress',
+const tabs = [
+  {
+    key: 'inProgress',
+    label: '진행중',
   },
-  종료: {
-    value: 'end',
+  {
+    key: 'end',
+    label: '종료',
   },
-  전체: {
-    value: 'all',
+  {
+    key: 'all',
+    label: '전체',
   },
-};
+];
 </script>

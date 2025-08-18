@@ -21,26 +21,31 @@ import { ref } from 'vue';
 
 const selectedTab = ref('notice');
 
-const tabs = {
-  공지사항: {
-    value: 'notice',
+const tabs = [
+  {
+    key: 'notice',
+    label: '공지사항',
     component: Notice,
   },
-  이벤트: {
-    value: 'event',
+  {
+    key: 'event',
+    label: '이벤트',
     component: Event,
   },
-  '1:1 문의': {
-    value: 'qna',
+  {
+    key: 'qna',
+    label: '1:1 문의',
     component: QnA,
   },
-  '자주 묻는 질문': {
-    value: 'faq',
+  {
+    key: 'faq',
+    label: '자주 묻는 질문',
     component: Faq,
   },
-  이용가이드: {
-    value: 'guide',
+  {
+    key: 'guide',
+    label: '이용가이드',
     component: UserGuide,
   },
-};
+];
 </script>

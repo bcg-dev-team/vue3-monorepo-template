@@ -23,6 +23,14 @@ import '@template/ui';
 // 전역 스타일
 import './style.css';
 
+// TradingView 차트 선언
+declare global {
+  interface Window {
+    TradingView: any;
+    tvWidget: any;
+  }
+}
+
 // 테마 초기화
 import { useTheme } from '@template/theme';
 

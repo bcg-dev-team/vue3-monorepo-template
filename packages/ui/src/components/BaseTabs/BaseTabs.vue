@@ -1,24 +1,13 @@
 <script setup lang="ts">
 import { TabGroup, TabList, TabPanels, TabPanel } from '@headlessui/vue';
-import type { ComponentSize } from 'types/components';
+import type { ComponentSize, TabCategories, TabVariant, TabsSize } from 'types/components';
 import BaseTabList from './BaseTabList.vue';
-import type { Component } from 'vue';
 import { computed } from 'vue';
-
-interface TabItem {
-  value: string | number;
-  component?: Component;
-  icon?: string;
-}
-
-interface TabCategories {
-  [categoryName: string]: TabItem;
-}
 
 interface Props {
   tabs: TabCategories;
-  variant?: 'underline' | 'inner';
-  size?: Extract<ComponentSize, 'lg' | 'md'>;
+  variant?: TabVariant;
+  size?: TabsSize;
   underline?: boolean;
   hasBackground?: boolean;
   ariaLabel?: string;

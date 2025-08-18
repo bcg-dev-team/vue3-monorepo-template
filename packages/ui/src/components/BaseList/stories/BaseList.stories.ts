@@ -39,7 +39,7 @@ export const Default: Story = {
       <BaseList v-bind="args">
         <BaseListItem>
           <template #content>
-            <BaseIcon name="user" />
+            <BaseIcon name="person" />
             <span>사용자 관리</span>
           </template>
         </BaseListItem>
@@ -71,7 +71,7 @@ export const Clickable: Story = {
       <BaseList v-bind="args">
         <BaseListItem :clickable="true">
           <template #content>
-            <BaseIcon name="user" />
+            <BaseIcon name="person" />
             <span>사용자 관리</span>
           </template>
         </BaseListItem>
@@ -103,17 +103,17 @@ export const WithSecondaryActions: Story = {
       <BaseList v-bind="args">
         <BaseListItem :secondary-action="{ name: 'edit' }">
           <template #content>
-            <BaseIcon name="user" />
+            <BaseIcon name="person" />
             <span>사용자 관리</span>
           </template>
         </BaseListItem>
-        <BaseListItem :secondary-action="{ name: 'delete' }">
+        <BaseListItem :secondary-action="{ name: 'trash' }">
           <template #content>
             <BaseIcon name="settings" />
             <span>시스템 설정</span>
           </template>
         </BaseListItem>
-        <BaseListItem :secondary-action="{ name: 'visibility' }">
+        <BaseListItem :secondary-action="{ name: 'trending-up' }">
           <template #content>
             <BaseIcon name="chart" />
             <span>통계 대시보드</span>
@@ -138,7 +138,7 @@ export const WithGap: Story = {
       <BaseList v-bind="args">
         <BaseListItem>
           <template #content>
-            <BaseIcon name="user" />
+            <BaseIcon name="person" />
             <span>사용자 관리</span>
           </template>
         </BaseListItem>
@@ -173,7 +173,7 @@ export const WithSubheader: Story = {
       <BaseList v-bind="args">
         <BaseListItem>
           <template #content>
-            <BaseIcon name="user" />
+            <BaseIcon name="person" />
             <span>사용자 관리</span>
           </template>
         </BaseListItem>
@@ -209,17 +209,17 @@ export const Complete: Story = {
       <BaseList v-bind="args">
         <BaseListItem :clickable="true" :secondary-action="{ name: 'edit' }">
           <template #content>
-            <BaseIcon name="user" />
+            <BaseIcon name="person" />
             <span>사용자 관리</span>
           </template>
         </BaseListItem>
-        <BaseListItem :clickable="true" :secondary-action="{ name: 'delete' }">
+        <BaseListItem :clickable="true" :secondary-action="{ name: 'trash' }">
           <template #content>
             <BaseIcon name="settings" />
             <span>시스템 설정</span>
           </template>
         </BaseListItem>
-        <BaseListItem :clickable="true" :secondary-action="{ name: 'visibility' }">
+        <BaseListItem :clickable="true" :secondary-action="{ name: 'trending-up' }">
           <template #content>
             <BaseIcon name="chart" />
             <span>통계 대시보드</span>

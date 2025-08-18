@@ -628,7 +628,7 @@ export const InListItem: Story = {
           <template #content>
             <div style="display: flex; align-items: center; gap: 12px;">
               <BaseListItemAvatar 
-                fallback="{ name: 'person', size: 'md' }"
+                :fallback="{ name: 'person', size: 'md' }"
                 size="md"
                 variant="square"
                 color="custom"

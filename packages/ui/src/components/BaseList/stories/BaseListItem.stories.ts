@@ -193,7 +193,7 @@ export const WithAvatar: Story = {
         <BaseListItem>
           <template #content>
             <BaseListItemAvatar 
-              icon="{ name: 'settings', size: 'md' }"
+              :icon="{ name: 'settings', size: 'md' }"
               size="md"
               variant="rounded"
             />

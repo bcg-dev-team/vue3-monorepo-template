@@ -2,7 +2,11 @@ import BaseButton from '../BaseButton/BaseButton.vue';
 import BaseButton from '../BaseButton/BaseButton.vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
 import BaseModal from '../BaseModal/BaseModal.vue';
+<<<<<<< HEAD
 import { ref } from 'vue';
+=======
+import BaseButton from '../BaseButton/BaseButton.vue';
+>>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
 
 const meta: Meta<typeof BaseModal> = {
   title: 'Components/BaseModal',
@@ -11,82 +15,119 @@ const meta: Meta<typeof BaseModal> = {
   parameters: {
     docs: {
       description: {
+<<<<<<< HEAD
         component:
           'Headless UI Dialog 기반의 재사용 가능한 모달 컴포넌트입니다. 기본, 확인, 알림 타입을 모두 지원하며 접근성이 완벽하게 구현되어 있습니다.\n\n[Figma 링크](https://www.figma.com/design/5OJPsmnkEgZZnkHtNbk1wK/-MODA--Draft-250514-?node-id=1801-17801&m=dev)',
+=======
+        component: '기본 모달 컴포넌트입니다. 헤더, 컨텐츠, 푸터 영역을 포함하며 다양한 스타일과 기능을 지원합니다.',
+>>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
       },
     },
   },
   argTypes: {
     isOpen: {
-      control: 'boolean',
-      description: '모달 열림 상태',
+      description: '모달 열림/닫힘 상태',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+        category: 'Props',
+      },
     },
     title: {
-      control: 'text',
       description: '모달 제목',
+      control: { type: 'text' },
+      table: {
+        type: { summary: 'string' },
+        category: 'Props',
+      },
     },
     description: {
-      control: 'text',
-      description: '모달 설명 (접근성용)',
-    },
-    size: {
-      control: 'select',
-      options: ['sm', 'md', 'lg', 'xl'],
-      description: '모달 크기',
+      description: '모달 설명',
+      control: { type: 'text' },
+      table: {
+        type: { summary: 'string' },
+        category: 'Props',
+      },
     },
     variant: {
-      control: 'select',
-      options: ['default', 'confirm', 'alert'],
-      description: '모달 타입',
+      description: '모달 스타일 변형',
+      control: { type: 'select' },
+      options: ['default', 'alert'],
+      table: {
+        type: { summary: 'default | alert' },
+        defaultValue: { summary: 'default' },
+        category: 'Props',
+      },
     },
-    alertVariant: {
-      control: 'select',
-      options: ['success', 'info', 'warning', 'error'],
-      description: '알림 타입 (variant가 alert일 때만 사용)',
-    },
-    closeOnOverlayClick: {
-      control: 'boolean',
-      description: '오버레이 클릭 시 닫기 여부',
-    },
-    closeOnEscape: {
-      control: 'boolean',
-      description: 'ESC 키 클릭 시 닫기 여부',
+    size: {
+      description: '모달 크기',
+      control: { type: 'select' },
+      options: ['sm', 'md', 'lg', 'xl'],
+      table: {
+        type: { summary: 'sm | md | lg | xl' },
+        defaultValue: { summary: 'md' },
+        category: 'Props',
+      },
     },
     showCloseButton: {
-      control: 'boolean',
       description: '닫기 버튼 표시 여부',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'true' },
+        category: 'Props',
+      },
     },
-    actions: {
-      control: 'object',
-      description: '모달 액션 버튼들',
+    showBackButton: {
+      description: '뒤로가기 버튼 표시 여부',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+        category: 'Props',
+      },
     },
+    fullWidth: {
+      description: '버튼을 fullwidth로 표시할지 여부',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'true' },
+        category: 'Props',
+      },
+    },
+
   },
   args: {
     isOpen: false,
     title: '모달 제목',
-    description: '모달에 대한 설명입니다.',
-    size: 'md',
+    description: '모달 설명입니다.',
     variant: 'default',
-    closeOnOverlayClick: true,
-    closeOnEscape: true,
+    size: 'md',
     showCloseButton: true,
+    showBackButton: false,
+    fullWidth: true,
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// 기본 스토리 - Storybook docs에서 기본 형태로 표시됨
+/**
+ * 기본 모달 스토리
+ * 가장 기본적인 모달 형태를 보여줍니다.
+ */
 export const Default: Story = {
   args: {
     isOpen: false,
     title: '기본 모달',
-    description: '기본 모달의 설명입니다.',
-    variant: 'default',
+    description: '이것은 기본 모달입니다.',
   },
   render: (args) => ({
     components: { BaseModal, BaseButton },
     setup() {
+<<<<<<< HEAD
       const isOpen = ref(false);
       const openModal = () => {
         isOpen.value = true;
@@ -96,26 +137,21 @@ export const Default: Story = {
       };
 
       return { args, isOpen, openModal, closeModal };
+=======
+      return { args };
+>>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
     },
     template: `
       <div>
         <BaseButton 
-          variant="contained"
-          size="md"
           label="기본 모달 열기"
-          @click="openModal"
+          @click="args.isOpen = true"
         />
-        
-        <BaseModal 
-          v-bind="args" 
-          :is-open="isOpen"
-          @close="closeModal"
-        >
-          <p>기본 모달의 내용입니다.</p>
-        </BaseModal>
+        <BaseModal v-bind="args" @update:isOpen="args.isOpen = $event" />
       </div>
     `,
   }),
+<<<<<<< HEAD
   parameters: {
     docs: {
       description: {
@@ -124,19 +160,25 @@ export const Default: Story = {
       },
     },
   },
+=======
+>>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
 };
 
-// 기본 모달 with 컨텐츠
-export const DefaultWithContent: Story = {
+/**
+ * 기본 Footer가 있는 모달
+ * 기본 제공되는 취소/확인 버튼을 사용합니다.
+ */
+export const WithDefaultFooter: Story = {
   args: {
     isOpen: false,
-    title: '기본 모달',
-    description: '기본 모달에 대한 상세한 설명입니다.',
-    variant: 'default',
+    title: '기본 Footer 모달',
+    description: '기본 제공되는 취소/확인 버튼을 사용합니다.',
+    showDefaultFooter: true,
   },
   render: (args) => ({
     components: { BaseModal, BaseButton },
     setup() {
+<<<<<<< HEAD
       const isOpen = ref(false);
       const openModal = () => {
         isOpen.value = true;
@@ -146,27 +188,21 @@ export const DefaultWithContent: Story = {
       };
 
       return { args, isOpen, openModal, closeModal };
+=======
+      return { args };
+>>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
     },
     template: `
       <div>
         <BaseButton 
-          variant="contained"
-          size="md"
-          label="기본 모달 열기"
-          @click="openModal"
+          label="기본 Footer 모달 열기"
+          @click="args.isOpen = true"
         />
-        
-        <BaseModal 
-          v-bind="args" 
-          :is-open="isOpen"
-          @close="closeModal"
-        >
-          <p>이것은 기본 모달의 내용입니다.</p>
-          <p>여러 줄의 텍스트를 포함할 수 있습니다.</p>
-        </BaseModal>
+        <BaseModal v-bind="args" @update:isOpen="args.isOpen = $event" />
       </div>
     `,
   }),
+<<<<<<< HEAD
   parameters: {
     docs: {
       description: {
@@ -225,19 +261,26 @@ export const Small: Story = {
       },
     },
   },
+=======
+>>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
 };
 
+/**
+ * Large 크기 모달
+ * 더 큰 크기의 모달을 보여줍니다.
+ */
 export const Large: Story = {
   args: {
     isOpen: false,
-    title: '큰 모달',
-    description: '큰 크기의 모달로 더 많은 내용을 포함할 수 있습니다.',
+    title: 'Large 모달',
+    description: '더 큰 크기의 모달입니다.',
     size: 'lg',
-    variant: 'default',
+    showDefaultFooter: true,
   },
   render: (args) => ({
     components: { BaseModal, BaseButton },
     setup() {
+<<<<<<< HEAD
       const isOpen = ref(false);
       const openModal = () => {
         isOpen.value = true;
@@ -247,30 +290,26 @@ export const Large: Story = {
       };
 
       return { args, isOpen, openModal, closeModal };
+=======
+      return { args };
+>>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
     },
     template: `
       <div>
         <BaseButton 
-          variant="contained"
-          size="md"
-          label="큰 모달 열기"
-          @click="openModal"
+          label="Large 모달 열기"
+          @click="args.isOpen = true"
         />
-        
-        <BaseModal 
-          v-bind="args" 
-          :is-open="isOpen"
-          @close="closeModal"
-        >
-          <p>큰 크기의 모달입니다.</p>
-          <p>더 많은 내용을 포함할 수 있습니다.</p>
-          <div style="height: 200px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; margin: 16px 0;">
-            스크롤 가능한 영역
+        <BaseModal v-bind="args" @update:isOpen="args.isOpen = $event">
+          <div style="padding: 20px;">
+            <p>이것은 Large 크기의 모달입니다. 더 많은 컨텐츠를 표시할 수 있습니다.</p>
+            <p>긴 텍스트나 복잡한 폼 요소들을 포함할 수 있습니다.</p>
           </div>
         </BaseModal>
       </div>
     `,
   }),
+<<<<<<< HEAD
   parameters: {
     docs: {
       description: {
@@ -279,11 +318,18 @@ export const Large: Story = {
       },
     },
   },
+=======
+>>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
 };
 
-export const Confirm: Story = {
+/**
+ * Alert 스타일 모달
+ * 경고나 알림을 위한 모달입니다.
+ */
+export const Alert: Story = {
   args: {
     isOpen: false,
+<<<<<<< HEAD
     title: '확인',
     description: '작업을 확인하는 모달입니다.',
     variant: 'confirm',
@@ -348,19 +394,19 @@ export const AlertSuccess: Story = {
     isOpen: false,
     title: '성공',
     description: '작업이 성공적으로 완료되었습니다.',
+=======
+    title: '경고',
+    description: '이 작업을 계속 진행하시겠습니까?',
+>>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
     variant: 'alert',
-    alertVariant: 'success',
-    actions: [
-      {
-        label: '확인',
-        variant: 'contained',
-        size: 'md',
-      },
-    ],
+    size: 'sm',
+    showDefaultFooter: true,
+    confirmText: '계속',
   },
   render: (args) => ({
     components: { BaseModal, BaseButton },
     setup() {
+<<<<<<< HEAD
       const isOpen = ref(false);
       const openModal = () => {
         isOpen.value = true;
@@ -370,27 +416,25 @@ export const AlertSuccess: Story = {
       };
 
       return { args, isOpen, openModal, closeModal };
+=======
+      return { args };
+>>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
     },
     template: `
       <div>
         <BaseButton 
-          variant="contained"
-          size="md"
-          label="성공 알림 열기"
-          @click="openModal"
+          label="Alert 모달 열기"
+          @click="args.isOpen = true"
         />
-        
-        <BaseModal 
-          v-bind="args" 
-          :is-open="isOpen"
-          @close="closeModal"
-          @action="(action, index) => { console.log('Action clicked:', action, index); closeModal(); }"
-        >
-          작업이 성공적으로 완료되었습니다.
+        <BaseModal v-bind="args" @update:isOpen="args.isOpen = $event">
+          <div style="padding: 20px; text-align: center;">
+            <p style="color: #d32f2f; font-weight: 500;">⚠️ 주의: 이 작업은 되돌릴 수 없습니다.</p>
+          </div>
         </BaseModal>
       </div>
     `,
   }),
+<<<<<<< HEAD
   parameters: {
     docs: {
       description: {
@@ -399,26 +443,28 @@ export const AlertSuccess: Story = {
       },
     },
   },
+=======
+>>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
 };
 
-export const AlertError: Story = {
+/**
+ * Back Button이 있는 모달
+ * 뒤로가기 기능이 있는 모달입니다.
+ */
+export const WithBackButton: Story = {
   args: {
     isOpen: false,
-    title: '오류',
-    description: '작업 중 오류가 발생했습니다.',
-    variant: 'alert',
-    alertVariant: 'error',
-    actions: [
-      {
-        label: '확인',
-        variant: 'contained',
-        size: 'md',
-      },
-    ],
+    title: '단계별 설정',
+    description: '두 번째 단계입니다.',
+    showBackButton: true,
+    showDefaultFooter: true,
+    cancelText: '이전',
+    confirmText: '다음',
   },
   render: (args) => ({
     components: { BaseModal, BaseButton },
     setup() {
+<<<<<<< HEAD
       const isOpen = ref(false);
       const openModal = () => {
         isOpen.value = true;
@@ -428,27 +474,26 @@ export const AlertError: Story = {
       };
 
       return { args, isOpen, openModal, closeModal };
+=======
+      return { args };
+>>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
     },
     template: `
       <div>
         <BaseButton 
-          variant="contained"
-          size="md"
-          label="오류 알림 열기"
-          @click="openModal"
+          label="Back Button 모달 열기"
+          @click="args.isOpen = true"
         />
-        
-        <BaseModal 
-          v-bind="args" 
-          :is-open="isOpen"
-          @close="closeModal"
-          @action="(action, index) => { console.log('Action clicked:', action, index); closeModal(); }"
-        >
-          작업 중 오류가 발생했습니다.
+        <BaseModal v-bind="args" @update:isOpen="args.isOpen = $event">
+          <div style="padding: 20px;">
+            <p>현재 단계: 2/3</p>
+            <p>이전 단계로 돌아가거나 다음 단계로 진행할 수 있습니다.</p>
+          </div>
         </BaseModal>
       </div>
     `,
   }),
+<<<<<<< HEAD
   parameters: {
     docs: {
       description: {
@@ -457,18 +502,26 @@ export const AlertError: Story = {
       },
     },
   },
+=======
+>>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
 };
 
-export const WithCustomFooter: Story = {
+/**
+ * 커스텀 헤더 액션이 있는 모달
+ * 헤더에 추가 액션 버튼이 있는 모달입니다.
+ */
+export const WithCustomHeaderActions: Story = {
   args: {
     isOpen: false,
-    title: '커스텀 푸터',
-    description: '커스텀 푸터가 있는 모달입니다.',
-    variant: 'default',
+    title: '문서 편집',
+    description: '문서를 편집하고 있습니다.',
+    showDefaultFooter: true,
+    confirmText: '완료',
   },
   render: (args) => ({
     components: { BaseModal, BaseButton },
     setup() {
+<<<<<<< HEAD
       const isOpen = ref(false);
       const openModal = () => {
         isOpen.value = true;
@@ -478,39 +531,47 @@ export const WithCustomFooter: Story = {
       };
 
       return { args, isOpen, openModal, closeModal };
+=======
+      return { args };
+>>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
     },
     template: `
       <div>
         <BaseButton 
-          variant="contained"
-          size="md"
-          label="커스텀 푸터 모달 열기"
-          @click="openModal"
+          label="커스텀 헤더 액션 모달 열기"
+          @click="args.isOpen = true"
         />
-        
-        <BaseModal 
-          v-bind="args" 
-          :is-open="isOpen"
-          @close="closeModal"
-        >
-          <p>커스텀 푸터가 있는 모달입니다.</p>
-          <template #footer>
-            <BaseButton 
-              variant="outlined"
-              size="md"
-              label="취소"
-              style="margin-right: 8px;"
-            />
-            <BaseButton 
-              variant="contained"
-              size="md"
-              label="확인"
-            />
+        <BaseModal v-bind="args" @update:isOpen="args.isOpen = $event">
+          <template #actions>
+            <div style="display: flex; gap: 8px;">
+              <button 
+                type="button" 
+                style="padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; background: white; cursor: pointer; font-size: 12px;"
+                @click="alert('저장되었습니다')"
+              >
+                저장
+              </button>
+              <button 
+                type="button" 
+                style="padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; background: white; cursor: pointer; font-size: 12px;"
+                @click="alert('미리보기가 열렸습니다')"
+              >
+                미리보기
+              </button>
+            </div>
           </template>
+          <div style="padding: 20px;">
+            <p>문서 편집 모드입니다. 헤더에 추가 액션 버튼들이 표시됩니다.</p>
+            <textarea 
+              style="width: 100%; height: 100px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
+              placeholder="여기에 텍스트를 입력하세요..."
+            ></textarea>
+          </div>
         </BaseModal>
       </div>
     `,
   }),
+<<<<<<< HEAD
   parameters: {
     docs: {
       description: {
@@ -520,3 +581,57 @@ export const WithCustomFooter: Story = {
     },
   },
 };
+=======
+};
+
+/**
+ * XL 크기 모달
+ * 가장 큰 크기의 모달을 보여줍니다.
+ */
+export const ExtraLarge: Story = {
+  args: {
+    isOpen: false,
+    title: '대시보드 설정',
+    description: '대시보드의 레이아웃과 위젯을 구성합니다.',
+    size: 'xl',
+    showDefaultFooter: true,
+    cancelText: '기본값으로 복원',
+    confirmText: '적용',
+  },
+  render: (args) => ({
+    components: { BaseModal, BaseButton },
+    setup() {
+      return { args };
+    },
+    template: `
+      <div>
+        <BaseButton 
+          label="XL 모달 열기"
+          @click="args.isOpen = true"
+        />
+        <BaseModal v-bind="args" @update:isOpen="args.isOpen = $event">
+          <div style="padding: 20px;">
+            <h3 style="margin-bottom: 16px;">레이아웃 구성</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div>
+                <h4>왼쪽 패널</h4>
+                <p>차트와 그래프를 배치할 수 있습니다.</p>
+                <div style="height: 120px; border: 2px dashed #ccc; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #666;">
+                  차트 영역
+                </div>
+              </div>
+              <div>
+                <h4>오른쪽 패널</h4>
+                <p>통계와 요약 정보를 표시합니다.</p>
+                <div style="height: 120px; border: 2px dashed #ccc; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #666;">
+                  통계 영역
+                </div>
+              </div>
+            </div>
+          </div>
+        </BaseModal>
+      </div>
+    `,
+  }),
+}; 
+>>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)

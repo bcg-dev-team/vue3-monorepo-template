@@ -1,72 +1,26 @@
 <!--
-  Figma 컴포넌트: Modal
+  BaseModal 컴포넌트 (하이브리드 접근법)
   - Headless UI Dialog 기반으로 구현
-  - 단일 컴포넌트로 모든 모달 타입 지원 (default, confirm, alert)
-  - variant prop으로 모달 타입 구분
-  - actions prop으로 동적 버튼 구성
+  - 헤더, 컨텐츠, 푸터를 서브 컴포넌트로 분리
+  - 슬롯을 통한 완전한 커스터마이징 지원
+  - 기존 기능과의 호환성 유지
   @figma Modal (node-id: 1801-17801, 1801-18102, 1801-18147)
 -->
 <script setup lang="ts">
+import { Dialog, DialogPanel } from '@headlessui/vue';
+import { computed, ref, watch, nextTick, useSlots } from 'vue';
+import ModalHeader from './ModalHeader.vue';
+import ModalContent from './ModalContent.vue';
+import ModalFooter from './ModalFooter.vue';
 import type {
-  ModalSize,
-  ModalVariant,
-  AlertVariant,
-  ModalAction,
-  ButtonIconProps,
-  IconName,
-} from '../../types/components';
-import { Dialog, DialogPanel, DialogTitle, DialogDescription } from '@headlessui/vue';
-import BaseButton from '../BaseButton/BaseButton.vue';
-import { computed, ref, watch, nextTick } from 'vue';
-import BaseIcon from '../BaseIcon/BaseIcon.vue';
+  ModalProps,
+  ModalEmits
+} from './types';
+import './BaseModal.scss';
 
-interface Props {
-  /**
-   * 모달 열림 상태
-   */
-  isOpen: boolean;
-  /**
-   * 모달 제목
-   */
-  title?: string;
-  /**
-   * 모달 설명 (접근성용)
-   */
-  description?: string;
-  /**
-   * 모달 크기
-   */
-  size?: ModalSize;
-  /**
-   * 모달 타입
-   */
-  variant?: ModalVariant;
-  /**
-   * 알림 타입 (variant가 'alert'일 때만 사용)
-   */
-  alertVariant?: AlertVariant;
-  /**
-   * 오버레이 클릭 시 닫기 여부
-   */
-  closeOnOverlayClick?: boolean;
-  /**
-   * ESC 키 클릭 시 닫기 여부
-   */
-  closeOnEscape?: boolean;
-  /**
-   * 닫기 버튼 표시 여부
-   */
-  showCloseButton?: boolean;
-  /**
-   * 모달 액션 버튼들
-   */
-  actions?: ModalAction[];
-}
+interface Props extends ModalProps {}
 
-interface Emits {
-  (e: 'close'): void;
-  (e: 'action', action: ModalAction, index: number): void;
-}
+interface Emits extends ModalEmits {}
 
 const props = withDefaults(defineProps<Props>(), {
   isOpen: false,
@@ -74,8 +28,15 @@ const props = withDefaults(defineProps<Props>(), {
   variant: 'default',
   closeOnOverlayClick: true,
   closeOnEscape: true,
+  showBackButton: false,
   showCloseButton: true,
+  showDefaultFooter: true,
   actions: () => [],
+  cancelText: '취소',
+  confirmText: '확인',
+  showCancelButton: true,
+  showConfirmButton: true,
+  fullWidth: true
 });
 
 const emit = defineEmits<Emits>();
@@ -89,35 +50,9 @@ const modalSizeClass = computed(() => `modal-size-${props.size}`);
 // 모달 타입 클래스 계산
 const modalVariantClass = computed(() => `modal-variant-${props.variant}`);
 
-// 알림 아이콘 매핑
-const getAlertIcon = (variant: AlertVariant): IconName => {
-  switch (variant) {
-    case 'success':
-      return 'check-circle';
-    case 'info':
-      return 'settings';
-    case 'warning':
-      return 'star';
-    case 'error':
-      return 'trash';
-    default:
-      return 'settings';
-  }
-};
-
-// 알림 색상 클래스
-const getAlertColorClass = (variant: AlertVariant) => `alert-${variant}`;
-
-// 액션 버튼 클릭 핸들러
-const handleActionClick = (action: ModalAction, index: number) => {
-  emit('action', action, index);
-  emit('close');
-};
-
-// Headless UI Dialog 닫기 핸들러
-const handleClose = () => {
-  emit('close');
-};
+// 슬롯 존재 여부 확인
+const hasHeaderSlot = computed(() => !!useSlots().header);
+const hasFooterSlot = computed(() => !!useSlots().footer);
 
 // 모달이 열릴 때 포커스 설정
 watch(
@@ -129,98 +64,103 @@ watch(
       modalContainer.value.focus();
     }
   }
-);
+});
+
+// 이벤트 핸들러들
+const handleClose = () => {
+  emit('close');
+  emit('update:isOpen', false);
+};
+
+const handleBack = () => {
+  emit('back');
+};
+
+const handleCancel = () => {
+  emit('cancel');
+  handleClose();
+};
+
+const handleConfirm = () => {
+  emit('confirm');
+  handleClose();
+};
+
+const handleAction = (action: any, index: number) => {
+  emit('action', action, index);
+};
+
+// 오버레이 클릭 핸들러
+const handleOverlayClick = (event: Event) => {
+  if (props.closeOnOverlayClick && event.target === event.currentTarget) {
+    handleClose();
+  }
+};
+
+// ESC 키 핸들러
+const handleKeydown = (event: KeyboardEvent) => {
+  if (props.closeOnEscape && event.key === 'Escape') {
+    handleClose();
+  }
+};
 </script>
 
 <template>
-  <Dialog :open="isOpen" @close="handleClose" class="modal-dialog">
+  <Dialog :open="isOpen" @close="handleClose" class="modal-dialog" @keydown="handleKeydown">
     <!-- 배경 오버레이 -->
-    <div class="modal-overlay" aria-hidden="true" />
+    <div class="modal-overlay" aria-hidden="true" @click="handleOverlayClick" />
 
     <!-- 모달 컨테이너 -->
     <div class="modal-container-wrapper">
       <DialogPanel
         ref="modalContainer"
         :class="['modal-container', modalSizeClass, modalVariantClass]"
+        tabindex="-1"
       >
         <!-- 헤더 영역 -->
-        <div v-if="title || showCloseButton" class="modal-header">
-          <!-- 왼쪽: 뒤로가기 버튼 -->
-          <button
-            type="button"
-            class="modal-back-button"
-            @click="handleClose"
-            aria-label="뒤로가기"
-          >
-            <BaseIcon name="arrow-backward" size="md" />
-          </button>
-
-          <!-- 중앙: 제목 -->
-          <DialogTitle v-if="title" class="modal-title">
-            {{ title }}
-          </DialogTitle>
-
-          <!-- 오른쪽: 닫기 버튼 -->
-          <button
-            v-if="showCloseButton"
-            type="button"
-            class="modal-close-button"
-            @click="handleClose"
-            aria-label="모달 닫기"
-          >
-            <BaseIcon name="close" size="md" />
-          </button>
-        </div>
+        <ModalHeader
+          v-if="hasHeaderSlot || title || showCloseButton || showBackButton"
+          :title="title"
+          :show-back-button="showBackButton"
+          :show-close-button="showCloseButton"
+          @back="handleBack"
+          @close="handleClose"
+        >
+          <template #title>
+            <slot name="title" />
+          </template>
+          <template #actions>
+            <slot name="actions" />
+          </template>
+        </ModalHeader>
 
         <!-- 컨텐츠 영역 -->
-        <div class="modal-content">
-          <!-- 알림 모달 아이콘 -->
-          <div
-            v-if="variant === 'alert' && alertVariant"
-            :class="['alert-icon-container', getAlertColorClass(alertVariant)]"
-          >
-            <BaseIcon
-              :name="getAlertIcon(alertVariant)"
-              size="lg"
-              :color="`var(--alert-${alertVariant}-icon-color)`"
-            />
-          </div>
+        <ModalContent
+          :description="description"
+          :alert-variant="alertVariant"
+          :show-alert-icon="variant === 'alert'"
+        >
+          <slot />
+        </ModalContent>
 
-          <!-- 설명 (접근성용) -->
-          <DialogDescription v-if="description" class="modal-description">
-            {{ description }}
-          </DialogDescription>
-
-          <!-- 기본 컨텐츠 -->
-          <div v-if="$slots.default" class="modal-default-content">
-            <slot />
-          </div>
-
-          <!-- 텍스트 컨텐츠 (alert, confirm variant용) -->
-          <p v-else-if="variant === 'alert' || variant === 'confirm'" class="modal-message">
-            <slot>{{ $attrs.content || '' }}</slot>
-          </p>
-        </div>
-
-        <!-- 푸터 영역 (액션 버튼들) -->
-        <div v-if="actions.length > 0 || $slots.footer" class="modal-footer">
-          <slot name="footer">
-            <div class="modal-actions">
-              <BaseButton
-                v-for="(action, index) in actions"
-                :key="index"
-                :variant="action.variant || 'contained'"
-                :size="action.size || 'lg'"
-                :label="action.label"
-                :disabled="action.disabled"
-                :is-loading="action.loading"
-                :left-icon="action.leftIcon"
-                :right-icon="action.rightIcon"
-                @click="handleActionClick(action, index)"
-              />
-            </div>
-          </slot>
-        </div>
+        <!-- 푸터 영역 -->
+        <ModalFooter
+          v-if="hasFooterSlot || actions.length > 0 || showDefaultFooter"
+          :actions="actions"
+          :show-default-footer="showDefaultFooter"
+          :cancel-text="cancelText"
+          :confirm-text="confirmText"
+          :show-cancel-button="showCancelButton"
+          :show-confirm-button="showConfirmButton"
+          :full-width="fullWidth"
+          @cancel="handleCancel"
+          @confirm="handleConfirm"
+          @action="handleAction"
+        >
+          <template #default>
+            <slot name="footer" />
+          </template>
+        </ModalFooter>
       </DialogPanel>
     </div>
   </Dialog>

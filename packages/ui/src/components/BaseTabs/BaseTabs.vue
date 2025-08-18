@@ -1,25 +1,26 @@
 <script setup lang="ts">
 import { TabGroup, TabList, TabPanels, TabPanel } from '@headlessui/vue';
-import type { ComponentSize, TabCategories, TabVariant, TabsSize } from 'types/components';
+import type { ComponentSize, TabItem } from 'types/components';
 import BaseTabList from './BaseTabList.vue';
+import type { Component } from 'vue';
 import { computed } from 'vue';
 
 interface Props {
-  tabs: TabCategories;
-  variant?: TabVariant;
-  size?: TabsSize;
+  tabs: TabItem[];
+  variant?: 'underline' | 'inner';
+  size?: Extract<ComponentSize, 'lg' | 'md'>;
   underline?: boolean;
   hasBackground?: boolean;
   ariaLabel?: string;
 }
 
-// 현재 선택된 탭
-const selectedTab = defineModel<string | number>({
+// 현재 선택된 탭 key
+const selectedTabKey = defineModel<string>({
   default: '',
 });
 
 const props = withDefaults(defineProps<Props>(), {
-  tabs: () => ({}),
+  tabs: () => ([]),
   variant: 'underline',
   underline: false,
   hasBackground: false,
@@ -27,20 +28,35 @@ const props = withDefaults(defineProps<Props>(), {
   ariaLabel: '탭 목록',
 });
 
-const tabEntries = computed(() => Object.entries(props.tabs));
+// 기본값 설정: 첫 번째 탭을 기본 선택
+const defaultSelectedTabKey = computed(() => {
+  if (props.tabs.length > 0 && !selectedTabKey.value) {
+    return props.tabs[0].key;
+  }
+  return selectedTabKey.value;
+});
+
+// 현재 선택된 탭의 인덱스
+const selectedTabIndex = computed(() => {
+  return props.tabs.findIndex(tab => tab.key === defaultSelectedTabKey.value);
+});
 
 // 탭 변경 핸들러
 const handleTabChange = (index: number) => {
-  const [, tab] = tabEntries.value[index] || [];
-  if (tab) {
-    selectedTab.value = tab.value;
+  const tab = props.tabs[index];
+  if (tab && !tab.disabled) {
+    selectedTabKey.value = tab.key;
   }
 };
 </script>
 
 <template>
   <div>
-    <TabGroup as="div" @change="handleTabChange">
+    <TabGroup 
+      as="div" 
+      :selectedIndex="selectedTabIndex"
+      @change="handleTabChange"
+    >
       <TabList class="flex items-center" :aria-label="ariaLabel">
         <BaseTabList
           :tabs="tabs"
@@ -48,13 +64,14 @@ const handleTabChange = (index: number) => {
           :variant="variant"
           :underline="underline"
           :hasBackground="hasBackground"
+          :selectedTabKey="defaultSelectedTabKey"
         />
       </TabList>
 
       <TabPanels class="mt-2">
         <TabPanel
-          v-for="(tabItem, tabKey) in tabs"
-          :key="tabKey"
+          v-for="tabItem in tabs"
+          :key="tabItem.key"
           :class="['rounded-xl bg-white p-3']"
           role="tabpanel"
           :tabindex="0"

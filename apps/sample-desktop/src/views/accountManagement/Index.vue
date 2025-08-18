@@ -2,14 +2,7 @@
   <div class="mx-auto w-[1440px] py-6">
     <MainCardContent class="p-6" title="계좌관리" size="lg">
       <template #content>
-        <BaseTabs
-          direction="horizontal"
-          v-model="modelValue"
-          showContent
-          size="md"
-          variant="connected"
-          :tabs="tabs"
-        />
+        <BaseTabs v-model="modelValue" size="lg" variant="underline" :tabs="tabs" />
       </template>
     </MainCardContent>
   </div>
@@ -19,15 +12,26 @@
 import TransferAccountMain from '@/components/accountManagement/transfer/TransferAccountMain.vue';
 import CreateAccountMain from '@/components/accountManagement/create/CreateAccountMain.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
-import { BaseTabs, type TabItem } from '@template/ui';
+import { BaseTabs } from '@template/ui';
 import { ref } from 'vue';
 
 const modelValue = ref('transfer');
-const tabs = [
-  { value: 'create-account', label: '계좌개설', content: CreateAccountMain },
-  { value: 'transfer', label: '출금/이체/입금', content: TransferAccountMain },
-  { value: 'deposit-history', label: '입금안내', content: '' },
-] as TabItem[];
+const tabs = {
+  계좌개설: {
+    value: 'create-account',
+    icon: 'card',
+    component: CreateAccountMain,
+  },
+  '출금/이체/입금': {
+    value: 'transfer',
+    icon: 'send',
+    component: TransferAccountMain,
+  },
+  입출금내역: {
+    value: 'deposit-history',
+    icon: 'description',
+  },
+};
 </script>
 
 <style scoped></style>

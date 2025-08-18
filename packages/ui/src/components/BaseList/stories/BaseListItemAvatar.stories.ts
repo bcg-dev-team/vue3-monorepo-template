@@ -672,7 +672,6 @@ export const WithListItemText: Story = {
         <!-- 이미지 아바타 + 오른쪽 텍스트 -->
         <BaseListItem style="margin-bottom: 16px;">
           <template #content>
-            <div style="display: flex; align-items: center; gap: 12px;">
               <BaseListItemAvatar 
                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
                 alt="사용자 프로필"
@@ -684,15 +683,13 @@ export const WithListItemText: Story = {
                 rightPrimary="2024-01-15"
                 rightSecondary="온라인"
                 inset
-              />
-            </div>
+              /> 
           </template>
         </BaseListItem>
         
         <!-- 아이콘 아바타 + 여러 줄 텍스트 -->
         <BaseListItem style="margin-bottom: 16px;">
           <template #content>
-            <div style="display: flex; align-items: center; gap: 12px;">
               <BaseListItemAvatar 
                 :icon="{ name: 'settings', size: 'md' }"
                 color="blue"
@@ -704,14 +701,12 @@ export const WithListItemText: Story = {
                 inset
                 multiline
               />
-            </div>
           </template>
         </BaseListItem>
         
         <!-- 커스텀 색상 아바타 + 줄바꿈 방지 텍스트 -->
         <BaseListItem>
           <template #content>
-            <div style="display: flex; align-items: center; gap: 12px;">
               <BaseListItemAvatar 
                 fallback="AB"
                 color="custom"
@@ -725,7 +720,6 @@ export const WithListItemText: Story = {
                 inset
                 :noWrap="true"
               />
-            </div>
           </template>
         </BaseListItem>
       </div>
@@ -747,46 +741,39 @@ export const SizeVariantCombinations: Story = {
         <!-- Small Circular -->
         <BaseListItem style="margin-bottom: 16px;">
           <template #content>
-            <div style="display: flex; align-items: center; gap: 12px;">
               <BaseListItemAvatar size="sm" variant="circular" fallback="SC" color="primary" />
               <BaseListItemText 
                 primary="Small Circular Avatar"
                 secondary="40px 크기의 원형 아바타"
               />
-            </div>
           </template>
         </BaseListItem>
         
         <!-- Medium Rounded -->
         <BaseListItem style="margin-bottom: 16px;">
           <template #content>
-            <div style="display: flex; align-items: center; gap: 12px;">
               <BaseListItemAvatar size="md" variant="rounded" fallback="MR" color="green" />
               <BaseListItemText 
                 primary="Medium Rounded Avatar"
                 secondary="44px 크기의 둥근 모서리 아바타"
               />
-            </div>
           </template>
         </BaseListItem>
         
         <!-- Large Square -->
         <BaseListItem style="margin-bottom: 16px;">
           <template #content>
-            <div style="display: flex; align-items: center; gap: 12px;">
               <BaseListItemAvatar size="lg" variant="square" fallback="LS" color="purple" />
               <BaseListItemText 
                 primary="Large Square Avatar"
                 secondary="48px 크기의 사각형 아바타"
               />
-            </div>
           </template>
         </BaseListItem>
         
         <!-- 이미지 + 아이콘 폴백 -->
         <BaseListItem>
           <template #content>
-            <div style="display: flex; align-items: center; gap: 12px;">
               <BaseListItemAvatar 
                 src="invalid-url"
                 :fallback="{ name: 'person', size: 'md' }"
@@ -798,7 +785,6 @@ export const SizeVariantCombinations: Story = {
                 primary="이미지 로드 실패 시 아이콘 폴백"
                 secondary="이미지 URL이 유효하지 않을 때 아이콘이 표시됩니다"
               />
-            </div>
           </template>
         </BaseListItem>
       </div>

@@ -216,4 +216,4 @@ export interface ModalSlots {
    * 액션 영역
    */
   actions(): any[];
-} 
+}

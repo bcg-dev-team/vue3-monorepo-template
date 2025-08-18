@@ -5,4 +5,4 @@ export { default as BaseModal } from './BaseModal.vue';
 export type * from './types';
 
 // 기본 export (기존 호환성 유지)
-export { default } from './BaseModal.vue'; 
+export { default } from './BaseModal.vue';

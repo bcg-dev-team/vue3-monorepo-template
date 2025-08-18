@@ -46,6 +46,7 @@
     "mobile:submit": "pnpm --filter @template/mobile-native eas:submit"
   },
   "dependencies": {
+    "@headlessui/vue": "^1.7.23",
     "@vee-validate/zod": "^4.15.1",
     "date-fns": "^3.0.0",
     "date-fns-tz": "^3.2.0",
@@ -59,7 +60,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.30.0",
-    "@headlessui/vue": "^1.7.23",
     "@locator/runtime": "^0.4.4",
     "@storybook/addon-essentials": "^8.6.14",
     "@storybook/addon-interactions": "^8.6.14",

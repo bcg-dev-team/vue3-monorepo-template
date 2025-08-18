@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@headlessui/vue':
+        specifier: ^1.7.23
+        version: 1.7.23(vue@3.5.18(typescript@5.8.3))
       '@vee-validate/zod':
         specifier: ^4.15.1
         version: 4.15.1(vue@3.5.18(typescript@5.8.3))(zod@3.25.76)
@@ -42,9 +45,6 @@ importers:
       '@eslint/js':
         specifier: ^9.30.0
         version: 9.32.0
-      '@headlessui/vue':
-        specifier: ^1.7.23
-        version: 1.7.23(vue@3.5.18(typescript@5.8.3))
       '@locator/runtime':
         specifier: ^0.4.4
         version: 0.4.4

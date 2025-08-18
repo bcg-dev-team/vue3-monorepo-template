@@ -70,9 +70,9 @@ interface Props {
   /**
    * 버튼 텍스트
    */
-  label: string;
+  label?: string;
   /**
-   * 서브 텍스트 (optional)
+   * 서브 텍스트
    */
   subLabel?: string;
   /**
@@ -103,6 +103,7 @@ const props = withDefaults(defineProps<Props>(), {
   fullWidth: false,
   href: undefined,
   centerIcon: undefined,
+  label: '',
 });
 
 const emit = defineEmits<{

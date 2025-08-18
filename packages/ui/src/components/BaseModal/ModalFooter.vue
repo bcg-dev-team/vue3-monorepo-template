@@ -7,6 +7,7 @@
 <script setup lang="ts">
 import BaseButton from '../BaseButton/BaseButton.vue';
 import type { ModalAction } from '../../types/components';
+import './ModalFooter.scss';
 
 interface Props {
   /**
@@ -112,29 +113,5 @@ const handleActionClick = (action: ModalAction, index: number) => {
       </div>
     </slot>
   </footer>
-</template>
+  </template>
 
-<style scoped>
-.modal-footer {
-  padding-bottom: 40px;
-  padding-inline: var(--padding-padding-36);
-  background-color: var(--popup-background);
-}
-
-.modal-footer-actions,
-.modal-custom-actions {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: flex-end;
-  align-items: center;
-  width: 100%;
-}
-
-.modal-footer-actions {
-  flex-direction: row;
-}
-
-.modal-custom-actions {
-  flex-wrap: wrap;
-}
-</style> 

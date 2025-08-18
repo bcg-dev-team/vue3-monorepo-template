@@ -1,26 +1,16 @@
 import BaseButton from '../BaseButton/BaseButton.vue';
-import BaseButton from '../BaseButton/BaseButton.vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
 import BaseModal from '../BaseModal/BaseModal.vue';
-<<<<<<< HEAD
-import { ref } from 'vue';
-=======
-import BaseButton from '../BaseButton/BaseButton.vue';
->>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
 
 const meta: Meta<typeof BaseModal> = {
-  title: 'Components/BaseModal',
+  title: 'Modal/Modal',
   component: BaseModal,
   tags: ['autodocs'],
   parameters: {
     docs: {
       description: {
-<<<<<<< HEAD
         component:
-          'Headless UI Dialog 기반의 재사용 가능한 모달 컴포넌트입니다. 기본, 확인, 알림 타입을 모두 지원하며 접근성이 완벽하게 구현되어 있습니다.\n\n[Figma 링크](https://www.figma.com/design/5OJPsmnkEgZZnkHtNbk1wK/-MODA--Draft-250514-?node-id=1801-17801&m=dev)',
-=======
-        component: '기본 모달 컴포넌트입니다. 헤더, 컨텐츠, 푸터 영역을 포함하며 다양한 스타일과 기능을 지원합니다.',
->>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
+          '기본 모달 컴포넌트입니다. 헤더, 컨텐츠, 푸터 영역을 포함하며 다양한 스타일과 기능을 지원합니다.',
       },
     },
   },
@@ -70,6 +60,24 @@ const meta: Meta<typeof BaseModal> = {
         category: 'Props',
       },
     },
+    closeOnOverlayClick: {
+      description: '오버레이 클릭 시 모달 닫기 여부',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'true' },
+        category: 'Props',
+      },
+    },
+    closeOnEscape: {
+      description: 'ESC 키 입력 시 모달 닫기 여부',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'true' },
+        category: 'Props',
+      },
+    },
     showCloseButton: {
       description: '닫기 버튼 표시 여부',
       control: { type: 'boolean' },
@@ -97,7 +105,6 @@ const meta: Meta<typeof BaseModal> = {
         category: 'Props',
       },
     },
-
   },
   args: {
     isOpen: false,
@@ -105,6 +112,8 @@ const meta: Meta<typeof BaseModal> = {
     description: '모달 설명입니다.',
     variant: 'default',
     size: 'md',
+    closeOnOverlayClick: true,
+    closeOnEscape: true,
     showCloseButton: true,
     showBackButton: false,
     fullWidth: true,
@@ -127,19 +136,7 @@ export const Default: Story = {
   render: (args) => ({
     components: { BaseModal, BaseButton },
     setup() {
-<<<<<<< HEAD
-      const isOpen = ref(false);
-      const openModal = () => {
-        isOpen.value = true;
-      };
-      const closeModal = () => {
-        isOpen.value = false;
-      };
-
-      return { args, isOpen, openModal, closeModal };
-=======
       return { args };
->>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
     },
     template: `
       <div>
@@ -151,17 +148,6 @@ export const Default: Story = {
       </div>
     `,
   }),
-<<<<<<< HEAD
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Headless UI Dialog 기반의 기본 모달입니다. 제목, 설명, 내용을 포함할 수 있으며 접근성이 완벽하게 구현되어 있습니다. 버튼을 클릭하여 모달을 열어보세요.',
-      },
-    },
-  },
-=======
->>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
 };
 
 /**
@@ -178,19 +164,7 @@ export const WithDefaultFooter: Story = {
   render: (args) => ({
     components: { BaseModal, BaseButton },
     setup() {
-<<<<<<< HEAD
-      const isOpen = ref(false);
-      const openModal = () => {
-        isOpen.value = true;
-      };
-      const closeModal = () => {
-        isOpen.value = false;
-      };
-
-      return { args, isOpen, openModal, closeModal };
-=======
       return { args };
->>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
     },
     template: `
       <div>
@@ -202,67 +176,6 @@ export const WithDefaultFooter: Story = {
       </div>
     `,
   }),
-<<<<<<< HEAD
-  parameters: {
-    docs: {
-      description: {
-        story:
-          '기본 모달에 내용이 포함된 예시입니다. Headless UI의 DialogTitle과 DialogDescription을 사용하여 접근성을 향상시켰습니다. 버튼을 클릭하여 모달을 열어보세요.',
-      },
-    },
-  },
-};
-
-export const Small: Story = {
-  args: {
-    isOpen: false,
-    title: '작은 모달',
-    description: '작은 크기의 모달입니다.',
-    size: 'sm',
-    variant: 'default',
-  },
-  render: (args) => ({
-    components: { BaseModal, BaseButton },
-    setup() {
-      const isOpen = ref(false);
-      const openModal = () => {
-        isOpen.value = true;
-      };
-      const closeModal = () => {
-        isOpen.value = false;
-      };
-
-      return { args, isOpen, openModal, closeModal };
-    },
-    template: `
-      <div>
-        <BaseButton 
-          variant="contained"
-          size="md"
-          label="작은 모달 열기"
-          @click="openModal"
-        />
-        
-        <BaseModal 
-          v-bind="args" 
-          :is-open="isOpen"
-          @close="closeModal"
-        >
-          <p>작은 크기의 모달입니다.</p>
-        </BaseModal>
-      </div>
-    `,
-  }),
-  parameters: {
-    docs: {
-      description: {
-        story:
-          '작은 크기의 모달입니다. Headless UI Dialog의 접근성 기능이 모든 크기에서 동일하게 작동합니다. 버튼을 클릭하여 모달을 열어보세요.',
-      },
-    },
-  },
-=======
->>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
 };
 
 /**
@@ -280,19 +193,7 @@ export const Large: Story = {
   render: (args) => ({
     components: { BaseModal, BaseButton },
     setup() {
-<<<<<<< HEAD
-      const isOpen = ref(false);
-      const openModal = () => {
-        isOpen.value = true;
-      };
-      const closeModal = () => {
-        isOpen.value = false;
-      };
-
-      return { args, isOpen, openModal, closeModal };
-=======
       return { args };
->>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
     },
     template: `
       <div>
@@ -309,17 +210,6 @@ export const Large: Story = {
       </div>
     `,
   }),
-<<<<<<< HEAD
-  parameters: {
-    docs: {
-      description: {
-        story:
-          '큰 크기의 모달입니다. 더 많은 내용을 포함할 수 있으며, Headless UI Dialog의 포커스 트랩핑과 스크롤 락 기능이 완벽하게 작동합니다. 버튼을 클릭하여 모달을 열어보세요.',
-      },
-    },
-  },
-=======
->>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
 };
 
 /**
@@ -329,75 +219,8 @@ export const Large: Story = {
 export const Alert: Story = {
   args: {
     isOpen: false,
-<<<<<<< HEAD
-    title: '확인',
-    description: '작업을 확인하는 모달입니다.',
-    variant: 'confirm',
-    actions: [
-      {
-        label: '취소',
-        variant: 'outlined',
-        size: 'md',
-      },
-      {
-        label: '확인',
-        variant: 'contained',
-        size: 'md',
-      },
-    ],
-  },
-  render: (args) => ({
-    components: { BaseModal, BaseButton },
-    setup() {
-      const isOpen = ref(false);
-      const openModal = () => {
-        isOpen.value = true;
-      };
-      const closeModal = () => {
-        isOpen.value = false;
-      };
-
-      return { args, isOpen, openModal, closeModal };
-    },
-    template: `
-      <div>
-        <BaseButton 
-          variant="contained"
-          size="md"
-          label="확인 모달 열기"
-          @click="openModal"
-        />
-        
-        <BaseModal 
-          v-bind="args" 
-          :is-open="isOpen"
-          @close="closeModal"
-          @action="(action, index) => { console.log('Action clicked:', action, index); closeModal(); }"
-        >
-          정말로 이 작업을 수행하시겠습니까?
-        </BaseModal>
-      </div>
-    `,
-  }),
-  parameters: {
-    docs: {
-      description: {
-        story:
-          '확인/취소 버튼이 있는 모달입니다. Headless UI Dialog의 키보드 네비게이션과 포커스 관리 기능이 완벽하게 작동합니다. 버튼을 클릭하여 모달을 열어보세요.',
-      },
-    },
-  },
-};
-
-export const AlertSuccess: Story = {
-  args: {
-    isOpen: false,
-    title: '성공',
-    description: '작업이 성공적으로 완료되었습니다.',
-=======
     title: '경고',
     description: '이 작업을 계속 진행하시겠습니까?',
->>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
     variant: 'alert',
     size: 'sm',
     showDefaultFooter: true,
@@ -406,19 +229,7 @@ export const AlertSuccess: Story = {
   render: (args) => ({
     components: { BaseModal, BaseButton },
     setup() {
-<<<<<<< HEAD
-      const isOpen = ref(false);
-      const openModal = () => {
-        isOpen.value = true;
-      };
-      const closeModal = () => {
-        isOpen.value = false;
-      };
-
-      return { args, isOpen, openModal, closeModal };
-=======
       return { args };
->>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
     },
     template: `
       <div>
@@ -434,17 +245,6 @@ export const AlertSuccess: Story = {
       </div>
     `,
   }),
-<<<<<<< HEAD
-  parameters: {
-    docs: {
-      description: {
-        story:
-          '성공 알림 모달입니다. Headless UI Dialog의 접근성 기능과 함께 아이콘과 색상으로 상태를 명확하게 표현합니다. 버튼을 클릭하여 모달을 열어보세요.',
-      },
-    },
-  },
-=======
->>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
 };
 
 /**
@@ -464,19 +264,7 @@ export const WithBackButton: Story = {
   render: (args) => ({
     components: { BaseModal, BaseButton },
     setup() {
-<<<<<<< HEAD
-      const isOpen = ref(false);
-      const openModal = () => {
-        isOpen.value = true;
-      };
-      const closeModal = () => {
-        isOpen.value = false;
-      };
-
-      return { args, isOpen, openModal, closeModal };
-=======
       return { args };
->>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
     },
     template: `
       <div>
@@ -493,17 +281,6 @@ export const WithBackButton: Story = {
       </div>
     `,
   }),
-<<<<<<< HEAD
-  parameters: {
-    docs: {
-      description: {
-        story:
-          '오류 알림 모달입니다. Headless UI Dialog의 접근성 기능과 함께 오류 상태를 명확하게 표현합니다. 버튼을 클릭하여 모달을 열어보세요.',
-      },
-    },
-  },
-=======
->>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
 };
 
 /**
@@ -521,19 +298,7 @@ export const WithCustomHeaderActions: Story = {
   render: (args) => ({
     components: { BaseModal, BaseButton },
     setup() {
-<<<<<<< HEAD
-      const isOpen = ref(false);
-      const openModal = () => {
-        isOpen.value = true;
-      };
-      const closeModal = () => {
-        isOpen.value = false;
-      };
-
-      return { args, isOpen, openModal, closeModal };
-=======
       return { args };
->>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
     },
     template: `
       <div>
@@ -571,17 +336,139 @@ export const WithCustomHeaderActions: Story = {
       </div>
     `,
   }),
-<<<<<<< HEAD
-  parameters: {
-    docs: {
-      description: {
-        story:
-          '커스텀 푸터가 있는 모달입니다. Headless UI Dialog의 구조를 활용하면서도 유연한 커스터마이징이 가능합니다. 버튼을 클릭하여 모달을 열어보세요.',
-      },
-    },
-  },
 };
-=======
+
+/**
+ * 커스텀 제목 슬롯을 사용하는 모달
+ * 제목 영역을 완전히 커스터마이징할 수 있습니다.
+ */
+export const WithCustomTitleSlot: Story = {
+  args: {
+    isOpen: false,
+    description: '커스텀 제목을 사용하는 모달입니다.',
+    showDefaultFooter: true,
+    confirmText: '확인',
+  },
+  render: (args) => ({
+    components: { BaseModal, BaseButton },
+    setup() {
+      const slotControls = {
+        customTitle: true,
+        titleIcon: '🚀',
+        titleColor: '#1976d2',
+      };
+      return { args, slotControls };
+    },
+    template: `
+      <div>
+        <BaseButton 
+          label="커스텀 제목 모달 열기"
+          @click="args.isOpen = true"
+        />
+        <BaseModal v-bind="args" @update:isOpen="args.isOpen = $event">
+          <template #title v-if="slotControls.customTitle">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 24px;">{{ slotControls.titleIcon }}</span>
+              <div>
+                <h2 style="margin: 0; color: slotControls.titleColor; font-size: 20px;">프로젝트 시작</h2>
+                <p style="margin: 4px 0 0 0; color: #666; font-size: 14px;">새로운 프로젝트를 생성합니다</p>
+              </div>
+            </div>
+          </template>
+          <div>
+            <p>이 모달은 제목 영역을 완전히 커스터마이징한 예시입니다.</p>
+            <p>아이콘, 색상, 레이아웃 등을 자유롭게 구성할 수 있습니다.</p>
+          </div>
+        </BaseModal>
+      </div>
+    `,
+  }),
+};
+
+/**
+ * 제목과 액션 슬롯을 모두 사용하는 모달
+ * 헤더 영역을 완전히 커스터마이징할 수 있습니다.
+ */
+export const WithCustomTitleAndActions: Story = {
+  args: {
+    isOpen: false,
+    description: '제목과 액션을 모두 커스터마이징한 모달입니다.',
+    showDefaultFooter: true,
+    confirmText: '완료',
+  },
+  render: (args) => ({
+    components: { BaseModal, BaseButton },
+    setup() {
+      const slotControls = {
+        customTitle: true,
+        customActions: true,
+        titleIcon: '👤',
+        titleColor: '#333',
+        actionButtons: [
+          { label: '미리보기', action: 'preview' },
+          { label: '공유', action: 'share' },
+          { label: '내보내기', action: 'export' },
+        ],
+      };
+
+      const handleAction = (label: string) => {
+        console.log(`${label} 기능이 실행되었습니다`);
+        // Storybook 환경에서는 alert 대신 console.log 사용
+      };
+
+      return { args, slotControls, handleAction };
+    },
+    template: `
+      <div>
+        <BaseButton 
+          label="커스텀 제목+액션 모달 열기"
+          @click="args.isOpen = true"
+        />
+        <BaseModal v-bind="args" @update:isOpen="args.isOpen = $event">
+          <template #title v-if="slotControls.customTitle">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div style="width: 32px; height: 32px; background: linear-gradient(45deg, #ff6b6b, #4ecdc4); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                A
+              </div>
+              <div>
+                <h2 style="margin: 0; color: slotControls.titleColor; font-size: 18px;">사용자 프로필</h2>
+                <p style="margin: 2px 0 0 0; color: #666; font-size: 12px;">프로필 정보를 편집합니다</p>
+              </div>
+            </div>
+          </template>
+          <template #actions v-if="slotControls.customActions">
+            <div style="display: flex; gap: 6px;">
+              <button 
+                v-for="button in slotControls.actionButtons"
+                :key="button.action"
+                type="button" 
+                style="padding: 4px 8px; border: 1px solid #ddd; border-radius: 4px; background: #f8f9fa; cursor: pointer; font-size: 11px; color: #666;"
+                @click="handleAction(button.label)"
+              >
+                {{ button.label }}
+              </button>
+            </div>
+          </template>
+          <div>
+            <p>이 모달은 제목과 액션 영역을 모두 커스터마이징한 예시입니다.</p>
+            <div style="background: #f5f5f5; padding: 16px; border-radius: 8px; margin-top: 16px;">
+              <h4 style="margin: 0 0 12px 0;">프로필 정보</h4>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div>
+                  <label style="font-size: 12px; color: #666;">이름</label>
+                  <input type="text" placeholder="이름 입력" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin-top: 4px;">
+                </div>
+                <div>
+                  <label style="font-size: 12px; color: #666;">이메일</label>
+                  <input type="email" placeholder="이메일 입력" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin-top: 4px;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </BaseModal>
+      </div>
+    `,
+  }),
 };
 
 /**
@@ -633,5 +520,179 @@ export const ExtraLarge: Story = {
       </div>
     `,
   }),
-}; 
->>>>>>> 233c482 (feat(packages/ui): BaseModal 컴포넌트 구현)
+};
+
+/**
+ * closeOnEscape 옵션 테스트 모달
+ * ESC 키 입력 시 모달 닫기 동작을 테스트합니다.
+ */
+export const CloseOnEscapeTest: Story = {
+  args: {
+    isOpen: false,
+    title: 'ESC 키 테스트',
+    description: 'ESC 키를 눌러보세요. closeOnEscape 옵션에 따라 동작이 달라집니다.',
+    closeOnEscape: true,
+    showDefaultFooter: true,
+    confirmText: '확인',
+  },
+  render: (args) => ({
+    components: { BaseModal, BaseButton },
+    setup() {
+      return { args };
+    },
+    template: `
+      <div>
+        <div style="margin-bottom: 16px;">
+          <BaseButton 
+            label="ESC 테스트 모달 열기"
+            @click="args.isOpen = true"
+          />
+          <div style="margin-top: 8px; font-size: 14px; color: #666;">
+            <strong>테스트 방법:</strong><br>
+            1. 모달을 열고 ESC 키를 눌러보세요<br>
+            2. closeOnEscape 옵션을 true/false로 변경해보세요<br>
+            3. 동작 차이를 확인하세요
+          </div>
+        </div>
+        <BaseModal v-bind="args" @update:isOpen="args.isOpen = $event">
+          <div style="text-align: center; padding: 20px;">
+            <h3 style="color: #1976d2; margin-bottom: 16px;">ESC 키 테스트</h3>
+            <p>현재 <strong>closeOnEscape: {{ args.closeOnEscape }}</strong></p>
+            <div style="background: #f5f5f5; padding: 16px; border-radius: 8px; margin: 16px 0;">
+              <p><strong>테스트 결과:</strong></p>
+              <ul style="text-align: left; display: inline-block;">
+                <li>ESC 키 누름 → 모달 닫힘: {{ args.closeOnEscape ? '예상됨' : '예상 안됨' }}</li>
+                <li>오버레이 클릭 → 모달 닫힘: {{ args.closeOnOverlayClick ? '예상됨' : '예상 안됨' }}</li>
+              </ul>
+            </div>
+            <p style="color: #666; font-size: 14px;">
+              Storybook Controls에서 closeOnEscape 값을 변경하여 테스트해보세요.
+            </p>
+          </div>
+        </BaseModal>
+      </div>
+    `,
+  }),
+};
+
+/**
+ * closeOnOverlayClick 옵션 테스트 모달
+ * 오버레이 클릭 시 모달 닫기 동작을 테스트합니다.
+ */
+export const CloseOnOverlayClickTest: Story = {
+  args: {
+    isOpen: false,
+    title: '오버레이 클릭 테스트',
+    description:
+      '모달 외부 영역을 클릭해보세요. closeOnOverlayClick 옵션에 따라 동작이 달라집니다.',
+    closeOnOverlayClick: true,
+    showDefaultFooter: true,
+    confirmText: '확인',
+  },
+  render: (args) => ({
+    components: { BaseModal, BaseButton },
+    setup() {
+      return { args };
+    },
+    template: `
+      <div>
+        <div style="margin-bottom: 16px;">
+          <BaseButton 
+            label="오버레이 클릭 테스트 모달 열기"
+            @click="args.isOpen = true"
+          />
+          <div style="margin-top: 8px; font-size: 14px; color: #666;">
+            <strong>테스트 방법:</strong><br>
+            1. 모달을 열고 모달 외부 영역을 클릭해보세요<br>
+            2. closeOnOverlayClick 옵션을 true/false로 변경해보세요<br>
+            3. 동작 차이를 확인하세요
+          </div>
+        </div>
+        <BaseModal v-bind="args" @update:isOpen="args.isOpen = $event">
+          <div style="text-align: center; padding: 20px;">
+            <h3 style="color: #d32f2f; margin-bottom: 16px;">오버레이 클릭 테스트</h3>
+            <p>현재 <strong>closeOnOverlayClick: {{ args.closeOnOverlayClick }}</strong></p>
+            <div style="background: #fff3e0; padding: 16px; border-radius: 8px; margin: 16px 0; border: 1px solid #ff9800;">
+              <p><strong>테스트 결과:</strong></p>
+              <ul style="text-align: left; display: inline-block;">
+                <li>오버레이 클릭 → 모달 닫힘: {{ args.closeOnOverlayClick ? '예상됨' : '예상 안됨' }}</li>
+                <li>ESC 키 누름 → 모달 닫힘: {{ args.closeOnEscape ? '예상됨' : '예상 안됨' }}</li>
+              </ul>
+            </div>
+            <p style="color: #666; font-size: 14px;">
+              Storybook Controls에서 closeOnOverlayClick 값을 변경하여 테스트해보세요.
+            </p>
+          </div>
+        </BaseModal>
+      </div>
+    `,
+  }),
+};
+
+/**
+ * 모든 닫기 옵션 테스트 모달
+ * closeOnEscape와 closeOnOverlayClick을 모두 테스트합니다.
+ */
+export const AllCloseOptionsTest: Story = {
+  args: {
+    isOpen: false,
+    title: '모든 닫기 옵션 테스트',
+    description: 'ESC 키와 오버레이 클릭을 모두 테스트해보세요.',
+    closeOnEscape: true,
+    closeOnOverlayClick: true,
+    showDefaultFooter: true,
+    confirmText: '확인',
+  },
+  render: (args) => ({
+    components: { BaseModal, BaseButton },
+    setup() {
+      return { args };
+    },
+    template: `
+      <div>
+        <div style="margin-bottom: 16px;">
+          <BaseButton 
+            label="전체 테스트 모달 열기"
+            @click="args.isOpen = true"
+          />
+          <div style="margin-top: 8px; font-size: 14px; color: #666;">
+            <strong>테스트 방법:</strong><br>
+            1. 모달을 열고 ESC 키를 눌러보세요<br>
+            2. 모달 외부 영역을 클릭해보세요<br>
+            3. 두 옵션을 모두 false로 설정해보세요<br>
+            4. 동작 차이를 확인하세요
+          </div>
+        </div>
+        <BaseModal v-bind="args" @update:isOpen="args.isOpen = $event">
+          <div style="text-align: center; padding: 20px;">
+            <h3 style="color: #388e3c; margin-bottom: 16px;">전체 닫기 옵션 테스트</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+              <div style="background: #e8f5e8; padding: 16px; border-radius: 8px; border: 1px solid #4caf50;">
+                <h4 style="margin: 0 0 8px 0; color: #2e7d32;">ESC 키</h4>
+                <p style="margin: 0; font-size: 18px; font-weight: bold;">
+                  {{ args.closeOnEscape ? '✅ 활성화' : '❌ 비활성화' }}
+                </p>
+              </div>
+              <div style="background: #e3f2fd; padding: 16px; border-radius: 8px; border: 1px solid #2196f3;">
+                <h4 style="margin: 0 0 8px 0; color: #1976d2;">오버레이 클릭</h4>
+                <p style="margin: 0; font-size: 18px; font-weight: bold;">
+                  {{ args.closeOnOverlayClick ? '✅ 활성화' : '❌ 비활성화' }}
+                </p>
+              </div>
+            </div>
+            <div style="background: #f5f5f5; padding: 16px; border-radius: 8px;">
+              <p><strong>현재 설정:</strong></p>
+              <ul style="text-align: left; display: inline-block;">
+                <li>closeOnEscape: <code>{{ args.closeOnEscape }}</code></li>
+                <li>closeOnOverlayClick: <code>{{ args.closeOnOverlayClick }}</code></li>
+              </ul>
+              <p style="margin-top: 12px; color: #666; font-size: 14px;">
+                Storybook Controls에서 두 옵션을 모두 false로 설정하면 모달이 닫히지 않습니다.
+              </p>
+            </div>
+          </div>
+        </BaseModal>
+      </div>
+    `,
+  }),
+};

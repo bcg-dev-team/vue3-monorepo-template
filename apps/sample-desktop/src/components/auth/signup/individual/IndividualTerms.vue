@@ -3,7 +3,7 @@
     <template #header>
       <div class="flex items-center justify-between">
         <BaseIcon name="arrow-backward" size="md" />
-        <BaseStepper :count="4" :current="0" />
+        <BaseStepper variant="dot" :dot-config="{ count: 4 }" :current="0" />
       </div>
     </template>
     <template #content>

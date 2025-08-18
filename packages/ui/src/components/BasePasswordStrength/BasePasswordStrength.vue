@@ -22,14 +22,6 @@
         {{ feedback }}
       </div>
     </div>
-
-    <!-- 크랙 시간 정보 (선택사항) -->
-    <div
-      v-if="showCrackTime && strength.crackTime"
-      class="base-password-strength__crack-time text-neutral500"
-    >
-      예상 크랙 시간: {{ strength.crackTime }}
-    </div>
   </div>
 </template>
 
@@ -45,13 +37,10 @@ interface Props {
   showLabel?: boolean;
   /** 상세 피드백 표시 여부 */
   showDetails?: boolean;
-  /** 크랙 시간 표시 여부 */
-  showCrackTime?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   showLabel: true,
   showDetails: false,
-  showCrackTime: false,
 });
 </script>

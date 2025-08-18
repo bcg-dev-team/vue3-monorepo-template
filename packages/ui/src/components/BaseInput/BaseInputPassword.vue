@@ -42,7 +42,6 @@
       :strength="strength"
       :show-label="showStrengthLabel"
       :show-details="showStrengthDetails"
-      :show-crack-time="showCrackTime"
       class="base-input-password__strength"
     />
   </div>
@@ -76,8 +75,6 @@ interface Props {
   showStrengthLabel?: boolean;
   /** 비밀번호 강도 상세 정보 표시 여부 */
   showStrengthDetails?: boolean;
-  /** 크랙 시간 표시 여부 */
-  showCrackTime?: boolean;
   /** 비밀번호 강도 정보 (외부에서 전달) */
   strength?: PasswordStrengthDisplay | null;
 }
@@ -95,7 +92,6 @@ const props = withDefaults(defineProps<Props>(), {
   showStrength: true,
   showStrengthLabel: true,
   showStrengthDetails: false,
-  showCrackTime: false,
   strength: null,
 });
 

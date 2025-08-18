@@ -29,14 +29,7 @@
         <template #content>
           <LabelContent label="증거금 내역" size="lg">
             <template #content>
-              <BaseTabs
-                direction="horizontal"
-                v-model="modelValue"
-                showContent
-                size="md"
-                variant="connected"
-                :tabs="tabs"
-              />
+              <BaseTabs v-model="modelValue" size="md" variant="underline" :tabs="tabs" />
             </template>
           </LabelContent>
         </template>
@@ -55,13 +48,22 @@ import AssetsComposition from '@/components/assets/AssetsComposition.vue';
 import AssetsSummary from '@/components/assets/AssetsSummary.vue';
 import LabelContent from '@/components/common/LabelContent.vue';
 import HoldPosition from '@/components/assets/HoldPosition.vue';
-import { BaseTabs, type TabItem } from '@template/ui';
+import { BaseTabs } from '@template/ui';
 import { ref } from 'vue';
 
 const modelValue = ref('position');
-const tabs = [
-  { value: 'position', label: '포지션', content: PositionTableContent },
-  { value: 'clear', label: '청산', content: ClearTableContnet },
-  { value: 'order', label: '주문', content: OrderTableContent },
-] as TabItem[];
+const tabs = {
+  포지션: {
+    value: 'position',
+    component: PositionTableContent,
+  },
+  청산: {
+    value: 'clear',
+    component: ClearTableContnet,
+  },
+  주문: {
+    value: 'order',
+    component: OrderTableContent,
+  },
+};
 </script>

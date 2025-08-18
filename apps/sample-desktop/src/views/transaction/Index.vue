@@ -33,18 +33,21 @@ import { ref } from 'vue';
 
 const modelValue = ref('order');
 
-const tabs = {
-  주문체결: {
-    value: 'order',
+const tabs = [
+  {
+    key: 'order',
+    label: '주문체결',
     component: OrderSearchBox,
   },
-  청산손익: {
-    value: 'clear',
+  {
+    key: 'clear',
+    label: '청산손익',
     component: ClearSearchBox,
   },
-  결제내역: {
-    value: 'history',
+  {
+    key: 'history',
+    label: '결제내역',
     component: HistorySearchBox,
   },
-};
+];
 </script>

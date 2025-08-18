@@ -52,18 +52,23 @@ import { BaseTabs } from '@template/ui';
 import { ref } from 'vue';
 
 const modelValue = ref('position');
-const tabs = {
-  포지션: {
-    value: 'position',
+
+const tabs = [
+  {
+    key: 'position',
+    label: '포지션',
     component: PositionTableContent,
   },
-  청산: {
-    value: 'clear',
+  {
+    key: 'clear',
+    label: '청산',
     component: ClearTableContnet,
   },
-  주문: {
-    value: 'order',
+  {
+    key: 'order',
+
+    label: '주문',
     component: OrderTableContent,
   },
-};
+];
 </script>

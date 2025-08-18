@@ -16,22 +16,23 @@ import { BaseTabs } from '@template/ui';
 import { ref } from 'vue';
 
 const modelValue = ref('transfer');
-const tabs = {
-  계좌개설: {
-    value: 'create-account',
-    icon: 'card',
+const tabs = [
+  {
+    key: 'create-account',
+    label: '계좌개설',
     component: CreateAccountMain,
   },
-  '출금/이체/입금': {
-    value: 'transfer',
-    icon: 'send',
+  {
+    key: 'transfer',
+    label: '출금/이체/입금',
     component: TransferAccountMain,
   },
-  입출금내역: {
-    value: 'deposit-history',
-    icon: 'description',
+  {
+    key: 'deposit-history',
+    label: '입출금내역',
+    component: '',
   },
-};
+];
 </script>
 
 <style scoped></style>

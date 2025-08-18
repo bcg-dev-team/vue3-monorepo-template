@@ -4,6 +4,7 @@
 import BaseListItemAvatar from '../BaseListItemAvatar.vue';
 import BaseListItemText from '../BaseListItemText.vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
+import BaseListItem from '../BaseListItem.vue';
 
 const meta: Meta<typeof BaseListItemAvatar> = {
   title: 'List/BaseListItemAvatar',
@@ -87,7 +88,7 @@ BaseListItemAvatar는 리스트 아이템 내부에서 사용하는 아바타 �
     },
     backgroundColor: {
       description: '커스텀 배경색 (color가 custom일 때 사용)',
-      control: { type: 'color' },
+      control: { type: 'text' },
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'undefined' },
@@ -96,7 +97,7 @@ BaseListItemAvatar는 리스트 아이템 내부에서 사용하는 아바타 �
     },
     iconColor: {
       description: '커스텀 아이콘 색상 (color가 custom일 때 사용)',
-      control: { type: 'color' },
+      control: { type: 'text' },
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'undefined' },
@@ -123,12 +124,18 @@ type Story = StoryObj<typeof meta>;
 // 기본 스토리 (이미지 없음, 기본 폴백)
 export const Default: Story = {
   render: (args) => ({
-    components: { BaseListItemAvatar },
+    components: { BaseListItemAvatar, BaseListItem },
     setup() {
       return { args };
     },
     template: `
-      <BaseListItemAvatar v-bind="args" />
+      <div style="min-width: 400px;">
+        <BaseListItem>
+          <template #content>
+            <BaseListItemAvatar v-bind="args" />
+          </template>
+        </BaseListItem>
+      </div>
     `,
   }),
 };
@@ -140,12 +147,18 @@ export const WithImage: Story = {
     alt: '사용자 프로필 이미지',
   },
   render: (args) => ({
-    components: { BaseListItemAvatar },
+    components: { BaseListItemAvatar, BaseListItem },
     setup() {
       return { args };
     },
     template: `
-      <BaseListItemAvatar v-bind="args" />
+      <div style="min-width: 400px;">
+        <BaseListItem>
+          <template #content>
+            <BaseListItemAvatar v-bind="args" />
+          </template>
+        </BaseListItem>
+      </div>
     `,
   }),
 };
@@ -156,12 +169,18 @@ export const WithIcon: Story = {
     icon: { name: 'settings', size: 'md' },
   },
   render: (args) => ({
-    components: { BaseListItemAvatar },
+    components: { BaseListItemAvatar, BaseListItem },
     setup() {
       return { args };
     },
     template: `
-      <BaseListItemAvatar v-bind="args" />
+      <div style="min-width: 400px;">
+        <BaseListItem>
+          <template #content>
+            <BaseListItemAvatar v-bind="args" />
+          </template>
+        </BaseListItem>
+      </div>
     `,
   }),
 };
@@ -174,12 +193,18 @@ export const IconOverridesImage: Story = {
     alt: '이미지는 무시됨',
   },
   render: (args) => ({
-    components: { BaseListItemAvatar },
+    components: { BaseListItemAvatar, BaseListItem },
     setup() {
       return { args };
     },
     template: `
-      <BaseListItemAvatar v-bind="args" />
+      <div style="min-width: 400px;">
+        <BaseListItem>
+          <template #content>
+            <BaseListItemAvatar v-bind="args" />
+          </template>
+        </BaseListItem>
+      </div>
     `,
   }),
 };
@@ -187,40 +212,64 @@ export const IconOverridesImage: Story = {
 // 색상 테마들
 export const ColorThemes: Story = {
   render: () => ({
-    components: { BaseListItemAvatar },
+    components: { BaseListItemAvatar, BaseListItem },
     setup() {
       return {};
     },
     template: `
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 600px; margin: 0 auto;">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; min-width: 700px; max-width: 800px; margin: 0 auto;">
         <div style="text-align: center;">
-          <BaseListItemAvatar size="md" variant="circular" fallback="DF" color="default" />
-          <p style="margin: 8px 0 0 0; font-size: 12px; color: #666;">Default</p>
+          <BaseListItem>
+            <template #content>
+              <BaseListItemAvatar size="md" variant="circular" fallback="DF" color="default" />
+            </template>
+          </BaseListItem>
+          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666;">Default</p>
         </div>
         
         <div style="text-align: center;">
-          <BaseListItemAvatar size="md" variant="circular" fallback="PR" color="primary" />
-          <p style="margin: 8px 0 0 0; font-size: 12px; color: #666;">Primary</p>
+          <BaseListItem>
+            <template #content>
+              <BaseListItemAvatar size="md" variant="circular" fallback="PR" color="primary" />
+            </template>
+          </BaseListItem>
+          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666;">Primary</p>
         </div>
         
         <div style="text-align: center;">
-          <BaseListItemAvatar size="md" variant="circular" fallback="RD" color="red" />
-          <p style="margin: 8px 0 0 0; font-size: 12px; color: #666;">Red</p>
+          <BaseListItem>
+            <template #content>
+              <BaseListItemAvatar size="md" variant="circular" fallback="RD" color="red" />
+            </template>
+          </BaseListItem>
+          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666;">Red</p>
         </div>
         
         <div style="text-align: center;">
-          <BaseListItemAvatar size="md" variant="circular" fallback="BL" color="blue" />
-          <p style="margin: 8px 0 0 0; font-size: 12px; color: #666;">Blue</p>
+          <BaseListItem>
+            <template #content>
+              <BaseListItemAvatar size="md" variant="circular" fallback="BL" color="blue" />
+            </template>
+          </BaseListItem>
+          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666;">Blue</p>
         </div>
         
         <div style="text-align: center;">
-          <BaseListItemAvatar size="md" variant="circular" fallback="GR" color="green" />
-          <p style="margin: 8px 0 0 0; font-size: 12px; color: #666;">Green</p>
+          <BaseListItem>
+            <template #content>
+              <BaseListItemAvatar size="md" variant="circular" fallback="GR" color="green" />
+            </template>
+          </BaseListItem>
+          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666;">Green</p>
         </div>
         
         <div style="text-align: center;">
-          <BaseListItemAvatar size="md" variant="circular" fallback="PL" color="purple" />
-          <p style="margin: 8px 0 0 0; font-size: 12px; color: #666;">Purple</p>
+          <BaseListItem>
+            <template #content>
+              <BaseListItemAvatar size="md" variant="circular" fallback="PL" color="purple" />
+            </template>
+          </BaseListItem>
+          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666;">Purple</p>
         </div>
       </div>
     `,
@@ -235,32 +284,40 @@ export const CustomColors: Story = {
     iconColor: '#ffffff',
   },
   render: (args) => ({
-    components: { BaseListItemAvatar },
+    components: { BaseListItemAvatar, BaseListItem },
     setup() {
       return { args };
     },
     template: `
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 400px; margin: 0 auto;">
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; min-width: 500px; max-width: 600px; margin: 0 auto;">
         <div style="text-align: center;">
-          <BaseListItemAvatar 
-            v-bind="args" 
-            fallback="CC"
-            size="md"
-            variant="circular"
-          />
-          <p style="margin: 8px 0 0 0; font-size: 12px; color: #666;">Custom Red</p>
+          <BaseListItem>
+            <template #content>
+              <BaseListItemAvatar 
+                v-bind="args" 
+                fallback="CC"
+                size="md"
+                variant="circular"
+              />
+            </template>
+          </BaseListItem>
+          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666;">Custom Red</p>
         </div>
         
         <div style="text-align: center;">
-          <BaseListItemAvatar 
-            color="custom"
-            backgroundColor="#4ecdc4"
-            iconColor="#ffffff"
-            fallback="CC"
-            size="md"
-            variant="circular"
-          />
-          <p style="margin: 8px 0 0 0; font-size: 12px; color: #666;">Custom Teal</p>
+          <BaseListItem>
+            <template #content>
+              <BaseListItemAvatar 
+                color="custom"
+                backgroundColor="#4ecdc4"
+                iconColor="#ffffff"
+                fallback="CC"
+                size="md"
+                variant="circular"
+              />
+            </template>
+          </BaseListItem>
+          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666;">Custom Teal</p>
         </div>
       </div>
     `,
@@ -273,12 +330,18 @@ export const WithTextFallback: Story = {
     fallback: 'JD',
   },
   render: (args) => ({
-    components: { BaseListItemAvatar },
+    components: { BaseListItemAvatar, BaseListItem },
     setup() {
       return { args };
     },
     template: `
-      <BaseListItemAvatar v-bind="args" />
+      <div style="min-width: 400px;">
+        <BaseListItem>
+          <template #content>
+            <BaseListItemAvatar v-bind="args" />
+          </template>
+        </BaseListItem>
+      </div>
     `,
   }),
 };
@@ -289,12 +352,18 @@ export const WithIconFallback: Story = {
     fallback: { name: 'person', size: 'md' },
   },
   render: (args) => ({
-    components: { BaseListItemAvatar },
+    components: { BaseListItemAvatar, BaseListItem },
     setup() {
       return { args };
     },
     template: `
-      <BaseListItemAvatar v-bind="args" />
+      <div style="min-width: 400px;">
+        <BaseListItem>
+          <template #content>
+            <BaseListItemAvatar v-bind="args" />
+          </template>
+        </BaseListItem>
+      </div>
     `,
   }),
 };
@@ -306,12 +375,18 @@ export const Small: Story = {
     fallback: 'SM',
   },
   render: (args) => ({
-    components: { BaseListItemAvatar },
+    components: { BaseListItemAvatar, BaseListItem },
     setup() {
       return { args };
     },
     template: `
-      <BaseListItemAvatar v-bind="args" />
+      <div style="min-width: 400px;">
+        <BaseListItem>
+          <template #content>
+            <BaseListItemAvatar v-bind="args" />
+          </template>
+        </BaseListItem>
+      </div>
     `,
   }),
 };
@@ -323,12 +398,18 @@ export const Large: Story = {
     fallback: 'LG',
   },
   render: (args) => ({
-    components: { BaseListItemAvatar },
+    components: { BaseListItemAvatar, BaseListItem },
     setup() {
       return { args };
     },
     template: `
-      <BaseListItemAvatar v-bind="args" />
+      <div style="min-width: 400px;">
+        <BaseListItem>
+          <template #content>
+            <BaseListItemAvatar v-bind="args" />
+          </template>
+        </BaseListItem>
+      </div>
     `,
   }),
 };
@@ -340,12 +421,18 @@ export const Rounded: Story = {
     fallback: 'RD',
   },
   render: (args) => ({
-    components: { BaseListItemAvatar },
+    components: { BaseListItemAvatar, BaseListItem },
     setup() {
       return { args };
     },
     template: `
-      <BaseListItemAvatar v-bind="args" />
+      <div style="min-width: 400px;">
+        <BaseListItem>
+          <template #content>
+            <BaseListItemAvatar v-bind="args" />
+          </template>
+        </BaseListItem>
+      </div>
     `,
   }),
 };
@@ -357,12 +444,18 @@ export const Square: Story = {
     fallback: 'SQ',
   },
   render: (args) => ({
-    components: { BaseListItemAvatar },
+    components: { BaseListItemAvatar, BaseListItem },
     setup() {
       return { args };
     },
     template: `
-      <BaseListItemAvatar v-bind="args" />
+      <div style="min-width: 400px;">
+        <BaseListItem>
+          <template #content>
+            <BaseListItemAvatar v-bind="args" />
+          </template>
+        </BaseListItem>
+      </div>
     `,
   }),
 };
@@ -370,7 +463,7 @@ export const Square: Story = {
 // 모든 크기와 스타일 조합
 export const AllVariants: Story = {
   render: () => ({
-    components: { BaseListItemAvatar },
+    components: { BaseListItemAvatar, BaseListItem },
     setup() {
       return {};
     },
@@ -379,58 +472,95 @@ export const AllVariants: Story = {
         display: grid; 
         grid-template-columns: repeat(3, 1fr); 
         grid-template-rows: repeat(3, auto);
-        gap: 32px; 
-        max-width: 800px; 
+        gap: 40px; 
+        min-width: 900px; 
+        max-width: 1000px; 
         margin: 0 auto;
         align-items: center;
         justify-items: center;
       ">
         <!-- Small 크기들 -->
         <div style="text-align: center;">
-          <BaseListItemAvatar size="sm" variant="circular" fallback="SC" />
-          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666; text-align: center;">Small Circular</p>
+          <BaseListItem>
+            <template #content>
+              <BaseListItemAvatar size="sm" variant="circular" fallback="SC" />
+            </template>
+          </BaseListItem>
+          <p style="margin: 16px 0 0 0; font-size: 12px; color: #666; text-align: center;">Small Circular</p>
         </div>
         
         <div style="text-align: center;">
-          <BaseListItemAvatar size="sm" variant="rounded" fallback="SR" />
-          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666; text-align: center;">Small Rounded</p>
+          <BaseListItem>
+            <template #content>
+              <BaseListItemAvatar size="sm" variant="rounded" fallback="SR" />
+            </template>
+          </BaseListItem>
+          <p style="margin: 16px 0 0 0; font-size: 12px; color: #666; text-align: center;">Small Rounded</p>
         </div>
         
         <div style="text-align: center;">
-          <BaseListItemAvatar size="sm" variant="square" fallback="SS" />
-          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666; text-align: center;">Small Square</p>
+          <BaseListItem>
+            <template #content>
+              <BaseListItemAvatar size="sm" variant="square" fallback="SS" />
+            </template>
+          </BaseListItem>
+          <p style="margin: 16px 0 0 0; font-size: 12px; color: #666; text-align: center;">Small Square</p>
         </div>
         
         <!-- Medium 크기들 -->
         <div style="text-align: center;">
-          <BaseListItemAvatar size="md" variant="circular" fallback="MC" />
-          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666; text-align: center;">Medium Circular</p>
+          <BaseListItem>
+            <template #content>
+              <BaseListItemAvatar size="md" variant="circular" fallback="MC" />
+            </template>
+          </BaseListItem>
+          <p style="margin: 16px 0 0 0; font-size: 12px; color: #666; text-align: center;">Medium Circular</p>
         </div>
         
         <div style="text-align: center;">
-          <BaseListItemAvatar size="md" variant="rounded" fallback="MR" />
-          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666; text-align: center;">Medium Rounded</p>
+          <BaseListItem>
+            <template #content>
+              <BaseListItemAvatar size="md" variant="rounded" fallback="MR" />
+            </template>
+          </BaseListItem>
+          <p style="margin: 16px 0 0 0; font-size: 12px; color: #666; text-align: center;">Medium Rounded</p>
         </div>
         
         <div style="text-align: center;">
-          <BaseListItemAvatar size="md" variant="square" fallback="MS" />
-          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666; text-align: center;">Medium Square</p>
+          <BaseListItem>
+            <template #content>
+              <BaseListItemAvatar size="md" variant="square" fallback="MS" />
+            </template>
+          </BaseListItem>
+          <p style="margin: 16px 0 0 0; font-size: 12px; color: #666; text-align: center;">Medium Square</p>
         </div>
         
         <!-- Large 크기들 -->
         <div style="text-align: center;">
-          <BaseListItemAvatar size="lg" variant="circular" fallback="LC" />
-          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666; text-align: center;">Large Circular</p>
+          <BaseListItem>
+            <template #content>
+              <BaseListItemAvatar size="lg" variant="circular" fallback="LC" />
+            </template>
+          </BaseListItem>
+          <p style="margin: 16px 0 0 0; font-size: 12px; color: #666; text-align: center;">Large Circular</p>
         </div>
         
         <div style="text-align: center;">
-          <BaseListItemAvatar size="lg" variant="rounded" fallback="LR" />
-          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666; text-align: center;">Large Rounded</p>
+          <BaseListItem>
+            <template #content>
+              <BaseListItemAvatar size="lg" variant="rounded" fallback="LR" />
+            </template>
+          </BaseListItem>
+          <p style="margin: 16px 0 0 0; font-size: 12px; color: #666; text-align: center;">Large Rounded</p>
         </div>
         
         <div style="text-align: center;">
-          <BaseListItemAvatar size="lg" variant="square" fallback="LS" />
-          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666; text-align: center;">Large Square</p>
+          <BaseListItem>
+            <template #content>
+              <BaseListItemAvatar size="lg" variant="square" fallback="LS" />
+            </template>
+          </BaseListItem>
+          <p style="margin: 16px 0 0 0; font-size: 12px; color: #666; text-align: center;">Large Square</p>
         </div>
       </div>
     `,
@@ -440,59 +570,75 @@ export const AllVariants: Story = {
 // 실제 사용 예시 (BaseListItem과 함께)
 export const InListItem: Story = {
   render: () => ({
-    components: { BaseListItemAvatar },
+    components: { BaseListItemAvatar, BaseListItem },
     setup() {
       return {};
     },
     template: `
-      <div style="max-width: 400px; margin: 0 auto;">
+      <div style="min-width: 500px; max-width: 600px; margin: 0 auto;">
         <h3 style="margin-bottom: 16px; color: #333;">BaseListItem과 함께 사용하는 예시</h3>
         
         <!-- 이미지 아바타 -->
-        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 12px;">
-          <BaseListItemAvatar 
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
-            alt="사용자 프로필"
-            size="md"
-            variant="circular"
-          />
-          <span style="font-size: 16px; font-weight: 500;">John Doe</span>
-        </div>
+        <BaseListItem style="margin-bottom: 16px;">
+          <template #content>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <BaseListItemAvatar 
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+                alt="사용자 프로필"
+                size="md"
+                variant="circular"
+              />
+              <span style="font-size: 16px; font-weight: 500;">John Doe</span>
+            </div>
+          </template>
+        </BaseListItem>
         
         <!-- 직접 아이콘 지정 -->
-        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 12px;">
-          <BaseListItemAvatar 
-            icon="{ name: 'settings', size: 'md' }"
-            size="md"
-            variant="rounded"
-            color="blue"
-          />
-          <span style="font-size: 16px; font-weight: 500;">설정 메뉴</span>
-        </div>
+        <BaseListItem style="margin-bottom: 16px;">
+          <template #content>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <BaseListItemAvatar 
+                :icon="{ name: 'settings', size: 'md' }"
+                size="md"
+                variant="rounded"
+                color="blue"
+              />
+              <span style="font-size: 16px; font-weight: 500;">설정 메뉴</span>
+            </div>
+          </template>
+        </BaseListItem>
         
         <!-- 텍스트 폴백 -->
-        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 12px;">
-          <BaseListItemAvatar 
-            fallback="JD"
-            size="md"
-            variant="rounded"
-            color="primary"
-          />
-          <span style="font-size: 16px; font-weight: 500;">Jane Smith</span>
-        </div>
+        <BaseListItem style="margin-bottom: 16px;">
+          <template #content>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <BaseListItemAvatar 
+                fallback="JD"
+                size="md"
+                variant="rounded"
+                color="primary"
+              />
+              <span style="font-size: 16px; font-weight: 500;">Jane Smith</span>
+            </div>
+          </template>
+        </BaseListItem>
         
         <!-- 커스텀 색상 -->
-        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
-          <BaseListItemAvatar 
-            fallback="{ name: 'person', size: 'md' }"
-            size="md"
-            variant="square"
-            color="custom"
-            backgroundColor="#ff6b6b"
-            iconColor="#ffffff"
-          />
-          <span style="font-size: 16px; font-weight: 500;">Alice Brown</span>
-        </div>
+        <BaseListItem>
+          <template #content>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <BaseListItemAvatar 
+                fallback="{ name: 'person', size: 'md' }"
+                size="md"
+                variant="square"
+                color="custom"
+                backgroundColor="#ff6b6b"
+                iconColor="#ffffff"
+              />
+              <span style="font-size: 16px; font-weight: 500;">Alice Brown</span>
+            </div>
+          </template>
+        </BaseListItem>
       </div>
     `,
   }),
@@ -501,71 +647,87 @@ export const InListItem: Story = {
 // BaseListItemText와 함께 사용
 export const WithListItemText: Story = {
   render: () => ({
-    components: { BaseListItemAvatar, BaseListItemText },
+    components: { BaseListItemAvatar, BaseListItemText, BaseListItem },
     setup() {
       return {};
     },
     template: `
-      <div style="max-width: 600px; margin: 0 auto;">
+      <div style="min-width: 600px; max-width: 700px; margin: 0 auto;">
         <h3 style="margin-bottom: 16px; color: #333;">BaseListItemText와 함께 사용하는 예시</h3>
         
         <!-- 기본 아바타 + 텍스트 -->
-        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 12px;">
-          <BaseListItemAvatar fallback="JD" color="primary" />
-          <BaseListItemText 
-            primary="John Doe"
-            secondary="john.doe@example.com"
-            inset
-          />
-        </div>
+        <BaseListItem style="margin-bottom: 16px;">
+          <template #content>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <BaseListItemAvatar fallback="JD" color="primary" />
+              <BaseListItemText 
+                primary="John Doe"
+                secondary="john.doe@example.com"
+                inset
+              />
+            </div>
+          </template>
+        </BaseListItem>
         
         <!-- 이미지 아바타 + 오른쪽 텍스트 -->
-        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 12px;">
-          <BaseListItemAvatar 
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
-            alt="사용자 프로필"
-            size="lg"
-          />
-          <BaseListItemText 
-            primary="Jane Smith"
-            secondary="jane.smith@example.com"
-            rightPrimary="2024-01-15"
-            rightSecondary="온라인"
-            inset
-          />
-        </div>
+        <BaseListItem style="margin-bottom: 16px;">
+          <template #content>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <BaseListItemAvatar 
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+                alt="사용자 프로필"
+                size="lg"
+              />
+              <BaseListItemText 
+                primary="Jane Smith"
+                secondary="jane.smith@example.com"
+                rightPrimary="2024-01-15"
+                rightSecondary="온라인"
+                inset
+              />
+            </div>
+          </template>
+        </BaseListItem>
         
         <!-- 아이콘 아바타 + 여러 줄 텍스트 -->
-        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 12px;">
-          <BaseListItemAvatar 
-            :icon="{ name: 'settings', size: 'md' }"
-            color="blue"
-            variant="rounded"
-          />
-          <BaseListItemText 
-            primary="시스템 설정"
-            secondary="시스템 전반적인 설정을 관리합니다. 매우 긴 설명 텍스트입니다."
-            inset
-            multiline
-          />
-        </div>
+        <BaseListItem style="margin-bottom: 16px;">
+          <template #content>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <BaseListItemAvatar 
+                :icon="{ name: 'settings', size: 'md' }"
+                color="blue"
+                variant="rounded"
+              />
+              <BaseListItemText 
+                primary="시스템 설정"
+                secondary="시스템 전반적인 설정을 관리합니다. 매우 긴 설명 텍스트입니다."
+                inset
+                multiline
+              />
+            </div>
+          </template>
+        </BaseListItem>
         
         <!-- 커스텀 색상 아바타 + 줄바꿈 방지 텍스트 -->
-        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
-          <BaseListItemAvatar 
-            fallback="AB"
-            color="custom"
-            backgroundColor="#ff6b6b"
-            iconColor="#ffffff"
-            variant="square"
-          />
-          <BaseListItemText 
-            primary="매우 긴 사용자 이름입니다. 이 텍스트는 한 줄로만 표시됩니다."
-            secondary="매우 긴 이메일 주소입니다. 이 텍스트도 한 줄로만 표시됩니다."
-            inset
-            :noWrap="true"
-          />
-        </div>
+        <BaseListItem>
+          <template #content>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <BaseListItemAvatar 
+                fallback="AB"
+                color="custom"
+                backgroundColor="#ff6b6b"
+                iconColor="#ffffff"
+                variant="square"
+              />
+              <BaseListItemText 
+                primary="매우 긴 사용자 이름입니다. 이 텍스트는 한 줄로만 표시됩니다."
+                secondary="매우 긴 이메일 주소입니다. 이 텍스트도 한 줄로만 표시됩니다."
+                inset
+                :noWrap="true"
+              />
+            </div>
+          </template>
+        </BaseListItem>
       </div>
     `,
   }),
@@ -574,55 +736,71 @@ export const WithListItemText: Story = {
 // 다양한 크기와 스타일 조합
 export const SizeVariantCombinations: Story = {
   render: () => ({
-    components: { BaseListItemAvatar, BaseListItemText },
+    components: { BaseListItemAvatar, BaseListItemText, BaseListItem },
     setup() {
       return {};
     },
     template: `
-      <div style="max-width: 800px; margin: 0 auto;">
+      <div style="min-width: 800px; max-width: 900px; margin: 0 auto;">
         <h3 style="margin-bottom: 16px; color: #333;">크기와 스타일 조합 예시</h3>
         
         <!-- Small Circular -->
-        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 12px;">
-          <BaseListItemAvatar size="sm" variant="circular" fallback="SC" color="primary" />
-          <BaseListItemText 
-            primary="Small Circular Avatar"
-            secondary="40px 크기의 원형 아바타"
-          />
-        </div>
+        <BaseListItem style="margin-bottom: 16px;">
+          <template #content>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <BaseListItemAvatar size="sm" variant="circular" fallback="SC" color="primary" />
+              <BaseListItemText 
+                primary="Small Circular Avatar"
+                secondary="40px 크기의 원형 아바타"
+              />
+            </div>
+          </template>
+        </BaseListItem>
         
         <!-- Medium Rounded -->
-        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 12px;">
-          <BaseListItemAvatar size="md" variant="rounded" fallback="MR" color="green" />
-          <BaseListItemText 
-            primary="Medium Rounded Avatar"
-            secondary="44px 크기의 둥근 모서리 아바타"
-          />
-        </div>
+        <BaseListItem style="margin-bottom: 16px;">
+          <template #content>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <BaseListItemAvatar size="md" variant="rounded" fallback="MR" color="green" />
+              <BaseListItemText 
+                primary="Medium Rounded Avatar"
+                secondary="44px 크기의 둥근 모서리 아바타"
+              />
+            </div>
+          </template>
+        </BaseListItem>
         
         <!-- Large Square -->
-        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 12px;">
-          <BaseListItemAvatar size="lg" variant="square" fallback="LS" color="purple" />
-          <BaseListItemText 
-            primary="Large Square Avatar"
-            secondary="48px 크기의 사각형 아바타"
-          />
-        </div>
+        <BaseListItem style="margin-bottom: 16px;">
+          <template #content>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <BaseListItemAvatar size="lg" variant="square" fallback="LS" color="purple" />
+              <BaseListItemText 
+                primary="Large Square Avatar"
+                secondary="48px 크기의 사각형 아바타"
+              />
+            </div>
+          </template>
+        </BaseListItem>
         
         <!-- 이미지 + 아이콘 폴백 -->
-        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;">
-          <BaseListItemAvatar 
-            src="invalid-url"
-            :fallback="{ name: 'person', size: 'md' }"
-            size="md"
-            variant="circular"
-            color="red"
-          />
-          <BaseListItemText 
-            primary="이미지 로드 실패 시 아이콘 폴백"
-            secondary="이미지 URL이 유효하지 않을 때 아이콘이 표시됩니다"
-          />
-        </div>
+        <BaseListItem>
+          <template #content>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <BaseListItemAvatar 
+                src="invalid-url"
+                :fallback="{ name: 'person', size: 'md' }"
+                size="md"
+                variant="circular"
+                color="red"
+              />
+              <BaseListItemText 
+                primary="이미지 로드 실패 시 아이콘 폴백"
+                secondary="이미지 URL이 유효하지 않을 때 아이콘이 표시됩니다"
+              />
+            </div>
+          </template>
+        </BaseListItem>
       </div>
     `,
   }),

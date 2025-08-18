@@ -115,7 +115,6 @@ const rightSecondaryClasses = computed(() => {
 
       <template v-if="!$slots.left">
         <!-- 주요 텍스트 -->
-
         <div :class="primaryClasses">
           {{ primary }}
         </div>
@@ -123,25 +122,24 @@ const rightSecondaryClasses = computed(() => {
         <!-- 보조 텍스트 (있는 경우에만 표시) -->
         <div v-if="secondary" :class="secondaryClasses">
           {{ secondary }}
-        </div></template
-      >
+        </div>
+      </template>
     </div>
 
     <!-- 오른쪽 영역: 슬롯 + props 함께 사용 -->
     <div class="list-item-text__right">
       <!-- 오른쪽 슬롯 (있는 경우) -->
       <slot name="right" />
-      <template v-if="!$slots.right">
-        <!-- 오른쪽 끝 주요 텍스트 (있는 경우에만 표시) -->
-        <div v-if="rightPrimary" :class="rightPrimaryClasses">
-          {{ rightPrimary }}
-        </div>
 
-        <!-- 오른쪽 끝 보조 텍스트 (있는 경우에만 표시) -->
-        <div v-if="rightSecondary" :class="rightSecondaryClasses">
-          {{ rightSecondary }}
-        </div>
-      </template>
+      <!-- 오른쪽 끝 주요 텍스트 (있는 경우에만 표시) -->
+      <div v-if="rightPrimary" :class="rightPrimaryClasses">
+        {{ rightPrimary }}
+      </div>
+
+      <!-- 오른쪽 끝 보조 텍스트 (있는 경우에만 표시) -->
+      <div v-if="rightSecondary" :class="rightSecondaryClasses">
+        {{ rightSecondary }}
+      </div>
     </div>
   </div>
 </template>

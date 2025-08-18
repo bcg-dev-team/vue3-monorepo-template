@@ -78,6 +78,33 @@ export interface TabItem {
   content?: string | Component;
 }
 
+/**
+ * BaseTabs 컴포넌트에서 사용하는 탭 아이템 인터페이스
+ */
+export interface BaseTabItem {
+  value: string | number;
+  component?: Component;
+  icon?: IconName;
+}
+
+/**
+ * BaseTabs 컴포넌트에서 사용하는 탭 카테고리 인터페이스
+ */
+export interface TabCategories {
+  [categoryName: string]: BaseTabItem;
+}
+
+/**
+ * BaseTabs 컴포넌트에서 사용하는 탭 스타일 variant 타입
+ */
+export type TabVariant = 'underline' | 'inner';
+
+/**
+ * BaseTabs 전용 사이즈 타입 별칭
+ * - 현재 BaseTabs에서는 lg, md 두 사이즈만 사용합니다.
+ */
+export type TabsSize = Extract<ComponentSize, 'lg' | 'md'>;
+
 // BaseChip
 export type ChipVariant = 'grey' | 'red' | 'green' | 'blue' | 'yellow' | 'purple';
 

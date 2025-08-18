@@ -1,21 +1,7 @@
 <script setup lang="ts">
-import type { ComponentSize } from 'types/components';
-import type { IconName } from '../../types/icons';
+import type { ComponentSize, TabCategories, TabVariant, TabsSize } from 'types/components';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { Tab } from '@headlessui/vue';
-import type { Component } from 'vue';
-
-interface TabItem {
-  value: string | number;
-  component?: Component;
-  icon?: IconName;
-}
-
-interface TabCategories {
-  [categoryName: string]: TabItem;
-}
-
-type TabVariant = 'underline' | 'inner';
 
 interface Props {
   /**
@@ -33,7 +19,7 @@ interface Props {
    * - lg: large (18px)
    * - md: medium (16px)
    */
-  size?: Extract<ComponentSize, 'lg' | 'md'>;
+  size?: TabsSize;
   /**
    * 밑줄 여부 (underline variant에서만 사용)
    */

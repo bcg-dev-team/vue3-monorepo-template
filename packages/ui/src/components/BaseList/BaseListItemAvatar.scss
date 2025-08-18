@@ -5,7 +5,7 @@
   justify-content: center;
   flex-shrink: 0;
   overflow: hidden;
-  background-color: var(--background-bg-surface);
+  background-color: var(--background-bg-innerframe);
   border: 1px solid var(--background-divider);
   transition: all 0.2s ease;
 
@@ -136,12 +136,12 @@
 
   // 커스텀 색상
   &.list-item-avatar--custom {
-    background-color: var(--custom-background-color, var(--background-bg-surface)) !important;
+    background-color: var(--custom-background-color, var(--background-bg-innerframe)) !important;
     border-color: var(--custom-background-color, var(--background-divider)) !important;
 
     .list-item-avatar__icon,
     .list-item-avatar__fallback {
-      background-color: var(--custom-background-color, var(--background-bg-surface)) !important;
+      background-color: var(--custom-background-color, var(--background-bg-innerframe)) !important;
     }
 
     .list-item-avatar__icon-content,
@@ -156,7 +156,7 @@
 
   // 에러 상태
   &--error {
-    background-color: var(--background-bg-surface);
+    background-color: var(--background-bg-innerframe);
     border-color: var(--input-color-border-error);
   }
 
@@ -167,7 +167,7 @@
     justify-content: center;
     width: 100%;
     height: 100%;
-    background-color: var(--background-bg-innerframe);
+    background-color: transparent;
   }
 
   &__icon-content {
@@ -191,7 +191,7 @@
     justify-content: center;
     width: 100%;
     height: 100%;
-    background-color: var(--background-bg-innerframe);
+    background-color: transparent;
   }
 
   // 폴백 아이콘

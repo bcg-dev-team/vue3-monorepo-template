@@ -1,0 +1,530 @@
+import { parseFullSymbol } from './helpers.js';
+
+// MSW WebSocket 연결 (Binance 스트림 모킹)
+let socket = null;
+let reconnectAttempts = 0;
+const maxReconnectAttempts = 5;
+
+// 연결 상태 추적을 위한 변수들 추가
+let connectionStartTime = null;
+let connectionState = 'disconnected'; // 'connecting', 'connected', 'disconnected', 'reconnecting'
+let reconnectTimer = null;
+let connectionTimeout = null;
+
+// 단순화된 구독 구조: 각 구독을 독립적으로 관리
+const subscriptions = new Map(); // key: subscriberUID, value: { symbol, resolution, lastBar, callback }
+
+// 이벤트 핸들러 함수들을 별도로 정의하여 제거 가능하게 만듦
+const handleOpen = () => {
+  console.log('[MSW WebSocket] 연결됨');
+  connectionState = 'connected';
+  reconnectAttempts = 0;
+  connectionStartTime = Date.now();
+  
+  // 연결 타임아웃 정리
+  if (connectionTimeout) {
+    clearTimeout(connectionTimeout);
+    connectionTimeout = null;
+  }
+
+  // 기존 구독들 재구독
+  resubscribeAll();
+};
+
+const handleClose = (event) => {
+  console.log('[MSW WebSocket] 연결 종료:', {
+    code: event.code,
+    reason: event.reason,
+    wasClean: event.wasClean
+  });
+  
+  connectionState = 'disconnected';
+  socket = null;
+
+  // 연결 끊김 원인 분석 및 사용자 알림
+  analyzeDisconnectionReason(event);
+
+  // 재연결 시도
+  if (reconnectAttempts < maxReconnectAttempts) {
+    connectionState = 'reconnecting';
+    reconnectAttempts++;
+    const delay = 1000 * Math.pow(2, reconnectAttempts); // 지수 백오프
+    console.log(
+      `[MSW WebSocket] ${delay}ms 후 재연결 시도 (${reconnectAttempts}/${maxReconnectAttempts})`
+    );
+
+    reconnectTimer = setTimeout(() => {
+      initializeSocket();
+    }, delay);
+  } else {
+    console.error('[MSW WebSocket] 최대 재연결 시도 횟수 초과');
+    notifyUser('연결에 실패했습니다. 페이지를 새로고침해주세요.');
+  }
+};
+
+const handleError = (error) => {
+  console.error('[MSW WebSocket] 오류:', error);
+  connectionState = 'disconnected';
+  
+  // 에러 타입별 처리
+  handleConnectionError(error);
+};
+
+const handleMessage = (event) => {
+  try {
+    const data = JSON.parse(event.data);
+    console.log('[MSW WebSocket] 메시지 수신:', data);
+    handleMSWMessage(data);
+  } catch (error) {
+    console.error('[MSW WebSocket] 메시지 파싱 오류:', error);
+  }
+};
+
+// WebSocket 연결 초기화
+function initializeSocket() {
+  try {
+    // 기존 연결이 있다면 정리
+    cleanupSocket();
+    
+    connectionState = 'connecting';
+    connectionStartTime = Date.now();
+    
+    // MSW로 모킹된 Binance WebSocket 연결
+    socket = new WebSocket('wss://stream.binance.com/ws/combined');
+
+    // 이벤트 리스너 등록
+    socket.addEventListener('open', handleOpen);
+    socket.addEventListener('close', handleClose);
+    socket.addEventListener('error', handleError);
+    socket.addEventListener('message', handleMessage);
+
+    // 연결 타임아웃 설정 (10초)
+    connectionTimeout = setTimeout(() => {
+      if (connectionState === 'connecting') {
+        console.error('[MSW WebSocket] 연결 타임아웃');
+        socket.close();
+        notifyUser('연결 시간이 초과되었습니다.');
+      }
+    }, 10000);
+
+  } catch (error) {
+    console.error('[MSW WebSocket] 초기화 오류:', error);
+    connectionState = 'disconnected';
+    notifyUser('연결 초기화에 실패했습니다.');
+  }
+}
+
+// 소켓 정리 함수 (해제 시 필요한 리소스 정리)
+function cleanupSocket() {
+  if (socket) {
+    // 이벤트 리스너 제거
+    socket.removeEventListener('open', handleOpen);
+    socket.removeEventListener('close', handleClose);
+    socket.removeEventListener('error', handleError);
+    socket.removeEventListener('message', handleMessage);
+    
+    // 연결 종료
+    socket.close(1000, 'Cleanup');
+    socket = null;
+  }
+  
+  // 타이머 정리
+  if (reconnectTimer) {
+    clearTimeout(reconnectTimer);
+    reconnectTimer = null;
+  }
+  
+  if (connectionTimeout) {
+    clearTimeout(connectionTimeout);
+    connectionTimeout = null;
+  }
+  
+  connectionState = 'disconnected';
+}
+
+// 연결 끊김 원인 분석
+function analyzeDisconnectionReason(event) {
+  const reasons = {
+    1000: '정상 종료',
+    1001: '서버 종료',
+    1002: '프로토콜 오류',
+    1003: '지원하지 않는 데이터 타입',
+    1005: '상태 코드 없음',
+    1006: '비정상 종료',
+    1007: '데이터 타입 불일치',
+    1008: '정책 위반',
+    1009: '메시지가 너무 큼',
+    1010: '클라이언트 확장 필요',
+    1011: '서버 오류',
+    1012: '서버 재시작',
+    1013: '일시적 오류',
+    1014: '잘못된 응답',
+    1015: 'TLS 핸드셰이크 실패'
+  };
+  
+  const reason = reasons[event.code] || '알 수 없는 이유';
+  console.log(`[연결 끊김 분석] 코드: ${event.code}, 이유: ${reason}, 정상종료: ${event.wasClean}`);
+  
+  // 사용자에게 적절한 메시지 전달
+  if (!event.wasClean) {
+    notifyUser(`연결이 끊어졌습니다. (${reason})`);
+  }
+}
+
+// 연결 에러 타입별 처리
+function handleConnectionError(error) {
+  const errorMessage = error.message || '알 수 없는 오류';
+  
+  if (errorMessage.includes('DNS')) {
+    console.error('DNS 해석 실패 - 네트워크 연결 확인 필요');
+    notifyUser('네트워크 연결을 확인해주세요.');
+  } else if (errorMessage.includes('SSL') || errorMessage.includes('TLS')) {
+    console.error('SSL/TLS 핸드셰이크 실패 - 인증서 문제');
+    notifyUser('보안 연결에 실패했습니다.');
+  } else if (errorMessage.includes('timeout')) {
+    console.error('연결 시간 초과');
+    notifyUser('연결 시간이 초과되었습니다.');
+  } else {
+    console.error('연결 오류:', errorMessage);
+    notifyUser('연결 중 오류가 발생했습니다.');
+  }
+}
+
+// 사용자 알림 함수 (UI에 연결 가능)
+function notifyUser(message) {
+  console.log('[사용자 알림]', message);
+  // TODO: 실제 UI 알림 시스템과 연결
+  // 예: toast 알림, 상태 표시 등
+}
+
+// 메시지 처리
+function handleMSWMessage(data) {
+  console.log('[handleMSWMessage] 받은 데이터:', data);
+
+  if (data.type === 'price_update') {
+    // MSW 가격 업데이트를 TradingView Bar 형식으로 변환
+    const realtimeBar = {
+      time: data.timestamp,
+      open: data.open || data.price,
+      high: data.high || data.price,
+      low: data.low || data.price,
+      close: data.price,
+      volume: data.volume || 1000,
+    };
+
+    console.log('[handleMSWMessage] 변환된 realtimeBar:', realtimeBar);
+    console.log('[handleMSWMessage] 현재 구독 목록:', Array.from(subscriptions.entries()));
+
+    // 해당 심볼의 모든 구독에 대해 Bar 업데이트
+    updateBarsForSymbol(data.symbol, realtimeBar);
+  } else if (data.type === 'subscription_success') {
+    console.log('[MSW WebSocket] 구독 성공:', data);
+  } else if (data.type === 'unsubscription_success') {
+    console.log('[MSW WebSocket] 구독 해제 성공:', data);
+  }
+}
+
+// 심볼별 모든 구독 Bar 업데이트
+function updateBarsForSymbol(symbol, realtimeBar) {
+  let matchedCount = 0;
+
+  // 해당 심볼의 모든 구독 찾기
+  subscriptions.forEach((subscription, subscriberUID) => {
+    if (subscription.symbol === symbol) {
+      matchedCount++;
+      console.log('[updateBarsForSymbol] 매칭된 구독 발견:', subscriberUID);
+
+      const updatedBar = createOrUpdateBar(
+        realtimeBar,
+        subscription.lastBar,
+        subscription.resolution
+      );
+
+      // 구독의 lastBar 업데이트
+      subscription.lastBar = updatedBar;
+
+      // 콜백 호출
+      try {
+        subscription.callback(updatedBar);
+      } catch (error) {
+        console.error(`[MSW WebSocket] 구독 ${subscriberUID} 콜백 오류:`, error);
+      }
+    }
+  });
+
+  console.log('[updateBarsForSymbol] 완료:', { symbol, matchedCount });
+}
+
+// Resolution별 Bar 생성/업데이트
+function createOrUpdateBar(realtimeBar, lastBar, resolution) {
+  const timeInterval = getTimeInterval(resolution);
+  const barTimeInSeconds = Math.floor(realtimeBar.time / 1000);
+  const currentBarStart = Math.floor(barTimeInSeconds / timeInterval) * timeInterval;
+
+  if (!lastBar) {
+    // 첫 번째 Bar 생성
+    return {
+      time: currentBarStart * 1000,
+      open: realtimeBar.close,
+      high: realtimeBar.close,
+      low: realtimeBar.close,
+      close: realtimeBar.close,
+      volume: realtimeBar.volume,
+    };
+  }
+
+  const lastBarTimeInSeconds = Math.floor(lastBar.time / 1000);
+  const lastBarStart = Math.floor(lastBarTimeInSeconds / timeInterval) * timeInterval;
+
+  if (currentBarStart > lastBarStart) {
+    // 새로운 Bar 생성
+    const newBar = {
+      time: currentBarStart * 1000, // 밀리초 단위로 변환
+      open: realtimeBar.close, // 새로운 Bar의 시작가는 현재 가격
+      high: realtimeBar.close,
+      low: realtimeBar.close,
+      close: realtimeBar.close,
+      volume: realtimeBar.volume || 1000,
+    };
+    console.log(
+      `[${resolution}분봉] 새로운 Bar 생성:`,
+      new Date(currentBarStart * 1000).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
+    );
+    return newBar;
+  } else {
+    // 기존 Bar 업데이트
+    return {
+      ...lastBar,
+      time: lastBar.time, // 기존 시간 유지 (이미 밀리초 단위)
+      high: Math.max(lastBar.high, realtimeBar.high || realtimeBar.close),
+      low: Math.min(lastBar.low, realtimeBar.low || realtimeBar.close),
+      close: realtimeBar.close,
+      volume: lastBar.volume + (realtimeBar.volume || 1000),
+    };
+  }
+}
+
+// 시간 간격 계산
+function getTimeInterval(resolution) {
+  switch (resolution) {
+    case '1':
+      return 60;
+    case '5':
+      return 5 * 60;
+    case '15':
+      return 15 * 60;
+    case '30':
+      return 30 * 60;
+    case '60':
+      return 60 * 60;
+    case '240':
+      return 4 * 60 * 60;
+    case '1D':
+      return 24 * 60 * 60;
+    case '1W':
+      return 7 * 24 * 60 * 60;
+    case '1M':
+      return 30 * 24 * 60 * 60;
+    default:
+      return 24 * 60 * 60; // 기본값: 1일
+  }
+}
+
+// 모든 기존 구독 재구독
+function resubscribeAll() {
+  // 심볼별로 중복 제거하여 구독
+  const uniqueSymbols = new Set();
+  subscriptions.forEach((subscription) => {
+    uniqueSymbols.add(subscription.symbol);
+  });
+
+  uniqueSymbols.forEach((symbol) => {
+    sendSubscribeMessage(symbol);
+  });
+}
+
+// 구독 메시지 전송
+function sendSubscribeMessage(symbol) {
+  console.log('[sendSubscribeMessage] 호출:', { symbol, socketState: socket?.readyState });
+
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    const subscribeMessage = {
+      type: 'subscribe',
+      symbol: symbol,
+    };
+
+    console.log('[sendSubscribeMessage] 구독 요청:', subscribeMessage);
+    socket.send(JSON.stringify(subscribeMessage));
+    console.log('[sendSubscribeMessage] 메시지 전송 완료');
+  } else {
+    console.error('[sendSubscribeMessage] WebSocket이 연결되지 않음:', {
+      socket: !!socket,
+      readyState: socket?.readyState,
+      expectedState: WebSocket.OPEN,
+    });
+  }
+}
+
+// 구독 해제 메시지 전송
+function sendUnsubscribeMessage(symbol) {
+  console.log('[sendUnsubscribeMessage] 호출:', { symbol, socketState: socket?.readyState });
+
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    const unsubscribeMessage = {
+      type: 'unsubscribe',
+      symbol: symbol,
+    };
+
+    console.log('[sendUnsubscribeMessage] 구독 해제 요청:', unsubscribeMessage);
+    socket.send(JSON.stringify(unsubscribeMessage));
+  } else {
+    console.error('[sendUnsubscribeMessage] WebSocket이 연결되지 않음');
+  }
+}
+
+// 소켓 초기화 (모듈 로드 시)
+initializeSocket();
+
+// 현재 구독 상태 확인 (디버깅용)
+export function getSubscriptionStatus() {
+  const symbolCounts = new Map();
+  subscriptions.forEach((subscription) => {
+    const count = symbolCounts.get(subscription.symbol) || 0;
+    symbolCounts.set(subscription.symbol, count + 1);
+  });
+
+  return {
+    connected: isConnected(),
+    connectionState: connectionState,
+    connectionDuration: connectionStartTime ? Date.now() - connectionStartTime : 0,
+    reconnectAttempts: reconnectAttempts,
+    subscriptions: Array.from(subscriptions.entries()).map(([uid, sub]) => ({
+      uid,
+      symbol: sub.symbol,
+      resolution: sub.resolution,
+      lastBar: sub.lastBar,
+    })),
+    symbolCounts: Object.fromEntries(symbolCounts),
+    totalSubscriptions: subscriptions.size,
+  };
+}
+
+// 구독 함수
+export function subscribeOnStream(
+  symbolInfo,
+  resolution,
+  onRealtimeCallback,
+  subscriberUID,
+  onResetCacheNeededCallback,
+  lastDailyBar
+) {
+  console.log('[subscribeOnStream] 호출:', {
+    symbolInfo: symbolInfo.full_name,
+    resolution,
+    subscriberUID,
+  });
+
+  // 심볼 파싱 (MSW 버전)
+  const parsedSymbol = parseFullSymbol(symbolInfo.full_name);
+  const symbol = `${parsedSymbol.fromSymbol}${parsedSymbol.toSymbol}`;
+
+  // 기본 가격 설정
+  const currentTime = Math.floor(Date.now() / 1000);
+  const defaultPrice = parsedSymbol.fromSymbol === 'ETH' ? 2800 : 50000; // ETH는 2800, BTC는 50000
+
+  // WebSocket 구독 상태 확인 (구독 추가 전에 확인)
+  const symbolSubscribed = Array.from(subscriptions.values()).some((sub) => sub.symbol === symbol);
+
+  const subscription = {
+    symbol,
+    resolution,
+    lastBar: lastDailyBar || {
+      time: currentTime * 1000,
+      open: defaultPrice,
+      high: defaultPrice,
+      low: defaultPrice,
+      close: defaultPrice,
+      volume: 1000,
+    },
+    callback: onRealtimeCallback,
+  };
+
+  subscriptions.set(subscriberUID, subscription);
+
+  // WebSocket 구독 (심볼이 아직 구독되지 않은 경우에만)
+  if (!symbolSubscribed) {
+    sendSubscribeMessage(symbol);
+    console.log('[subscribeOnStream] 새로운 심볼 구독:', symbol);
+  } else {
+    console.log('[subscribeOnStream] 이미 구독된 심볼:', symbol);
+  }
+}
+
+// 단순화된 구독 해제 함수
+export function unsubscribeFromStream(subscriberUID) {
+  console.log('[unsubscribeFromStream] 호출:', subscriberUID);
+
+  const subscription = subscriptions.get(subscriberUID);
+  if (!subscription) {
+    console.log('[unsubscribeFromStream] 구독을 찾을 수 없음:', subscriberUID);
+    return;
+  }
+
+  // 구독 제거
+  subscriptions.delete(subscriberUID);
+
+  // 해당 심볼의 다른 구독이 있는지 확인
+  const symbolSubscribed = Array.from(subscriptions.values()).some(
+    (sub) => sub.symbol === subscription.symbol
+  );
+
+  if (!symbolSubscribed) {
+    // 심볼 구독 해제
+    sendUnsubscribeMessage(subscription.symbol);
+    console.log('[unsubscribeFromStream] 심볼 구독 해제:', subscription.symbol);
+  }
+}
+
+// MSW WebSocket 연결 상태 확인
+export function isConnected() {
+  return socket && socket.readyState === WebSocket.OPEN;
+}
+
+// MSW WebSocket 수동 재연결
+export function reconnect() {
+  console.log('[수동 재연결] 시작');
+  if (socket) {
+    socket.close();
+  }
+  reconnectAttempts = 0;
+  initializeSocket();
+}
+
+// 완전한 정리 함수 (페이지 언로드 시 호출)
+export function cleanup() {
+  console.log('[완전 정리] 시작');
+  
+  // 소켓 정리
+  cleanupSocket();
+  
+  // 구독 상태 정리
+  subscriptions.clear();
+  
+  // 상태 초기화
+  reconnectAttempts = 0;
+  connectionStartTime = null;
+  connectionState = 'disconnected';
+  
+  console.log('[완전 정리] 완료');
+}
+
+// 연결 상태 가져오기
+export function getConnectionState() {
+  return {
+    state: connectionState,
+    connected: isConnected(),
+    reconnectAttempts: reconnectAttempts,
+    maxReconnectAttempts: maxReconnectAttempts,
+    connectionDuration: connectionStartTime ? Date.now() - connectionStartTime : 0
+  };
+}

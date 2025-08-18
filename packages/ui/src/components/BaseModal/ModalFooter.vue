@@ -76,20 +76,21 @@ const handleActionClick = (action: ModalAction, index: number) => {
       <!-- 기본 액션 버튼들 -->
       <div v-if="showDefaultFooter" class="modal-footer-actions">
         <BaseButton
-          v-if="showCancelButton"
-          variant="outlined"
-          size="lg"
-          :label="cancelText"
-          :full-width="fullWidth"
-          @click="handleCancel"
-        />
-        <BaseButton
           v-if="showConfirmButton"
           variant="contained"
           size="lg"
           :label="confirmText"
           :full-width="fullWidth"
           @click="handleConfirm"
+        />
+        <BaseButton
+          v-if="showCancelButton"
+          variant="contained"
+          color="grey"
+          size="lg"
+          :label="cancelText"
+          :full-width="fullWidth"
+          @click="handleCancel"
         />
       </div>
       
@@ -116,8 +117,7 @@ const handleActionClick = (action: ModalAction, index: number) => {
 <style scoped>
 .modal-footer {
   padding: 1rem 1.5rem;
-  border-top: 1px solid var(--modal-border-color, #e5e7eb);
-  background-color: var(--modal-footer-bg, #f9fafb);
+  background-color: var(--popup-background);
 }
 
 .modal-footer-actions,

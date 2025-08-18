@@ -36,7 +36,7 @@
 
 // 모달 컨테이너 기본 스타일
 .modal-container {
-  background-color: var(--modal-background, #ffffff);
+  background-color: var(--popup-background);
   border-radius: var(--modal-border-radius, 12px);
   box-shadow: var(
     --modal-box-shadow,
@@ -71,19 +71,6 @@
 .modal-size-xl {
   width: 800px;
   min-height: 400px;
-}
-
-// 모달 타입별 스타일
-.modal-variant-default {
-  // 기본 모달 스타일
-}
-
-.modal-variant-confirm {
-  // 확인 모달 스타일
-}
-
-.modal-variant-alert {
-  // 알림 모달 스타일
 }
 
 // 모달 진입 애니메이션
@@ -126,22 +113,7 @@
   }
 }
 
-// 다크 모드 지원
-@media (prefers-color-scheme: dark) {
-  .modal-container {
-    background-color: var(--modal-background-dark, #1f2937);
-    color: var(--modal-text-dark, #f9fafb);
-  }
-}
-
 // 접근성 개선
 .modal-container:focus {
   outline: none;
-}
-
-// 고대비 모드 지원
-@media (prefers-contrast: high) {
-  .modal-container {
-    border: 2px solid var(--modal-border-high-contrast, #000000);
-  }
 }

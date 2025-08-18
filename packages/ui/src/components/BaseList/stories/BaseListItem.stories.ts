@@ -14,9 +14,7 @@ const meta: Meta<typeof BaseListItem> = {
   parameters: {
     docs: {
       description: {
-        component: `
-BaseListItem은 Material UI 스타일의 리스트 아이템 컴포넌트입니다.
-        `,
+        component: `BaseListItem은 리스트 아이템 컴포넌트입니다.`,
       },
     },
   },

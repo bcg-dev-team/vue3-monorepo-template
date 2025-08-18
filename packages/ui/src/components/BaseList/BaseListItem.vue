@@ -1,7 +1,7 @@
-<!-- BaseListItem - Material UI 스타일의 리스트 아이템 컴포넌트 -->
+<!-- BaseListItem - 리스트 아이템 컴포넌트 -->
 <script setup lang="ts">
 /**
- * BaseListItem - Material UI 스타일의 리스트 아이템 컴포넌트
+ * BaseListItem - 리스트 아이템 컴포넌트
  *
  * 이 컴포넌트는 BaseList 내부에서 사용되어야 합니다.
  *

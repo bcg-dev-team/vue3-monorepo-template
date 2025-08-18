@@ -1,7 +1,7 @@
-<!-- BaseList - Material UI 스타일의 리스트 컨테이너 컴포넌트 -->
+<!-- BaseList - 리스트 컨테이너 컴포넌트 -->
 <script setup lang="ts">
 /**
- * BaseList - Material UI 스타일의 리스트 컨테이너 컴포넌트
+ * BaseList - 리스트 컨테이너 컴포넌트
  *
  * 이 컴포넌트는 BaseListItem들을 자식으로 받아서 리스트를 구성합니다.
  * 단독으로 사용할 수 없으며, 반드시 BaseListItem들을 포함해야 합니다.

@@ -4,13 +4,7 @@
       <MainCardContent class="p-6" title="거래내역" size="lg">
         <template #content>
           <div>
-            <BaseTabs
-              direction="horizontal"
-              v-model="modelValue"
-              size="lg"
-              variant="underline"
-              :tabs="tabs"
-            />
+            <BaseTabs v-model="modelValue" size="lg" variant="underline" :tabs="tabs" />
           </div>
         </template>
       </MainCardContent>

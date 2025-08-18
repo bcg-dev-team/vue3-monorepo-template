@@ -649,7 +649,6 @@ export const RealWorldExamples: Story = {
           
           <BaseListItem style="padding: 12px; border-bottom: 1px solid #e0e0e0;">
             <template #content>
-              <div style="display: flex; align-items: center; gap: 12px;">
                 <BaseListItemAvatar fallback="JD" color="primary" />
                 <BaseListItemText 
                   primary="John Doe"
@@ -658,13 +657,11 @@ export const RealWorldExamples: Story = {
                   rightSecondary="활성"
                   inset
                 />
-              </div>
             </template>
           </BaseListItem>
           
           <BaseListItem style="padding: 12px; border-bottom: 1px solid #e0e0e0;">
             <template #content>
-              <div style="display: flex; align-items: center; gap: 12px;">
                 <BaseListItemAvatar 
                   src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
                   alt="사용자 프로필"
@@ -676,13 +673,11 @@ export const RealWorldExamples: Story = {
                   rightSecondary="오프라인"
                   inset
                 />
-              </div>
             </template>
           </BaseListItem>
           
           <BaseListItem style="padding: 12px;">
             <template #content>
-              <div style="display: flex; align-items: center; gap: 12px;">
                 <BaseListItemAvatar 
                   :icon="{ name: 'person', size: 'md' }"
                   color="green"
@@ -694,7 +689,6 @@ export const RealWorldExamples: Story = {
                   rightSecondary="활성"
                   inset
                 />
-              </div>
             </template>
           </BaseListItem>
         </div>

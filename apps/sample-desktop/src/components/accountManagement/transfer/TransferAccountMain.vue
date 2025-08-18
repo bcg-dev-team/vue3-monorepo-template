@@ -2,7 +2,9 @@
   <MainCardContent class="px-padding-36 py-padding-64">
     <template #content>
       <div class="gap-size-64 flex flex-col justify-center">
-        <div class="flex items-center justify-center">stepper {{ menuState }}</div>
+        <div class="flex items-center justify-center">
+          <BaseStepper :labelConfig="steps" :current="step" variant="label" />
+        </div>
         <div class="gap-size-36 flex flex-col items-center justify-center">
           <div class="gap-size-8 flex flex-col items-center justify-center">
             <span class="text-font-24 font-semibold">{{ menuTitle.title }}</span>
@@ -51,7 +53,7 @@ import Transfer from '@/components/accountManagement/transfer/Transfer.vue';
 import Complete from '@/components/accountManagement/transfer/Complete.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import Deposit from '@/components/accountManagement/transfer/Deposit.vue';
-import { BaseButton } from '@template/ui';
+import { BaseButton, BaseStepper } from '@template/ui';
 import { ref, computed } from 'vue';
 
 interface TransferMenuTitle {
@@ -67,6 +69,11 @@ interface TransferMenuButton {
 type TransferMenuState = 'select' | 'withdraw' | 'transfer' | 'deposit' | 'complete';
 
 const menuState = ref<TransferMenuState>('select');
+const step = ref(0);
+
+const steps = {
+  stepLabelList: ['유형 선택', '금액 입력', '승인 완료'],
+};
 
 const menuList = [
   {

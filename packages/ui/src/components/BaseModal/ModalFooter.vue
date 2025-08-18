@@ -116,14 +116,15 @@ const handleActionClick = (action: ModalAction, index: number) => {
 
 <style scoped>
 .modal-footer {
-  padding: 1rem 1.5rem;
+  padding-bottom: 40px;
+  padding-inline: var(--padding-padding-36);
   background-color: var(--popup-background);
 }
 
 .modal-footer-actions,
 .modal-custom-actions {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.5rem;
   justify-content: flex-end;
   align-items: center;
   width: 100%;
@@ -135,21 +136,5 @@ const handleActionClick = (action: ModalAction, index: number) => {
 
 .modal-custom-actions {
   flex-wrap: wrap;
-}
-
-/* 반응형 디자인 */
-@media (max-width: 640px) {
-  .modal-footer-actions,
-  .modal-custom-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
-
-/* 작은 화면에서 버튼 크기 조정 */
-@media (max-width: 480px) {
-  .modal-footer {
-    padding: 0.75rem 1rem;
-  }
 }
 </style> 

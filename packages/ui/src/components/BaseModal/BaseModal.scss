@@ -37,7 +37,8 @@
 // 모달 컨테이너 기본 스타일
 .modal-container {
   background-color: var(--popup-background);
-  border-radius: var(--modal-border-radius, 12px);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--popup-border);
   box-shadow: var(
     --modal-box-shadow,
     0 20px 25px -5px rgba(0, 0, 0, 0.1),

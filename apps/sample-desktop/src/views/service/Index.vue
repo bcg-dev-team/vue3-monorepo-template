@@ -15,8 +15,8 @@ import UserGuide from '@/components/service/guide/UserGuide.vue';
 import Notice from '@/components/service/notice/Notice.vue';
 import Event from '@/components/service/event/Event.vue';
 import QnA from '@/components/service/qna/QnaMain.vue';
-import { BaseTabs, type TabItem } from '@template/ui';
 import Faq from '@/components/service/faq/Faq.vue';
+import { BaseTabs } from '@template/ui';
 import { ref } from 'vue';
 
 const selectedTab = ref('notice');
@@ -25,17 +25,14 @@ const tabs = {
   공지사항: {
     value: 'notice',
     component: Notice,
-    icon: 'send',
   },
   이벤트: {
     value: 'event',
     component: Event,
-    icon: 'description',
   },
   '1:1 문의': {
     value: 'qna',
     component: QnA,
-    icon: 'card',
   },
   '자주 묻는 질문': {
     value: 'faq',

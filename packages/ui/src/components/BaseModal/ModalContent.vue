@@ -81,7 +81,7 @@ const getAlertColorClass = (variant: AlertVariant) => `alert-${variant}`;
   flex: 1;
   padding: 1.5rem;
   overflow-y: auto;
-  background-color: var(--modal-content-bg, #ffffff);
+  background-color: var(--popup-background);
 }
 
 .alert-icon-container {
@@ -93,29 +93,29 @@ const getAlertColorClass = (variant: AlertVariant) => `alert-${variant}`;
 }
 
 .alert-icon-container.alert-success {
-  background-color: var(--alert-success-bg, #f0fdf4);
-  color: var(--alert-success-color, #166534);
+  background-color: var(--base-colors-green-green050);
+  color: var(--font-color-green);
 }
 
 .alert-icon-container.alert-info {
-  background-color: var(--alert-info-bg, #eff6ff);
-  color: var(--alert-info-color, #1d4ed8);
+  background-color: var(--base-colors-green-blue050);
+  color: var(--font-color-blue);
 }
 
 .alert-icon-container.alert-warning {
-  background-color: var(--alert-warning-bg, #fffbeb);
-  color: var(--alert-warning-color, #92400e);
+  background-color: var(--base-colors-primary-primary050);
+  color: var(--base-colors-primary-primary-deep);
 }
 
 .alert-icon-container.alert-error {
-  background-color: var(--alert-error-bg, #fef2f2);
-  color: var(--alert-error-color, #dc2626);
+  background-color: var(--base-colors-red-red050);
+  color: var(--base-colors-red-red800);
 }
 
 .modal-description {
   margin: 0 0 1rem 0;
   font-size: 0.875rem;
-  color: var(--modal-description-color, #6b7280);
+  color: var(--font-color-default-muted);
   line-height: 1.5;
 }
 

@@ -97,8 +97,8 @@ const handleClose = () => {
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--modal-border-color, #e5e7eb);
-  background-color: var(--modal-header-bg, #ffffff);
+  border-bottom: 1px solid var(--popup-border);
+  background-color: var(--popup-background);
 }
 
 .modal-header-left,
@@ -117,7 +117,7 @@ const handleClose = () => {
   margin: 0;
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--modal-title-color, #111827);
+  color: var(--popup-text);
   line-height: 1.5;
 }
 
@@ -131,21 +131,18 @@ const handleClose = () => {
   border: none;
   border-radius: 0.375rem;
   background-color: transparent;
-  color: var(--modal-icon-color, #6b7280);
+  color: var(--input-icon-default);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 
 .modal-back-button:hover,
 .modal-close-button:hover {
-  background-color: var(--modal-button-hover-bg, #f3f4f6);
-  color: var(--modal-icon-hover-color, #374151);
+  color: var(--input-icon-off);
 }
 
 .modal-back-button:focus,
 .modal-close-button:focus {
-  outline: none;
-  background-color: var(--modal-button-hover-bg, #f3f4f6);
-  color: var(--modal-icon-hover-color, #374151);
+  outline: 2px solid var(--input-color-border-focus);
 }
 </style> 

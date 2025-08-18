@@ -144,7 +144,8 @@ const handleClose = () => {
 
 .modal-back-button:focus,
 .modal-close-button:focus {
-  outline: 2px solid var(--modal-focus-ring, #3b82f6);
-  outline-offset: 2px;
+  outline: none;
+  background-color: var(--modal-button-hover-bg, #f3f4f6);
+  color: var(--modal-icon-hover-color, #374151);
 }
 </style> 

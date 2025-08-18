@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ComponentSize, TabItem } from 'types/components';
+import type { TabItem, TabVariant, TabsSize } from 'types/components';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { Tab } from '@headlessui/vue';
 
@@ -13,13 +13,13 @@ interface Props {
    * - underline: 밑줄 스타일 (기본)
    * - inner: 알약 형태 스타일
    */
-  variant?: 'underline' | 'inner';
+  variant?: TabVariant;
   /**
    * 글자 크기
    * - lg: large (18px)
    * - md: medium (16px)
    */
-  size?: Extract<ComponentSize, 'lg' | 'md'>;
+  size?: TabsSize;
   /**
    * 밑줄 여부 (underline variant에서만 사용)
    */

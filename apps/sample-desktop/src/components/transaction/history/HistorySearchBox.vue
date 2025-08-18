@@ -6,9 +6,12 @@
           <BaseInput size="sm" placeholder="input select 들어올 예정" />
         </template>
       </LabelContent>
-      <LabelContent label="결제일자" size="md">
+      <LabelContent label="결제 일자" size="md">
         <template #content>
-          <BaseInput size="sm" placeholder="input select 들어올 예정" />
+          <div class="gap-size-4 flex items-center">
+            <BaseInput size="sm" placeholder="input select 들어올 예정" />
+            <BaseTabs v-model="orderDate" :tabs="orderDateTypes" size="sm" variant="inner" />
+          </div>
         </template>
       </LabelContent>
     </div>
@@ -19,5 +22,23 @@
 </template>
 <script setup lang="ts">
 import LabelContent from '@/components/common/LabelContent.vue';
-import { BaseInput, BaseButton } from '@template/ui';
+import { BaseInput, BaseButton, BaseTabs } from '@template/ui';
+import { ref } from 'vue';
+
+const orderDate = ref('all');
+
+const orderDateTypes = {
+  오늘: {
+    value: 'today',
+  },
+  일주일: {
+    value: 'week',
+  },
+  '30일': {
+    value: 'month',
+  },
+  전체: {
+    value: 'all',
+  },
+};
 </script>

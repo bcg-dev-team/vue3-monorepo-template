@@ -7,9 +7,8 @@
             <BaseTabs
               direction="horizontal"
               v-model="modelValue"
-              showContent
-              size="md"
-              variant="connected"
+              size="lg"
+              variant="underline"
               :tabs="tabs"
             />
           </div>
@@ -35,13 +34,23 @@ import ClearTableContent from '@/components/transaction/clear/ClearTbaleContent.
 import OrderSearchBox from '@/components/transaction/order/OrderSearchBox.vue';
 import ClearSearchBox from '@/components/transaction/clear/ClearSearchBox.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
-import { BaseTabs, type TabItem } from '@template/ui';
+import { BaseTabs } from '@template/ui';
 import { ref } from 'vue';
 
 const modelValue = ref('order');
-const tabs = [
-  { value: 'order', label: '주문체결', content: OrderSearchBox },
-  { value: 'clear', label: '청산손익', content: ClearSearchBox },
-  { value: 'history', label: '결제내역', content: HistorySearchBox },
-] as TabItem[];
+
+const tabs = {
+  주문체결: {
+    value: 'order',
+    component: OrderSearchBox,
+  },
+  청산손익: {
+    value: 'clear',
+    component: ClearSearchBox,
+  },
+  결제내역: {
+    value: 'history',
+    component: HistorySearchBox,
+  },
+};
 </script>

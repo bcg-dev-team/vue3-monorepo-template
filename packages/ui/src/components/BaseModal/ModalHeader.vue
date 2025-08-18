@@ -96,7 +96,7 @@ const handleClose = () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.5rem;
+  padding: var(--padding-padding-12) var(--padding-padding-16);
   border-bottom: 1px solid var(--popup-border);
   background-color: var(--popup-background);
 }
@@ -109,13 +109,12 @@ const handleClose = () => {
 }
 
 .modal-header-center {
-  flex: 1;
-  justify-content: center;
+  justify-content: left;
 }
 
 .modal-title {
   margin: 0;
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--popup-text);
   line-height: 1.5;

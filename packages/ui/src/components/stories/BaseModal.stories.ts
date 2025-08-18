@@ -301,7 +301,7 @@ export const Large: Story = {
           @click="args.isOpen = true"
         />
         <BaseModal v-bind="args" @update:isOpen="args.isOpen = $event">
-          <div style="padding: 20px;">
+          <div>
             <p>이것은 Large 크기의 모달입니다. 더 많은 컨텐츠를 표시할 수 있습니다.</p>
             <p>긴 텍스트나 복잡한 폼 요소들을 포함할 수 있습니다.</p>
           </div>
@@ -427,7 +427,7 @@ export const AlertSuccess: Story = {
           @click="args.isOpen = true"
         />
         <BaseModal v-bind="args" @update:isOpen="args.isOpen = $event">
-          <div style="padding: 20px; text-align: center;">
+          <div style="text-align: center;">
             <p style="color: #d32f2f; font-weight: 500;">⚠️ 주의: 이 작업은 되돌릴 수 없습니다.</p>
           </div>
         </BaseModal>
@@ -485,7 +485,7 @@ export const WithBackButton: Story = {
           @click="args.isOpen = true"
         />
         <BaseModal v-bind="args" @update:isOpen="args.isOpen = $event">
-          <div style="padding: 20px;">
+          <div>
             <p>현재 단계: 2/3</p>
             <p>이전 단계로 돌아가거나 다음 단계로 진행할 수 있습니다.</p>
           </div>
@@ -560,7 +560,7 @@ export const WithCustomHeaderActions: Story = {
               </button>
             </div>
           </template>
-          <div style="padding: 20px;">
+          <div>
             <p>문서 편집 모드입니다. 헤더에 추가 액션 버튼들이 표시됩니다.</p>
             <textarea 
               style="width: 100%; height: 100px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
@@ -610,7 +610,7 @@ export const ExtraLarge: Story = {
           @click="args.isOpen = true"
         />
         <BaseModal v-bind="args" @update:isOpen="args.isOpen = $event">
-          <div style="padding: 20px;">
+          <div>
             <h3 style="margin-bottom: 16px;">레이아웃 구성</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
               <div>

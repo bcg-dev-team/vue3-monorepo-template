@@ -79,7 +79,7 @@ const getAlertColorClass = (variant: AlertVariant) => `alert-${variant}`;
 <style scoped>
 .modal-content {
   flex: 1;
-  padding: 1.5rem;
+  padding: var(--padding-padding-36);
   overflow-y: auto;
   background-color: var(--popup-background);
 }
@@ -120,7 +120,7 @@ const getAlertColorClass = (variant: AlertVariant) => `alert-${variant}`;
 }
 
 .modal-default-content {
-  color: var(--modal-text-color, #111827);
+  color: var(--popup-text);
   line-height: 1.6;
 }
 
@@ -131,7 +131,7 @@ const getAlertColorClass = (variant: AlertVariant) => `alert-${variant}`;
 .modal-default-content :deep(h5),
 .modal-default-content :deep(h6) {
   margin: 0 0 0.75rem 0;
-  color: var(--modal-heading-color, #111827);
+  color: var(--popup-text);
 }
 
 .modal-default-content :deep(p) {

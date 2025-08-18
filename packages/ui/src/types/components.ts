@@ -71,27 +71,15 @@ export interface TableRow {
 }
 
 // BaseTabs
-export interface TabItem {
-  value: string | number;
-  label: string;
-  disabled?: boolean;
-  content?: string | Component;
-}
-
 /**
  * BaseTabs 컴포넌트에서 사용하는 탭 아이템 인터페이스
  */
-export interface BaseTabItem {
-  value: string | number;
-  component?: Component;
-  icon?: IconName;
-}
-
-/**
- * BaseTabs 컴포넌트에서 사용하는 탭 카테고리 인터페이스
- */
-export interface TabCategories {
-  [categoryName: string]: BaseTabItem;
+export interface TabItem {
+  key: string;                // 시멘틱한 고유 식별자
+  label: string;              // 탭에 표시될 텍스트
+  component?: Component;      // 탭 패널에 표시될 컴포넌트
+  icon?: IconName;           // 아이콘 (선택사항)
+  disabled?: boolean;        // 비활성화 여부 (선택사항)
 }
 
 /**

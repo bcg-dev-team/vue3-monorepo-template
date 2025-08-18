@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ComponentSize, TabCategories, TabVariant, TabsSize } from 'types/components';
+import type { ComponentSize, TabItem } from 'types/components';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { Tab } from '@headlessui/vue';
 
@@ -7,19 +7,19 @@ interface Props {
   /**
    * 탭 데이터
    */
-  tabs: TabCategories;
+  tabs: TabItem[];
   /**
    * 탭 스타일 variant
    * - underline: 밑줄 스타일 (기본)
    * - inner: 알약 형태 스타일
    */
-  variant?: TabVariant;
+  variant?: 'underline' | 'inner';
   /**
    * 글자 크기
    * - lg: large (18px)
    * - md: medium (16px)
    */
-  size?: TabsSize;
+  size?: Extract<ComponentSize, 'lg' | 'md'>;
   /**
    * 밑줄 여부 (underline variant에서만 사용)
    */
@@ -28,6 +28,10 @@ interface Props {
    * 배경색 여부 (underline variant에서만 사용)
    */
   hasBackground?: boolean;
+  /**
+   * 현재 선택된 탭 key
+   */
+  selectedTabKey?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -35,15 +39,30 @@ const props = withDefaults(defineProps<Props>(), {
   size: 'md',
   underline: false,
   hasBackground: false,
+  selectedTabKey: '',
 });
 
 /**
  * 탭 버튼의 클래스를 동적으로 생성하는 함수
  * @param selected - 선택된 탭 여부
+ * @param disabled - 비활성화 여부
  * @returns CSS 클래스 문자열
  */
-const getTabButtonClasses = (selected: boolean): string => {
+const getTabButtonClasses = (selected: boolean, disabled: boolean = false): string => {
   const baseClasses = 'focus:outline-none focus:ring-0 flex items-center gap-x-2 ';
+
+  // 비활성화 상태
+  if (disabled) {
+    return [
+      baseClasses,
+      'opacity-50 cursor-not-allowed',
+      props.variant === 'inner' 
+        ? 'px-3 py-1.5 text-[13px] leading-[16px] tracking-tight text-[var(--button-tab-text-off)]'
+        : props.size === 'lg' 
+          ? 'py-3 px-6 text-base font-semibold text-default-muted-dark'
+          : 'px-4 py-3 text-sm font-medium text-default-muted-dark'
+    ].join(' ');
+  }
 
   // inner variant 스타일
   if (props.variant === 'inner') {
@@ -95,10 +114,19 @@ const getContainerClasses = (): string => {
 
 <template>
   <div :class="getContainerClasses()">
-    <Tab v-for="tab in Object.keys(tabs)" as="template" :key="tab" v-slot="{ selected }">
-      <button :class="getTabButtonClasses(selected)">
-        <BaseIcon v-if="tabs[tab].icon" :name="tabs[tab].icon" />
-        {{ tab }}
+    <Tab 
+      v-for="(tab, index) in tabs" 
+      as="template" 
+      :key="index" 
+      v-slot="{ selected }"
+      :disabled="tab.disabled"
+    >
+      <button 
+        :class="getTabButtonClasses(selected, tab.disabled)"
+        :disabled="tab.disabled"
+      >
+        <BaseIcon v-if="tab.icon" :name="tab.icon" />
+        {{ tab.label }}
       </button>
     </Tab>
   </div>

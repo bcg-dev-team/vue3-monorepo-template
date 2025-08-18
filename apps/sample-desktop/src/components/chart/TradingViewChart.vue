@@ -5,7 +5,6 @@
 <script setup lang="ts">
 // @ts-ignore - JavaScript 파일이므로 타입 체크 무시
 
-// [TODO] : 차트 데이터 파일 경로 수정
 import Datafeed from '@/adapters/tradingview/datafeed.js';
 import { onMounted, ref, watch } from 'vue';
 
@@ -77,7 +76,7 @@ onMounted(() => {
       fullscreen: false,
       container: 'tv_chart_container',
       datafeed: Datafeed,
-      library_path: '/charting_library/',
+      library_path: '../../adapters/tradingview/charting_library/',
       width: 1000,
       height: 700,
       locale: 'ko',

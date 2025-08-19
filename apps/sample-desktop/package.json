@@ -23,5 +23,12 @@
     "@template/ui": "workspace:*",
     "@template/utils": "workspace:*"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "msw": "^2.10.5"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
 }

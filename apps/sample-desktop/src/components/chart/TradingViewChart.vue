@@ -76,7 +76,7 @@ onMounted(() => {
       fullscreen: false,
       container: 'tv_chart_container',
       datafeed: Datafeed,
-      library_path: '../../adapters/tradingview/charting_library/',
+      library_path: '/charting_library/',
       width: 1000,
       height: 700,
       locale: 'ko',

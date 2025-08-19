@@ -2,17 +2,38 @@
 datafeed api는 위젯 생성자에서 구현하고 datafeed 객체에 할당해야 하는 메서드 집합
  */
 
-import { makeApiRequest, generateSymbol, parseFullSymbol } from './helpers.js';
-import { subscribeOnStream, unsubscribeFromStream } from './streaming.js';
+import type {
+  TradingViewDatafeed,
+  TradingViewBar,
+  TradingViewSymbolInfo,
+  TradingSymbol,
+  TradingViewConfiguration,
+  ChartPeriodParams,
+  HistoryCallback,
+  ErrorCallback,
+  RealtimeCallback,
+  ResetCacheCallback,
+  CryptoCompareApiData,
+} from '@/types/tradingview';
 
-const lastBarsCache = new Map();
+// @ts-ignore - JavaScript 파일이므로 타입 체크 무시
+import { makeApiRequest, generateSymbol, parseFullSymbol } from './helpers.ts';
+// @ts-ignore - JavaScript 파일이므로 타입 체크 무시
+import { subscribeOnStream, unsubscribeFromStream } from './streaming';
+const lastBarsCache = new Map<string, TradingViewBar>();
 
-export default {
-  onReady: (callback) => {
+const datafeed: TradingViewDatafeed = {
+  onReady: (callback: (config: TradingViewConfiguration) => void): void => {
     console.log('[onReady]: Method call');
     setTimeout(() => callback(configurationData));
   },
-  searchSymbols: async (userInput, exchange, symbolType, onResultReadyCallback) => {
+
+  searchSymbols: async (
+    userInput: string,
+    exchange: string,
+    symbolType: string,
+    onResultReadyCallback: (symbols: TradingSymbol[]) => void
+  ): Promise<void> => {
     console.log('[searchSymbols]: Method call');
     const symbols = await getAllSymbols();
     const newSymbols = symbols.filter((symbol) => {
@@ -24,17 +45,13 @@ export default {
     });
     onResultReadyCallback(newSymbols);
   },
-  // 데이터 피드가 구성되면 호출됨
-  // 거래소,시간대,가격단위 등 기호정보를 검색한다.
-  // 이 튜토리얼에서는 메서드 supported_resolutions: ['1D', '1W', '1M']에 값을 지정했습니다 onReady.
-  // 라이브러리는 일일 값을 기반으로 주간 및 월간 값을 생성할 수 있습니다( ). 하지만 데이터 피드에 이러한 값이
-  // 포함되지 않도록 하려면 를 설정 1D해야 합니다 .has_weekly_and_monthlyfalse
+
   resolveSymbol: async (
-    symbolName,
-    onSymbolResolvedCallback,
-    onResolveErrorCallback,
-    extension
-  ) => {
+    symbolName: string,
+    onSymbolResolvedCallback: (symbolInfo: TradingViewSymbolInfo) => void,
+    onResolveErrorCallback: ErrorCallback,
+    extension?: any
+  ): Promise<void> => {
     console.log('[resolveSymbol]: Method call', symbolName);
     const symbols = await getAllSymbols();
     const symbolItem = symbols.find(({ ticker }) => ticker === symbolName);
@@ -44,7 +61,7 @@ export default {
       return;
     }
     // Symbol information object
-    const symbolInfo = {
+    const symbolInfo: TradingViewSymbolInfo = {
       ticker: symbolItem.ticker,
       name: symbolItem.symbol,
       description: symbolItem.description,
@@ -73,12 +90,19 @@ export default {
     );
     onSymbolResolvedCallback(symbolInfo);
   },
-  getBars: async (symbolInfo, resolution, periodParams, onHistoryCallback, onErrorCallback) => {
+
+  getBars: async (
+    symbolInfo: TradingViewSymbolInfo,
+    resolution: string,
+    periodParams: ChartPeriodParams,
+    onHistoryCallback: HistoryCallback,
+    onErrorCallback: ErrorCallback
+  ): Promise<void> => {
     const { from, to, firstDataRequest } = periodParams;
     console.log('[getBars]: Method call', symbolInfo, resolution, from, to);
     console.log('[getBars]: full_name:', symbolInfo.full_name);
     console.log('[getBars]: resolution:', resolution);
-    const parsedSymbol = parseFullSymbol(symbolInfo.full_name);
+    const parsedSymbol = parseFullSymbol(symbolInfo.full_name || symbolInfo.name);
     console.log('[getBars]: parsedSymbol:', parsedSymbol);
 
     if (!parsedSymbol) {
@@ -105,7 +129,8 @@ export default {
       dataLimit = 2000;
       timeMultiplier = 1;
     }
-    const urlParameters = {
+
+    const urlParameters: Record<string, string | number> = {
       e: symbolInfo.exchange,
       fsym: parsedSymbol.fromSymbol,
       tsym: parsedSymbol.toSymbol,
@@ -113,17 +138,23 @@ export default {
       limit: dataLimit,
       resolution: resolution, // 해상도 정보 추가
     };
+
     const query = Object.keys(urlParameters)
       .map((name) => `${name}=${encodeURIComponent(urlParameters[name])}`)
       .join('&');
+
     try {
-      const data = await makeApiRequest(`data/histoday?${query}`);
+      // 통합 API 엔드포인트 사용
+      const apiEndpoint = 'data/history';
+
+      const data: CryptoCompareApiData = await makeApiRequest(`${apiEndpoint}?${query}`);
       if ((data.Response && data.Response === 'Error') || data.Data.length === 0) {
         // "noData" should be set if there is no data in the requested period
         onHistoryCallback([], { noData: true });
         return;
       }
-      let bars = [];
+
+      let bars: TradingViewBar[] = [];
       data.Data.forEach((bar) => {
         if (bar.time >= from && bar.time < to) {
           bars = [
@@ -138,11 +169,13 @@ export default {
           ];
         }
       });
-      if (firstDataRequest) {
-        lastBarsCache.set(symbolInfo.full_name, {
+
+      if (firstDataRequest && bars.length > 0) {
+        lastBarsCache.set(symbolInfo.full_name || symbolInfo.name, {
           ...bars[bars.length - 1],
         });
       }
+
       console.log(`[getBars]: returned ${bars.length} bar(s)`);
       console.log('[getBars]: 첫 번째 바 데이터:', bars[0]);
       console.log('[getBars]: 마지막 바 데이터:', bars[bars.length - 1]);
@@ -153,39 +186,49 @@ export default {
       onHistoryCallback(bars, { noData: false });
     } catch (error) {
       console.log('[getBars]: Get error', error);
-      onErrorCallback(error);
+      onErrorCallback(error as Error);
     }
   },
+
   subscribeBars: (
-    symbolInfo,
-    resolution,
-    onRealtimeCallback,
-    subscriberUID,
-    onResetCacheNeededCallback
-  ) => {
+    symbolInfo: TradingViewSymbolInfo,
+    resolution: string,
+    onRealtimeCallback: RealtimeCallback,
+    subscriberUID: string,
+    onResetCacheNeededCallback?: ResetCacheCallback
+  ): void => {
     console.log('[subscribeBars]: Method call with subscriberUID:', subscriberUID);
     console.log('[subscribeBars]: symbolInfo:', symbolInfo);
     console.log('[subscribeBars]: resolution:', resolution);
 
-    // MSW WebSocket 스트림 구독
-    // subscribeOnStream(
-    //   symbolInfo,
-    //   resolution,
-    //   onRealtimeCallback,
-    //   subscriberUID,
-    //   onResetCacheNeededCallback,
-    //   lastBarsCache.get(symbolInfo.full_name)
-    // );
+    // MSW WebSocket 스트림 구독 활성화
+    const lastBar = lastBarsCache.get(symbolInfo.full_name || symbolInfo.name);
+    const lastBarForStream = lastBar
+      ? {
+          ...lastBar,
+          volume: lastBar.volume || 0,
+        }
+      : undefined;
+
+    subscribeOnStream(
+      symbolInfo,
+      resolution,
+      onRealtimeCallback,
+      subscriberUID,
+      onResetCacheNeededCallback,
+      lastBarForStream
+    );
   },
-  unsubscribeBars: (subscriberUID) => {
+
+  unsubscribeBars: (subscriberUID: string): void => {
     console.log('[unsubscribeBars]: Method call with subscriberUID:', subscriberUID);
 
-    // MSW WebSocket 스트림 구독 해제
-    // unsubscribeFromStream(subscriberUID);
+    // MSW WebSocket 스트림 구독 해제 활성화
+    unsubscribeFromStream(subscriberUID);
   },
 };
 
-const configurationData = {
+const configurationData: TradingViewConfiguration = {
   // Represents the resolutions for bars supported by your datafeed
   // 데이터피드에서 지원하는 봉(resolution) 목록을 나타냅니다
   // 이미지 메시지와 일치하도록 설정: "1M, 5M, 15M, 30M, 60, 240, 1D, 1W, 1M"
@@ -208,7 +251,7 @@ const configurationData = {
 };
 
 // 시간 간격 매핑 함수
-function getSupportedResolutions(symbol) {
+function getSupportedResolutions(symbol: string): string[] {
   // ETH/EUR에 대해서는 이미지 메시지와 일치하는 시간 간격 설정
   if (symbol === 'ETH/EUR') {
     return ['1', '5', '15', '30', '60', '240', '1D', '1W', '1M'];
@@ -219,7 +262,7 @@ function getSupportedResolutions(symbol) {
 
 // Obtains all symbols for all exchanges supported by CryptoCompare API
 // MSW 환경에서 사용할 심볼 목록 (모킹된 데이터)
-async function getAllSymbols() {
+async function getAllSymbols(): Promise<TradingSymbol[]> {
   // MSW 환경에서는 하드코딩된 심볼 목록 사용
   return [
     {
@@ -252,3 +295,5 @@ async function getAllSymbols() {
     },
   ];
 }
+
+export default datafeed;

@@ -1,17 +1,23 @@
 <template>
-  <div id="tv_chart_container" style="width: 1000px; height: 600px"></div>
+  <div id="tv_chart_container" class="chart-wrapper"></div>
 </template>
 
 <script setup lang="ts">
 // @ts-ignore - JavaScript 파일이므로 타입 체크 무시
 
 import Datafeed from '@/adapters/tradingview/datafeed.js';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 
 interface Props {
   symbol?: string;
   interval?: string;
 }
+
+interface Emits {
+  (e: 'chart-ready'): void;
+}
+
+const emit = defineEmits<Emits>();
 
 const props = withDefaults(defineProps<Props>(), {
   symbol: 'ETH/EUR', // datafeed.js의 getAllSymbols()와 일치하도록 수정
@@ -77,8 +83,8 @@ onMounted(() => {
       container: 'tv_chart_container',
       datafeed: Datafeed,
       library_path: '/charting_library/',
-      width: 1000,
-      height: 700,
+      width: '100%',
+      height: '100%',
       locale: 'ko',
       debug: false,
       enabled_features: [
@@ -156,6 +162,9 @@ onMounted(() => {
     // 차트 로드 완료 후 가격 스케일 설정 확인
     tvWidget.value.onChartReady(() => {
       console.log('[TradingView] 차트 로드 완료 - 심볼:', props.symbol);
+
+      // chart-ready 이벤트 발생
+      emit('chart-ready');
 
       // 차트가 완전히 로드될 때까지 잠시 대기
       setTimeout(() => {
@@ -252,13 +261,38 @@ watch(
   }
 );
 
-const rightScale = document.querySelector('.chart-markup-table');
+// 차트 마크업 테이블 숨기기 (타입 안전하게 수정)
+const rightScale = document.querySelector('.chart-markup-table') as HTMLElement;
 if (rightScale) {
   rightScale.style.display = 'none';
 }
+
+// 차트 크기 조정을 위한 리사이즈 핸들러
+const handleResize = () => {
+  if (tvWidget.value && tvWidget.value.chart) {
+    const chart = tvWidget.value.chart();
+    if (chart && typeof chart.resize === 'function') {
+      chart.resize();
+    }
+  }
+};
+
+// 윈도우 리사이즈 이벤트 리스너 추가
+window.addEventListener('resize', handleResize);
+
+// 컴포넌트 언마운트 시 이벤트 리스너 정리
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
+});
 </script>
 
 <style scoped>
+.chart-wrapper {
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+}
+
 .chart-page canvas[style*='left: 0px'][style*='z-index: 2'] {
   display: none !important;
 }

@@ -6,9 +6,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import QnaRegister from '@/components/service/qna/QnaRegister.vue';
-import QnaDetail from '@/components/service/qna/QnaDetail.vue';
-import QnaList from '@/components/service/qna/QnaList.vue';
+import QnaRegister from '@/components/support/qna/QnaRegister.vue';
+import QnaDetail from '@/components/support/qna/QnaDetail.vue';
+import QnaList from '@/components/support/qna/QnaList.vue';
 import { ref } from 'vue';
 
 const type = ref<'register' | 'detail' | null>(null);

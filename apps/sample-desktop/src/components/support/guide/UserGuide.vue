@@ -4,7 +4,7 @@
       <div>
         <img
           class="h-[80px] w-auto"
-          src="@/assets/image/service/guide-service-signup.png"
+          src="@/assets/image/support/guide-service-signup.png"
           alt="signup"
         />
       </div>
@@ -21,7 +21,7 @@
     </div>
     <div class="gap-size-24 flex">
       <div>
-        <img class="h-[80px] w-auto" src="@/assets/image/service/guide-account.png" alt="account" />
+        <img class="h-[80px] w-auto" src="@/assets/image/support/guide-account.png" alt="account" />
       </div>
       <div class="gap-size-8 flex flex-col">
         <div>
@@ -40,7 +40,7 @@
       <div>
         <img
           class="h-[80px] w-auto"
-          src="@/assets/image/service/guide-transaction-tax.png"
+          src="@/assets/image/support/guide-transaction-tax.png"
           alt="transaction"
         />
       </div>
@@ -58,7 +58,7 @@
     </div>
     <div class="gap-size-24 flex">
       <div>
-        <img class="h-[80px] w-auto" src="@/assets/image/service/guide-faq.png" alt="faq" />
+        <img class="h-[80px] w-auto" src="@/assets/image/support/guide-faq.png" alt="faq" />
       </div>
       <div class="gap-size-8 flex flex-col">
         <div class="gap-size-8 flex items-center">
@@ -82,7 +82,7 @@
       <div>
         <img
           class="h-[80px] w-auto"
-          src="@/assets/image/service/guide-customer-service.png"
+          src="@/assets/image/support/guide-customer-service.png"
           alt="customer-service"
         />
       </div>

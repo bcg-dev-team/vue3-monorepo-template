@@ -11,11 +11,11 @@
 </template>
 <script setup lang="ts">
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
-import UserGuide from '@/components/service/guide/UserGuide.vue';
-import Notice from '@/components/service/notice/Notice.vue';
-import Event from '@/components/service/event/Event.vue';
-import QnA from '@/components/service/qna/QnaMain.vue';
-import Faq from '@/components/service/faq/Faq.vue';
+import UserGuide from '@/components/support/guide/UserGuide.vue';
+import Notice from '@/components/support/notice/Notice.vue';
+import Event from '@/components/support/event/Event.vue';
+import QnA from '@/components/support/qna/QnaMain.vue';
+import Faq from '@/components/support/faq/Faq.vue';
 import { BaseTabs } from '@template/ui';
 import { ref } from 'vue';
 

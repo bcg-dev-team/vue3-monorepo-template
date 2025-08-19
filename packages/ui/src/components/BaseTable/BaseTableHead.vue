@@ -3,7 +3,6 @@ import type { TableHeader } from '../../types/components';
 import BaseTableCell from './BaseTableCell.vue';
 import BaseTableRow from './BaseTableRow.vue';
 import { computed } from 'vue';
-import './BaseTableHead.scss';
 
 interface Props {
   headers: TableHeader[];

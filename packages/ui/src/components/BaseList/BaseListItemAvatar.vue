@@ -19,7 +19,6 @@
 import type { ButtonIconProps } from '../../types/components';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { computed, ref } from 'vue';
-import './BaseListItemAvatar.scss';
 
 interface Props {
   /** 아바타 이미지 URL */

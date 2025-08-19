@@ -5,7 +5,6 @@ import BaseSkeleton from '../BaseSkeleton/BaseSkeleton.vue';
 import BaseTableHead from './BaseTableHead.vue';
 import BaseTableBody from './BaseTableBody.vue';
 import { computed } from 'vue';
-import './BaseTable.scss';
 
 /**
  * 테이블 컴포넌트

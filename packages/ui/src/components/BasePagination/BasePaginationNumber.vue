@@ -1,6 +1,5 @@
 <!-- Figma: Pagination/Number -->
 <script setup lang="ts">
-import './BasePaginationNumber.scss';
 import { computed } from 'vue';
 
 /**

@@ -2,7 +2,6 @@
 <script setup lang="ts">
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { computed } from 'vue';
-import './BaseStepper.scss';
 
 interface BaseProps {
   /** 현재 활성 인덱스 (0부터 시작) */

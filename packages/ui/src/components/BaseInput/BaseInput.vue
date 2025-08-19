@@ -5,7 +5,6 @@
 -->
 <script setup lang="ts">
 import { computed } from 'vue';
-import './BaseInput.scss';
 
 /**
  * BaseInput - 모든 Input 타입의 공통 베이스 컴포넌트

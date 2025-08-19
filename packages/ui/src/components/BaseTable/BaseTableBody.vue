@@ -2,7 +2,6 @@
 import type { TableHeader, TableRow } from '../../types/components';
 import BaseTableCell from './BaseTableCell.vue';
 import BaseTableRow from './BaseTableRow.vue';
-import './BaseTableBody.scss';
 
 interface Props {
   headers: TableHeader[];

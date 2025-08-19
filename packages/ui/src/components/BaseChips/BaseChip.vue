@@ -7,7 +7,6 @@
 <script setup lang="ts">
 import type { ChipVariant, ComponentSize } from '../../types/components';
 import { computed } from 'vue';
-import './BaseChip.scss';
 
 /**
  * 칩(Chip) 최소 단위 컴포넌트

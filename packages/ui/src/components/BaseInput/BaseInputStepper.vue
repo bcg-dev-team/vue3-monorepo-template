@@ -5,7 +5,6 @@
 <script setup lang="ts">
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import BaseInput from './BaseInput.vue';
-import './BaseInputStepper.scss';
 import { computed } from 'vue';
 
 /**

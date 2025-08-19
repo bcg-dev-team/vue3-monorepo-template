@@ -28,7 +28,6 @@
 <script setup lang="ts">
 import BaseProgressBar from '../BaseProgressBar/BaseProgressBar.vue';
 import type { PasswordStrengthDisplay } from '@template/types';
-import './BasePasswordStrength.scss';
 
 interface Props {
   /** 비밀번호 강도 정보 */

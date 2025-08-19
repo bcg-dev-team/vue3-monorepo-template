@@ -6,7 +6,6 @@
 import type { ComponentSize } from '../../types/components';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { computed, onMounted, ref } from 'vue';
-import './BaseCheckbox.scss';
 
 /**
  * BaseCheckbox - 체크박스 컴포넌트

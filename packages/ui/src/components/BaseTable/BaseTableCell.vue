@@ -2,7 +2,6 @@
 <script setup lang="ts">
 import type { TextAlign } from '../../types/components';
 import { computed } from 'vue';
-import './BaseTableCell.scss';
 
 interface Props {
   type?: 'header' | 'body' | 'footer';

@@ -103,6 +103,17 @@ export interface ChipData {
   icon?: string;
 }
 
+// BaseRadioGroup
+/**
+ * BaseRadioGroup 컴포넌트에서 사용하는 라디오 옵션 인터페이스
+ */
+export interface RadioOption<T = any> {
+  value: T;                   // 옵션의 값
+  label: string;              // 옵션에 표시될 텍스트
+  icon?: IconName;           // 아이콘 (선택사항)
+  disabled?: boolean;        // 비활성화 여부 (선택사항)
+}
+
 // BasePopup
 export type PopupSize = 'sm' | 'md' | 'lg' | 'xl';
 export type PopupVariant = 'default' | 'confirm' | 'alert';

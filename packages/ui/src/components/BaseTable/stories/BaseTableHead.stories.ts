@@ -1,7 +1,7 @@
+import type { TableHeader } from '../../../types/components';
 import type { Meta, StoryObj } from '@storybook/vue3';
 import BaseTableHead from '../BaseTableHead.vue';
 import BaseTableBody from '../BaseTableBody.vue';
-import type { TableHeader } from '../../../types/components';
 
 const meta: Meta<typeof BaseTableHead> = {
   title: 'Table/Head',
@@ -59,9 +59,7 @@ const defaultData = [
   { id: 2, name: '이영희', age: 30, job: '디자이너' },
 ];
 
-const userStatsData = [
-  { id: 1, total: 1234, active: 987, inactive: 247 },
-];
+const userStatsData = [{ id: 1, total: 1234, active: 987, inactive: 247 }];
 
 export const Type1: Story = {
   args: {
@@ -128,7 +126,8 @@ export const Type2Gray: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Type2 Gray preset 스타일의 테이블 헤더입니다. 기본 그레이 색상의 헤더 스타일을 제공합니다.',
+        story:
+          'Type2 Gray preset 스타일의 테이블 헤더입니다. 기본 그레이 색상의 헤더 스타일을 제공합니다.',
       },
     },
   },
@@ -157,7 +156,8 @@ export const Type2Blue: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Type2 Blue preset 스타일의 테이블 헤더입니다. 파란색 배경의 헤더 스타일을 제공합니다.',
+        story:
+          'Type2 Blue preset 스타일의 테이블 헤더입니다. 파란색 배경의 헤더 스타일을 제공합니다.',
       },
     },
   },
@@ -186,7 +186,8 @@ export const Type2Pink: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Type2 Pink preset 스타일의 테이블 헤더입니다. 분홍색 배경의 헤더 스타일을 제공합니다.',
+        story:
+          'Type2 Pink preset 스타일의 테이블 헤더입니다. 분홍색 배경의 헤더 스타일을 제공합니다.',
       },
     },
   },
@@ -351,4 +352,4 @@ export const WithSorting: Story = {
       </div>
     `,
   }),
-}; 
+};

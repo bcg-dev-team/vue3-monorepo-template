@@ -4,8 +4,8 @@
   Flowbite Image placeholder 예제 기반
 -->
 <script setup lang="ts">
-import BaseSkeleton from './BaseSkeleton.vue';
 import SkeletonIcons from './SkeletonIcons.vue';
+import BaseSkeleton from './BaseSkeleton.vue';
 
 /**
  * ImageSkeleton - 이미지 + 텍스트 스켈레톤 컴포넌트
@@ -39,10 +39,14 @@ const props = withDefaults(defineProps<Props>(), {
 
 const getImageWidth = () => {
   switch (props.imageWidth) {
-    case 'sm': return '200px';
-    case 'lg': return '400px';
-    case 'full': return '100%';
-    default: return '300px';
+    case 'sm':
+      return '200px';
+    case 'lg':
+      return '400px';
+    case 'full':
+      return '100%';
+    default:
+      return '300px';
   }
 };
 </script>
@@ -129,4 +133,4 @@ const getImageWidth = () => {
 .image-skeleton-line {
   margin-bottom: 0.25rem;
 }
-</style> 
+</style>

@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/vue3';
 import BaseInputStepper from '../BaseInputStepper.vue';
+import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof BaseInputStepper> = {
   title: 'Inputs/Stepper',
@@ -7,50 +7,51 @@ const meta: Meta<typeof BaseInputStepper> = {
   parameters: {
     docs: {
       description: {
-        component: '스테퍼 입력 컴포넌트입니다. 피그마의 Input/Stepper와 Input/Stepper-lined 디자인을 기반으로 구현되었으며, +/- 버튼으로 값을 조정할 수 있습니다.'
-      }
-    }
+        component:
+          '스테퍼 입력 컴포넌트입니다. 피그마의 Input/Stepper와 Input/Stepper-lined 디자인을 기반으로 구현되었으며, +/- 버튼으로 값을 조정할 수 있습니다.',
+      },
+    },
   },
   argTypes: {
     modelValue: {
       description: '현재 값 (v-model)',
-      control: 'number'
+      control: 'number',
     },
     placeholder: {
       description: '플레이스홀더 텍스트',
-      control: 'text'
+      control: 'text',
     },
     size: {
       description: '크기 (sm: 32px 높이)',
       control: 'select',
-      options: ['sm', 'md']
+      options: ['sm', 'md'],
     },
     disabled: {
       description: '비활성화 여부',
-      control: 'boolean'
+      control: 'boolean',
     },
     error: {
       description: '에러 상태 여부',
-      control: 'boolean'
+      control: 'boolean',
     },
     errorMessage: {
       description: '에러 메시지',
-      control: 'text'
+      control: 'text',
     },
     min: {
       description: '최소값',
-      control: 'number'
+      control: 'number',
     },
     max: {
       description: '최대값',
-      control: 'number'
+      control: 'number',
     },
     step: {
       description: '증감 단위',
-      control: 'number'
-    }
+      control: 'number',
+    },
   },
-  tags: ['autodocs']
+  tags: ['autodocs'],
 };
 
 export default meta;
@@ -64,8 +65,8 @@ export const Default: Story = {
     size: 'sm',
     min: 0,
     max: 100,
-    step: 1
-  }
+    step: 1,
+  },
 };
 
 // 값이 있는 상태
@@ -76,8 +77,8 @@ export const WithValue: Story = {
     size: 'sm',
     min: 0,
     max: 100,
-    step: 1
-  }
+    step: 1,
+  },
 };
 
 // 최소값에 도달한 상태
@@ -88,8 +89,8 @@ export const AtMinimum: Story = {
     size: 'sm',
     min: 0,
     max: 100,
-    step: 1
-  }
+    step: 1,
+  },
 };
 
 // 최대값에 도달한 상태
@@ -100,8 +101,8 @@ export const AtMaximum: Story = {
     size: 'sm',
     min: 0,
     max: 100,
-    step: 1
-  }
+    step: 1,
+  },
 };
 
 // 비활성화 상태
@@ -113,8 +114,8 @@ export const Disabled: Story = {
     disabled: true,
     min: 0,
     max: 100,
-    step: 1
-  }
+    step: 1,
+  },
 };
 
 // 에러 상태
@@ -127,8 +128,8 @@ export const Error: Story = {
     errorMessage: '수량을 입력해주세요.',
     min: 0,
     max: 100,
-    step: 1
-  }
+    step: 1,
+  },
 };
 
 // 큰 단위 스테퍼
@@ -139,8 +140,8 @@ export const LargeStep: Story = {
     size: 'sm',
     min: 0,
     max: 1000,
-    step: 10
-  }
+    step: 10,
+  },
 };
 
 // 소수점 스테퍼
@@ -151,8 +152,8 @@ export const DecimalStep: Story = {
     size: 'sm',
     min: 0,
     max: 10,
-    step: 0.5
-  }
+    step: 0.5,
+  },
 };
 
 // 음수 허용
@@ -163,8 +164,8 @@ export const NegativeAllowed: Story = {
     size: 'sm',
     min: -10,
     max: 10,
-    step: 1
-  }
+    step: 1,
+  },
 };
 
 // 모든 상태 비교
@@ -236,8 +237,8 @@ export const AllStates: Story = {
           />
         </div>
       </div>
-    `
-  })
+    `,
+  }),
 };
 
 // 실제 사용 예시
@@ -282,8 +283,8 @@ export const UsageExample: Story = {
           />
         </div>
       </div>
-    `
-  })
+    `,
+  }),
 };
 
 // 다양한 단위 예시
@@ -340,6 +341,6 @@ export const DifferentSteps: Story = {
           />
         </div>
       </div>
-    `
-  })
-}; 
+    `,
+  }),
+};

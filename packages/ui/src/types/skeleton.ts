@@ -13,4 +13,4 @@ export interface BaseSkeletonProps {
 // 로딩 상태 Props
 export interface LoadingProps {
   isLoading?: boolean;
-} 
+}

@@ -4,8 +4,8 @@
   피그마 디자인 토큰 기반으로 구현
 -->
 <script setup lang="ts">
-import { computed } from 'vue';
 import BaseSkeleton from './BaseSkeleton.vue';
+import { computed } from 'vue';
 
 /**
  * TextSkeleton - 텍스트 전용 스켈레톤 컴포넌트
@@ -51,4 +51,4 @@ const lineArray = computed(() => Array.from({ length: props.lines }, (_, i) => i
 .text-skeleton-line {
   margin-bottom: 0.5rem;
 }
-</style> 
+</style>

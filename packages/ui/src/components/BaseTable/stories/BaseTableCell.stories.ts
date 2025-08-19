@@ -1,7 +1,7 @@
+import type { TableHeader } from '../../../types/components';
 import type { Meta, StoryObj } from '@storybook/vue3';
 import BaseTableCell from '../BaseTableCell.vue';
 import BaseTableRow from '../BaseTableRow.vue';
-import type { TableHeader } from '../../../types/components';
 
 const meta: Meta<typeof BaseTableCell> = {
   title: 'Table/Cell',

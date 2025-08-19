@@ -1,8 +1,8 @@
 /// <reference types="vite/client" />
 
 import type { Meta, StoryObj } from '@storybook/vue3';
-import BaseIcon from '../BaseIcon.vue';
 import type { IconName } from '../../../types/icons';
+import BaseIcon from '../BaseIcon.vue';
 
 /**
  * BaseIcon 컴포넌트
@@ -269,7 +269,8 @@ export const Loading: Story = {
   parameters: {
     docs: {
       description: {
-        story: '아이콘의 로딩 상태를 보여줍니다. isLoading이 true일 때는 IconSkeleton이 표시됩니다.',
+        story:
+          '아이콘의 로딩 상태를 보여줍니다. isLoading이 true일 때는 IconSkeleton이 표시됩니다.',
       },
     },
   },

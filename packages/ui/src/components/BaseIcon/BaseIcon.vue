@@ -6,11 +6,11 @@
   Figma 컴포넌트: Icon (아이콘 컴포넌트)
 -->
 <script setup lang="ts">
+import IconSkeleton from '../BaseSkeleton/IconSkeleton.vue';
 import type { IconName, IconSize } from '../../types/icons';
 import { getIconComponent } from './iconRegistry';
 import { getIconType } from '../../types/icons';
 import { computed } from 'vue';
-import IconSkeleton from '../BaseSkeleton/IconSkeleton.vue';
 import './BaseIcon.scss';
 
 interface Props {
@@ -110,11 +110,8 @@ const getSkeletonSize = computed((): IconSize => {
 
 <template>
   <!-- 로딩 상태일 때 스켈레톤 표시 -->
-  <IconSkeleton
-    v-if="props.isLoading"
-    :size="getSkeletonSize"
-  />
-  
+  <IconSkeleton v-if="props.isLoading" :size="getSkeletonSize" />
+
   <!-- 정상 상태일 때 아이콘 표시 -->
   <component
     v-else-if="iconComponent"
@@ -123,10 +120,7 @@ const getSkeletonSize = computed((): IconSize => {
     :style="iconStyles"
     aria-hidden="true"
   />
-  
+
   <!-- 아이콘을 찾을 수 없을 때 스켈레톤 표시 -->
-  <IconSkeleton
-    v-else
-    :size="getSkeletonSize"
-  />
+  <IconSkeleton v-else :size="getSkeletonSize" />
 </template>

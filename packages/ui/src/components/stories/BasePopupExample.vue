@@ -1,47 +1,31 @@
 <template>
   <div class="popup-example">
     <h2>BasePopup 사용 예시</h2>
-    
+
     <div class="example-section">
       <h3>1. 기본 팝업</h3>
-      <button @click="openDefaultPopup" class="example-button">
-        기본 팝업 열기
-      </button>
+      <button @click="openDefaultPopup" class="example-button">기본 팝업 열기</button>
     </div>
 
     <div class="example-section">
       <h3>2. 확인 팝업</h3>
-      <button @click="openConfirmPopup" class="example-button">
-        확인 팝업 열기
-      </button>
+      <button @click="openConfirmPopup" class="example-button">확인 팝업 열기</button>
     </div>
 
     <div class="example-section">
       <h3>3. 알림 팝업</h3>
       <div class="alert-buttons">
-        <button @click="openSuccessAlert" class="example-button success">
-          성공 알림
-        </button>
-        <button @click="openErrorAlert" class="example-button error">
-          오류 알림
-        </button>
-        <button @click="openWarningAlert" class="example-button warning">
-          경고 알림
-        </button>
-        <button @click="openInfoAlert" class="example-button info">
-          정보 알림
-        </button>
+        <button @click="openSuccessAlert" class="example-button success">성공 알림</button>
+        <button @click="openErrorAlert" class="example-button error">오류 알림</button>
+        <button @click="openWarningAlert" class="example-button warning">경고 알림</button>
+        <button @click="openInfoAlert" class="example-button info">정보 알림</button>
       </div>
     </div>
 
     <div class="example-section">
       <h3>4. Composable 사용</h3>
-      <button @click="openComposableConfirm" class="example-button">
-        Composable 확인 팝업
-      </button>
-      <button @click="openComposableAlert" class="example-button">
-        Composable 알림 팝업
-      </button>
+      <button @click="openComposableConfirm" class="example-button">Composable 확인 팝업</button>
+      <button @click="openComposableAlert" class="example-button">Composable 알림 팝업</button>
     </div>
 
     <!-- 기본 팝업 -->
@@ -100,9 +84,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue';
-import BasePopup from '../BasePopup/BasePopup.vue';
 import { usePopup } from '../../composables/usePopup';
+import BasePopup from '../BasePopup/BasePopup.vue';
+import { ref, reactive, computed } from 'vue';
 
 // 기본 팝업 상태
 const defaultPopup = reactive({
@@ -151,7 +135,7 @@ const alertPopup = reactive({
 });
 
 // Composable 팝업
-const { 
+const {
   isOpen: composablePopupIsOpen,
   title: composablePopupTitle,
   description: composablePopupDescription,
@@ -334,4 +318,4 @@ const handleComposableAction = (action: any, index: number) => {
   flex-wrap: wrap;
   gap: 8px;
 }
-</style> 
+</style>

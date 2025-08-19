@@ -4,8 +4,8 @@
   Flowbite List placeholder 예제 기반
 -->
 <script setup lang="ts">
-import BaseSkeleton from './BaseSkeleton.vue';
 import IconSkeleton from './IconSkeleton.vue';
+import BaseSkeleton from './BaseSkeleton.vue';
 
 /**
  * ListSkeleton - 리스트 스켈레톤 컴포넌트
@@ -42,36 +42,27 @@ const itemArray = Array.from({ length: props.items }, (_, i) => i);
 
 <template>
   <div class="list-skeleton" role="status">
-    <div :class="[
-      'list-skeleton-container',
-      `list-skeleton-${props.variant}`
-    ]">
+    <div :class="['list-skeleton-container', `list-skeleton-${props.variant}`]">
       <div
         v-for="(item, index) in itemArray"
         :key="`list-item-${index}`"
         :class="[
           'list-skeleton-item',
-          { 'list-skeleton-item-bordered': props.variant === 'bordered' && index < itemArray.length - 1 }
+          {
+            'list-skeleton-item-bordered':
+              props.variant === 'bordered' && index < itemArray.length - 1,
+          },
         ]"
       >
         <div class="list-skeleton-item-content">
           <!-- 아바타 (IconSkeleton 사용) -->
-          <IconSkeleton
-            v-if="props.showAvatar"
-            size="md"
-            class="list-skeleton-avatar"
-          />
-          
+          <IconSkeleton v-if="props.showAvatar" size="md" class="list-skeleton-avatar" />
+
           <!-- 텍스트 콘텐츠 -->
           <div class="list-skeleton-text">
             <!-- 제목 -->
-            <BaseSkeleton
-              width="120px"
-              height="16px"
-              variant="text"
-              class="list-skeleton-title"
-            />
-            
+            <BaseSkeleton width="120px" height="16px" variant="text" class="list-skeleton-title" />
+
             <!-- 부제목 -->
             <BaseSkeleton
               v-if="props.showSubtitle"
@@ -82,7 +73,7 @@ const itemArray = Array.from({ length: props.items }, (_, i) => i);
             />
           </div>
         </div>
-        
+
         <!-- 액션 버튼 -->
         <BaseSkeleton
           v-if="props.showAction"
@@ -119,7 +110,7 @@ const itemArray = Array.from({ length: props.items }, (_, i) => i);
   border: 1px solid var(--base-colors-neutral-neutral200);
   border-radius: var(--radius-sm);
   overflow: hidden;
-  
+
   .dark & {
     border-color: var(--base-colors-neutral-neutral700);
   }
@@ -127,7 +118,7 @@ const itemArray = Array.from({ length: props.items }, (_, i) => i);
 
 .list-skeleton-item-bordered {
   border-bottom: 1px solid var(--base-colors-neutral-neutral200);
-  
+
   .dark & {
     border-bottom-color: var(--base-colors-neutral-neutral700);
   }
@@ -175,4 +166,4 @@ const itemArray = Array.from({ length: props.items }, (_, i) => i);
 .list-skeleton-action {
   flex-shrink: 0;
 }
-</style> 
+</style>

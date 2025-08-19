@@ -3,9 +3,9 @@
   아이콘 로딩 상태를 표시하는 스켈레톤 컴포넌트입니다.
 -->
 <script setup lang="ts">
-import BaseSkeleton from './BaseSkeleton.vue';
-import SkeletonIcons from './SkeletonIcons.vue';
 import type { IconSkeletonProps, IconSize } from '../../types/icons';
+import SkeletonIcons from './SkeletonIcons.vue';
+import BaseSkeleton from './BaseSkeleton.vue';
 
 interface Props extends IconSkeletonProps {}
 
@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
       <div :class="`icon-skeleton-svg icon-skeleton-${props.size}`">
         <SkeletonIcons type="user" :size="props.size" />
       </div>
-      
+
       <!-- 텍스트 (선택사항) -->
       <BaseSkeleton
         v-if="props.showText"
@@ -95,11 +95,12 @@ const props = withDefaults(defineProps<Props>(), {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
     opacity: 0.5;
   }
 }
-</style> 
+</style>

@@ -48,7 +48,7 @@ export interface PopupAction {
 
 /**
  * 팝업 관리를 위한 composable
- * 
+ *
  * @param initialState - 초기 팝업 상태
  * @returns 팝업 상태와 관련 메서드들
  */
@@ -214,14 +214,7 @@ export function usePopup(initialState: Partial<PopupStateExtended> = {}) {
     confirmText?: string;
     size?: PopupConfig['size'];
   }) => {
-    const {
-      title,
-      content,
-      description,
-      variant,
-      confirmText = '확인',
-      size = 'md',
-    } = options;
+    const { title, content, description, variant, confirmText = '확인', size = 'md' } = options;
 
     const getButtonVariant = (alertVariant: string): PopupAction['variant'] => {
       switch (alertVariant) {
@@ -305,4 +298,4 @@ export function usePopup(initialState: Partial<PopupStateExtended> = {}) {
     openAlertPopup,
     resetPopup,
   };
-} 
+}

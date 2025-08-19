@@ -4,9 +4,9 @@
   피그마 디자인 토큰 기반으로 구현
 -->
 <script setup lang="ts">
-import BaseSkeleton from './BaseSkeleton.vue';
-import TextSkeleton from './TextSkeleton.vue';
 import SkeletonIcons from './SkeletonIcons.vue';
+import TextSkeleton from './TextSkeleton.vue';
+import BaseSkeleton from './BaseSkeleton.vue';
 
 /**
  * CardSkeleton - 카드 형태 스켈레톤 컴포넌트
@@ -39,18 +39,13 @@ const props = withDefaults(defineProps<Props>(), {
   <div class="card-skeleton">
     <!-- 이미지 영역 -->
     <div v-if="props.showImage" class="card-skeleton-image-container">
-      <BaseSkeleton
-        width="100%"
-        height="200px"
-        variant="rectangular"
-        class="card-skeleton-image"
-      />
+      <BaseSkeleton width="100%" height="200px" variant="rectangular" class="card-skeleton-image" />
       <!-- 이미지 아이콘 (중앙) -->
       <div class="card-skeleton-image-icon">
         <SkeletonIcons type="image" size="md" />
       </div>
     </div>
-    
+
     <!-- 콘텐츠 영역 -->
     <div class="card-skeleton-content">
       <!-- 제목 -->
@@ -61,7 +56,7 @@ const props = withDefaults(defineProps<Props>(), {
         variant="text"
         class="card-skeleton-title"
       />
-      
+
       <!-- 설명 -->
       <TextSkeleton
         v-if="props.showDescription"
@@ -69,7 +64,7 @@ const props = withDefaults(defineProps<Props>(), {
         :last-line-width="80"
         class="card-skeleton-description"
       />
-      
+
       <!-- 액션 버튼들 -->
       <div v-if="props.showActions" class="card-skeleton-actions">
         <BaseSkeleton
@@ -95,7 +90,7 @@ const props = withDefaults(defineProps<Props>(), {
   border-radius: var(--radius-md);
   overflow: hidden;
   background: var(--base-colors-common-bg-surface-default);
-  
+
   .dark & {
     border-color: var(--base-colors-neutral-neutral700);
     background: var(--base-colors-common-bg-surface-dark);
@@ -150,4 +145,4 @@ const props = withDefaults(defineProps<Props>(), {
 .dark .card-skeleton-image-icon svg {
   color: var(--base-colors-neutral-neutral600);
 }
-</style> 
+</style>

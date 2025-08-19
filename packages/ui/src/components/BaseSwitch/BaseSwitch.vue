@@ -2,11 +2,12 @@
 /**
  * BaseSwitch - Figma 토글 스위치 컴포넌트 1:1 구현 (Headless UI Switch 활용)
  * @props modelValue - 토글 상태 (true: On, false: Off)
- * @props size - 스위치 크기 (small: 20px, regular: 24px)
+ * @props size - 스위치 크기 (sm: 20px, md: 24px)
  * @props disabled - 비활성화 여부
  * @emits update:modelValue - 토글 상태 변경 이벤트
  * @figma Button/Toggle(20px) (node-id: 36-182)
  */
+import type { SwitchSize } from '../../types/components';
 import { Switch } from '@headlessui/vue';
 import { computed } from 'vue';
 
@@ -19,10 +20,10 @@ interface Props {
   modelValue: boolean;
   /**
    * 스위치 크기
-   * - small: 20px 높이 (작은 토글)
-   * - regular: 24px 높이 (기본 토글)
+   * - sm: 20px 높이 (작은 토글)
+   * - md: 24px 높이 (기본 토글)
    */
-  size?: 'small' | 'regular';
+  size?: SwitchSize;
   /**
    * 비활성화 여부
    */
@@ -30,7 +31,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  size: 'regular',
+  size: 'md',
   disabled: false,
 });
 
@@ -46,7 +47,7 @@ const switchClasses = computed(() => {
     'focus:outline-none',
   ];
 
-  if (props.size === 'small') {
+  if (props.size === 'sm') {
     classes.push('w-[34px] h-[20px]');
   } else {
     classes.push('w-[50px] h-[24px]');
@@ -79,7 +80,7 @@ const backgroundClasses = computed(() => {
 const thumbClasses = computed(() => {
   const classes = ['base-switch__thumb', 'absolute rounded-full transition-all duration-200'];
 
-  if (props.size === 'small') {
+  if (props.size === 'sm') {
     // 20px 크기: 14px 썸
     classes.push('w-[14px] h-[14px] top-[3px]');
     if (props.modelValue) {

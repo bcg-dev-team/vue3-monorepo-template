@@ -17,6 +17,7 @@ export * from './BaseIcon';
 export * from './BaseModal';
 export * from './BaseSkeleton';
 export * from './BaseStepper';
+export * from './BaseRadioGroup';
 
 // 타입 export
 export * from '../types/components';

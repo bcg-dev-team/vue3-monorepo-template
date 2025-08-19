@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/vue3';
 import BaseSwitch from '../BaseSwitch/BaseSwitch.vue';
+import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof BaseSwitch> = {
   title: 'Inputs/Switch',
@@ -188,4 +188,4 @@ export const InteractiveDemo: Story = {
       </div>
     `,
   }),
-}; 
+};

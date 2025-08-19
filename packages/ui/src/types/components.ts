@@ -93,6 +93,12 @@ export type TabVariant = 'underline' | 'inner';
  */
 export type TabsSize = Extract<ComponentSize, 'lg' | 'md'>;
 
+/**
+ * BaseSwitch 전용 사이즈 타입 별칭
+ * - 현재 BaseSwitch에서는 sm, md 두 사이즈만 사용합니다.
+ */
+export type SwitchSize = Extract<ComponentSize, 'sm' | 'md'>;
+
 // BaseChip
 export type ChipVariant = 'grey' | 'red' | 'green' | 'blue' | 'yellow' | 'purple';
 

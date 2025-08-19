@@ -9,7 +9,6 @@
  */
 import { Switch } from '@headlessui/vue';
 import { computed } from 'vue';
-import './BaseSwitch.scss';
 
 interface Props {
   /**
@@ -44,7 +43,7 @@ const switchClasses = computed(() => {
   const classes = [
     'base-switch',
     'relative inline-flex cursor-pointer transition-all duration-200',
-    'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500',
+    'focus:outline-none',
   ];
 
   if (props.size === 'small') {
@@ -78,10 +77,7 @@ const backgroundClasses = computed(() => {
 
 // 썸 클래스 계산
 const thumbClasses = computed(() => {
-  const classes = [
-    'base-switch__thumb',
-    'absolute rounded-full transition-all duration-200',
-  ];
+  const classes = ['base-switch__thumb', 'absolute rounded-full transition-all duration-200'];
 
   if (props.size === 'small') {
     // 20px 크기: 14px 썸
@@ -121,4 +117,4 @@ const thumbClasses = computed(() => {
     <!-- 스크린 리더용 라벨 -->
     <span class="sr-only">Toggle switch</span>
   </Switch>
-</template> 
+</template>

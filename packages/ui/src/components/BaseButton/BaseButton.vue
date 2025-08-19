@@ -17,7 +17,6 @@ import BaseSkeleton from '../BaseSkeleton/BaseSkeleton.vue';
 import type { IconName } from '../../types/icons';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { computed } from 'vue';
-import './BaseButton.scss';
 
 /**
  * 버튼 색상 타입

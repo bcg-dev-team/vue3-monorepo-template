@@ -14,7 +14,6 @@
  * @props multiline - 여러 줄 텍스트 지원 여부
  * @props noWrap - 텍스트 줄바꿈 방지 여부
  */
-import './BaseListItemText.scss';
 import { computed } from 'vue';
 
 interface Props {

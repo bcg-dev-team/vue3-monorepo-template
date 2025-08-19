@@ -6,7 +6,6 @@
 <script setup lang="ts">
 import type { BaseSkeletonProps } from '../../types/skeleton';
 import { computed } from 'vue';
-import './BaseSkeleton.scss';
 
 /**
  * BaseSkeleton - 스켈레톤 로딩 컴포넌트

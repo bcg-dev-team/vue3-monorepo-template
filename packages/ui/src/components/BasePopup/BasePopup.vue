@@ -19,7 +19,6 @@ import { Dialog, DialogPanel, DialogTitle, DialogDescription } from '@headlessui
 import BaseButton from '../BaseButton/BaseButton.vue';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { computed } from 'vue';
-import './BasePopup.scss';
 
 interface Props {
   /**

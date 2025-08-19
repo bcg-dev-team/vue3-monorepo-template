@@ -16,7 +16,6 @@
 import type { ButtonIconProps } from '../../types/components';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { computed } from 'vue';
-import './BaseListItem.scss';
 
 interface Props {
   /** 클릭 가능 여부 (버튼 동작) */

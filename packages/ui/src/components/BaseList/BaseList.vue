@@ -11,7 +11,6 @@
  * @props gap - 리스트 아이템 간격 (CSS gap 값)
  */
 import { computed } from 'vue';
-import './BaseList.scss';
 
 interface Props {
   /** 서브헤더 텍스트 */

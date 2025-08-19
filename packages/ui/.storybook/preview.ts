@@ -2,7 +2,8 @@ import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import type { Preview } from '@storybook/vue3';
 
 // CSS 파일 import
-import '../src/style.css';
+import '../src/styles/index.scss'; // 컴포넌트 스타일
+import '../src/style.css'; // 기본 테마 및 Tailwind
 
 import { defineComponent } from 'vue';
 

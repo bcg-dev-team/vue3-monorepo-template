@@ -1,7 +1,6 @@
 <!-- Figma: Pagination/Arrow-Left, Pagination/Arrow-Right -->
 <script setup lang="ts">
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
-import './BasePaginationArrow.scss';
 import { computed } from 'vue';
 
 /**

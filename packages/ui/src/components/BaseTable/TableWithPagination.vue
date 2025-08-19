@@ -3,7 +3,6 @@
 import type { TableHeader, TableRow } from '../../types/components';
 import BasePagination from '../BasePagination/BasePagination.vue';
 import BaseTable from './BaseTable.vue';
-import './TableWithPagination.scss';
 import { computed } from 'vue';
 
 interface Props {

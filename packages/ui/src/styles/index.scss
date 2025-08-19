@@ -1,5 +1,4 @@
 // UI 패키지 메인 스타일 파일
-// 모든 컴포넌트의 SCSS를 여기서 import하여 하나의 CSS 번들로 컴파일
 
 // BaseButton 컴포넌트 스타일
 @use '../components/BaseButton/BaseButton.scss';
@@ -46,3 +45,9 @@
 
 // BaseSkeleton 컴포넌트 스타일
 @use '../components/BaseSkeleton/BaseSkeleton.scss';
+
+// BaseList 컴포넌트 스타일
+@use '../components/BaseList/BaseList.scss';
+@use '../components/BaseList/BaseListItem.scss';
+@use '../components/BaseList/BaseListItemAvatar.scss';
+@use '../components/BaseList/BaseListItemText.scss';

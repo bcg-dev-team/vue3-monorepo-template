@@ -28,7 +28,6 @@
 </template>
 
 <script setup lang="ts">
-import './BaseProgressBar.scss';
 import { computed } from 'vue';
 
 interface Props {

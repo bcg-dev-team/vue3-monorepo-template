@@ -6,7 +6,6 @@
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import BaseInput from './BaseInput.vue';
 import { computed } from 'vue';
-import './BaseInputText.scss';
 
 /**
  * BaseInputText - 텍스트 입력 컴포넌트

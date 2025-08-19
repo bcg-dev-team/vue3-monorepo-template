@@ -5,9 +5,8 @@
   - 알림 모달용 아이콘 지원
 -->
 <script setup lang="ts">
-import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import type { AlertVariant, IconName } from '../../types/components';
-import './ModalContent.scss';
+import BaseIcon from '../BaseIcon/BaseIcon.vue';
 
 interface Props {
   /**
@@ -54,8 +53,8 @@ const getAlertColorClass = (variant: AlertVariant) => `alert-${variant}`;
 <template>
   <main class="modal-content">
     <!-- 알림 모달 아이콘 -->
-    <div 
-      v-if="showAlertIcon && alertVariant" 
+    <div
+      v-if="showAlertIcon && alertVariant"
       :class="['alert-icon-container', getAlertColorClass(alertVariant)]"
     >
       <BaseIcon
@@ -75,5 +74,4 @@ const getAlertColorClass = (variant: AlertVariant) => `alert-${variant}`;
       <slot />
     </div>
   </main>
-  </template>
-
+</template>

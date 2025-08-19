@@ -5,9 +5,8 @@
   - 액션 버튼들의 동적 구성 지원
 -->
 <script setup lang="ts">
-import BaseButton from '../BaseButton/BaseButton.vue';
 import type { ModalAction } from '../../types/components';
-import './ModalFooter.scss';
+import BaseButton from '../BaseButton/BaseButton.vue';
 
 interface Props {
   /**
@@ -53,7 +52,7 @@ const props = withDefaults(defineProps<Props>(), {
   confirmText: '확인',
   showCancelButton: true,
   showConfirmButton: true,
-  fullWidth: true
+  fullWidth: true,
 });
 
 const emit = defineEmits<Emits>();
@@ -94,7 +93,7 @@ const handleActionClick = (action: ModalAction, index: number) => {
           @click="handleCancel"
         />
       </div>
-      
+
       <!-- 커스텀 액션 버튼들 -->
       <div v-if="actions.length > 0" class="modal-custom-actions">
         <BaseButton
@@ -113,5 +112,4 @@ const handleActionClick = (action: ModalAction, index: number) => {
       </div>
     </slot>
   </footer>
-  </template>
-
+</template>

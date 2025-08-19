@@ -13,7 +13,6 @@ import type { ModalProps, ModalEmits } from './types';
 import ModalContent from './ModalContent.vue';
 import ModalHeader from './ModalHeader.vue';
 import ModalFooter from './ModalFooter.vue';
-import './BaseModal.scss';
 
 interface Props extends ModalProps {}
 

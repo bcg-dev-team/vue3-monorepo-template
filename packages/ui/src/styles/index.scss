@@ -42,6 +42,9 @@
 
 // BaseModal 컴포넌트 스타일
 @use '../components/BaseModal/BaseModal.scss';
+@use '../components/BaseModal/ModalHeader.scss';
+@use '../components/BaseModal/ModalContent.scss';
+@use '../components/BaseModal/ModalFooter.scss';
 
 // BaseSkeleton 컴포넌트 스타일
 @use '../components/BaseSkeleton/BaseSkeleton.scss';

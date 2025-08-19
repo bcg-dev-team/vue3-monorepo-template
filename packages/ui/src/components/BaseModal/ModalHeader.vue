@@ -6,7 +6,6 @@
 -->
 <script setup lang="ts">
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
-import './ModalHeader.scss';
 
 interface Props {
   /**
@@ -40,7 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
   showBackButton: false,
   showCloseButton: true,
   backButtonText: '뒤로가기',
-  closeButtonText: '모달 닫기'
+  closeButtonText: '모달 닫기',
 });
 
 const emit = defineEmits<Emits>();
@@ -90,5 +89,4 @@ const handleClose = () => {
       </slot>
     </div>
   </header>
-  </template>
-
+</template>

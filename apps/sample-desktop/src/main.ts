@@ -7,10 +7,16 @@ import '@/assets/scss/index.scss';
 
 import setupLocatorUI from '@locator/runtime';
 
-if (process.env.NODE_ENV === 'development') {
+// MSW 모킹 시작 (개발 환경)
+import { startMocking } from '@/mocks';
+
+if ((import.meta as any).env.MODE === 'development') {
   setupLocatorUI({
     adapter: 'vue',
   });
+
+  // MSW 모킹 시작 (HTTP + WebSocket 통합)
+  startMocking();
 }
 
 // Theme 패키지 import (CSS 변수 포함)

@@ -75,11 +75,11 @@ export interface TableRow {
  * BaseTabs 컴포넌트에서 사용하는 탭 아이템 인터페이스
  */
 export interface TabItem {
-  key: string;                // 시멘틱한 고유 식별자
-  label: string;              // 탭에 표시될 텍스트
-  component?: Component;      // 탭 패널에 표시될 컴포넌트
-  icon?: IconName;           // 아이콘 (선택사항)
-  disabled?: boolean;        // 비활성화 여부 (선택사항)
+  key: string; // 시멘틱한 고유 식별자
+  label: string; // 탭에 표시될 텍스트
+  component?: Component; // 탭 패널에 표시될 컴포넌트
+  icon?: IconName; // 아이콘 (선택사항)
+  disabled?: boolean; // 비활성화 여부 (선택사항)
 }
 
 /**
@@ -108,10 +108,10 @@ export interface ChipData {
  * BaseRadioGroup 컴포넌트에서 사용하는 라디오 옵션 인터페이스
  */
 export interface RadioOption<T = any> {
-  value: T;                   // 옵션의 값
-  label: string;              // 옵션에 표시될 텍스트
-  icon?: IconName;           // 아이콘 (선택사항)
-  disabled?: boolean;        // 비활성화 여부 (선택사항)
+  value: T; // 옵션의 값
+  label: string; // 옵션에 표시될 텍스트
+  icon?: IconName; // 아이콘 (선택사항)
+  disabled?: boolean; // 비활성화 여부 (선택사항)
 }
 
 // BasePopup

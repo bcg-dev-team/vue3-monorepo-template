@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/vue3';
 import BaseRadioGroup from '../components/BaseRadioGroup/BaseRadioGroup.vue';
+import type { Meta, StoryObj } from '@storybook/vue3';
 import { ref, computed } from 'vue';
 
 const meta: Meta<typeof BaseRadioGroup> = {
@@ -9,7 +9,8 @@ const meta: Meta<typeof BaseRadioGroup> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Headless UI를 기반으로 한 라디오 그룹 컴포넌트입니다. BaseTabs의 inner variant와 동일한 스타일을 적용하여 일관된 디자인을 제공합니다. initialValue로 초기 선택값을 설정할 수 있으며, 사용자가 다른 옵션을 클릭하면 자유롭게 변경할 수 있습니다.',
+        component:
+          'Headless UI를 기반으로 한 라디오 그룹 컴포넌트입니다. BaseTabs의 inner variant와 동일한 스타일을 적용하여 일관된 디자인을 제공합니다. initialValue로 초기 선택값을 설정할 수 있으며, 사용자가 다른 옵션을 클릭하면 자유롭게 변경할 수 있습니다.',
       },
     },
   },
@@ -59,7 +60,8 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: '기본적인 라디오 그룹입니다. initialValue를 "option1"로 설정하여 첫 번째 옵션이 초기 선택됩니다. 사용자가 다른 옵션을 클릭하면 자유롭게 변경할 수 있습니다.',
+        story:
+          '기본적인 라디오 그룹입니다. initialValue를 "option1"로 설정하여 첫 번째 옵션이 초기 선택됩니다. 사용자가 다른 옵션을 클릭하면 자유롭게 변경할 수 있습니다.',
       },
     },
   },
@@ -79,7 +81,8 @@ export const WithIcons: Story = {
   parameters: {
     docs: {
       description: {
-        story: '각 옵션에 아이콘이 포함된 라디오 그룹입니다. initialValue를 "startup"으로 설정하여 "스타트업" 옵션이 초기 선택됩니다. 사용자가 다른 옵션을 클릭하면 자유롭게 변경할 수 있습니다.',
+        story:
+          '각 옵션에 아이콘이 포함된 라디오 그룹입니다. initialValue를 "startup"으로 설정하여 "스타트업" 옵션이 초기 선택됩니다. 사용자가 다른 옵션을 클릭하면 자유롭게 변경할 수 있습니다.',
       },
     },
   },
@@ -99,7 +102,8 @@ export const WithDisabledOptions: Story = {
   parameters: {
     docs: {
       description: {
-        story: '일부 옵션이 비활성화된 라디오 그룹입니다. initialValue를 "option1"로 설정하여 첫 번째 옵션이 초기 선택됩니다. 비활성화된 옵션은 선택할 수 없지만, 활성화된 옵션들은 자유롭게 변경할 수 있습니다.',
+        story:
+          '일부 옵션이 비활성화된 라디오 그룹입니다. initialValue를 "option1"로 설정하여 첫 번째 옵션이 초기 선택됩니다. 비활성화된 옵션은 선택할 수 없지만, 활성화된 옵션들은 자유롭게 변경할 수 있습니다.',
       },
     },
   },
@@ -120,7 +124,8 @@ export const Disabled: Story = {
   parameters: {
     docs: {
       description: {
-        story: '전체가 비활성화된 라디오 그룹입니다. initialValue를 "option1"로 설정하여 첫 번째 옵션이 초기 선택되지만, disabled prop으로 인해 모든 옵션을 선택할 수 없습니다.',
+        story:
+          '전체가 비활성화된 라디오 그룹입니다. initialValue를 "option1"로 설정하여 첫 번째 옵션이 초기 선택되지만, disabled prop으로 인해 모든 옵션을 선택할 수 없습니다.',
       },
     },
   },
@@ -141,7 +146,8 @@ export const WithForm: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'HTML 폼에서 사용할 수 있는 라디오 그룹입니다. initialValue를 "male"로 설정하여 "남성" 옵션이 초기 선택됩니다. name 속성을 통해 폼 제출 시 값이 전송되며, 사용자가 다른 옵션을 클릭하면 자유롭게 변경할 수 있습니다.',
+        story:
+          'HTML 폼에서 사용할 수 있는 라디오 그룹입니다. initialValue를 "male"로 설정하여 "남성" 옵션이 초기 선택됩니다. name 속성을 통해 폼 제출 시 값이 전송되며, 사용자가 다른 옵션을 클릭하면 자유롭게 변경할 수 있습니다.',
       },
     },
   },
@@ -163,7 +169,8 @@ export const WithNumericValues: Story = {
   parameters: {
     docs: {
       description: {
-        story: '숫자 값을 사용하는 라디오 그룹입니다. initialValue를 1로 설정하여 "1개" 옵션이 초기 선택됩니다. 문자열뿐만 아니라 숫자 값도 사용할 수 있으며, 사용자가 다른 옵션을 클릭하면 자유롭게 변경할 수 있습니다.',
+        story:
+          '숫자 값을 사용하는 라디오 그룹입니다. initialValue를 1로 설정하여 "1개" 옵션이 초기 선택됩니다. 문자열뿐만 아니라 숫자 값도 사용할 수 있으며, 사용자가 다른 옵션을 클릭하면 자유롭게 변경할 수 있습니다.',
       },
     },
   },
@@ -184,7 +191,8 @@ export const WithObjectValues: Story = {
   parameters: {
     docs: {
       description: {
-        story: '객체 값을 사용하는 라디오 그룹입니다. initialValue를 startup 객체로 설정하여 "스타트업" 옵션이 초기 선택됩니다. by prop을 사용하여 객체 비교 방법을 지정할 수 있으며, 사용자가 다른 옵션을 클릭하면 자유롭게 변경할 수 있습니다.',
+        story:
+          '객체 값을 사용하는 라디오 그룹입니다. initialValue를 startup 객체로 설정하여 "스타트업" 옵션이 초기 선택됩니다. by prop을 사용하여 객체 비교 방법을 지정할 수 있으며, 사용자가 다른 옵션을 클릭하면 자유롭게 변경할 수 있습니다.',
       },
     },
   },
@@ -203,7 +211,8 @@ export const WithoutInitialValue: Story = {
   parameters: {
     docs: {
       description: {
-        story: '초기값이 설정되지 않은 라디오 그룹입니다. initialValue를 설정하지 않으면 아무 옵션도 선택되지 않은 상태로 시작됩니다. 사용자가 옵션을 클릭해야 선택되며, 선택 후에는 다른 옵션으로 자유롭게 변경할 수 있습니다.',
+        story:
+          '초기값이 설정되지 않은 라디오 그룹입니다. initialValue를 설정하지 않으면 아무 옵션도 선택되지 않은 상태로 시작됩니다. 사용자가 옵션을 클릭해야 선택되며, 선택 후에는 다른 옵션으로 자유롭게 변경할 수 있습니다.',
       },
     },
   },
@@ -216,9 +225,21 @@ export const EventFilter: Story = {
     setup() {
       // 이벤트 목록 데이터
       const events = ref([
-        { id: 1, title: 'Vue.js 컨퍼런스 2024', status: 'ongoing', date: '2024-12-15', attendees: 150 },
+        {
+          id: 1,
+          title: 'Vue.js 컨퍼런스 2024',
+          status: 'ongoing',
+          date: '2024-12-15',
+          attendees: 150,
+        },
         { id: 2, title: 'React 워크샵', status: 'ongoing', date: '2024-12-20', attendees: 80 },
-        { id: 3, title: 'TypeScript 마스터클래스', status: 'ended', date: '2024-11-30', attendees: 120 },
+        {
+          id: 3,
+          title: 'TypeScript 마스터클래스',
+          status: 'ended',
+          date: '2024-11-30',
+          attendees: 120,
+        },
         { id: 4, title: 'Node.js 해커톤', status: 'ended', date: '2024-11-15', attendees: 200 },
         { id: 5, title: 'AI 개발자 밋업', status: 'upcoming', date: '2025-01-10', attendees: 60 },
         { id: 6, title: 'DevOps 컨퍼런스', status: 'upcoming', date: '2025-01-25', attendees: 100 },
@@ -240,7 +261,7 @@ export const EventFilter: Story = {
         if (selectedFilter.value === 'all') {
           return events.value;
         }
-        return events.value.filter(event => event.status === selectedFilter.value);
+        return events.value.filter((event) => event.status === selectedFilter.value);
       });
 
       // 이벤트 상태에 따른 배지 스타일
@@ -351,8 +372,9 @@ export const EventFilter: Story = {
   parameters: {
     docs: {
       description: {
-        story: '이벤트 필터링을 위한 라디오 그룹 예시입니다. "전체", "진행 중", "종료", "예정" 중 선택하여 이벤트 목록을 필터링할 수 있습니다. 선택된 필터에 따라 실시간으로 이벤트 목록이 업데이트되며, 각 이벤트의 상태, 날짜, 참가자 수를 확인할 수 있습니다.',
+        story:
+          '이벤트 필터링을 위한 라디오 그룹 예시입니다. "전체", "진행 중", "종료", "예정" 중 선택하여 이벤트 목록을 필터링할 수 있습니다. 선택된 필터에 따라 실시간으로 이벤트 목록이 업데이트되며, 각 이벤트의 상태, 날짜, 참가자 수를 확인할 수 있습니다.',
       },
     },
   },
-}; 
+};

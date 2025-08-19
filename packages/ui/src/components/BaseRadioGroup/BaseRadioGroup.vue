@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue';
-import { ref, watch } from 'vue';
 import type { RadioOption } from '../../types/components';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
+import { ref, watch } from 'vue';
 
 interface Props {
   /**
@@ -50,11 +50,14 @@ const emit = defineEmits<{
 const internalValue = ref(props.modelValue ?? props.initialValue);
 
 // modelValue가 변경되면 내부 상태도 업데이트
-watch(() => props.modelValue, (newValue) => {
-  if (newValue !== undefined) {
-    internalValue.value = newValue;
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    if (newValue !== undefined) {
+      internalValue.value = newValue;
+    }
   }
-});
+);
 
 // 내부 상태가 변경되면 부모에게 알림
 watch(internalValue, (newValue) => {
@@ -73,36 +76,35 @@ const getRadioOptionClasses = (
   active: boolean = false,
   disabled: boolean = false
 ): string => {
-  const baseClasses = 'focus:outline-none focus:ring-0 flex items-center gap-x-2 px-3 py-1.5 text-[13px] leading-[16px] tracking-tight rounded-xs font-medium transition-colors duration-200';
+  const baseClasses =
+    'focus:outline-none focus:ring-0 flex items-center gap-x-2 px-3 py-1.5 text-[13px] leading-[16px] tracking-tight rounded-xs font-medium transition-colors duration-200';
 
   // 비활성화 상태
   if (disabled) {
-    return [
-      baseClasses,
-      'opacity-50 cursor-not-allowed text-[var(--button-tab-text-off)]'
-    ].join(' ');
+    return [baseClasses, 'opacity-50 cursor-not-allowed text-[var(--button-tab-text-off)]'].join(
+      ' '
+    );
   }
 
   // 선택된 상태
   if (checked) {
-    return [
-      baseClasses,
-      'bg-[var(--button-tab-button-on)] text-[var(--button-tab-text-on)]'
-    ].join(' ');
+    return [baseClasses, 'bg-[var(--button-tab-button-on)] text-[var(--button-tab-text-on)]'].join(
+      ' '
+    );
   }
 
   // 활성 상태 (호버/포커스)
   if (active) {
     return [
       baseClasses,
-      'bg-[var(--button-tab-button-hover)] text-[var(--button-tab-text-on)]'
+      'bg-[var(--button-tab-button-hover)] text-[var(--button-tab-text-on)]',
     ].join(' ');
   }
 
   // 기본 상태
   return [
     baseClasses,
-    'text-[var(--button-tab-text-off)] hover:bg-[var(--button-tab-button-hover)] hover:text-[var(--button-tab-text-on)]'
+    'text-[var(--button-tab-text-off)] hover:bg-[var(--button-tab-button-hover)] hover:text-[var(--button-tab-text-on)]',
   ].join(' ');
 };
 </script>
@@ -118,15 +120,12 @@ const getRadioOptionClasses = (
       class="space-y-2"
     >
       <!-- 라디오 그룹 라벨 -->
-      <RadioGroupLabel
-        v-if="label"
-        class="block text-sm font-medium text-gray-700"
-      >
+      <RadioGroupLabel v-if="label" class="block text-sm font-medium text-gray-700">
         {{ label }}
       </RadioGroupLabel>
 
       <!-- 라디오 옵션들 -->
-      <div class="flex p-1 bg-neutral-neutral050 rounded-[6px] gap-x-[10px]">
+      <div class="bg-neutral-neutral050 flex gap-x-[10px] rounded-[6px] p-1">
         <RadioGroupOption
           v-for="option in options"
           :key="option.value"
@@ -141,11 +140,7 @@ const getRadioOptionClasses = (
             type="button"
           >
             <!-- 아이콘이 있는 경우 -->
-            <BaseIcon
-              v-if="option.icon"
-              :name="option.icon"
-              class="w-4 h-4"
-            />
+            <BaseIcon v-if="option.icon" :name="option.icon" class="h-4 w-4" />
 
             <!-- 옵션 라벨 -->
             {{ option.label }}
@@ -154,4 +149,4 @@ const getRadioOptionClasses = (
       </div>
     </RadioGroup>
   </div>
-</template> 
+</template>

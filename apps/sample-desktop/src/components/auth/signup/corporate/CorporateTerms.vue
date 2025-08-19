@@ -12,7 +12,7 @@
           <h2 class="text-font-14 font-semibold">가입 약관 동의</h2>
         </div>
         <div class="mt-6">
-          <div class="p-size-12 border-bg-outline rounded-[10px] border">
+          <div class="p-size-12 border-bg-outline flex items-center rounded-[10px] border">
             <BaseCheckbox
               v-model="isAllChecked"
               :indeterminate="isIndeterminate"
@@ -97,7 +97,7 @@
   </AuthContent>
 </template>
 <script lang="ts" setup>
-import { BaseIcon, BaseStepper, BaseButton } from '@template/ui';
+import { BaseIcon, BaseStepper, BaseButton, BaseCheckbox } from '@template/ui';
 import AuthContent from '@/components/auth/AuthContent.vue';
 import { reactive, computed } from 'vue';
 

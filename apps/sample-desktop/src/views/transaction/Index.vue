@@ -4,7 +4,13 @@
       <MainCardContent class="p-6" title="거래내역" size="lg">
         <template #content>
           <div>
-            <BaseTabs v-model="modelValue" size="lg" variant="underline" :tabs="tabs" />
+            <BaseTabs
+              v-model="modelValue"
+              size="lg"
+              variant="underline"
+              :tabs="tabs"
+              @click="handleTabClick"
+            />
           </div>
         </template>
       </MainCardContent>
@@ -29,8 +35,10 @@ import OrderSearchBox from '@/components/transaction/order/OrderSearchBox.vue';
 import ClearSearchBox from '@/components/transaction/clear/ClearSearchBox.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import { BaseTabs } from '@template/ui';
+import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 
+const router = useRouter();
 const modelValue = ref('order');
 
 const tabs = [
@@ -50,4 +58,8 @@ const tabs = [
     component: HistorySearchBox,
   },
 ];
+
+const handleTabClick = () => {
+  router.push({ name: 'TransactionTab', params: { transactionTab: modelValue.value } });
+};
 </script>

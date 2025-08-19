@@ -4,12 +4,6 @@ import type { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/',
-    name: 'GettingStarted',
-    meta: { layout: MainLayout },
-    component: () => import('@/views/home/Index.vue'),
-  },
-  {
     path: '/auth',
     children: [
       {
@@ -51,6 +45,12 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/',
+    name: 'Home',
+    meta: { layout: MainLayout },
+    component: () => import('@/views/home/Index.vue'),
+  },
+  {
     path: '/order',
     name: 'Order',
     meta: { layout: MainLayout },
@@ -60,7 +60,18 @@ const routes: RouteRecordRaw[] = [
     path: '/transaction',
     name: 'Transaction',
     meta: { layout: MainLayout },
-    component: () => import('@/views/transaction/Index.vue'),
+    children: [
+      {
+        path: '',
+        name: 'TransactionDefault',
+        component: () => import('@/views/transaction/Index.vue'),
+      },
+      {
+        path: ':transactionTab',
+        name: 'TransactionTab',
+        component: () => import('@/views/transaction/Index.vue'),
+      },
+    ],
   },
   {
     path: '/assets',
@@ -69,19 +80,41 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/assets/Index.vue'),
   },
   {
-    path: '/account-management',
+    path: '/accounts',
     name: 'AccountManagement',
     meta: { layout: MainLayout },
-    component: () => import('@/views/accountManagement/Index.vue'),
+    children: [
+      {
+        path: '',
+        name: 'AccountManagementDefault',
+        component: () => import('@/views/accountManagement/Index.vue'),
+      },
+      {
+        path: ':accountManagementTab',
+        name: 'AccountManagementTab',
+        component: () => import('@/views/accountManagement/Index.vue'),
+      },
+    ],
   },
   {
-    path: '/service',
-    name: 'Service',
+    path: '/support',
+    name: 'Support',
     meta: { layout: MainLayout },
-    component: () => import('@/views/service/Index.vue'),
+    children: [
+      {
+        path: '',
+        name: 'SupportDefault',
+        component: () => import('@/views/support/Index.vue'),
+      },
+      {
+        path: ':supportTab',
+        name: 'SupportTab',
+        component: () => import('@/views/support/Index.vue'),
+      },
+    ],
   },
   {
-    path: '/my-page',
+    path: '/mypage',
     name: 'MyPage',
     meta: { layout: MainLayout },
     component: () => import('@/views/myPage/Index.vue'),

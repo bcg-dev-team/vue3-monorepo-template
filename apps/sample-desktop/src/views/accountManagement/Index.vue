@@ -15,20 +15,20 @@ import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import { BaseTabs } from '@template/ui';
 import { ref } from 'vue';
 
-const modelValue = ref('transfer');
+const modelValue = ref('create');
 const tabs = [
   {
-    key: 'create-account',
+    key: 'create',
     label: '계좌개설',
     component: CreateAccountMain,
   },
   {
-    key: 'transfer',
+    key: 'service',
     label: '출금/이체/입금',
     component: TransferAccountMain,
   },
   {
-    key: 'deposit-history',
+    key: 'history',
     label: '입출금내역',
     component: '',
   },

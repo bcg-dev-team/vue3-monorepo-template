@@ -5,14 +5,16 @@
         <div class="gap-size-12 flex items-center justify-center">
           <BaseButton
             class="h-[80px]"
-            :variant="type === 'individual' ? 'contained' : 'outlined'"
+            variant="outlined"
+            :color="type === 'individual' ? 'primary' : 'white'"
             label="개인회원"
             full-width
             @click="type = 'individual'"
           />
           <BaseButton
             class="h-[80px]"
-            :variant="type === 'corporation' ? 'contained' : 'outlined'"
+            variant="outlined"
+            :color="type === 'corporation' ? 'primary' : 'white'"
             label="법인회원"
             full-width
             @click="type = 'corporation'"

@@ -91,6 +91,12 @@ const routes: RouteRecordRaw[] = [
     name: 'Markup',
     component: () => import('@/views/markup/Index.vue'),
   },
+  {
+    path: '/chart',
+    name: 'Chart',
+    meta: { layout: MainLayout },
+    component: () => import('@/views/chart/Index.vue'),
+  },
 ];
 
 const router = createRouter({

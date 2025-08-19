@@ -7,15 +7,12 @@
   @figma Modal (node-id: 1801-17801, 1801-18102, 1801-18147)
 -->
 <script setup lang="ts">
-import { Dialog, DialogPanel } from '@headlessui/vue';
-import { computed, ref, watch, nextTick, useSlots } from 'vue';
-import ModalHeader from './ModalHeader.vue';
+import { computed, ref, watch, nextTick, useSlots, onMounted, onUnmounted } from 'vue';
+import { Dialog, DialogPanel, DialogOverlay } from '@headlessui/vue';
+import type { ModalProps, ModalEmits } from './types';
 import ModalContent from './ModalContent.vue';
+import ModalHeader from './ModalHeader.vue';
 import ModalFooter from './ModalFooter.vue';
-import type {
-  ModalProps,
-  ModalEmits
-} from './types';
 import './BaseModal.scss';
 
 interface Props extends ModalProps {}
@@ -36,7 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
   confirmText: '확인',
   showCancelButton: true,
   showConfirmButton: true,
-  fullWidth: true
+  fullWidth: true,
 });
 
 const emit = defineEmits<Emits>();
@@ -54,6 +51,9 @@ const modalVariantClass = computed(() => `modal-variant-${props.variant}`);
 const hasHeaderSlot = computed(() => !!useSlots().header);
 const hasFooterSlot = computed(() => !!useSlots().footer);
 
+// ESC 키가 눌렸는지 추적
+const isEscapePressed = ref(false);
+
 // 모달이 열릴 때 포커스 설정
 watch(
   () => props.isOpen,
@@ -64,13 +64,47 @@ watch(
       modalContainer.value.focus();
     }
   }
-});
+);
 
 // 이벤트 핸들러들
 const handleClose = () => {
   emit('close');
   emit('update:isOpen', false);
 };
+
+// Headless UI의 close 이벤트를 조건부로 처리
+const handleDialogClose = () => {
+  // ESC 키로 인한 close인지 확인
+  if (isEscapePressed.value) {
+    // ESC 키로 인한 close
+    if (props.closeOnEscape) {
+      handleClose();
+    }
+    isEscapePressed.value = false;
+  } else {
+    // 오버레이 클릭으로 인한 close
+    if (props.closeOnOverlayClick) {
+      handleClose();
+    }
+  }
+};
+
+// ESC 키 핸들러 - 전역 이벤트 리스너 사용
+const handleGlobalKeydown = (event: KeyboardEvent) => {
+  if (props.isOpen && event.key === 'Escape') {
+    isEscapePressed.value = true;
+    // Headless UI가 자동으로 @close 이벤트를 발생시킴
+  }
+};
+
+// 전역 이벤트 리스너 등록/해제
+onMounted(() => {
+  document.addEventListener('keydown', handleGlobalKeydown, true);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleGlobalKeydown, true);
+});
 
 const handleBack = () => {
   emit('back');
@@ -89,26 +123,12 @@ const handleConfirm = () => {
 const handleAction = (action: any, index: number) => {
   emit('action', action, index);
 };
-
-// 오버레이 클릭 핸들러
-const handleOverlayClick = (event: Event) => {
-  if (props.closeOnOverlayClick && event.target === event.currentTarget) {
-    handleClose();
-  }
-};
-
-// ESC 키 핸들러
-const handleKeydown = (event: KeyboardEvent) => {
-  if (props.closeOnEscape && event.key === 'Escape') {
-    handleClose();
-  }
-};
 </script>
 
 <template>
-  <Dialog :open="isOpen" @close="handleClose" class="modal-dialog" @keydown="handleKeydown">
-    <!-- 배경 오버레이 -->
-    <div class="modal-overlay" aria-hidden="true" @click="handleOverlayClick" />
+  <Dialog :open="isOpen" @close="handleDialogClose" class="modal-dialog">
+    <!-- Headless UI의 DialogOverlay 사용 - 기본 동작 활용 -->
+    <DialogOverlay class="modal-overlay" />
 
     <!-- 모달 컨테이너 -->
     <div class="modal-container-wrapper">

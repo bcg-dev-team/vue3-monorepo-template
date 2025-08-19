@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/vue3';
-import { ref } from 'vue';
-import TableWithPagination from '../TableWithPagination.vue';
-import BaseChip from '../../BaseChips/BaseChip.vue';
-import BaseButton from '../../BaseButton/BaseButton.vue';
-import BaseCheckbox from '../../BaseCheckbox/BaseCheckbox.vue';
 import type { TableHeader, TableRow } from '../../../types/components';
+import BaseCheckbox from '../../BaseCheckbox/BaseCheckbox.vue';
+import TableWithPagination from '../TableWithPagination.vue';
+import BaseButton from '../../BaseButton/BaseButton.vue';
+import type { Meta, StoryObj } from '@storybook/vue3';
+import BaseChip from '../../BaseChips/BaseChip.vue';
+import { ref } from 'vue';
 
 const meta: Meta<typeof TableWithPagination> = {
   title: 'Table/TableWithPagination',
@@ -13,57 +13,58 @@ const meta: Meta<typeof TableWithPagination> = {
     layout: 'padded',
     docs: {
       description: {
-        component: '페이지네이션이 포함된 테이블 컴포넌트입니다. BaseTable과 BasePagination을 조합하여 사용하기 편리한 고수준 컴포넌트입니다.'
-      }
-    }
+        component:
+          '페이지네이션이 포함된 테이블 컴포넌트입니다. BaseTable과 BasePagination을 조합하여 사용하기 편리한 고수준 컴포넌트입니다.',
+      },
+    },
   },
   argTypes: {
     headers: {
       description: '테이블 헤더 정보 배열',
-      control: { type: 'object' }
+      control: { type: 'object' },
     },
     data: {
       description: '테이블 데이터 배열',
-      control: { type: 'object' }
+      control: { type: 'object' },
     },
     currentPage: {
       description: '현재 페이지 번호',
-      control: { type: 'number', min: 1 }
+      control: { type: 'number', min: 1 },
     },
     pageSize: {
       description: '페이지당 행 수',
-      control: { type: 'number', min: 1, max: 100 }
+      control: { type: 'number', min: 1, max: 100 },
     },
     maxVisiblePages: {
       description: '최대 표시 페이지 수',
-      control: { type: 'number', min: 3, max: 10 }
+      control: { type: 'number', min: 3, max: 10 },
     },
     selectable: {
       description: '행 선택 가능 여부',
-      control: { type: 'boolean' }
+      control: { type: 'boolean' },
     },
     sortable: {
       description: '정렬 가능 여부',
-      control: { type: 'boolean' }
+      control: { type: 'boolean' },
     },
     selectedRows: {
       description: '선택된 행 ID들',
-      control: { type: 'object' }
+      control: { type: 'object' },
     },
     headerType: {
       description: '헤더 타입',
-      control: { type: 'select', options: ['type1', 'type2'] }
+      control: { type: 'select', options: ['type1', 'type2'] },
     },
     headerPreset: {
       description: 'Type2 헤더의 preset 색상',
-      control: { type: 'select', options: ['gray', 'blue', 'pink'] }
+      control: { type: 'select', options: ['gray', 'blue', 'pink'] },
     },
     headerCustomColor: {
       description: 'Type2 헤더의 커스텀 색상',
-      control: { type: 'color' }
-    }
+      control: { type: 'color' },
+    },
   },
-  tags: ['autodocs']
+  tags: ['autodocs'],
 };
 
 export default meta;
@@ -75,14 +76,14 @@ const sampleHeaders: TableHeader[] = [
   { key: 'email', title: '이메일', width: '200px' },
   { key: 'role', title: '역할', width: '120px' },
   { key: 'status', title: '상태', width: '100px', align: 'center' },
-  { key: 'createdAt', title: '생성일', width: '120px' }
+  { key: 'createdAt', title: '생성일', width: '120px' },
 ];
 
 const userStatsHeaders: TableHeader[] = [
   { key: 'total', title: '총 회원수(명)', width: '150px', align: 'center' },
   { key: 'active', title: '활성 회원수(명)', width: '150px', align: 'center' },
   { key: 'inactive', title: '비활성 회원수(명)', width: '150px', align: 'center' },
-  { key: 'growth', title: '성장률(%)', width: '120px', align: 'center' }
+  { key: 'growth', title: '성장률(%)', width: '120px', align: 'center' },
 ];
 
 // 샘플 데이터 생성 함수
@@ -95,7 +96,7 @@ const generateSampleData = (count: number): TableRow[] => {
       email: `user${i}@example.com`,
       role: i % 3 === 0 ? '관리자' : i % 2 === 0 ? '편집자' : '사용자',
       status: i % 4 === 0 ? '비활성' : '활성',
-      createdAt: `2024-01-${String(i % 28 + 1).padStart(2, '0')}`
+      createdAt: `2024-01-${String((i % 28) + 1).padStart(2, '0')}`,
     });
   }
   return data;
@@ -110,7 +111,7 @@ const generateUserStatsData = (count: number): TableRow[] => {
       total: `${Math.floor(Math.random() * 5000) + 1000}`,
       active: `${Math.floor(Math.random() * 4000) + 500}`,
       inactive: `${Math.floor(Math.random() * 1000) + 100}`,
-      growth: `${(Math.random() * 20 - 5).toFixed(1)}%`
+      growth: `${(Math.random() * 20 - 5).toFixed(1)}%`,
     });
   }
   return data;
@@ -125,15 +126,16 @@ export const Default: Story = {
     maxVisiblePages: 5,
     selectable: false,
     sortable: false,
-    headerType: 'type1'
+    headerType: 'type1',
   },
   parameters: {
     docs: {
       description: {
-        story: '기본 페이지네이션 테이블입니다. Type1 헤더와 50개의 샘플 데이터를 10개씩 페이지로 나누어 표시합니다.'
-      }
-    }
-  }
+        story:
+          '기본 페이지네이션 테이블입니다. Type1 헤더와 50개의 샘플 데이터를 10개씩 페이지로 나누어 표시합니다.',
+      },
+    },
+  },
 };
 
 export const Type1Header: Story = {
@@ -145,15 +147,16 @@ export const Type1Header: Story = {
     maxVisiblePages: 5,
     selectable: false,
     sortable: false,
-    headerType: 'type1'
+    headerType: 'type1',
   },
   parameters: {
     docs: {
       description: {
-        story: 'Type1 헤더 스타일의 페이지네이션 테이블입니다. 작은 폰트 크기와 얇은 하단 테두리를 사용합니다.'
-      }
-    }
-  }
+        story:
+          'Type1 헤더 스타일의 페이지네이션 테이블입니다. 작은 폰트 크기와 얇은 하단 테두리를 사용합니다.',
+      },
+    },
+  },
 };
 
 export const Type2Header: Story = {
@@ -165,15 +168,16 @@ export const Type2Header: Story = {
     maxVisiblePages: 5,
     selectable: false,
     sortable: false,
-    headerType: 'type2'
+    headerType: 'type2',
   },
   parameters: {
     docs: {
       description: {
-        story: 'Type2 헤더 스타일의 페이지네이션 테이블입니다. 큰 폰트 크기와 더 넓은 패딩을 사용합니다.'
-      }
-    }
-  }
+        story:
+          'Type2 헤더 스타일의 페이지네이션 테이블입니다. 큰 폰트 크기와 더 넓은 패딩을 사용합니다.',
+      },
+    },
+  },
 };
 
 export const Type2GrayHeader: Story = {
@@ -186,15 +190,16 @@ export const Type2GrayHeader: Story = {
     selectable: false,
     sortable: false,
     headerType: 'type2',
-    headerPreset: 'gray'
+    headerPreset: 'gray',
   },
   parameters: {
     docs: {
       description: {
-        story: 'Type2 Gray preset 헤더 스타일의 페이지네이션 테이블입니다. 기본 그레이 색상의 헤더를 사용합니다.'
-      }
-    }
-  }
+        story:
+          'Type2 Gray preset 헤더 스타일의 페이지네이션 테이블입니다. 기본 그레이 색상의 헤더를 사용합니다.',
+      },
+    },
+  },
 };
 
 export const Type2BlueHeader: Story = {
@@ -207,15 +212,16 @@ export const Type2BlueHeader: Story = {
     selectable: false,
     sortable: false,
     headerType: 'type2',
-    headerPreset: 'blue'
+    headerPreset: 'blue',
   },
   parameters: {
     docs: {
       description: {
-        story: 'Type2 Blue preset 헤더 스타일의 페이지네이션 테이블입니다. 파란색 배경의 헤더를 사용합니다.'
-      }
-    }
-  }
+        story:
+          'Type2 Blue preset 헤더 스타일의 페이지네이션 테이블입니다. 파란색 배경의 헤더를 사용합니다.',
+      },
+    },
+  },
 };
 
 export const Type2PinkHeader: Story = {
@@ -228,15 +234,16 @@ export const Type2PinkHeader: Story = {
     selectable: false,
     sortable: false,
     headerType: 'type2',
-    headerPreset: 'pink'
+    headerPreset: 'pink',
   },
   parameters: {
     docs: {
       description: {
-        story: 'Type2 Pink preset 헤더 스타일의 페이지네이션 테이블입니다. 분홍색 배경의 헤더를 사용합니다.'
-      }
-    }
-  }
+        story:
+          'Type2 Pink preset 헤더 스타일의 페이지네이션 테이블입니다. 분홍색 배경의 헤더를 사용합니다.',
+      },
+    },
+  },
 };
 
 export const Type2CustomColorHeader: Story = {
@@ -249,15 +256,16 @@ export const Type2CustomColorHeader: Story = {
     selectable: false,
     sortable: false,
     headerType: 'type2',
-    headerCustomColor: '#8B5CF6'
+    headerCustomColor: '#8B5CF6',
   },
   parameters: {
     docs: {
       description: {
-        story: 'Type2 커스텀 색상 헤더 스타일의 페이지네이션 테이블입니다. 보라색 커스텀 색상의 헤더를 사용합니다.'
-      }
-    }
-  }
+        story:
+          'Type2 커스텀 색상 헤더 스타일의 페이지네이션 테이블입니다. 보라색 커스텀 색상의 헤더를 사용합니다.',
+      },
+    },
+  },
 };
 
 export const Selectable: Story = {
@@ -269,7 +277,7 @@ export const Selectable: Story = {
     maxVisiblePages: 5,
     selectable: true,
     sortable: false,
-    headerType: 'type1'
+    headerType: 'type1',
   },
   render: (args) => ({
     components: { TableWithPagination },
@@ -311,17 +319,18 @@ export const Selectable: Story = {
   parameters: {
     docs: {
       description: {
-        story: '행 선택이 가능한 페이지네이션 테이블입니다. 행을 클릭하여 선택할 수 있으며, 선택된 행은 배경색이 변경됩니다.'
-      }
-    }
-  }
+        story:
+          '행 선택이 가능한 페이지네이션 테이블입니다. 행을 클릭하여 선택할 수 있으며, 선택된 행은 배경색이 변경됩니다.',
+      },
+    },
+  },
 };
 
 export const Sortable: Story = {
   args: {
-    headers: sampleHeaders.map(header => ({
+    headers: sampleHeaders.map((header) => ({
       ...header,
-      sortable: true
+      sortable: true,
     })),
     data: generateSampleData(50),
     currentPage: 1,
@@ -329,7 +338,7 @@ export const Sortable: Story = {
     maxVisiblePages: 5,
     selectable: false,
     sortable: true,
-    headerType: 'type1'
+    headerType: 'type1',
   },
   render: (args) => ({
     components: { TableWithPagination },
@@ -359,10 +368,11 @@ export const Sortable: Story = {
   parameters: {
     docs: {
       description: {
-        story: '정렬이 가능한 페이지네이션 테이블입니다. 헤더를 클릭하여 각 컬럼을 정렬할 수 있습니다.'
-      }
-    }
-  }
+        story:
+          '정렬이 가능한 페이지네이션 테이블입니다. 헤더를 클릭하여 각 컬럼을 정렬할 수 있습니다.',
+      },
+    },
+  },
 };
 
 // 복합 컴포넌트가 활용된 테이블 스토리
@@ -376,43 +386,43 @@ export const ComplexComponentsTable: Story = {
       { key: 'role', title: '역할', width: '120px' },
       { key: 'status', title: '상태', width: '120px' },
       { key: 'priority', title: '우선순위', width: '100px' },
-      { key: 'actions', title: '작업', width: '150px' }
+      { key: 'actions', title: '작업', width: '150px' },
     ],
     data: [
-      { 
-        id: 1, 
-        name: '김철수', 
-        email: 'kim@example.com', 
-        role: '관리자', 
+      {
+        id: 1,
+        name: '김철수',
+        email: 'kim@example.com',
+        role: '관리자',
         status: '활성',
         priority: '높음',
-        select: false
+        select: false,
       },
-      { 
-        id: 2, 
-        name: '이영희', 
-        email: 'lee@example.com', 
-        role: '편집자', 
+      {
+        id: 2,
+        name: '이영희',
+        email: 'lee@example.com',
+        role: '편집자',
         status: '활성',
         priority: '보통',
-        select: false
+        select: false,
       },
-      { 
-        id: 3, 
-        name: '박민수', 
-        email: 'park@example.com', 
-        role: '사용자', 
+      {
+        id: 3,
+        name: '박민수',
+        email: 'park@example.com',
+        role: '사용자',
         status: '비활성',
         priority: '낮음',
-        select: false
-      }
+        select: false,
+      },
     ],
     currentPage: 1,
     pageSize: 10,
     maxVisiblePages: 5,
     selectable: false,
     sortable: false,
-    headerType: 'type1'
+    headerType: 'type1',
   },
   render: (args) => ({
     components: { TableWithPagination, BaseCheckbox, BaseChip, BaseButton },
@@ -504,8 +514,9 @@ export const ComplexComponentsTable: Story = {
   parameters: {
     docs: {
       description: {
-        story: '다양한 UI 컴포넌트가 활용된 복합 테이블입니다. BaseCheckbox, BaseChip, BaseButton 등이 셀 내에서 사용됩니다.'
-      }
-    }
-  }
-}; 
+        story:
+          '다양한 UI 컴포넌트가 활용된 복합 테이블입니다. BaseCheckbox, BaseChip, BaseButton 등이 셀 내에서 사용됩니다.',
+      },
+    },
+  },
+};

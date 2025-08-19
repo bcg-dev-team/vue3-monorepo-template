@@ -56,11 +56,11 @@ const getTabButtonClasses = (selected: boolean, disabled: boolean = false): stri
     return [
       baseClasses,
       'opacity-50 cursor-not-allowed',
-      props.variant === 'inner' 
+      props.variant === 'inner'
         ? 'px-3 py-1.5 text-[13px] leading-[16px] tracking-tight text-[var(--button-tab-text-off)]'
-        : props.size === 'lg' 
+        : props.size === 'lg'
           ? 'py-3 px-6 text-base font-semibold text-default-muted-dark'
-          : 'px-4 py-3 text-sm font-medium text-default-muted-dark'
+          : 'px-4 py-3 text-sm font-medium text-default-muted-dark',
     ].join(' ');
   }
 
@@ -114,17 +114,14 @@ const getContainerClasses = (): string => {
 
 <template>
   <div :class="getContainerClasses()">
-    <Tab 
-      v-for="(tab, index) in tabs" 
-      as="template" 
-      :key="index" 
+    <Tab
+      v-for="(tab, index) in tabs"
+      as="template"
+      :key="index"
       v-slot="{ selected }"
       :disabled="tab.disabled"
     >
-      <button 
-        :class="getTabButtonClasses(selected, tab.disabled)"
-        :disabled="tab.disabled"
-      >
+      <button :class="getTabButtonClasses(selected, tab.disabled)" :disabled="tab.disabled">
         <BaseIcon v-if="tab.icon" :name="tab.icon" />
         {{ tab.label }}
       </button>

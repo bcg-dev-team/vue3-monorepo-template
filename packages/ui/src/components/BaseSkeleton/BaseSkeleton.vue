@@ -4,8 +4,8 @@
   피그마 디자인 토큰 기반으로 구현
 -->
 <script setup lang="ts">
-import { computed } from 'vue';
 import type { BaseSkeletonProps } from '../../types/skeleton';
+import { computed } from 'vue';
 import './BaseSkeleton.scss';
 
 /**
@@ -59,4 +59,4 @@ const skeletonClasses = computed(() => {
       height: props.height,
     }"
   />
-</template> 
+</template>

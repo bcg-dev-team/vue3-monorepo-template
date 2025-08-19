@@ -1,6 +1,3 @@
-import type { Meta, StoryObj } from '@storybook/vue3';
-import { markRaw } from 'vue';
-import BaseTabs from '../BaseTabs.vue';
 import {
   BaseButton,
   BaseInput,
@@ -9,8 +6,11 @@ import {
   BaseCheckbox,
   BaseChip,
   BaseProgressBar,
-  BaseIcon
+  BaseIcon,
 } from '../../index';
+import type { Meta, StoryObj } from '@storybook/vue3';
+import BaseTabs from '../BaseTabs.vue';
+import { markRaw } from 'vue';
 
 /**
  * BaseTab 컴포넌트
@@ -96,7 +96,7 @@ const ProfileInfoComponent = markRaw({
         <BaseButton variant="outlined" size="md">취소</BaseButton>
       </div>
     </div>
-  `
+  `,
 });
 
 // 보안 설정 컴포넌트
@@ -138,7 +138,7 @@ const SecuritySettingsComponent = markRaw({
         </BaseButton>
       </div>
     </div>
-  `
+  `,
 });
 
 // 활동 내역 컴포넌트
@@ -200,7 +200,7 @@ const ActivityHistoryComponent = markRaw({
         </div>
       </div>
     </div>
-  `
+  `,
 });
 
 export const Default: Story = {
@@ -210,29 +210,29 @@ export const Default: Story = {
         key: 'limit',
         label: 'Limit',
         component: markRaw({
-          template: '<div class="p-4">Limit 주문 설정</div>'
-        })
+          template: '<div class="p-4">Limit 주문 설정</div>',
+        }),
       },
       {
         key: 'stop',
         label: 'Stop',
         component: markRaw({
-          template: '<div class="p-4">Stop 주문 설정</div>'
-        })
+          template: '<div class="p-4">Stop 주문 설정</div>',
+        }),
       },
       {
         key: 'stop-limit',
         label: 'Stop Limit',
         component: markRaw({
-          template: '<div class="p-4">Stop Limit 주문 설정</div>'
-        })
+          template: '<div class="p-4">Stop Limit 주문 설정</div>',
+        }),
       },
       {
         key: 'profit-loss',
         label: 'Profit & Loss',
         component: markRaw({
-          template: '<div class="p-4">Profit & Loss 설정</div>'
-        })
+          template: '<div class="p-4">Profit & Loss 설정</div>',
+        }),
       },
     ],
     modelValue: 'limit',
@@ -256,24 +256,24 @@ export const WithIcons: Story = {
         label: '계좌개설',
         icon: 'card',
         component: markRaw({
-          template: '<div class="p-4">계좌개설 관련 정보</div>'
-        })
+          template: '<div class="p-4">계좌개설 관련 정보</div>',
+        }),
       },
       {
         key: 'transfer',
         label: '출금/이체/입금',
         icon: 'send',
         component: markRaw({
-          template: '<div class="p-4">출금/이체/입금 관련 정보</div>'
-        })
+          template: '<div class="p-4">출금/이체/입금 관련 정보</div>',
+        }),
       },
       {
         key: 'history',
         label: '입출금내역',
         icon: 'description',
         component: markRaw({
-          template: '<div class="p-4">입출금내역 조회</div>'
-        })
+          template: '<div class="p-4">입출금내역 조회</div>',
+        }),
       },
     ],
     modelValue: 'account',
@@ -299,22 +299,22 @@ export const InnerVariant: Story = {
         key: 'all',
         label: '전체',
         component: markRaw({
-          template: '<div class="p-4">전체 목록</div>'
-        })
+          template: '<div class="p-4">전체 목록</div>',
+        }),
       },
       {
         key: 'in-progress',
         label: '진행중',
         component: markRaw({
-          template: '<div class="p-4">진행중인 항목</div>'
-        })
+          template: '<div class="p-4">진행중인 항목</div>',
+        }),
       },
       {
         key: 'completed',
         label: '완료',
         component: markRaw({
-          template: '<div class="p-4">완료된 항목</div>'
-        })
+          template: '<div class="p-4">완료된 항목</div>',
+        }),
       },
     ],
     modelValue: 'all',
@@ -339,23 +339,23 @@ export const WithDisabledTabs: Story = {
         key: 'active',
         label: '활성 탭',
         component: markRaw({
-          template: '<div class="p-4">이 탭은 활성화되어 있습니다.</div>'
-        })
+          template: '<div class="p-4">이 탭은 활성화되어 있습니다.</div>',
+        }),
       },
       {
         key: 'disabled',
         label: '비활성 탭',
         disabled: true,
         component: markRaw({
-          template: '<div class="p-4">이 탭은 비활성화되어 있습니다.</div>'
-        })
+          template: '<div class="p-4">이 탭은 비활성화되어 있습니다.</div>',
+        }),
       },
       {
         key: 'another-active',
         label: '다른 활성 탭',
         component: markRaw({
-          template: '<div class="p-4">이 탭도 활성화되어 있습니다.</div>'
-        })
+          template: '<div class="p-4">이 탭도 활성화되어 있습니다.</div>',
+        }),
       },
     ],
     modelValue: 'active',
@@ -380,19 +380,19 @@ export const UserProfileManagement: Story = {
         key: 'profile',
         label: '프로필 정보',
         icon: 'person',
-        component: ProfileInfoComponent
+        component: ProfileInfoComponent,
       },
       {
         key: 'security',
         label: '보안 설정',
         icon: 'settings',
-        component: SecuritySettingsComponent
+        component: SecuritySettingsComponent,
       },
       {
         key: 'activity',
         label: '활동 내역',
         icon: 'list',
-        component: ActivityHistoryComponent
+        component: ActivityHistoryComponent,
       },
     ],
     modelValue: 'profile',

@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/vue3';
-import BaseTableBody from '../BaseTableBody.vue';
-import BaseTableHead from '../BaseTableHead.vue';
-import BaseTableRow from '../BaseTableRow.vue';
-import BaseTableCell from '../BaseTableCell.vue';
 import type { TableHeader } from '../../../types/components';
+import type { Meta, StoryObj } from '@storybook/vue3';
+import BaseTableHead from '../BaseTableHead.vue';
+import BaseTableCell from '../BaseTableCell.vue';
+import BaseTableBody from '../BaseTableBody.vue';
+import BaseTableRow from '../BaseTableRow.vue';
 
 const meta: Meta<typeof BaseTableBody> = {
   title: 'Table/Body',
@@ -140,7 +140,8 @@ export const UserStats: Story = {
   parameters: {
     docs: {
       description: {
-        story: '사용자 통계 데이터를 표시하는 테이블 바디입니다. 숫자 데이터가 중앙 정렬되어 표시됩니다.',
+        story:
+          '사용자 통계 데이터를 표시하는 테이블 바디입니다. 숫자 데이터가 중앙 정렬되어 표시됩니다.',
       },
     },
   },
@@ -200,7 +201,8 @@ export const WithCustomCellRenderer: Story = {
   parameters: {
     docs: {
       description: {
-        story: '커스텀 셀 렌더러를 사용하는 테이블 바디입니다. 각 셀의 내용을 커스터마이징할 수 있습니다.',
+        story:
+          '커스텀 셀 렌더러를 사용하는 테이블 바디입니다. 각 셀의 내용을 커스터마이징할 수 있습니다.',
       },
     },
   },
@@ -236,4 +238,4 @@ export const WithCustomCellRenderer: Story = {
       </div>
     `,
   }),
-}; 
+};

@@ -366,8 +366,6 @@ async function main(): Promise<void> {
   buildablePackages.forEach((pkg) => {
     console.log(`   ✅ ${pkg}`);
   });
-
-
 }
 
 // 스크립트 실행

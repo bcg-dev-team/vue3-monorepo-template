@@ -1,9 +1,9 @@
 <!-- Figma: Table -->
 <script setup lang="ts">
 import type { TableHeader, TableRow } from '../../types/components';
+import BaseSkeleton from '../BaseSkeleton/BaseSkeleton.vue';
 import BaseTableHead from './BaseTableHead.vue';
 import BaseTableBody from './BaseTableBody.vue';
-import BaseSkeleton from '../BaseSkeleton/BaseSkeleton.vue';
 import { computed } from 'vue';
 import './BaseTable.scss';
 
@@ -131,14 +131,10 @@ const getCellClasses = (rowId: string | number) => {
             <slot name="body-cell" v-bind="slotProps" />
           </template>
         </BaseTableBody>
-        
+
         <!-- 스켈레톤 바디 -->
         <tbody v-else class="table-skeleton">
-          <tr
-            v-for="i in props.skeletonRows"
-            :key="`skeleton-row-${i}`"
-            class="table-row"
-          >
+          <tr v-for="i in props.skeletonRows" :key="`skeleton-row-${i}`" class="table-row">
             <td
               v-for="header in headers"
               :key="`skeleton-cell-${header.key}-${i}`"

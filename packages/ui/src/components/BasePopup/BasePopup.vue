@@ -7,13 +7,13 @@
   @figma Popup (node-id: 1801-17801, 1801-18102, 1801-18147)
 -->
 <script setup lang="ts">
-import type { 
-  PopupSize, 
-  PopupVariant, 
-  AlertVariant, 
+import type {
+  PopupSize,
+  PopupVariant,
+  AlertVariant,
   PopupAction,
   ButtonIconProps,
-  IconName 
+  IconName,
 } from '../../types/components';
 import { Dialog, DialogPanel, DialogTitle, DialogDescription } from '@headlessui/vue';
 import BaseButton from '../BaseButton/BaseButton.vue';
@@ -119,11 +119,7 @@ const handleClose = () => {
 </script>
 
 <template>
-  <Dialog 
-    :open="isOpen" 
-    @close="handleClose"
-    class="popup-dialog"
-  >
+  <Dialog :open="isOpen" @close="handleClose" class="popup-dialog">
     <!-- 배경 오버레이 -->
     <div class="popup-overlay" aria-hidden="true" />
 
@@ -149,8 +145,8 @@ const handleClose = () => {
         <!-- 컨텐츠 영역 -->
         <div class="popup-content">
           <!-- 알림 팝업 아이콘 -->
-          <div 
-            v-if="variant === 'alert' && alertVariant" 
+          <div
+            v-if="variant === 'alert' && alertVariant"
             :class="['alert-icon-container', getAlertColorClass(alertVariant)]"
           >
             <BaseIcon
@@ -198,4 +194,4 @@ const handleClose = () => {
       </DialogPanel>
     </div>
   </Dialog>
-</template> 
+</template>

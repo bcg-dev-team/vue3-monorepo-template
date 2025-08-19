@@ -19,7 +19,7 @@ const selectedTabKey = defineModel<string>({
 });
 
 const props = withDefaults(defineProps<Props>(), {
-  tabs: () => ([]),
+  tabs: () => [],
   variant: 'underline',
   underline: false,
   hasBackground: false,
@@ -37,7 +37,7 @@ const defaultSelectedTabKey = computed(() => {
 
 // 현재 선택된 탭의 인덱스
 const selectedTabIndex = computed(() => {
-  return props.tabs.findIndex(tab => tab.key === defaultSelectedTabKey.value);
+  return props.tabs.findIndex((tab) => tab.key === defaultSelectedTabKey.value);
 });
 
 // 탭 변경 핸들러
@@ -51,11 +51,7 @@ const handleTabChange = (index: number) => {
 
 <template>
   <div>
-    <TabGroup 
-      as="div" 
-      :selectedIndex="selectedTabIndex"
-      @change="handleTabChange"
-    >
+    <TabGroup as="div" :selectedIndex="selectedTabIndex" @change="handleTabChange">
       <TabList class="flex items-center" :aria-label="ariaLabel">
         <BaseTabList
           :tabs="tabs"

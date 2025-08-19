@@ -7,46 +7,47 @@ const meta: Meta<typeof BaseInputText> = {
   parameters: {
     docs: {
       description: {
-        component: '텍스트 입력 컴포넌트입니다. 피그마의 Input/Text-SM과 Input/Text-MD 디자인을 기반으로 구현되었으며, 작은 크기와 중간 크기를 지원합니다.'
-      }
-    }
+        component:
+          '텍스트 입력 컴포넌트입니다. 피그마의 Input/Text-SM과 Input/Text-MD 디자인을 기반으로 구현되었으며, 작은 크기와 중간 크기를 지원합니다.',
+      },
+    },
   },
   argTypes: {
     modelValue: {
       description: '입력값 (v-model)',
-      control: 'text'
+      control: 'text',
     },
     placeholder: {
       description: '플레이스홀더 텍스트',
-      control: 'text'
+      control: 'text',
     },
     size: {
       description: '크기 (sm: 32px 높이, md: 40px 높이)',
       control: 'select',
-      options: ['sm', 'md']
+      options: ['sm', 'md'],
     },
     disabled: {
       description: '비활성화 여부',
-      control: 'boolean'
+      control: 'boolean',
     },
     error: {
       description: '에러 상태 여부',
-      control: 'boolean'
+      control: 'boolean',
     },
     errorMessage: {
       description: '에러 메시지',
-      control: 'text'
+      control: 'text',
     },
     readonly: {
       description: '읽기 전용 여부',
-      control: 'boolean'
+      control: 'boolean',
     },
     showIcon: {
       description: '아이콘 표시 여부',
-      control: 'boolean'
-    }
+      control: 'boolean',
+    },
   },
-  tags: ['autodocs']
+  tags: ['autodocs'],
 };
 
 export default meta;
@@ -58,8 +59,8 @@ export const Default: Story = {
     modelValue: '',
     placeholder: '텍스트를 입력하세요',
     size: 'md',
-    showIcon: true
-  }
+    showIcon: true,
+  },
 };
 
 // 작은 크기 (Input/Text-SM)
@@ -68,8 +69,8 @@ export const Small: Story = {
     modelValue: '',
     placeholder: '작은 크기 텍스트 입력',
     size: 'sm',
-    showIcon: true
-  }
+    showIcon: true,
+  },
 };
 
 // 중간 크기 (Input/Text-MD)
@@ -78,8 +79,8 @@ export const Medium: Story = {
     modelValue: '',
     placeholder: '중간 크기 텍스트 입력',
     size: 'md',
-    showIcon: true
-  }
+    showIcon: true,
+  },
 };
 
 // 값이 있는 상태
@@ -88,8 +89,8 @@ export const WithValue: Story = {
     modelValue: '입력된 텍스트',
     placeholder: '텍스트를 입력하세요',
     size: 'md',
-    showIcon: true
-  }
+    showIcon: true,
+  },
 };
 
 // 비활성화 상태
@@ -99,8 +100,8 @@ export const Disabled: Story = {
     placeholder: '비활성화된 입력',
     size: 'md',
     disabled: true,
-    showIcon: true
-  }
+    showIcon: true,
+  },
 };
 
 // 에러 상태
@@ -111,8 +112,8 @@ export const Error: Story = {
     size: 'md',
     error: true,
     errorMessage: '올바른 텍스트를 입력해주세요.',
-    showIcon: true
-  }
+    showIcon: true,
+  },
 };
 
 // 읽기 전용
@@ -122,8 +123,8 @@ export const Readonly: Story = {
     placeholder: '읽기 전용 입력',
     size: 'md',
     readonly: true,
-    showIcon: true
-  }
+    showIcon: true,
+  },
 };
 
 // 아이콘 없음
@@ -132,8 +133,8 @@ export const WithoutIcon: Story = {
     modelValue: '',
     placeholder: '아이콘 없는 텍스트 입력',
     size: 'md',
-    showIcon: false
-  }
+    showIcon: false,
+  },
 };
 
 // 모든 상태 비교 (작은 크기)
@@ -171,8 +172,8 @@ export const AllStatesSmall: Story = {
           />
         </div>
       </div>
-    `
-  })
+    `,
+  }),
 };
 
 // 모든 상태 비교 (중간 크기)
@@ -210,8 +211,8 @@ export const AllStatesMedium: Story = {
           />
         </div>
       </div>
-    `
-  })
+    `,
+  }),
 };
 
 // 크기 비교
@@ -230,6 +231,6 @@ export const SizeComparison: Story = {
           <BaseInputText placeholder="중간 크기 텍스트 입력" size="md" />
         </div>
       </div>
-    `
-  })
-}; 
+    `,
+  }),
+};

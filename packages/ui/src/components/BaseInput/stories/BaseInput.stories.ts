@@ -7,42 +7,43 @@ const meta: Meta<typeof BaseInput> = {
   parameters: {
     docs: {
       description: {
-        component: '모든 Input 타입의 공통 베이스 컴포넌트입니다. 피그마 디자인 토큰을 기반으로 구현되었으며, 다양한 상태와 크기를 지원합니다.'
-      }
-    }
+        component:
+          '모든 Input 타입의 공통 베이스 컴포넌트입니다. 피그마 디자인 토큰을 기반으로 구현되었으며, 다양한 상태와 크기를 지원합니다.',
+      },
+    },
   },
   argTypes: {
     modelValue: {
       description: '입력값 (v-model)',
-      control: 'text'
+      control: 'text',
     },
     placeholder: {
       description: '플레이스홀더 텍스트',
-      control: 'text'
+      control: 'text',
     },
     size: {
       description: '크기',
       control: 'select',
-      options: ['sm', 'md']
+      options: ['sm', 'md'],
     },
     disabled: {
       description: '비활성화 여부',
-      control: 'boolean'
+      control: 'boolean',
     },
     error: {
       description: '에러 상태 여부',
-      control: 'boolean'
+      control: 'boolean',
     },
     errorMessage: {
       description: '에러 메시지',
-      control: 'text'
+      control: 'text',
     },
     readonly: {
       description: '읽기 전용 여부',
-      control: 'boolean'
-    }
+      control: 'boolean',
+    },
   },
-  tags: ['autodocs']
+  tags: ['autodocs'],
 };
 
 export default meta;
@@ -53,8 +54,8 @@ export const Default: Story = {
   args: {
     modelValue: '',
     placeholder: '기본 입력 필드',
-    size: 'md'
-  }
+    size: 'md',
+  },
 };
 
 // 작은 크기
@@ -62,8 +63,8 @@ export const Small: Story = {
   args: {
     modelValue: '',
     placeholder: '작은 크기 입력',
-    size: 'sm'
-  }
+    size: 'sm',
+  },
 };
 
 // 중간 크기
@@ -71,8 +72,8 @@ export const Medium: Story = {
   args: {
     modelValue: '',
     placeholder: '중간 크기 입력',
-    size: 'md'
-  }
+    size: 'md',
+  },
 };
 
 // 비활성화 상태
@@ -81,8 +82,8 @@ export const Disabled: Story = {
     modelValue: '비활성화된 입력',
     placeholder: '비활성화된 입력',
     disabled: true,
-    size: 'md'
-  }
+    size: 'md',
+  },
 };
 
 // 에러 상태
@@ -92,8 +93,8 @@ export const Error: Story = {
     placeholder: '에러가 있는 입력',
     error: true,
     errorMessage: '이 필드는 필수입니다.',
-    size: 'md'
-  }
+    size: 'md',
+  },
 };
 
 // 읽기 전용
@@ -102,8 +103,8 @@ export const Readonly: Story = {
     modelValue: '읽기 전용 텍스트',
     placeholder: '읽기 전용 입력',
     readonly: true,
-    size: 'md'
-  }
+    size: 'md',
+  },
 };
 
 // 모든 상태 비교
@@ -141,8 +142,8 @@ export const AllStates: Story = {
           />
         </div>
       </div>
-    `
-  })
+    `,
+  }),
 };
 
 // 크기 비교
@@ -161,6 +162,6 @@ export const SizeComparison: Story = {
           <BaseInput placeholder="중간 크기 입력" size="md" />
         </div>
       </div>
-    `
-  })
-}; 
+    `,
+  }),
+};

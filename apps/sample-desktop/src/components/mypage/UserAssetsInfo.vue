@@ -1,7 +1,7 @@
 <template>
   <div class="p-6">
     <div class="text-lg font-bold">공지사항</div>
-    <div class="border-l-4 pl-6 pr-4 mt-6 border-button-primary-border">
+    <div class="border-button-primary-border mt-6 border-l-4 pl-6 pr-4">
       <div>
         <span class="text-md font-regular">총 자산</span>
       </div>
@@ -9,18 +9,18 @@
         <span class="text-2xl font-bold">$125,847.32</span>
       </div>
     </div>
-    <div class="border-l-4 pl-6 pr-4 mt-6 border-button-red-border">
+    <div class="border-button-red-border mt-6 border-l-4 pl-6 pr-4">
       <div>
         <span class="text-md font-regular">오늘 손익</span>
       </div>
       <div>
-        <span class="text-2xl font-bold text-trade-buy">+$1,847.32</span>
+        <span class="text-trade-buy text-2xl font-bold">+$1,847.32</span>
       </div>
     </div>
     <div class="mt-6 flex flex-col gap-3">
       <SubCardContent v-for="(item, index) in assetsInfo" :key="index">
         <template #content>
-          <div class="flex items-center justify-between py-3 px-4">
+          <div class="flex items-center justify-between px-4 py-3">
             <span class="text-md font-regular text-divider-muted">{{ item.title }}</span>
             <span
               class="text-md font-semibold"

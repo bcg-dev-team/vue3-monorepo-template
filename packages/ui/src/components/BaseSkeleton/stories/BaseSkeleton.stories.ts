@@ -1,5 +1,12 @@
+import {
+  BaseSkeleton,
+  TextSkeleton,
+  CardSkeleton,
+  ImageSkeleton,
+  ListSkeleton,
+  IconSkeleton,
+} from '../index';
 import type { Meta, StoryObj } from '@storybook/vue3';
-import { BaseSkeleton, TextSkeleton, CardSkeleton, ImageSkeleton, ListSkeleton, IconSkeleton } from '../index';
 import TextSkeletonDirect from '../TextSkeleton.vue';
 
 const meta: Meta<typeof BaseSkeleton> = {
@@ -76,7 +83,8 @@ export const Rectangular: Story = {
 export const Text: Story = {
   render: () => ({
     components: { TextSkeletonDirect },
-    template: '<div style="width: 300px;"><TextSkeletonDirect :lines="3" :last-line-width="60" /></div>',
+    template:
+      '<div style="width: 300px;"><TextSkeletonDirect :lines="3" :last-line-width="60" /></div>',
   }),
   parameters: {
     docs: {
@@ -163,7 +171,8 @@ export const IconWithText: Story = {
 export const Image: Story = {
   render: () => ({
     components: { ImageSkeleton },
-    template: '<div style="width: 400px;"><ImageSkeleton :show-image="true" :show-title="true" :show-description="true" /></div>',
+    template:
+      '<div style="width: 400px;"><ImageSkeleton :show-image="true" :show-title="true" :show-description="true" /></div>',
   }),
   parameters: {
     docs: {
@@ -178,7 +187,8 @@ export const Image: Story = {
 export const List: Story = {
   render: () => ({
     components: { ListSkeleton },
-    template: '<div style="width: 400px;"><ListSkeleton :items="3" :show-avatar="true" :show-subtitle="true" :show-action="true" /></div>',
+    template:
+      '<div style="width: 400px;"><ListSkeleton :items="3" :show-avatar="true" :show-subtitle="true" :show-action="true" /></div>',
   }),
   parameters: {
     docs: {
@@ -193,7 +203,8 @@ export const List: Story = {
 export const ListBordered: Story = {
   render: () => ({
     components: { ListSkeleton },
-    template: '<div style="width: 400px;"><ListSkeleton :items="4" :show-avatar="true" :show-subtitle="true" :show-action="true" variant="bordered" /></div>',
+    template:
+      '<div style="width: 400px;"><ListSkeleton :items="4" :show-avatar="true" :show-subtitle="true" :show-action="true" variant="bordered" /></div>',
   }),
   parameters: {
     docs: {
@@ -208,7 +219,8 @@ export const ListBordered: Story = {
 export const Card: Story = {
   render: () => ({
     components: { CardSkeleton },
-    template: '<div style="width: 300px;"><CardSkeleton :show-image="true" :show-title="true" :show-description="true" :show-actions="true" /></div>',
+    template:
+      '<div style="width: 300px;"><CardSkeleton :show-image="true" :show-title="true" :show-description="true" :show-actions="true" /></div>',
   }),
   parameters: {
     docs: {
@@ -223,7 +235,8 @@ export const Card: Story = {
 export const CardWithoutImage: Story = {
   render: () => ({
     components: { CardSkeleton },
-    template: '<div style="width: 300px;"><CardSkeleton :show-image="false" :show-title="true" :show-description="true" :show-actions="true" /></div>',
+    template:
+      '<div style="width: 300px;"><CardSkeleton :show-image="false" :show-title="true" :show-description="true" :show-actions="true" /></div>',
   }),
   parameters: {
     docs: {
@@ -232,4 +245,4 @@ export const CardWithoutImage: Story = {
       },
     },
   },
-}; 
+};

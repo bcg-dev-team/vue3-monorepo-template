@@ -58,14 +58,14 @@ async function patchThemeSelector(cssPath, theme) {
 // 3-1. z-index CSS 변수 추가
 async function addZIndexVariables(cssPath) {
   const content = await readFile(cssPath, 'utf-8');
-  
+
   // z-index 변수들을 추가할 위치 찾기 (마지막 } 직전)
   const lastBraceIndex = content.lastIndexOf('}');
   if (lastBraceIndex === -1) {
     console.warn('CSS 파일에서 닫는 괄호를 찾을 수 없습니다.');
     return;
   }
-  
+
   // MUI z-index 값을 참고한 계층 구조
   // 참고: https://mui.com/material-ui/customization/z-index/
   /*
@@ -82,7 +82,7 @@ async function addZIndexVariables(cssPath) {
    * - snackbar (1400): Toast, Notification, 알림 메시지
    * - tooltip (1500): Tooltip, Popover, 툴팁
    * - max (9999): 최대값, 긴급 상황용
-   * 
+   *
    * MUI z-index 가이드라인:
    * - 각 계층은 50 단위로 구분하여 충분한 여유 공간 확보
    * - 모바일 stepper: 1000, fab: 1050, app bar: 1100
@@ -103,9 +103,10 @@ async function addZIndexVariables(cssPath) {
   --z-index-tooltip: 1500;
   --z-index-max: 9999;
 `;
-  
+
   // 마지막 } 직전에 z-index 변수들 삽입
-  const updatedContent = content.slice(0, lastBraceIndex) + zIndexVariables + content.slice(lastBraceIndex);
+  const updatedContent =
+    content.slice(0, lastBraceIndex) + zIndexVariables + content.slice(lastBraceIndex);
   await writeFile(cssPath, updatedContent, 'utf-8');
   console.log('✅ z-index CSS 변수 추가 완료');
 }
@@ -116,7 +117,7 @@ async function run() {
   await buildTheme('Theme/Light', './__light-tokens.json', '__tokens-light.css');
   await patchThemeSelector('src/styles/__tokens-light.css', 'light');
   await addZIndexVariables('src/styles/__tokens-light.css');
-  
+
   await buildTheme('Theme/Dark', './__dark-tokens.json', '__tokens-dark.css');
   await patchThemeSelector('src/styles/__tokens-dark.css', 'dark');
   await addZIndexVariables('src/styles/__tokens-dark.css');
@@ -153,26 +154,26 @@ async function run() {
     const configMatch = content.match(/module\.exports\s*=\s*(\{[\s\S]*\});?/);
     if (!configMatch) throw new Error('config 객체를 찾을 수 없습니다.');
     const configObj = eval('(' + configMatch[1] + ')');
-    
+
     // z-index 설정을 theme.extend에 추가
     if (!configObj.theme) configObj.theme = {};
     if (!configObj.theme.extend) configObj.theme.extend = {};
-    
+
     configObj.theme.extend.zIndex = {
-      'base': 'var(--z-index-base, 0)',
-      'dropdown': 'var(--z-index-dropdown, 100)',
-      'sticky': 'var(--z-index-sticky, 200)',
-      'overlay': 'var(--z-index-overlay, 300)',
-      'fab': 'var(--z-index-fab, 1050)',
+      base: 'var(--z-index-base, 0)',
+      dropdown: 'var(--z-index-dropdown, 100)',
+      sticky: 'var(--z-index-sticky, 200)',
+      overlay: 'var(--z-index-overlay, 300)',
+      fab: 'var(--z-index-fab, 1050)',
       'speed-dial': 'var(--z-index-speed-dial, 1050)',
       'app-bar': 'var(--z-index-app-bar, 1100)',
-      'drawer': 'var(--z-index-drawer, 1200)',
-      'modal': 'var(--z-index-modal, 1300)',
-      'snackbar': 'var(--z-index-snackbar, 1400)',
-      'tooltip': 'var(--z-index-tooltip, 1500)',
-      'max': 'var(--z-index-max, 9999)',
+      drawer: 'var(--z-index-drawer, 1200)',
+      modal: 'var(--z-index-modal, 1300)',
+      snackbar: 'var(--z-index-snackbar, 1400)',
+      tooltip: 'var(--z-index-tooltip, 1500)',
+      max: 'var(--z-index-max, 9999)',
     };
-    
+
     // 매핑 규칙
     const mappingRules = {
       'base-colors': 'colors',

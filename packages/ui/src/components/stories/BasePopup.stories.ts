@@ -1,6 +1,6 @@
+import BaseButton from '../BaseButton/BaseButton.vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
 import BasePopup from '../BasePopup/BasePopup.vue';
-import BaseButton from '../BaseButton/BaseButton.vue';
 import { ref } from 'vue';
 
 const meta: Meta<typeof BasePopup> = {
@@ -10,7 +10,8 @@ const meta: Meta<typeof BasePopup> = {
   parameters: {
     docs: {
       description: {
-        component: 'Headless UI Dialog 기반의 재사용 가능한 팝업 컴포넌트입니다. 기본, 확인, 알림 타입을 모두 지원하며 접근성이 완벽하게 구현되어 있습니다.\n\n[Figma 링크](https://www.figma.com/design/5OJPsmnkEgZZnkHtNbk1wK/-MODA--Draft-250514-?node-id=1801-17801&m=dev)',
+        component:
+          'Headless UI Dialog 기반의 재사용 가능한 팝업 컴포넌트입니다. 기본, 확인, 알림 타입을 모두 지원하며 접근성이 완벽하게 구현되어 있습니다.\n\n[Figma 링크](https://www.figma.com/design/5OJPsmnkEgZZnkHtNbk1wK/-MODA--Draft-250514-?node-id=1801-17801&m=dev)',
       },
     },
   },
@@ -86,9 +87,13 @@ export const Default: Story = {
     components: { BasePopup, BaseButton },
     setup() {
       const isOpen = ref(false);
-      const openPopup = () => { isOpen.value = true; };
-      const closePopup = () => { isOpen.value = false; };
-      
+      const openPopup = () => {
+        isOpen.value = true;
+      };
+      const closePopup = () => {
+        isOpen.value = false;
+      };
+
       return { args, isOpen, openPopup, closePopup };
     },
     template: `
@@ -113,7 +118,8 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Headless UI Dialog 기반의 기본 팝업입니다. 제목, 설명, 내용을 포함할 수 있으며 접근성이 완벽하게 구현되어 있습니다. 버튼을 클릭하여 팝업을 열어보세요.',
+        story:
+          'Headless UI Dialog 기반의 기본 팝업입니다. 제목, 설명, 내용을 포함할 수 있으며 접근성이 완벽하게 구현되어 있습니다. 버튼을 클릭하여 팝업을 열어보세요.',
       },
     },
   },
@@ -131,9 +137,13 @@ export const DefaultWithContent: Story = {
     components: { BasePopup, BaseButton },
     setup() {
       const isOpen = ref(false);
-      const openPopup = () => { isOpen.value = true; };
-      const closePopup = () => { isOpen.value = false; };
-      
+      const openPopup = () => {
+        isOpen.value = true;
+      };
+      const closePopup = () => {
+        isOpen.value = false;
+      };
+
       return { args, isOpen, openPopup, closePopup };
     },
     template: `
@@ -159,7 +169,8 @@ export const DefaultWithContent: Story = {
   parameters: {
     docs: {
       description: {
-        story: '기본 팝업에 내용이 포함된 예시입니다. Headless UI의 DialogTitle과 DialogDescription을 사용하여 접근성을 향상시켰습니다. 버튼을 클릭하여 팝업을 열어보세요.',
+        story:
+          '기본 팝업에 내용이 포함된 예시입니다. Headless UI의 DialogTitle과 DialogDescription을 사용하여 접근성을 향상시켰습니다. 버튼을 클릭하여 팝업을 열어보세요.',
       },
     },
   },
@@ -177,9 +188,13 @@ export const Small: Story = {
     components: { BasePopup, BaseButton },
     setup() {
       const isOpen = ref(false);
-      const openPopup = () => { isOpen.value = true; };
-      const closePopup = () => { isOpen.value = false; };
-      
+      const openPopup = () => {
+        isOpen.value = true;
+      };
+      const closePopup = () => {
+        isOpen.value = false;
+      };
+
       return { args, isOpen, openPopup, closePopup };
     },
     template: `
@@ -204,7 +219,8 @@ export const Small: Story = {
   parameters: {
     docs: {
       description: {
-        story: '작은 크기의 팝업입니다. Headless UI Dialog의 접근성 기능이 모든 크기에서 동일하게 작동합니다. 버튼을 클릭하여 팝업을 열어보세요.',
+        story:
+          '작은 크기의 팝업입니다. Headless UI Dialog의 접근성 기능이 모든 크기에서 동일하게 작동합니다. 버튼을 클릭하여 팝업을 열어보세요.',
       },
     },
   },
@@ -222,9 +238,13 @@ export const Large: Story = {
     components: { BasePopup, BaseButton },
     setup() {
       const isOpen = ref(false);
-      const openPopup = () => { isOpen.value = true; };
-      const closePopup = () => { isOpen.value = false; };
-      
+      const openPopup = () => {
+        isOpen.value = true;
+      };
+      const closePopup = () => {
+        isOpen.value = false;
+      };
+
       return { args, isOpen, openPopup, closePopup };
     },
     template: `
@@ -253,7 +273,8 @@ export const Large: Story = {
   parameters: {
     docs: {
       description: {
-        story: '큰 크기의 팝업입니다. 더 많은 내용을 포함할 수 있으며, Headless UI Dialog의 포커스 트랩핑과 스크롤 락 기능이 완벽하게 작동합니다. 버튼을 클릭하여 팝업을 열어보세요.',
+        story:
+          '큰 크기의 팝업입니다. 더 많은 내용을 포함할 수 있으며, Headless UI Dialog의 포커스 트랩핑과 스크롤 락 기능이 완벽하게 작동합니다. 버튼을 클릭하여 팝업을 열어보세요.',
       },
     },
   },
@@ -282,9 +303,13 @@ export const Confirm: Story = {
     components: { BasePopup, BaseButton },
     setup() {
       const isOpen = ref(false);
-      const openPopup = () => { isOpen.value = true; };
-      const closePopup = () => { isOpen.value = false; };
-      
+      const openPopup = () => {
+        isOpen.value = true;
+      };
+      const closePopup = () => {
+        isOpen.value = false;
+      };
+
       return { args, isOpen, openPopup, closePopup };
     },
     template: `
@@ -310,7 +335,8 @@ export const Confirm: Story = {
   parameters: {
     docs: {
       description: {
-        story: '확인/취소 버튼이 있는 팝업입니다. Headless UI Dialog의 키보드 네비게이션과 포커스 관리 기능이 완벽하게 작동합니다. 버튼을 클릭하여 팝업을 열어보세요.',
+        story:
+          '확인/취소 버튼이 있는 팝업입니다. Headless UI Dialog의 키보드 네비게이션과 포커스 관리 기능이 완벽하게 작동합니다. 버튼을 클릭하여 팝업을 열어보세요.',
       },
     },
   },
@@ -335,9 +361,13 @@ export const AlertSuccess: Story = {
     components: { BasePopup, BaseButton },
     setup() {
       const isOpen = ref(false);
-      const openPopup = () => { isOpen.value = true; };
-      const closePopup = () => { isOpen.value = false; };
-      
+      const openPopup = () => {
+        isOpen.value = true;
+      };
+      const closePopup = () => {
+        isOpen.value = false;
+      };
+
       return { args, isOpen, openPopup, closePopup };
     },
     template: `
@@ -363,7 +393,8 @@ export const AlertSuccess: Story = {
   parameters: {
     docs: {
       description: {
-        story: '성공 알림 팝업입니다. Headless UI Dialog의 접근성 기능과 함께 아이콘과 색상으로 상태를 명확하게 표현합니다. 버튼을 클릭하여 팝업을 열어보세요.',
+        story:
+          '성공 알림 팝업입니다. Headless UI Dialog의 접근성 기능과 함께 아이콘과 색상으로 상태를 명확하게 표현합니다. 버튼을 클릭하여 팝업을 열어보세요.',
       },
     },
   },
@@ -388,9 +419,13 @@ export const AlertError: Story = {
     components: { BasePopup, BaseButton },
     setup() {
       const isOpen = ref(false);
-      const openPopup = () => { isOpen.value = true; };
-      const closePopup = () => { isOpen.value = false; };
-      
+      const openPopup = () => {
+        isOpen.value = true;
+      };
+      const closePopup = () => {
+        isOpen.value = false;
+      };
+
       return { args, isOpen, openPopup, closePopup };
     },
     template: `
@@ -416,7 +451,8 @@ export const AlertError: Story = {
   parameters: {
     docs: {
       description: {
-        story: '오류 알림 팝업입니다. Headless UI Dialog의 접근성 기능과 함께 오류 상태를 명확하게 표현합니다. 버튼을 클릭하여 팝업을 열어보세요.',
+        story:
+          '오류 알림 팝업입니다. Headless UI Dialog의 접근성 기능과 함께 오류 상태를 명확하게 표현합니다. 버튼을 클릭하여 팝업을 열어보세요.',
       },
     },
   },
@@ -433,9 +469,13 @@ export const WithCustomFooter: Story = {
     components: { BasePopup, BaseButton },
     setup() {
       const isOpen = ref(false);
-      const openPopup = () => { isOpen.value = true; };
-      const closePopup = () => { isOpen.value = false; };
-      
+      const openPopup = () => {
+        isOpen.value = true;
+      };
+      const closePopup = () => {
+        isOpen.value = false;
+      };
+
       return { args, isOpen, openPopup, closePopup };
     },
     template: `
@@ -473,8 +513,9 @@ export const WithCustomFooter: Story = {
   parameters: {
     docs: {
       description: {
-        story: '커스텀 푸터가 있는 팝업입니다. Headless UI Dialog의 구조를 활용하면서도 유연한 커스터마이징이 가능합니다. 버튼을 클릭하여 팝업을 열어보세요.',
+        story:
+          '커스텀 푸터가 있는 팝업입니다. Headless UI Dialog의 구조를 활용하면서도 유연한 커스터마이징이 가능합니다. 버튼을 클릭하여 팝업을 열어보세요.',
       },
     },
   },
-}; 
+};

@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/vue3';
 import BaseInputCalendar from '../BaseInputCalendar.vue';
+import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof BaseInputCalendar> = {
   title: 'Inputs/Calendar',
@@ -7,38 +7,39 @@ const meta: Meta<typeof BaseInputCalendar> = {
   parameters: {
     docs: {
       description: {
-        component: '캘린더 입력 컴포넌트입니다. 피그마의 Input/Calendar-SM 디자인을 기반으로 구현되었으며, 작은 크기를 지원합니다.'
-      }
-    }
+        component:
+          '캘린더 입력 컴포넌트입니다. 피그마의 Input/Calendar-SM 디자인을 기반으로 구현되었으며, 작은 크기를 지원합니다.',
+      },
+    },
   },
   argTypes: {
     modelValue: {
       description: '선택된 날짜 (v-model)',
-      control: 'text'
+      control: 'text',
     },
     placeholder: {
       description: '플레이스홀더 텍스트',
-      control: 'text'
+      control: 'text',
     },
     size: {
       description: '크기 (sm: 32px 높이)',
       control: 'select',
-      options: ['sm', 'md']
+      options: ['sm', 'md'],
     },
     disabled: {
       description: '비활성화 여부',
-      control: 'boolean'
+      control: 'boolean',
     },
     error: {
       description: '에러 상태 여부',
-      control: 'boolean'
+      control: 'boolean',
     },
     errorMessage: {
       description: '에러 메시지',
-      control: 'text'
-    }
+      control: 'text',
+    },
   },
-  tags: ['autodocs']
+  tags: ['autodocs'],
 };
 
 export default meta;
@@ -49,8 +50,8 @@ export const Default: Story = {
   args: {
     modelValue: '',
     placeholder: 'YYYY-MM-DD',
-    size: 'sm'
-  }
+    size: 'sm',
+  },
 };
 
 // 날짜가 선택된 상태
@@ -58,8 +59,8 @@ export const WithDate: Story = {
   args: {
     modelValue: '2024-01-15',
     placeholder: 'YYYY-MM-DD',
-    size: 'sm'
-  }
+    size: 'sm',
+  },
 };
 
 // 비활성화 상태
@@ -68,8 +69,8 @@ export const Disabled: Story = {
     modelValue: '2024-01-15',
     placeholder: '비활성화된 캘린더',
     size: 'sm',
-    disabled: true
-  }
+    disabled: true,
+  },
 };
 
 // 에러 상태
@@ -79,8 +80,8 @@ export const Error: Story = {
     placeholder: '에러가 있는 캘린더',
     size: 'sm',
     error: true,
-    errorMessage: '올바른 날짜를 선택해주세요.'
-  }
+    errorMessage: '올바른 날짜를 선택해주세요.',
+  },
 };
 
 // 다른 플레이스홀더
@@ -88,8 +89,8 @@ export const CustomPlaceholder: Story = {
   args: {
     modelValue: '',
     placeholder: '날짜를 선택하세요',
-    size: 'sm'
-  }
+    size: 'sm',
+  },
 };
 
 // 모든 상태 비교
@@ -135,8 +136,8 @@ export const AllStates: Story = {
           />
         </div>
       </div>
-    `
-  })
+    `,
+  }),
 };
 
 // 실제 사용 예시
@@ -169,8 +170,8 @@ export const UsageExample: Story = {
           />
         </div>
       </div>
-    `
-  })
+    `,
+  }),
 };
 
 // 날짜 형식 예시
@@ -206,6 +207,6 @@ export const DateFormats: Story = {
           />
         </div>
       </div>
-    `
-  })
-}; 
+    `,
+  }),
+};

@@ -2,15 +2,16 @@
 export * from './client';
 export * from './services';
 export * from './types';
+export * from './plugin/axios';
 
 // 기본 API 클라이언트 인스턴스
-import { ApiClient } from './client';
+// import { ApiClient } from './client';
 
 /**
  * 기본 API 클라이언트 인스턴스
  */
-export const apiClient = new ApiClient({
-  baseURL: process.env.VITE_API_BASE_URL || 'http://localhost:3000',
-});
+// export const apiClient = new ApiClient({
+//   baseURL: process.env.VITE_API_BASE_URL || 'http://localhost:3000',
+// });
 
-export default apiClient;
+// export default apiClient;

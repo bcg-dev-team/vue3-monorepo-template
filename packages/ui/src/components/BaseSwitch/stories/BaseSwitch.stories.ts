@@ -14,21 +14,16 @@ BaseSwitch 컴포넌트는 토글 스위치 기능을 제공합니다.
 - [Button/Toggle(20px)](https://www.figma.com/design/5OJPsmnkEgZZnkHtNbk1wK/-MODA--Draft-250514-?node-id=36-182&m=dev)
 
 ## Props
-- \`modelValue\`: 토글 상태 (true: On, false: Off)
 - \`size\`: 스위치 크기 (sm: 20px, md: 24px)
 - \`disabled\`: 비활성화 여부
 
-## Events
-- \`update:modelValue\`: 토글 상태 변경 이벤트
+## v-model
+- \`v-model\`: 토글 상태 (true: On, false: Off)
         `,
       },
     },
   },
   argTypes: {
-    modelValue: {
-      control: 'boolean',
-      description: '토글 상태 (true: On, false: Off)',
-    },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md'],
@@ -40,7 +35,6 @@ BaseSwitch 컴포넌트는 토글 스위치 기능을 제공합니다.
     },
   },
   args: {
-    modelValue: false,
     size: 'md',
     disabled: false,
   },
@@ -52,47 +46,94 @@ type Story = StoryObj<typeof meta>;
 
 // 기본 스토리
 export const Default: Story = {
-  args: {
-    modelValue: false,
-    size: 'md',
-    disabled: false,
-  },
+  render: () => ({
+    components: { BaseSwitch },
+    data() {
+      return {
+        isEnabled: false,
+      };
+    },
+    template: `
+      <BaseSwitch 
+        v-model="isEnabled" 
+        size="md"
+      />
+    `,
+  }),
 };
 
 // 작은 크기 스위치
 export const Small: Story = {
-  args: {
-    modelValue: false,
-    size: 'sm',
-    disabled: false,
-  },
+  render: () => ({
+    components: { BaseSwitch },
+    data() {
+      return {
+        isEnabled: false,
+      };
+    },
+    template: `
+      <BaseSwitch 
+        v-model="isEnabled" 
+        size="sm"
+      />
+    `,
+  }),
 };
 
 // On 상태
 export const On: Story = {
-  args: {
-    modelValue: true,
-    size: 'md',
-    disabled: false,
-  },
+  render: () => ({
+    components: { BaseSwitch },
+    data() {
+      return {
+        isEnabled: true,
+      };
+    },
+    template: `
+      <BaseSwitch 
+        v-model="isEnabled" 
+        size="md"
+      />
+    `,
+  }),
 };
 
 // 비활성화 상태
 export const Disabled: Story = {
-  args: {
-    modelValue: false,
-    size: 'md',
-    disabled: true,
-  },
+  render: () => ({
+    components: { BaseSwitch },
+    data() {
+      return {
+        isEnabled: false,
+      };
+    },
+    template: `
+      <BaseSwitch 
+        v-model="isEnabled" 
+        size="md"
+        disabled
+      />
+    `,
+  }),
 };
 
 // 비활성화 상태 (On)
 export const DisabledOn: Story = {
-  args: {
-    modelValue: true,
-    size: 'md',
-    disabled: true,
-  },
+  render: () => ({
+    components: { BaseSwitch },
+    data() {
+      return {
+        isEnabled: true,
+      };
+    },
+    template: `
+      <BaseSwitch 
+        v-model="isEnabled" 
+        size="md"
+        disabled
+      />
+    `,
+  }),
 };
 
 // 인터랙티브 데모 스토리

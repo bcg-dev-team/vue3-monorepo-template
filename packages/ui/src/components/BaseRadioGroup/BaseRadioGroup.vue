@@ -2,21 +2,12 @@
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue';
 import type { RadioOption } from '../../types/components';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
-import { ref, watch } from 'vue';
 
 interface Props {
   /**
    * 라디오 옵션 목록
    */
   options: RadioOption[];
-  /**
-   * 현재 선택된 값
-   */
-  modelValue?: any;
-  /**
-   * 초기 선택값 (modelValue가 없을 때만 사용)
-   */
-  initialValue?: any;
   /**
    * 라디오 그룹 라벨
    */
@@ -35,34 +26,14 @@ interface Props {
   by?: string | ((a: any, b: any) => boolean);
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   options: () => [],
   label: '',
   disabled: false,
   name: '',
 });
 
-const emit = defineEmits<{
-  'update:modelValue': [value: any];
-}>();
-
-// 내부 선택 상태 관리
-const internalValue = ref(props.modelValue ?? props.initialValue);
-
-// modelValue가 변경되면 내부 상태도 업데이트
-watch(
-  () => props.modelValue,
-  (newValue) => {
-    if (newValue !== undefined) {
-      internalValue.value = newValue;
-    }
-  }
-);
-
-// 내부 상태가 변경되면 부모에게 알림
-watch(internalValue, (newValue) => {
-  emit('update:modelValue', newValue);
-});
+const model = defineModel<any>();
 
 /**
  * 라디오 옵션의 클래스를 동적으로 생성하는 함수
@@ -112,13 +83,7 @@ const getRadioOptionClasses = (
 <template>
   <div class="w-full">
     <!-- 라디오 그룹 컨테이너 -->
-    <RadioGroup
-      v-model="internalValue"
-      :disabled="disabled"
-      :name="name"
-      :by="by"
-      class="space-y-2"
-    >
+    <RadioGroup v-model="model" :disabled="disabled" :name="name" :by="by" class="space-y-2">
       <!-- 라디오 그룹 라벨 -->
       <RadioGroupLabel v-if="label" class="block text-sm font-medium text-gray-700">
         {{ label }}

@@ -12,7 +12,9 @@
         <p class="text-font-16 tracking-3 mt-3" v-html="props.description"></p>
       </div>
     </div>
-    <slot name="content" />
+    <div>
+      <slot name="content" />
+    </div>
   </div>
 </template>
 

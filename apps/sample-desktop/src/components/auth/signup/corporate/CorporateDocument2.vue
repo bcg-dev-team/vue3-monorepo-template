@@ -54,8 +54,8 @@ import {
   BaseFileUploadButton,
   BaseCheckbox,
 } from '@template/ui';
+import AuthContent from '@/components/auth/common/AuthContent.vue';
 import FormField from '@/components/auth/common/FormField.vue';
-import AuthContent from '@/components/auth/AuthContent.vue';
 import { ref } from 'vue';
 
 const step = defineModel<number>('step', { required: true });

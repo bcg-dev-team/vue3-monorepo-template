@@ -98,7 +98,7 @@
 </template>
 <script lang="ts" setup>
 import { BaseIcon, BaseStepper, BaseButton, BaseCheckbox } from '@template/ui';
-import AuthContent from '@/components/auth/AuthContent.vue';
+import AuthContent from '@/components/auth/common/AuthContent.vue';
 import { reactive, computed } from 'vue';
 
 const state = reactive({

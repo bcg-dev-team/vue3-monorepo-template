@@ -227,7 +227,7 @@ export const WithNumericValues: Story = {
   },
 };
 
-// 객체 값을 사용하는 라디오 그룹
+// 객체 값을 사용하는 라디오 그룹 (by="id")
 export const WithObjectValues: Story = {
   render: () => ({
     components: { BaseRadioGroup },
@@ -243,7 +243,7 @@ export const WithObjectValues: Story = {
           { value: { id: 'business', name: '비즈니스', price: 20000 }, label: '비즈니스' },
           { value: { id: 'enterprise', name: '엔터프라이즈', price: 50000 }, label: '엔터프라이즈' },
         ]"
-        label="플랜 선택 (객체)"
+        label="플랜 선택 (by='id')"
         by="id"
       />
     `,
@@ -253,6 +253,75 @@ export const WithObjectValues: Story = {
       description: {
         story:
           '객체 값을 사용하는 라디오 그룹입니다. v-model="selectedPlan"으로 선택값을 관리하며, ref(startup 객체)로 초기값을 설정하여 "스타트업" 옵션이 초기 선택됩니다. by prop을 사용하여 객체 비교 방법을 지정할 수 있으며, 사용자가 다른 옵션을 클릭하면 자유롭게 변경할 수 있습니다.',
+      },
+    },
+  },
+};
+
+// by에 조건식을 사용하는 라디오 그룹
+export const WithCustomComparison: Story = {
+  render: () => ({
+    components: { BaseRadioGroup },
+    setup() {
+      const selectedUser = ref({
+        id: 'user1',
+        name: '김철수',
+        role: 'admin',
+        department: 'IT',
+      });
+
+      // 복잡한 비교 조건: role과 department가 모두 일치해야 함
+      const compareUsers = (a: any, b: any) => {
+        return a.role === b.role && a.department === b.department;
+      };
+
+      return { selectedUser, compareUsers };
+    },
+    template: `
+      <div class="space-y-4">
+        <BaseRadioGroup
+          v-model="selectedUser"
+          :options="[
+            { 
+              value: { id: 'user1', name: '김철수', role: 'admin', department: 'IT' }, 
+              label: '김철수 (IT/관리자)' 
+            },
+            { 
+              value: { id: 'user2', name: '이영희', role: 'admin', department: 'IT' }, 
+              label: '이영희 (IT/관리자)' 
+            },
+            { 
+              value: { id: 'user3', name: '박민수', role: 'user', department: 'IT' }, 
+              label: '박민수 (IT/사용자)' 
+            },
+            { 
+              value: { id: 'user4', name: '최지영', role: 'admin', department: 'HR' }, 
+              label: '최지영 (HR/관리자)' 
+            },
+          ]"
+          label="사용자 선택 (role + department 비교)"
+          :by="compareUsers"
+        />
+        
+        <div class="text-sm text-gray-600 space-y-2">
+          <p><strong>선택된 사용자:</strong> {{ selectedUser.name }}</p>
+          <p><strong>역할:</strong> {{ selectedUser.role === 'admin' ? '관리자' : '사용자' }}</p>
+          <p><strong>부서:</strong> {{ selectedUser.department }}</p>
+        </div>
+        
+        <div class="text-xs text-gray-500 bg-gray-50 p-3 rounded">
+          <p><strong>비교 로직:</strong></p>
+          <p>role과 department가 모두 일치하는 사용자만 같은 그룹으로 인식됩니다.</p>
+          <p>예: IT 관리자끼리는 서로 선택 가능, IT 사용자는 별도 그룹</p>
+        </div>
+      </div>
+    `,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'by prop에 커스텀 비교 함수를 사용하는 예시입니다. role과 department가 모두 일치하는 사용자만 같은 그룹으로 인식되어 선택 가능합니다. 복잡한 객체 비교 로직을 구현할 수 있습니다.',
       },
     },
   },

@@ -1,23 +1,14 @@
 <script setup lang="ts">
 /**
- * BaseSwitch - Figma 토글 스위치 컴포넌트 1:1 구현 (Headless UI Switch 활용)
- * @props modelValue - 토글 상태 (true: On, false: Off)
+ * BaseSwitch - Figma 토글 스위치 컴포넌트 1:1 구현
  * @props size - 스위치 크기 (sm: 20px, md: 24px)
  * @props disabled - 비활성화 여부
- * @emits update:modelValue - 토글 상태 변경 이벤트
  * @figma Button/Toggle(20px) (node-id: 36-182)
  */
 import type { SwitchSize } from '../../types/components';
-import { Switch } from '@headlessui/vue';
 import { computed } from 'vue';
 
 interface Props {
-  /**
-   * 토글 상태
-   * - true: On 상태
-   * - false: Off 상태
-   */
-  modelValue: boolean;
   /**
    * 스위치 크기
    * - sm: 20px 높이 (작은 토글)
@@ -35,9 +26,8 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
 });
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: boolean): void;
-}>();
+// defineModel을 사용하여 v-model 자동 처리 (기본값 false)
+const modelValue = defineModel<boolean>({ default: false });
 
 // 스위치 클래스 계산
 const switchClasses = computed(() => {
@@ -67,7 +57,7 @@ const backgroundClasses = computed(() => {
     'absolute inset-0 rounded-full transition-all duration-200',
   ];
 
-  if (props.modelValue) {
+  if (modelValue.value) {
     classes.push('base-switch__background--on');
   } else {
     classes.push('base-switch__background--off');
@@ -83,7 +73,7 @@ const thumbClasses = computed(() => {
   if (props.size === 'sm') {
     // 20px 크기: 14px 썸
     classes.push('w-[14px] h-[14px] top-[3px]');
-    if (props.modelValue) {
+    if (modelValue.value) {
       classes.push('translate-x-[17px]'); // On 상태: 오른쪽으로 이동
     } else {
       classes.push('translate-x-[3px]'); // Off 상태: 왼쪽에 위치
@@ -91,7 +81,7 @@ const thumbClasses = computed(() => {
   } else {
     // 24px 크기: 20px 썸
     classes.push('w-[20px] h-[20px] top-[2px]');
-    if (props.modelValue) {
+    if (modelValue.value) {
       classes.push('translate-x-[28px]'); // On 상태: 오른쪽으로 이동
     } else {
       classes.push('translate-x-[2px]'); // Off 상태: 왼쪽에 위치
@@ -100,15 +90,35 @@ const thumbClasses = computed(() => {
 
   return classes.join(' ');
 });
+
+// 토글 상태 변경 핸들러
+const handleToggle = () => {
+  if (!props.disabled) {
+    modelValue.value = !modelValue.value;
+  }
+};
 </script>
 
 <template>
-  <Switch
-    :model-value="modelValue"
-    :disabled="disabled"
-    :class="switchClasses"
-    @update:model-value="emit('update:modelValue', $event)"
-  >
+  <div :class="switchClasses" @click="handleToggle">
+    <!-- 숨겨진 checkbox (접근성용) -->
+    <input
+      type="checkbox"
+      :checked="modelValue"
+      :disabled="disabled"
+      class="sr-only"
+      @change="
+        (event) => {
+          if (!props.disabled) {
+            const target = event.target as HTMLInputElement;
+            if (target) {
+              modelValue = target.checked;
+            }
+          }
+        }
+      "
+    />
+
     <!-- 배경 -->
     <div :class="backgroundClasses" />
 
@@ -117,5 +127,5 @@ const thumbClasses = computed(() => {
 
     <!-- 스크린 리더용 라벨 -->
     <span class="sr-only">Toggle switch</span>
-  </Switch>
+  </div>
 </template>

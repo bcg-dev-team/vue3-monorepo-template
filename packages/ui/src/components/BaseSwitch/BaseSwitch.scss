@@ -21,14 +21,6 @@
   cursor: not-allowed;
 }
 
-.base-switch--disabled .base-switch__background--on {
-  background-color: var(--input-check-radio-disable-bg);
-}
-
-.base-switch--disabled .base-switch__background--off {
-  background-color: var(--input-check-radio-disable-bg);
-}
-
 /* 포커스 스타일 */
 .base-switch:focus {
   outline: none;

@@ -1,48 +1,35 @@
 <template>
-  <AuthContent title="개인회원 가입" description="서비스 이용을 위해 먼저 본인인증을 해주세요.">
-    <template #header>
-      <div class="flex items-center justify-between">
-        <BaseIcon name="arrow-backward" size="md" />
-        <BaseStepper variant="dot" :dot-config="{ count: 4 }" :current="1" />
-      </div>
-    </template>
-    <template #content>
-      <div>
-        <div class="gap-size-12">
-          <BaseButton
-            v-if="!status"
-            size="lg"
-            label="휴대폰 본인인증"
-            variant="outlined"
-            color="red"
-            full-width
-          />
-          <BaseButton
-            v-else
-            size="lg"
-            label="인증완료"
-            full-width
-            :rightIcon="{ name: 'check-circle', color: 'currentColor' }"
-            :customClass="'custom-green-auth-complete'"
-          />
-        </div>
-        <div class="mt-[33px] flex flex-col">
-          <BaseButton
-            size="lg"
-            label="다음"
-            variant="contained"
-            color="primary"
-            full-width
-            @click="step = 2"
-          />
-        </div>
-      </div>
-    </template>
-  </AuthContent>
+  <div class="gap-size-12">
+    <BaseButton
+      v-if="!status"
+      size="lg"
+      label="휴대폰 본인인증"
+      variant="outlined"
+      color="red"
+      full-width
+    />
+    <BaseButton
+      v-else
+      size="lg"
+      label="인증완료"
+      full-width
+      :rightIcon="{ name: 'check-circle', color: 'currentColor' }"
+      :customClass="'custom-green-auth-complete'"
+    />
+  </div>
+  <div class="mt-[33px] flex flex-col">
+    <BaseButton
+      size="lg"
+      label="다음"
+      variant="contained"
+      color="primary"
+      full-width
+      @click="step = 2"
+    />
+  </div>
 </template>
 <script lang="ts" setup>
-import { BaseIcon, BaseStepper, BaseButton } from '@template/ui';
-import AuthContent from '@/components/auth/AuthContent.vue';
+import { BaseButton } from '@template/ui';
 import { ref } from 'vue';
 
 const step = defineModel<number>('step', { required: true });

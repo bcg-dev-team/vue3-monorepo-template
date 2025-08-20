@@ -36,9 +36,9 @@
 </template>
 
 <script lang="ts" setup>
+import AuthContent from '@/components/auth/common/AuthContent.vue';
 import { BaseInput, BaseButton, BaseCheckbox } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
-import AuthContent from '@/components/auth/AuthContent.vue';
 import { ref } from 'vue';
 
 const isChecked = ref<boolean>(false);

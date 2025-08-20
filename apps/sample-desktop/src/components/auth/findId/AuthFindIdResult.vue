@@ -47,6 +47,6 @@
   </AuthContent>
 </template>
 <script setup lang="ts">
+import AuthContent from '@/components/auth/common/AuthContent.vue';
 import { BaseButton, BaseIcon, BaseStepper } from '@template/ui';
-import AuthContent from '@/components/auth/AuthContent.vue';
 </script>

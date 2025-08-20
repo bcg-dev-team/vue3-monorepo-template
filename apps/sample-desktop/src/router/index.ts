@@ -30,6 +30,11 @@ const routes: RouteRecordRaw[] = [
             name: 'corporate-sign-up',
             component: () => import('@/views/auth/signup/corporate/Index.vue'),
           },
+          {
+            path: 'complete',
+            name: 'sign-up-complete',
+            component: () => import('@/views/auth/signup/complete/index.vue'),
+          },
         ],
       },
       {

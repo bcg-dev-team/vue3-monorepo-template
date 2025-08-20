@@ -3,6 +3,7 @@
     <template #content>
       <div>
         <div class="gap-size-12 flex items-center justify-center">
+          <!-- TODO: RadioGroup 컴포넌트로 변경 검토 -->
           <BaseButton
             class="h-[80px]"
             variant="outlined"

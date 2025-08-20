@@ -46,70 +46,35 @@ type Story = StoryObj<typeof meta>;
 
 // 기본 스토리
 export const Default: Story = {
-  render: () => ({
-    components: { BaseSwitch },
-    data() {
-      return {
-        isEnabled: false,
-      };
-    },
-    template: `
-      <BaseSwitch 
-        v-model="isEnabled" 
-        size="md"
-      />
-    `,
-  }),
+  args: {
+    size: 'md',
+    disabled: false,
+  },
 };
 
 // 작은 크기 스위치
 export const Small: Story = {
-  render: () => ({
-    components: { BaseSwitch },
-    data() {
-      return {
-        isEnabled: false,
-      };
-    },
-    template: `
-      <BaseSwitch 
-        v-model="isEnabled" 
-        size="sm"
-      />
-    `,
-  }),
+  args: {
+    size: 'sm',
+    disabled: false,
+  },
 };
 
 // On 상태
 export const On: Story = {
-  render: () => ({
-    components: { BaseSwitch },
-    data() {
-      return {
-        isEnabled: true,
-      };
-    },
-    template: `
-      <BaseSwitch 
-        v-model="isEnabled" 
-        size="md"
-      />
-    `,
-  }),
+  args: {
+    size: 'md',
+    disabled: false,
+  },
 };
 
 // 비활성화 상태
 export const Disabled: Story = {
   render: () => ({
     components: { BaseSwitch },
-    data() {
-      return {
-        isEnabled: false,
-      };
-    },
     template: `
       <BaseSwitch 
-        v-model="isEnabled" 
+        :model-value="false"
         size="md"
         disabled
       />
@@ -121,14 +86,9 @@ export const Disabled: Story = {
 export const DisabledOn: Story = {
   render: () => ({
     components: { BaseSwitch },
-    data() {
-      return {
-        isEnabled: true,
-      };
-    },
     template: `
       <BaseSwitch 
-        v-model="isEnabled" 
+        :model-value="true"
         size="md"
         disabled
       />

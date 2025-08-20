@@ -15,7 +15,7 @@ BaseSwitch 컴포넌트는 토글 스위치 기능을 제공합니다.
 
 ## Props
 - \`modelValue\`: 토글 상태 (true: On, false: Off)
-- \`size\`: 스위치 크기 (small: 20px, regular: 24px)
+- \`size\`: 스위치 크기 (sm: 20px, md: 24px)
 - \`disabled\`: 비활성화 여부
 
 ## Events
@@ -25,15 +25,24 @@ BaseSwitch 컴포넌트는 토글 스위치 기능을 제공합니다.
     },
   },
   argTypes: {
+    modelValue: {
+      control: 'boolean',
+      description: '토글 상태 (true: On, false: Off)',
+    },
     size: {
       control: { type: 'select' },
-      options: ['small', 'regular'],
-      description: '스위치 크기',
+      options: ['sm', 'md'],
+      description: '스위치 크기 (sm: 20px, md: 24px)',
     },
     disabled: {
       control: 'boolean',
       description: '비활성화 여부',
     },
+  },
+  args: {
+    modelValue: false,
+    size: 'md',
+    disabled: false,
   },
   tags: ['autodocs'],
 };
@@ -43,94 +52,47 @@ type Story = StoryObj<typeof meta>;
 
 // 기본 스토리
 export const Default: Story = {
-  render: () => ({
-    components: { BaseSwitch },
-    data() {
-      return {
-        isEnabled: false,
-      };
-    },
-    template: `
-      <BaseSwitch 
-        v-model="isEnabled" 
-        size="regular"
-      />
-    `,
-  }),
+  args: {
+    modelValue: false,
+    size: 'md',
+    disabled: false,
+  },
 };
 
 // 작은 크기 스위치
 export const Small: Story = {
-  render: () => ({
-    components: { BaseSwitch },
-    data() {
-      return {
-        isEnabled: false,
-      };
-    },
-    template: `
-      <BaseSwitch 
-        v-model="isEnabled" 
-        size="small"
-      />
-    `,
-  }),
+  args: {
+    modelValue: false,
+    size: 'sm',
+    disabled: false,
+  },
 };
 
 // On 상태
 export const On: Story = {
-  render: () => ({
-    components: { BaseSwitch },
-    data() {
-      return {
-        isEnabled: true,
-      };
-    },
-    template: `
-      <BaseSwitch 
-        v-model="isEnabled" 
-        size="regular"
-      />
-    `,
-  }),
+  args: {
+    modelValue: true,
+    size: 'md',
+    disabled: false,
+  },
 };
 
 // 비활성화 상태
 export const Disabled: Story = {
-  render: () => ({
-    components: { BaseSwitch },
-    data() {
-      return {
-        isEnabled: false,
-      };
-    },
-    template: `
-      <BaseSwitch 
-        v-model="isEnabled" 
-        size="regular"
-        disabled
-      />
-    `,
-  }),
+  args: {
+    modelValue: false,
+    size: 'md',
+    disabled: true,
+  },
 };
 
 // 비활성화 상태 (On)
 export const DisabledOn: Story = {
-  render: () => ({
-    components: { BaseSwitch },
-    data() {
-      return {
-        isEnabled: true,
-      };
-    },
-    template: `
-      <BaseSwitch 
-        v-model="isEnabled" 
-        size="regular"
-        disabled
-      />
-    `,
-  }),
+  args: {
+    modelValue: true,
+    size: 'md',
+    disabled: true,
+  },
 };
 
 // 인터랙티브 데모 스토리
@@ -151,26 +113,26 @@ export const InteractiveDemo: Story = {
           <h3 class="text-lg font-semibold">Interactive Demo</h3>
           <div class="grid grid-cols-2 gap-6">
             <div class="space-y-4">
-              <h4 class="font-medium">Small Switches</h4>
+              <h4 class="font-medium">Small Switches (sm)</h4>
               <div class="flex items-center justify-between">
                 <span>Switch 1</span>
-                <BaseSwitch v-model="switch1" size="small" />
+                <BaseSwitch v-model="switch1" size="sm" />
               </div>
               <div class="flex items-center justify-between">
                 <span>Switch 2</span>
-                <BaseSwitch v-model="switch2" size="small" />
+                <BaseSwitch v-model="switch2" size="sm" />
               </div>
             </div>
             
             <div class="space-y-4">
-              <h4 class="font-medium">Regular Switches</h4>
+              <h4 class="font-medium">Medium Switches (md)</h4>
               <div class="flex items-center justify-between">
                 <span>Switch 3</span>
-                <BaseSwitch v-model="switch3" size="regular" />
+                <BaseSwitch v-model="switch3" size="md" />
               </div>
               <div class="flex items-center justify-between">
                 <span>Switch 4</span>
-                <BaseSwitch v-model="switch4" size="regular" />
+                <BaseSwitch v-model="switch4" size="md" />
               </div>
             </div>
           </div>

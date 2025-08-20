@@ -28,12 +28,12 @@
   },
   "dependencies": {
     "@template/types": "workspace:*",
-    "@template/utils": "workspace:*"
+    "@template/utils": "workspace:*",
+    "axios": "^1.11.0"
   },
   "peerDependencies": {
     "vitest": "^1.6.1"
   },
-  "devDependencies": {},
   "publishConfig": {
     "access": "public"
   }

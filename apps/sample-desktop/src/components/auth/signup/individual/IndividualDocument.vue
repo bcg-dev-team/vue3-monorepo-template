@@ -35,17 +35,10 @@ import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 
 const router = useRouter();
-const step = defineModel<number>('step', { required: true });
 
 const isChecked = ref<boolean>(false);
 
 const handleSubmit = () => {
   router.replace({ name: 'sign-up-complete' });
 };
-
-const description = `
-    가입에 필요한 서류를 제출해주세요.<br/>
-    관리자 확인 후 <span class='text-red font-medium'>승인 알림</span>을 보내드립니다.
-    <p class='mt-size-12 text-font-12 text-blue'>&#8251; 파일형식: .png, .jpg, .pdf / 파일 사이즈 300KB 미만</p>
-    `;
 </script>

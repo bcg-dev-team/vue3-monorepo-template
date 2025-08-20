@@ -55,6 +55,6 @@
 
 <script lang="ts" setup>
 import { BaseIcon, BaseStepper, BaseInput, BaseButton } from '@template/ui';
-import AuthContent from '@/components/auth/AuthContent.vue';
+import AuthContent from '@/components/auth/common/AuthContent.vue';
 const step = defineModel<number>('step', { required: true });
 </script>

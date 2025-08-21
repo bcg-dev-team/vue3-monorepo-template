@@ -94,7 +94,8 @@
           <li>상담시간: 평일 09:00~18:00 (점심 12:00~13:30)</li>
           <li>고객센터: 1588-1588</li>
           <li>
-            이메일: <a class="text-blue cursor-pointer underline">support@modasecurities.com</a>
+            이메일:
+            <Anchor @click="() => console.log('이메일 클릭!')"> support@modasecurities.com</Anchor>
           </li>
         </ul>
       </div>
@@ -102,5 +103,6 @@
   </div>
 </template>
 <script setup lang="ts">
+import Anchor from '@/components/common/Anchor.vue';
 import { BaseIcon } from '@template/ui';
 </script>

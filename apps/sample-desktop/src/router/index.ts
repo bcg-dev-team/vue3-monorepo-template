@@ -8,7 +8,7 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: 'login',
-        name: 'Login',
+        name: 'login',
         component: () => import('@/views/auth/login/Index.vue'),
       },
 
@@ -61,87 +61,85 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/',
-    name: 'Home',
+    name: 'home',
     meta: { layout: MainLayout },
     component: () => import('@/views/home/Index.vue'),
   },
   {
     path: '/order',
-    name: 'Order',
+    name: 'order',
     meta: { layout: MainLayout },
     component: () => import('@/views/order/Index.vue'),
   },
   {
     path: '/transaction',
-    name: 'Transaction',
     meta: { layout: MainLayout },
     children: [
       {
         path: '',
-        name: 'TransactionDefault',
+        name: 'transaction',
         component: () => import('@/views/transaction/Index.vue'),
       },
       {
         path: ':transactionTab',
-        name: 'TransactionTab',
+        name: 'transaction-tab',
         component: () => import('@/views/transaction/Index.vue'),
       },
     ],
   },
   {
     path: '/assets',
-    name: 'Assets',
+    name: 'assets',
     meta: { layout: MainLayout },
     component: () => import('@/views/assets/Index.vue'),
   },
   {
     path: '/accounts',
-    name: 'AccountManagement',
     meta: { layout: MainLayout },
     children: [
       {
         path: '',
-        name: 'AccountManagementDefault',
+        name: 'account-management',
         component: () => import('@/views/accountManagement/Index.vue'),
       },
       {
         path: ':accountManagementTab',
-        name: 'AccountManagementTab',
+        name: 'account-management-tab',
         component: () => import('@/views/accountManagement/Index.vue'),
       },
     ],
   },
   {
     path: '/support',
-    name: 'Support',
+
     meta: { layout: MainLayout },
     children: [
       {
         path: '',
-        name: 'SupportDefault',
+        name: 'support',
         component: () => import('@/views/support/Index.vue'),
       },
       {
         path: ':supportTab',
-        name: 'SupportTab',
+        name: 'support-tab',
         component: () => import('@/views/support/Index.vue'),
       },
     ],
   },
   {
     path: '/mypage',
-    name: 'MyPage',
+    name: 'mypage',
     meta: { layout: MainLayout },
     component: () => import('@/views/myPage/Index.vue'),
   },
   {
     path: '/markup',
-    name: 'Markup',
+    name: 'markup',
     component: () => import('@/views/markup/Index.vue'),
   },
   {
     path: '/chart',
-    name: 'Chart',
+    name: 'chart',
     meta: { layout: MainLayout },
     component: () => import('@/views/chart/Index.vue'),
   },

@@ -9,7 +9,7 @@
     "pnpm": ">=8.0.0"
   },
   "scripts": {
-    "dev": "pnpm --filter @template/desktop dev",
+    "dev": "pnpm --filter @template/sample-desktop dev",
     "dev:desktop": "pnpm --filter @template/desktop dev",
     "dev:sample-desktop": "pnpm --filter @template/sample-desktop dev",
     "dev:mobile": "pnpm --filter @template/mobile dev",

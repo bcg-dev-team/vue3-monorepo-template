@@ -12,6 +12,3 @@
 export { default as ModalHeader } from './ModalHeader.vue';
 export { default as ModalContent } from './ModalContent.vue';
 export { default as ModalFooter } from './ModalFooter.vue';
-
-// 내부 전용 타입들
-export type * from './types';

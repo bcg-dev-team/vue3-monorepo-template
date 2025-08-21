@@ -5,7 +5,26 @@
   - 액션 버튼들의 동적 구성 지원
 -->
 <script setup lang="ts">
-import type { ModalAction } from '../../types/components';
+// ModalAction 타입을 직접 정의하여 순환참조 방지
+import type { IconName } from '../../types/icons';
+
+interface ModalAction {
+  label: string;
+  variant?: 'contained' | 'outlined';
+  size?: 'lg' | 'md' | 'sm';
+  disabled?: boolean;
+  loading?: boolean;
+  leftIcon?: {
+    name: IconName;
+    size?: 'lg' | 'md' | 'sm';
+    color?: string;
+  };
+  rightIcon?: {
+    name: IconName;
+    size?: 'lg' | 'md' | 'sm';
+    color?: string;
+  };
+}
 import BaseButton from '../BaseButton/BaseButton.vue';
 
 interface Props {

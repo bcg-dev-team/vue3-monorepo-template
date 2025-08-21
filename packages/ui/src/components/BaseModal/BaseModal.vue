@@ -8,8 +8,125 @@
 -->
 <script setup lang="ts">
 import { computed, ref, watch, nextTick, useSlots, onMounted, onUnmounted } from 'vue';
+// BaseModal 관련 타입들을 직접 정의하여 순환참조 방지
+import type { IconName } from '../../types/icons';
+
+interface ModalProps {
+  /**
+   * 모달 열림 상태
+   */
+  isOpen: boolean;
+  /**
+   * 모달 제목
+   */
+  title?: string;
+  /**
+   * 모달 설명 (접근성용)
+   */
+  description?: string;
+  /**
+   * 모달 크기
+   */
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  /**
+   * 모달 타입
+   */
+  variant?: 'default' | 'confirm' | 'alert';
+  /**
+   * 알림 타입 (variant가 'alert'일 때만 사용)
+   */
+  alertVariant?: 'success' | 'info' | 'warning' | 'error';
+  /**
+   * 오버레이 클릭 시 닫기 여부
+   */
+  closeOnOverlayClick?: boolean;
+  /**
+   * ESC 키 클릭 시 닫기 여부
+   */
+  closeOnEscape?: boolean;
+  /**
+   * 뒤로가기 버튼 표시 여부
+   */
+  showBackButton?: boolean;
+  /**
+   * 닫기 버튼 표시 여부
+   */
+  showCloseButton?: boolean;
+  /**
+   * 기본 푸터 표시 여부
+   */
+  showDefaultFooter?: boolean;
+  /**
+   * 모달 액션 버튼들
+   */
+  actions?: Array<{
+    label: string;
+    variant?: 'contained' | 'outlined';
+    size?: 'lg' | 'md' | 'sm';
+    disabled?: boolean;
+    loading?: boolean;
+    leftIcon?: {
+      name: IconName;
+      size?: 'lg' | 'md' | 'sm';
+      color?: string;
+    };
+    rightIcon?: {
+      name: IconName;
+      size?: 'lg' | 'md' | 'sm';
+      color?: string;
+    };
+  }>;
+  /**
+   * 취소 버튼 텍스트
+   */
+  cancelText?: string;
+  /**
+   * 확인 버튼 텍스트
+   */
+  confirmText?: string;
+  /**
+   * 취소 버튼 표시 여부
+   */
+  showCancelButton?: boolean;
+  /**
+   * 확인 버튼 표시 여부
+   */
+  showConfirmButton?: boolean;
+  /**
+   * 버튼을 fullwidth로 표시할지 여부
+   */
+  fullWidth?: boolean;
+}
+
+interface ModalEmits {
+  (e: 'close'): void;
+  (e: 'back'): void;
+  (e: 'cancel'): void;
+  (e: 'confirm'): void;
+  (
+    e: 'action',
+    action: {
+      label: string;
+      variant?: 'contained' | 'outlined';
+      size?: 'lg' | 'md' | 'sm';
+      disabled?: boolean;
+      loading?: boolean;
+      leftIcon?: {
+        name: IconName;
+        size?: 'lg' | 'md' | 'sm';
+        color?: string;
+      };
+      rightIcon?: {
+        name: IconName;
+        size?: 'lg' | 'md' | 'sm';
+        color?: string;
+      };
+    },
+    index: number
+  ): void;
+  (e: 'update:isOpen', value: boolean): void;
+}
 import { Dialog, DialogPanel, DialogOverlay } from '@headlessui/vue';
-import type { ModalProps, ModalEmits } from './types';
 import ModalContent from './ModalContent.vue';
 import ModalHeader from './ModalHeader.vue';
 import ModalFooter from './ModalFooter.vue';

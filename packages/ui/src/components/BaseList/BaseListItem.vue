@@ -13,7 +13,7 @@
  * @emits click - 클릭 이벤트
  * @emits secondaryActionClick - 보조 액션 클릭 이벤트
  */
-import type { ButtonIconProps } from '../../types/components';
+import type { InnerIconProps } from '../../types/components';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { computed } from 'vue';
 
@@ -27,7 +27,7 @@ interface Props {
   /** 선택된 상태 여부 */
   selected?: boolean;
   /** 우측에 표시할 BaseIcon 컴포넌트 */
-  secondaryAction?: ButtonIconProps;
+  secondaryAction?: InnerIconProps;
 }
 
 interface Emits {

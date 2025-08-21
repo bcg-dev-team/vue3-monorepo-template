@@ -49,12 +49,15 @@ export type { IconName };
 export type ButtonVariant = 'contained' | 'outlined';
 
 /**
- * 버튼 아이콘 props 타입 (BaseButton, BaseModal 등에서 공통 사용)
+ * 내부에서 Icon을 사용하는 컴포넌트들의 공통 아이콘 props 타입
+ * BaseIcon 컴포넌트의 Props와 일치합니다.
  */
-export interface ButtonIconProps {
+export interface InnerIconProps {
   name: IconName;
-  size?: ComponentSize;
+  size?: ComponentSize | number;
   color?: string;
+  class?: string;
+  isLoading?: boolean;
 }
 
 // BaseTable
@@ -120,37 +123,252 @@ export interface RadioOption<T = any> {
   disabled?: boolean; // 비활성화 여부 (선택사항)
 }
 
-// BaseModal
-export type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
-export type ModalVariant = 'default' | 'confirm' | 'alert';
-export type AlertVariant = 'success' | 'info' | 'warning' | 'error';
+// BaseModal 관련 타입들은 BaseModal 컴포넌트에서 직접 정의하여 순환참조 방지
 
-export interface ModalState {
+/**
+ * Modal 컴포넌트 Props
+ */
+export interface ModalProps {
+  /**
+   * 모달 열림 상태
+   */
   isOpen: boolean;
+  /**
+   * 모달 제목
+   */
   title?: string;
-  content?: string;
+  /**
+   * 모달 설명 (접근성용)
+   */
   description?: string;
-  data?: unknown;
-}
-
-export interface ModalAction {
-  label: string;
-  variant?: ButtonVariant;
-  size?: ComponentSize;
-  disabled?: boolean;
-  loading?: boolean;
-  leftIcon?: ButtonIconProps;
-  rightIcon?: ButtonIconProps;
-}
-
-export interface ModalConfig {
-  size?: ModalSize;
-  variant?: ModalVariant;
+  /**
+   * 모달 크기
+   */
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  /**
+   * 모달 타입
+   */
+  variant?: 'default' | 'confirm' | 'alert';
+  /**
+   * 알림 타입 (variant가 'alert'일 때만 사용)
+   */
+  alertVariant?: 'success' | 'info' | 'warning' | 'error';
+  /**
+   * 오버레이 클릭 시 닫기 여부
+   */
   closeOnOverlayClick?: boolean;
+  /**
+   * ESC 키 클릭 시 닫기 여부
+   */
   closeOnEscape?: boolean;
+  /**
+   * 뒤로가기 버튼 표시 여부
+   */
+  showBackButton?: boolean;
+  /**
+   * 닫기 버튼 표시 여부
+   */
   showCloseButton?: boolean;
-  actions?: ModalAction[];
-  alertVariant?: AlertVariant;
+  /**
+   * 기본 푸터 표시 여부
+   */
+  showDefaultFooter?: boolean;
+  /**
+   * 모달 액션 버튼들
+   */
+  actions?: Array<{
+    label: string;
+    variant?: ButtonVariant;
+    size?: ComponentSize;
+    disabled?: boolean;
+    loading?: boolean;
+    leftIcon?: InnerIconProps;
+    rightIcon?: InnerIconProps;
+  }>;
+  /**
+   * 취소 버튼 텍스트
+   */
+  cancelText?: string;
+  /**
+   * 확인 버튼 텍스트
+   */
+  confirmText?: string;
+  /**
+   * 취소 버튼 표시 여부
+   */
+  showCancelButton?: boolean;
+  /**
+   * 확인 버튼 표시 여부
+   */
+  showConfirmButton?: boolean;
+  /**
+   * 버튼을 fullwidth로 표시할지 여부
+   */
+  fullWidth?: boolean;
+}
+
+/**
+ * Modal 컴포넌트 Emits
+ */
+export interface ModalEmits {
+  (e: 'close'): void;
+  (e: 'back'): void;
+  (e: 'cancel'): void;
+  (e: 'confirm'): void;
+  (
+    e: 'action',
+    action: {
+      label: string;
+      variant?: ButtonVariant;
+      size?: ComponentSize;
+      disabled?: boolean;
+      loading?: boolean;
+      leftIcon?: InnerIconProps;
+      rightIcon?: InnerIconProps;
+    },
+    index: number
+  ): void;
+  (e: 'update:isOpen', value: boolean): void;
+}
+
+/**
+ * ModalHeader 컴포넌트 Props
+ */
+export interface ModalHeaderProps {
+  /**
+   * 모달 제목
+   */
+  title?: string;
+  /**
+   * 뒤로가기 버튼 표시 여부
+   */
+  showBackButton?: boolean;
+  /**
+   * 닫기 버튼 표시 여부
+   */
+  showCloseButton?: boolean;
+}
+
+/**
+ * ModalHeader 컴포넌트 Emits
+ */
+export interface ModalHeaderEmits {
+  (e: 'back'): void;
+  (e: 'close'): void;
+}
+
+/**
+ * ModalContent 컴포넌트 Props
+ */
+export interface ModalContentProps {
+  /**
+   * 모달 설명 (접근성용)
+   */
+  description?: string;
+  /**
+   * 알림 타입 (alert variant용)
+   */
+  alertVariant?: 'success' | 'info' | 'warning' | 'error';
+  /**
+   * 알림 아이콘 표시 여부
+   */
+  showAlertIcon?: boolean;
+}
+
+/**
+ * ModalContent 컴포넌트 Emits
+ */
+export interface ModalContentEmits {
+  (e: 'content-click'): void;
+}
+
+/**
+ * ModalFooter 컴포넌트 Props
+ */
+export interface ModalFooterProps {
+  /**
+   * 모달 액션 버튼들
+   */
+  actions?: Array<{
+    label: string;
+    variant?: ButtonVariant;
+    size?: ComponentSize;
+    disabled?: boolean;
+    loading?: boolean;
+    leftIcon?: InnerIconProps;
+    rightIcon?: InnerIconProps;
+  }>;
+  /**
+   * 기본 푸터 표시 여부
+   */
+  showDefaultFooter?: boolean;
+  /**
+   * 취소 버튼 텍스트
+   */
+  cancelText?: string;
+  /**
+   * 확인 버튼 텍스트
+   */
+  confirmText?: string;
+  /**
+   * 취소 버튼 표시 여부
+   */
+  showCancelButton?: boolean;
+  /**
+   * 확인 버튼 표시 여부
+   */
+  showConfirmButton?: boolean;
+  /**
+   * 버튼을 fullwidth로 표시할지 여부
+   */
+  fullWidth?: boolean;
+}
+
+/**
+ * ModalFooter 컴포넌트 Emits
+ */
+export interface ModalFooterEmits {
+  (e: 'cancel'): void;
+  (e: 'confirm'): void;
+  (
+    e: 'action',
+    action: {
+      label: string;
+      variant?: ButtonVariant;
+      size?: ComponentSize;
+      disabled?: boolean;
+      loading?: boolean;
+      leftIcon?: InnerIconProps;
+      rightIcon?: InnerIconProps;
+    },
+    index: number
+  ): void;
+}
+
+/**
+ * Modal 슬롯 타입
+ */
+export interface ModalSlots {
+  /**
+   * 기본 컨텐츠
+   */
+  default(): any[];
+  /**
+   * 헤더 영역
+   */
+  header(): any[];
+  /**
+   * 푸터 영역
+   */
+  footer(): any[];
+  /**
+   * 제목 영역
+   */
+  title(): any[];
+  /**
+   * 액션 영역
+   */
+  actions(): any[];
 }
 // BaseSkeleton
 export interface SkeletonProps {

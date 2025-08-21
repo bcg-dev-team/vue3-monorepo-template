@@ -16,7 +16,7 @@
  * @props iconColor - 커스텀 아이콘 색상 (color가 custom일 때 사용)
  * @emits error - 이미지 로드 실패 시 발생
  */
-import type { ButtonIconProps } from '../../types/components';
+import type { InnerIconProps } from '../../types/components';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { computed, ref } from 'vue';
 
@@ -30,9 +30,9 @@ interface Props {
   /** 아바타 스타일 */
   variant?: 'circular' | 'rounded' | 'square';
   /** 직접 표시할 BaseIcon (src보다 우선순위 높음) */
-  icon?: ButtonIconProps;
+  icon?: InnerIconProps;
   /** 이미지 로드 실패 시 표시할 텍스트 또는 아이콘 */
-  fallback?: string | ButtonIconProps;
+  fallback?: string | InnerIconProps;
   /** 아바타 색상 테마 */
   color?: 'default' | 'primary' | 'red' | 'blue' | 'green' | 'purple' | 'custom';
   /** 커스텀 배경색 (color가 custom일 때 사용) */

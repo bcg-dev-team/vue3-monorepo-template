@@ -33,7 +33,7 @@ const modelValue = defineModel<boolean>({ default: false });
 const switchClasses = computed(() => {
   const classes = [
     'base-switch',
-    'relative inline-flex cursor-pointer transition-all duration-200',
+    'relative inline-flex transition-all duration-200',
     'focus:outline-none',
   ];
 
@@ -97,6 +97,16 @@ const handleToggle = () => {
     modelValue.value = !modelValue.value;
   }
 };
+
+// 이벤트 핸들러 타입 정의
+const handleChange = (event: Event) => {
+  if (!props.disabled) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      modelValue.value = target.checked;
+    }
+  }
+};
 </script>
 
 <template>
@@ -107,16 +117,7 @@ const handleToggle = () => {
       :checked="modelValue"
       :disabled="disabled"
       class="sr-only"
-      @change="
-        (event) => {
-          if (!props.disabled) {
-            const target = event.target as HTMLInputElement;
-            if (target) {
-              modelValue = target.checked;
-            }
-          }
-        }
-      "
+      @change="handleChange"
     />
 
     <!-- 배경 -->

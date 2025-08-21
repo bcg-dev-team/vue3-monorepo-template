@@ -27,15 +27,12 @@ import IndividualPhone from '@/components/auth/signup/individual/IndividualPhone
 import IndividualInfo from '@/components/auth/signup/individual/IndividualInfo.vue';
 import AuthContent from '@/components/auth/common/AuthContent.vue';
 import { BaseIcon, BaseStepper } from '@template/ui';
+import type { AuthContentTitle } from '@/types/auth';
 import { ref } from 'vue';
 
 const step = ref(0);
 
-type IndividualDescriptionProps = {
-  description: string;
-};
-
-const individualDescription: IndividualDescriptionProps[] = [
+const individualDescription: AuthContentTitle[] = [
   {
     description: '가입 약관을 확인해주세요.',
   },

@@ -62,7 +62,7 @@ BaseListItemAvatar는 리스트 아이템 내부에서 사용하는 아바타 �
       description: '직접 표시할 BaseIcon (src보다 우선순위 높음)',
       control: { type: 'object' },
       table: {
-        type: { summary: 'ButtonIconProps' },
+        type: { summary: 'InnerIconProps' },
         defaultValue: { summary: 'undefined' },
         category: 'Props',
       },
@@ -71,7 +71,7 @@ BaseListItemAvatar는 리스트 아이템 내부에서 사용하는 아바타 �
       description: '이미지 로드 실패 시 표시할 텍스트 또는 아이콘',
       control: { type: 'text' },
       table: {
-        type: { summary: 'string | ButtonIconProps' },
+        type: { summary: 'string | InnerIconProps' },
         defaultValue: { summary: 'undefined' },
         category: 'Props',
       },

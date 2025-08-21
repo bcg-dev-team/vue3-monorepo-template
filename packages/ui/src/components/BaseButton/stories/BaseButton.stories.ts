@@ -66,7 +66,7 @@ const meta: Meta<typeof BaseButton> = {
       description: '좌측 아이콘 정보',
       control: { type: 'object' },
       table: {
-        type: { summary: 'ButtonIconProps' },
+        type: { summary: 'InnerIconProps' },
         category: 'Props',
       },
     },
@@ -74,7 +74,7 @@ const meta: Meta<typeof BaseButton> = {
       description: '우측 아이콘 정보',
       control: { type: 'object' },
       table: {
-        type: { summary: 'ButtonIconProps' },
+        type: { summary: 'InnerIconProps' },
         category: 'Props',
       },
     },
@@ -82,7 +82,7 @@ const meta: Meta<typeof BaseButton> = {
       description: '중앙 아이콘 정보 (중앙 아이콘 사용 시 label과 subLabel은 무시됩니다)',
       control: { type: 'object' },
       table: {
-        type: { summary: 'ButtonIconProps' },
+        type: { summary: 'InnerIconProps' },
         category: 'Props',
       },
     },

@@ -12,7 +12,7 @@
  * @emits click - 클릭 이벤트
  * @figma Button (node-id: 32-244)
  */
-import type { ComponentSize, ButtonIconProps } from '../../types/components';
+import type { ComponentSize, InnerIconProps } from '../../types/components';
 import BaseSkeleton from '../BaseSkeleton/BaseSkeleton.vue';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { computed } from 'vue';
@@ -56,15 +56,15 @@ interface Props {
   /**
    * 좌측 아이콘 정보
    */
-  leftIcon?: ButtonIconProps;
+  leftIcon?: InnerIconProps;
   /**
    * 우측 아이콘 정보
    */
-  rightIcon?: ButtonIconProps;
+  rightIcon?: InnerIconProps;
   /**
    * 중앙 아이콘 정보 (중앙 아이콘 사용 시 label과 subLabel은 무시됩니다)
    */
-  centerIcon?: ButtonIconProps;
+  centerIcon?: InnerIconProps;
   /**
    * 버튼 텍스트
    */
@@ -163,7 +163,7 @@ const getIconSize = (size: string) => {
 };
 
 // 아이콘 색상 계산
-const getIconColor = (iconProps: ButtonIconProps | undefined, color: string) => {
+const getIconColor = (iconProps: InnerIconProps | undefined, color: string) => {
   if (iconProps?.color) {
     return iconProps.color;
   }

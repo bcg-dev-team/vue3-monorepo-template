@@ -6,4 +6,11 @@
 export { startMocking, stopMocking, worker } from './browser.js';
 export { chartHttpHandlers } from './handlers/chart/http.js';
 export { MockWebSocket, mockWebSocketManager } from './handlers/chart/websocket.js';
-export type { TradingViewBar, CryptoCompareApiData, WebSocketMessage, ChartConfig, Bar } from './types/chart.js';
+export { handlers } from './handlers/index.js';
+export type {
+  TradingViewBar,
+  CryptoCompareApiData,
+  WebSocketMessage,
+  ChartConfig,
+  Bar,
+} from './types/chart.js';

@@ -5,7 +5,9 @@
   - 알림 모달용 아이콘 지원
 -->
 <script setup lang="ts">
-import type { AlertVariant, IconName } from '../../types/components';
+// AlertVariant 타입을 직접 정의하여 순환참조 방지
+type AlertVariant = 'success' | 'info' | 'warning' | 'error';
+import type { IconName } from '../../types/icons';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 
 interface Props {

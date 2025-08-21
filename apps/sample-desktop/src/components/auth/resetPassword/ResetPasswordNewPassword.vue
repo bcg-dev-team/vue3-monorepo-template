@@ -44,9 +44,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-const step = defineModel<number>('step', { required: true });
-
 const handleSubmit = () => {
-  router.replace({ name: 'reset-password-complete' });
+  router.push({ name: 'reset-password-complete' });
 };
 </script>

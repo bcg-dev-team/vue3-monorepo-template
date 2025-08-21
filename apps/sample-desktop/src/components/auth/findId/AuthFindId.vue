@@ -24,7 +24,7 @@
       variant="contained"
       color="primary"
       full-width
-      @click="step = 1"
+      @click="router.push({ query: { step: 1 } })"
     />
   </div>
 </template>
@@ -32,6 +32,7 @@
 <script setup lang="ts">
 import FormField from '@/components/auth/common/FormField.vue';
 import { BaseInput, BaseButton } from '@template/ui';
+import { useRouter } from 'vue-router';
 
-const step = defineModel<number>('step', { required: true });
+const router = useRouter();
 </script>

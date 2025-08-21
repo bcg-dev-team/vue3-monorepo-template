@@ -1,13 +1,12 @@
 <template>
-  <AuthContent :title="findIdTitle[step].title" :description="findIdTitle[step].description">
-    <template #header>
-      <div class="flex items-center justify-between">
-        <BaseIcon name="arrow-backward" size="md" />
-        <BaseStepper variant="dot" :dot-config="{ count: 2 }" :current="step" />
-      </div>
-    </template>
+  <AuthContent
+    :title="findIdTitle[step].title"
+    :description="findIdTitle[step].description"
+    :total-step="2"
+    v-model:current-step="step"
+  >
     <template #content>
-      <AuthFindId v-if="step === 0" v-model:step="step" />
+      <AuthFindId v-if="step === 0" />
       <AuthFindIdResult v-if="step === 1" />
     </template>
   </AuthContent>
@@ -17,11 +16,16 @@
 import AuthFindIdResult from '@/components/auth/findId/AuthFindIdResult.vue';
 import AuthContent from '@/components/auth/common/AuthContent.vue';
 import AuthFindId from '@/components/auth/findId/AuthFindId.vue';
-import { BaseIcon, BaseStepper } from '@template/ui';
 import type { AuthContentTitle } from '@/types/auth';
-import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { computed } from 'vue';
 
-const step = ref(0);
+const route = useRoute();
+
+// TODO: 현재 페이지에서 파라미터 전달 방식으로 구현되어 있음. 추후 리팩토링 필요
+const step = computed(() => {
+  return parseInt(route.query.step as string) || 0;
+});
 
 const findIdTitle: AuthContentTitle[] = [
   {

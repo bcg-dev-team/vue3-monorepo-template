@@ -6,16 +6,16 @@
       label="휴대폰 본인인증"
       variant="outlined"
       color="red"
+      @click="status = true"
       full-width
     />
     <BaseButton
       v-else
       size="lg"
       label="인증완료"
-      variant="outlined"
-      color="green"
       full-width
-      :rightIcon="{ name: 'arrow-right-thin' }"
+      :rightIcon="{ name: 'check-circle', color: 'currentColor' }"
+      :customClass="'custom-green-auth-complete'"
     />
   </div>
   <div class="mt-[33px] flex flex-col">
@@ -25,14 +25,17 @@
       variant="contained"
       color="primary"
       full-width
-      @click="step = 2"
+      :disabled="!status"
+      @click="router.push({ query: { step: 2 } })"
     />
   </div>
 </template>
 <script lang="ts" setup>
 import { BaseButton } from '@template/ui';
+import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 
-const step = defineModel<number>('step', { required: true });
+const router = useRouter();
+
 const status = ref<boolean>(false);
 </script>

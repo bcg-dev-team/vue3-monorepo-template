@@ -138,11 +138,45 @@ function generateHistoryData(
 }
 
 /**
+ * 정확한 심볼 매칭을 위한 기본 가격 조회 함수
+ * @param fsym - 기본 심볼 (예: ETH)
+ * @param tsym - 견적 심볼 (예: EUR, USD)
+ * @returns 기본 가격
+ */
+function getBasePrice(fsym: string, tsym: string): number {
+  // 1. 정확한 심볼 매칭 (우선순위 1)
+  const exactSymbol = `${fsym}${tsym}`;
+  if (symbolBasePrices[exactSymbol]) {
+    console.log(`[MSW] 정확한 심볼 매칭: ${exactSymbol} → ${symbolBasePrices[exactSymbol]}`);
+    return symbolBasePrices[exactSymbol];
+  }
+
+  // 2. 부분 매칭 (우선순위 2) - 기존 호환성 유지
+  if (symbolBasePrices[fsym]) {
+    console.log(`[MSW] 부분 심볼 매칭: ${fsym} → ${symbolBasePrices[fsym]}`);
+    return symbolBasePrices[fsym];
+  }
+
+  // 3. 기본값 (우선순위 3)
+  console.log(`[MSW] 기본값 사용: ${fsym}/${tsym} → 1000`);
+  return 1000;
+}
+
+/**
  * 심볼별 기본 가격 설정
  */
 const symbolBasePrices: Record<string, number> = {
-  BTC: 50000,
+  // 정확한 심볼 매칭 (우선순위 높음)
+  ETHEUR: 2800,
+  ETHUSD: 3000,
+  BTCEUR: 45000,
+  BTCUSD: 50000,
+
+  // 부분 매칭 (기존 호환성)
   ETH: 3000,
+  BTC: 50000,
+
+  // 기타
   ADA: 0.5,
   DOT: 25,
   SOL: 100,
@@ -163,7 +197,7 @@ export const chartHttpHandlers = [
 
     console.log('[MSW] HTTP history 요청:', { fsym, tsym, resolution, limit, toTs });
 
-    const basePrice = symbolBasePrices[fsym] || 1000;
+    const basePrice = getBasePrice(fsym, tsym);
     const historyData = generateHistoryData(fsym, resolution, limit, basePrice);
 
     let filteredData = historyData;

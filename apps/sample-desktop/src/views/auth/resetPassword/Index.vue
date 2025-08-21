@@ -22,15 +22,12 @@ import ResetPasswordEmailAuth from '@/components/auth/resetPassword/ResetPasswor
 import ResetPasswordComplete from '@/components/auth/resetPassword/ResetPasswordComplete.vue';
 import AuthContent from '@/components/auth/common/AuthContent.vue';
 import { BaseIcon, BaseStepper } from '@template/ui';
+import type { AuthContentTitle } from '@/types/auth';
 import { ref } from 'vue';
 
 const step = ref(0);
 
-type ResetPasswordDescriptionProps = {
-  description?: string;
-};
-
-const resetPasswordDescription: ResetPasswordDescriptionProps[] = [
+const resetPasswordDescription: AuthContentTitle[] = [
   {
     description: '비밀번호를 재설정하고자 하는 아이디를 입력해주세요',
   },

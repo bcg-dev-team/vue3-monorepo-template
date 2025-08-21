@@ -18,16 +18,12 @@ import AuthFindIdResult from '@/components/auth/findId/AuthFindIdResult.vue';
 import AuthContent from '@/components/auth/common/AuthContent.vue';
 import AuthFindId from '@/components/auth/findId/AuthFindId.vue';
 import { BaseIcon, BaseStepper } from '@template/ui';
+import type { AuthContentTitle } from '@/types/auth';
 import { ref } from 'vue';
 
 const step = ref(0);
 
-type FindIdTitleProps = {
-  title?: string;
-  description?: string;
-};
-
-const findIdTitle: FindIdTitleProps[] = [
+const findIdTitle: AuthContentTitle[] = [
   {
     title: '아이디 찾기',
     description: '회원정보에 등록된 정보를 입력해주세요',

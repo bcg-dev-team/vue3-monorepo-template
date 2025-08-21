@@ -8,9 +8,18 @@
       <p>관리자 확인 후 이메일로 승인 알림을 보내드릴게요!</p>
     </div>
   </div>
-  <div class="mt-size-48"><BaseButton label="확인" full-width /></div>
+  <div class="mt-size-48">
+    <BaseButton label="확인" full-width @click="goToLogin" />
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { BaseButton } from '@template/ui';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const goToLogin = () => {
+  router.push({ name: 'login' });
+};
 </script>

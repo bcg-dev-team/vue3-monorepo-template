@@ -76,13 +76,16 @@
       color="primary"
       :disabled="!state.serviceAgreement || !state.personalInfoAgreement"
       full-width
-      @click="step = 1"
+      @click="router.push({ query: { step: 1 } })"
     />
   </div>
 </template>
 <script lang="ts" setup>
 import { BaseIcon, BaseButton, BaseCheckbox } from '@template/ui';
 import { reactive, computed } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const state = reactive({
   serviceAgreement: false,
@@ -107,6 +110,4 @@ const toggleAll = () => {
   state.personalInfoAgreement = newValue;
   state.marketingAgreement = newValue;
 };
-
-const step = defineModel<number>('step', { required: true });
 </script>

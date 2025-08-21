@@ -47,6 +47,6 @@ const router = useRouter();
 const isChecked = ref<boolean>(false);
 
 const handleSubmit = () => {
-  router.replace({ name: 'sign-up-complete' });
+  router.push({ name: 'sign-up-complete' });
 };
 </script>

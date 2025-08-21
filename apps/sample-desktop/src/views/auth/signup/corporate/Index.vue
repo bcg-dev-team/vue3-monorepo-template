@@ -7,32 +7,38 @@
       </div>
     </template>
     <template #content>
-      <CorporateTerms v-if="step === 0" v-model:step="step" />
-      <CorporatePhone v-if="step === 1" v-model:step="step" />
-      <CorporateEmailForm v-if="step === 2" v-model:step="step" />
-      <CorporateEmailAuth v-if="step === 3" v-model:step="step" />
-      <CorporateSetPassword v-if="step === 4" v-model:step="step" />
-      <CorporateInfo v-if="step === 5" v-model:step="step" />
-      <CorporateDocument v-if="step === 6" v-model:step="step" />
-      <CorporateDocument2 v-if="step === 7" v-model:step="step" />
+      <CorporateTerms v-if="step === 0" />
+      <PhoneAuth v-if="step === 1" />
+      <EmailForm v-if="step === 2" />
+      <EmailAuth v-if="step === 3" />
+      <SetPassword v-if="step === 4" />
+      <CorporateInfo v-if="step === 5" />
+      <CorporateDocument v-if="step === 6" />
+      <CorporateDocument2 v-if="step === 7" />
     </template>
   </AuthContent>
 </template>
 <script lang="ts" setup>
-import CorporateSetPassword from '@/components/auth/signup/corporate/CorporateSetPassword.vue';
-import CorporateEmailForm from '@/components/auth/signup/corporate/CorporateEmailForm.vue';
-import CorporateEmailAuth from '@/components/auth/signup/corporate/CorporateEmailAuth.vue';
 import CorporateDocument2 from '@/components/auth/signup/corporate/CorporateDocument2.vue';
 import CorporateDocument from '@/components/auth/signup/corporate/CorporateDocument.vue';
 import CorporateTerms from '@/components/auth/signup/corporate/CorporateTerms.vue';
-import CorporatePhone from '@/components/auth/signup/corporate/CorporatePhone.vue';
 import CorporateInfo from '@/components/auth/signup/corporate/CorporateInfo.vue';
+import SetPassword from '@/components/auth/signup/common/SetPassword.vue';
+import PhoneAuth from '@/components/auth/signup/common/PhoneAuth.vue';
+import EmailForm from '@/components/auth/signup/common/EmailForm.vue';
+import EmailAuth from '@/components/auth/signup/common/EmailAuth.vue';
 import AuthContent from '@/components/auth/common/AuthContent.vue';
 import { BaseIcon, BaseStepper } from '@template/ui';
 import type { AuthContentTitle } from '@/types/auth';
-import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { computed } from 'vue';
 
-const step = ref(0);
+const route = useRoute();
+
+// TODO: 현재 페이지에서 파라미터 전달 방식으로 구현되어 있음. 추후 리팩토링 필요
+const step = computed(() => {
+  return parseInt(route.query.step as string) || 0;
+});
 
 const corporateDescription: AuthContentTitle[] = [
   {

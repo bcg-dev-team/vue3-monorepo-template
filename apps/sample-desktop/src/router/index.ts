@@ -150,4 +150,14 @@ const router = createRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  if (
+    from.name === 'sign-up-complete' &&
+    (to.name === 'individual-sign-up' || to.name === 'corporate-sign-up')
+  ) {
+    return next({ name: 'login' });
+  }
+  next();
+});
+
 export default router;

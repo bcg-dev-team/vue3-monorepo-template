@@ -16,15 +16,15 @@
       variant="contained"
       color="primary"
       full-width
-      @click="step = 3"
+      @click="router.push({ query: { step: 3 } })"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { BaseIcon, BaseStepper, BaseInput, BaseButton } from '@template/ui';
-import AuthContent from '@/components/auth/common/AuthContent.vue';
 import FormField from '@/components/auth/common/FormField.vue';
+import { BaseInput, BaseButton } from '@template/ui';
+import { useRouter } from 'vue-router';
 
-const step = defineModel<number>('step', { required: true });
+const router = useRouter();
 </script>

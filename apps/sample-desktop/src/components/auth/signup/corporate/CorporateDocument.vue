@@ -17,7 +17,7 @@
         variant="contained"
         color="primary"
         full-width
-        @click="step = 7"
+        @click="router.push({ query: { step: 7 } })"
       />
     </div>
   </div>
@@ -25,6 +25,7 @@
 <script lang="ts" setup>
 import { BaseButton, BaseFileUploadButton } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
+import { useRouter } from 'vue-router';
 
-const step = defineModel<number>('step', { required: true });
+const router = useRouter();
 </script>

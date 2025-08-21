@@ -16,6 +16,7 @@ const BUILD_ORDER = [
   'packages/types', // 기반 패키지
   'packages/theme', // types에 의존
   'packages/utils', // types에 의존
+  'packages/mocks', // types에 의존
   'packages/api', // types, utils에 의존
   'packages/ui', // types, theme에 의존
   'apps/desktop', // 모든 패키지 사용
@@ -29,6 +30,7 @@ const DEPENDENCY_GRAPH = {
   'packages/types': [],
   'packages/theme': ['packages/types'],
   'packages/utils': ['packages/types'],
+  'packages/mocks': ['packages/types'],
   'packages/api': ['packages/types', 'packages/utils'],
   'packages/ui': ['packages/types', 'packages/theme'],
   'apps/desktop': [
@@ -37,6 +39,7 @@ const DEPENDENCY_GRAPH = {
     'packages/api',
     'packages/ui',
     'packages/theme',
+    'packages/mocks',
   ],
   'apps/sample-desktop': [
     'packages/types',
@@ -44,6 +47,7 @@ const DEPENDENCY_GRAPH = {
     'packages/api',
     'packages/ui',
     'packages/theme',
+    'packages/mocks',
   ],
   'apps/mobile': [
     'packages/types',
@@ -51,8 +55,9 @@ const DEPENDENCY_GRAPH = {
     'packages/api',
     'packages/ui',
     'packages/theme',
+    'packages/mocks',
   ],
-  'apps/mobile-native': ['packages/types', 'packages/utils', 'packages/api', 'packages/theme'],
+  'apps/mobile-native': ['packages/types', 'packages/utils', 'packages/api', 'packages/theme', 'packages/mocks'],
 } as const;
 
 // 타입 정의

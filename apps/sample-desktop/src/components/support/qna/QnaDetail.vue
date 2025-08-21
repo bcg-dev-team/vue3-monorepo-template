@@ -32,7 +32,9 @@
           <tr>
             <th>첨부파일</th>
             <td colspan="3">
-              <a class="text-blue underline" href="#">20250601_Screenshot_14.00.01.jpg</a>
+              <Anchor @click="() => console.log('첨부파일 클릭!')">
+                20250601_Screenshot_14.00.01.jpg
+              </Anchor>
             </td>
           </tr>
         </table>
@@ -73,6 +75,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import Anchor from '@/components/common/Anchor.vue';
 import { BaseButton, BaseChip } from '@template/ui';
 
 const type = defineModel<null | 'register' | 'detail'>('type', { required: true });

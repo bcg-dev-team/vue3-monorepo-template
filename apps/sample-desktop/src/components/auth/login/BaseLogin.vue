@@ -12,10 +12,10 @@
           <span class="text-font-13">아이디 저장</span>
         </BaseCheckbox>
       </div>
-      <div class="gap-size-12 text-font-13 flex items-center">
-        <a class="cursor-pointer underline" href="/auth/find-id">아이디 찾기</a>
+      <div class="gap-size-12 flex items-center">
+        <Anchor size="sm" to="find-id">아이디 찾기</Anchor>
         <span class="text-font-12 text-default-muted">|</span>
-        <a class="cursor-pointer underline" href="/auth/reset-password">비밀번호 재설정</a>
+        <Anchor size="sm" to="reset-password">비밀번호 재설정</Anchor>
       </div>
     </div>
   </div>
@@ -23,14 +23,18 @@
     <BaseButton size="lg" label="로그인" variant="contained" color="primary" full-width />
   </div>
   <div class="mt-6 flex justify-center">
-    <a class="font-regular cursor-pointer text-[13px] underline" href="/auth/sign-up">가입하기</a>
+    <Anchor size="sm" to="sign-up">가입하기</Anchor>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { BaseInput, BaseButton, BaseCheckbox } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
+import Anchor from '@/components/common/Anchor.vue';
+import { useRouter } from 'vue-router';
 import { ref } from 'vue';
+
+const router = useRouter();
 
 const isChecked = ref<boolean>(false);
 </script>

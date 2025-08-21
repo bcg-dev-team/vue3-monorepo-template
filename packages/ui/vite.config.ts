@@ -14,7 +14,7 @@ export default defineConfig({
     }),
     dts({
       insertTypesEntry: true,
-      rollupTypes: true,
+      rollupTypes: false, // 순환참조 방지를 위해 false로 변경
       outDir: 'dist',
     }),
   ],

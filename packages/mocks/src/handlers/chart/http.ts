@@ -3,7 +3,7 @@
  * 통합된 /data/history 엔드포인트로 모든 시간대 데이터를 처리합니다.
  */
 
-import type { CryptoCompareApiData } from '@/types/tradingview';
+import type { CryptoCompareApiData } from '../../types/chart.js';
 import { http, HttpResponse } from 'msw';
 
 /**
@@ -151,7 +151,7 @@ const symbolBasePrices: Record<string, number> = {
 /**
  * HTTP API 모킹 핸들러들
  */
-export const httpHandlers = [
+export const chartHttpHandlers = [
   // 통합 data/history API 모킹
   http.get('https://min-api.cryptocompare.com/data/history', ({ request }) => {
     const url = new URL(request.url);

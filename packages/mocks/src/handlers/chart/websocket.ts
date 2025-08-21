@@ -3,14 +3,14 @@
  * 실시간 데이터 생성 및 WebSocket API 모킹을 통합 관리합니다.
  */
 
-import type { Bar } from '@/adapters/tradingview/streaming';
+import type { Bar } from '../../types/chart.js';
 
 /**
  * 심볼별 실시간 가격 데이터 관리 클래스
  */
 class MockWebSocketManager {
   private subscriptions = new Map<string, Set<(data: any) => void>>();
-  private intervals = new Map<string, NodeJS.Timeout>();
+  private intervals = new Map<string, any>();
   private currentPrices = new Map<string, number>();
   private lastBars = new Map<string, Bar>();
 
@@ -184,7 +184,7 @@ export const mockWebSocketManager = new MockWebSocketManager();
  * 모킹된 WebSocket 클래스
  */
 export class MockWebSocket extends EventTarget {
-  public readyState: number = WebSocket.CONNECTING;
+  public readyState: number = MockWebSocket.CONNECTING;
   public url: string;
   public protocol: string = '';
   public extensions: string = '';
@@ -200,7 +200,7 @@ export class MockWebSocket extends EventTarget {
     console.log('[MockWebSocket] 연결 시작:', url);
 
     setTimeout(() => {
-      this.readyState = WebSocket.OPEN;
+      this.readyState = MockWebSocket.OPEN;
       console.log('[MockWebSocket] 연결 완료');
 
       const openEvent = new Event('open');
@@ -213,12 +213,12 @@ export class MockWebSocket extends EventTarget {
   }
 
   public onopen: ((this: MockWebSocket, ev: Event) => any) | null = null;
-  public onclose: ((this: MockWebSocket, ev: CloseEvent) => any) | null = null;
+  public onclose: ((this: MockWebSocket, ev: Event) => any) | null = null;
   public onerror: ((this: MockWebSocket, ev: Event) => any) | null = null;
   public onmessage: ((this: MockWebSocket, ev: MessageEvent) => any) | null = null;
 
   send(data: string | ArrayBufferLike | Blob | ArrayBufferView): void {
-    if (this.readyState !== WebSocket.OPEN) {
+    if (this.readyState !== MockWebSocket.OPEN) {
       console.error('[MockWebSocket] 연결이 열려있지 않음');
       return;
     }
@@ -235,17 +235,16 @@ export class MockWebSocket extends EventTarget {
   close(code?: number, reason?: string): void {
     console.log('[MockWebSocket] 연결 종료:', { code, reason });
 
-    this.readyState = WebSocket.CLOSED;
+    this.readyState = MockWebSocket.CLOSED;
 
     if (this.messageCallback) {
       this.messageCallback = null;
     }
 
-    const closeEvent = new CloseEvent('close', {
-      code: code || 1000,
-      reason: reason || 'Normal closure',
-      wasClean: true,
-    });
+    const closeEvent = new Event('close') as any;
+    closeEvent.code = code || 1000;
+    closeEvent.reason = reason || 'Normal closure';
+    closeEvent.wasClean = true;
 
     this.dispatchEvent(closeEvent);
 
@@ -275,7 +274,7 @@ export class MockWebSocket extends EventTarget {
   }
 
   private sendMessageToClient(data: any): void {
-    if (this.readyState !== WebSocket.OPEN) {
+    if (this.readyState !== MockWebSocket.OPEN) {
       return;
     }
 

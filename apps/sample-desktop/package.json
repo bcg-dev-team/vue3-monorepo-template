@@ -21,7 +21,8 @@
     "@template/theme": "workspace:*",
     "@template/types": "workspace:*",
     "@template/ui": "workspace:*",
-    "@template/utils": "workspace:*"
+    "@template/utils": "workspace:*",
+    "@template/mocks": "workspace:*"
   },
   "devDependencies": {
     "msw": "^2.10.5"

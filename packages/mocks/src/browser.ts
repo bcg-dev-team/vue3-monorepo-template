@@ -4,8 +4,8 @@
  */
 
 import { MockWebSocket, mockWebSocketManager } from './handlers/chart/websocket.js';
-import { setupWorker } from 'msw/browser';
 import { chartHttpHandlers } from './handlers/chart/http.js';
+import { setupWorker } from 'msw/browser';
 
 /**
  * MSW 워커 인스턴스 생성
@@ -17,7 +17,7 @@ export const worker = setupWorker(...chartHttpHandlers);
  * WebSocket 모킹 시작
  */
 function startWebSocketMocking(): void {
-  if (typeof window !== 'undefined' && (import.meta as any).env.MODE === 'development') {
+  if (typeof window !== 'undefined' && (import.meta as any).env.DEV) {
     console.log('[WebSocket Mocking] 시작');
 
     (window as any).OriginalWebSocket = window.WebSocket;
@@ -48,7 +48,7 @@ function stopWebSocketMocking(): void {
  * HTTP + WebSocket 모킹을 모두 활성화합니다.
  */
 export const startMocking = async (): Promise<void> => {
-  if ((import.meta as any).env.MODE === 'development') {
+  if ((import.meta as any).env.DEV) {
     try {
       // HTTP 모킹 시작 (MSW Service Worker)
       await worker.start({

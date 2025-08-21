@@ -6,26 +6,20 @@
 -->
 <script setup lang="ts">
 // ModalAction 타입을 직접 정의하여 순환참조 방지
+import type { ComponentSize, ButtonVariant, InnerIconProps } from '../../types/components';
+import BaseButton from '../BaseButton/BaseButton.vue';
 import type { IconName } from '../../types/icons';
 
+// ModalAction 타입 정의
 interface ModalAction {
   label: string;
-  variant?: 'contained' | 'outlined';
-  size?: 'lg' | 'md' | 'sm';
+  variant?: ButtonVariant;
+  size?: ComponentSize;
   disabled?: boolean;
   loading?: boolean;
-  leftIcon?: {
-    name: IconName;
-    size?: 'lg' | 'md' | 'sm';
-    color?: string;
-  };
-  rightIcon?: {
-    name: IconName;
-    size?: 'lg' | 'md' | 'sm';
-    color?: string;
-  };
+  leftIcon?: InnerIconProps;
+  rightIcon?: InnerIconProps;
 }
-import BaseButton from '../BaseButton/BaseButton.vue';
 
 interface Props {
   /**

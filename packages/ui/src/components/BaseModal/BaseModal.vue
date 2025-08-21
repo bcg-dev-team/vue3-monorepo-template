@@ -9,9 +9,24 @@
 <script setup lang="ts">
 import { computed, ref, watch, nextTick, useSlots, onMounted, onUnmounted } from 'vue';
 // BaseModal 관련 타입들을 직접 정의하여 순환참조 방지
-import type { IconName } from '../../types/icons';
+import { ButtonVariant, ComponentSize, InnerIconProps } from '../../types/components';
+import { Dialog, DialogPanel, DialogOverlay } from '@headlessui/vue';
+import ModalContent from './ModalContent.vue';
+import ModalHeader from './ModalHeader.vue';
+import ModalFooter from './ModalFooter.vue';
 
-interface ModalProps {
+// ModalAction 타입 정의
+interface ModalAction {
+  label: string;
+  variant?: ButtonVariant;
+  size?: ComponentSize;
+  disabled?: boolean;
+  loading?: boolean;
+  leftIcon?: InnerIconProps;
+  rightIcon?: InnerIconProps;
+}
+
+interface Props {
   /**
    * 모달 열림 상태
    */
@@ -27,7 +42,7 @@ interface ModalProps {
   /**
    * 모달 크기
    */
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: ComponentSize | 'xl';
   /**
    * 모달 타입
    */
@@ -59,23 +74,7 @@ interface ModalProps {
   /**
    * 모달 액션 버튼들
    */
-  actions?: Array<{
-    label: string;
-    variant?: 'contained' | 'outlined';
-    size?: 'lg' | 'md' | 'sm';
-    disabled?: boolean;
-    loading?: boolean;
-    leftIcon?: {
-      name: IconName;
-      size?: 'lg' | 'md' | 'sm';
-      color?: string;
-    };
-    rightIcon?: {
-      name: IconName;
-      size?: 'lg' | 'md' | 'sm';
-      color?: string;
-    };
-  }>;
+  actions?: ModalAction[];
   /**
    * 취소 버튼 텍스트
    */
@@ -107,31 +106,17 @@ interface ModalEmits {
     e: 'action',
     action: {
       label: string;
-      variant?: 'contained' | 'outlined';
-      size?: 'lg' | 'md' | 'sm';
+      variant?: ButtonVariant;
+      size?: ComponentSize;
       disabled?: boolean;
       loading?: boolean;
-      leftIcon?: {
-        name: IconName;
-        size?: 'lg' | 'md' | 'sm';
-        color?: string;
-      };
-      rightIcon?: {
-        name: IconName;
-        size?: 'lg' | 'md' | 'sm';
-        color?: string;
-      };
+      leftIcon?: InnerIconProps;
+      rightIcon?: InnerIconProps;
     },
     index: number
   ): void;
   (e: 'update:isOpen', value: boolean): void;
 }
-import { Dialog, DialogPanel, DialogOverlay } from '@headlessui/vue';
-import ModalContent from './ModalContent.vue';
-import ModalHeader from './ModalHeader.vue';
-import ModalFooter from './ModalFooter.vue';
-
-interface Props extends ModalProps {}
 
 interface Emits extends ModalEmits {}
 

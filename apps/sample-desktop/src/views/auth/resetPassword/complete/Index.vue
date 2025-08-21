@@ -1,12 +1,12 @@
 <template>
   <AuthContent class="!pb-[30px]">
     <template #content>
-      <SingUpComplete />
+      <ResetPasswordComplete />
     </template>
   </AuthContent>
 </template>
 
 <script lang="ts" setup>
-import SingUpComplete from '@/components/auth/signup/common/SingUpComplete.vue';
+import ResetPasswordComplete from '@/components/auth/resetPassword/ResetPasswordComplete.vue';
 import AuthContent from '@/components/auth/common/AuthContent.vue';
 </script>

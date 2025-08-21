@@ -29,15 +29,12 @@ import CorporatePhone from '@/components/auth/signup/corporate/CorporatePhone.vu
 import CorporateInfo from '@/components/auth/signup/corporate/CorporateInfo.vue';
 import AuthContent from '@/components/auth/common/AuthContent.vue';
 import { BaseIcon, BaseStepper } from '@template/ui';
+import type { AuthContentTitle } from '@/types/auth';
 import { ref } from 'vue';
 
 const step = ref(0);
 
-type CorporateDescriptionProps = {
-  description: string;
-};
-
-const corporateDescription: CorporateDescriptionProps[] = [
+const corporateDescription: AuthContentTitle[] = [
   {
     description: '가입 약관을 확인해주세요.',
   },

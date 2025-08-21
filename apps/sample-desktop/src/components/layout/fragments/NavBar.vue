@@ -3,9 +3,9 @@
     <router-link
       v-for="menu in navMenus"
       :key="menu.id"
-      :to="menu.to"
+      :to="{ name: menu.to }"
       class="decoration-none whitespace-nowrap text-lg font-semibold text-white"
-      :class="{ '!text-primary': $route.path === menu.to }"
+      :class="{ '!text-primary': $route.name === menu.to }"
     >
       {{ menu.text }}
     </router-link>
@@ -20,12 +20,12 @@ interface NavMenu {
 }
 
 const navMenus: NavMenu[] = [
-  { id: 'home', text: '홈', to: '/' },
-  { id: 'order', text: '주문', to: '/order' },
-  { id: 'trade', text: '거래', to: '/transaction' },
-  { id: 'assets', text: '자산', to: '/assets' },
-  { id: 'withdrawal', text: '계좌관리', to: '/account-management' },
-  { id: 'support', text: '고객지원', to: '/service' },
-  { id: 'chart', text: '차트 테스트', to: '/chart' },
+  { id: 'home', text: '홈', to: 'home' },
+  { id: 'order', text: '주문', to: 'order' },
+  { id: 'trade', text: '거래', to: 'transaction' },
+  { id: 'assets', text: '자산', to: 'assets' },
+  { id: 'withdrawal', text: '계좌관리', to: 'account-management' },
+  { id: 'support', text: '고객지원', to: 'support' },
+  { id: 'chart', text: '차트 테스트', to: 'chart' },
 ];
 </script>

@@ -29,11 +29,12 @@
     />
   </div>
   <div class="mt-6 flex justify-center">
-    <a class="font-regular cursor-pointer text-[13px] underline">이미 아이디가 있어요</a>
+    <Anchor size="sm" to="login">이미 아이디가 있어요</Anchor>
   </div>
 </template>
 
 <script lang="ts" setup>
+import Anchor from '@/components/common/Anchor.vue';
 import { BaseButton } from '@template/ui';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';

@@ -27,7 +27,7 @@
       variant="contained"
       color="primary"
       full-width
-      @click="step = 4"
+      @click="router.push({ query: { step: 4 } })"
     />
   </div>
   <div class="mt-size-16 flex items-center justify-center">
@@ -39,5 +39,7 @@
 
 <script lang="ts" setup>
 import { BaseInput, BaseButton } from '@template/ui';
-const step = defineModel<number>('step', { required: true });
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 </script>

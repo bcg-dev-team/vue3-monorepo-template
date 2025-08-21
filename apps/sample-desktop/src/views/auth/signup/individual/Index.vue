@@ -7,30 +7,36 @@
       </div>
     </template>
     <template #content>
-      <IndividualTerms v-if="step === 0" v-model:step="step" />
-      <IndividualPhone v-if="step === 1" v-model:step="step" />
-      <IndividualEmailForm v-if="step === 2" v-model:step="step" />
-      <IndividualEmailAuth v-if="step === 3" v-model:step="step" />
-      <IndividualSetPassword v-if="step === 4" v-model:step="step" />
-      <IndividualInfo v-if="step === 5" v-model:step="step" />
-      <IndividualDocument v-if="step === 6" v-model:step="step" />
+      <IndividualTerms v-if="step === 0" />
+      <PhoneAuth v-if="step === 1" />
+      <EmailForm v-if="step === 2" />
+      <EmailAuth v-if="step === 3" />
+      <SetPassword v-if="step === 4" />
+      <IndividualInfo v-if="step === 5" />
+      <IndividualDocument v-if="step === 6" />
     </template>
   </AuthContent>
 </template>
 <script lang="ts" setup>
-import IndividualSetPassword from '@/components/auth/signup/individual/IndividualSetPassword.vue';
-import IndividualEmailForm from '@/components/auth/signup/individual/IndividualEmailForm.vue';
-import IndividualEmailAuth from '@/components/auth/signup/individual/IndividualEmailAuth.vue';
 import IndividualDocument from '@/components/auth/signup/individual/IndividualDocument.vue';
 import IndividualTerms from '@/components/auth/signup/individual/IndividualTerms.vue';
-import IndividualPhone from '@/components/auth/signup/individual/IndividualPhone.vue';
 import IndividualInfo from '@/components/auth/signup/individual/IndividualInfo.vue';
+import SetPassword from '@/components/auth/signup/common/SetPassword.vue';
+import PhoneAuth from '@/components/auth/signup/common/PhoneAuth.vue';
+import EmailForm from '@/components/auth/signup/common/EmailForm.vue';
+import EmailAuth from '@/components/auth/signup/common/EmailAuth.vue';
 import AuthContent from '@/components/auth/common/AuthContent.vue';
 import { BaseIcon, BaseStepper } from '@template/ui';
 import type { AuthContentTitle } from '@/types/auth';
-import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { computed } from 'vue';
 
-const step = ref(0);
+const route = useRoute();
+
+// TODO: 현재 페이지에서 파라미터 전달 방식으로 구현되어 있음. 추후 리팩토링 필요
+const step = computed(() => {
+  return parseInt(route.query.step as string) || 0;
+});
 
 const individualDescription: AuthContentTitle[] = [
   {

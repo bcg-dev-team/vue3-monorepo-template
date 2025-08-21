@@ -30,11 +30,11 @@
   <div class="gap-size-12 mt-[33px] flex items-center">
     <BaseButton
       size="lg"
-      label="다음"
+      label="가입 신청하기"
       variant="contained"
       color="primary"
       full-width
-      @click="step = 5"
+      @click="router.push({ query: { step: 5 } })"
     />
   </div>
 </template>
@@ -42,9 +42,10 @@
 <script lang="ts" setup>
 import { BaseInput, BaseButton, BaseProgressBar } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
+import { useRouter } from 'vue-router';
 import { reactive } from 'vue';
 
-const step = defineModel<number>('step', { required: true });
+const router = useRouter();
 
 const state = reactive({
   password: '',

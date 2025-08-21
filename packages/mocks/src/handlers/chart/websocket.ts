@@ -74,7 +74,7 @@ class MockWebSocketManager {
       volume: 1000,
     });
 
-    const updateInterval = 1000 + Math.random() * 2000;
+    const updateInterval = 2000 + Math.random() * 3000;
     const interval = setInterval(() => {
       this.generatePriceUpdate(symbol);
     }, updateInterval);
@@ -100,14 +100,14 @@ class MockWebSocketManager {
       return;
     }
 
-    const volatility = 0.005;
+    const volatility = 0.001;
     const change = (Math.random() - 0.5) * 2 * volatility;
     const newPrice = currentPrice * (1 + change);
 
     this.currentPrices.set(symbol, newPrice);
 
-    const high = newPrice * (1 + Math.random() * 0.002);
-    const low = newPrice * (1 - Math.random() * 0.002);
+    const high = newPrice * (1 + Math.random() * 0.0005);
+    const low = newPrice * (1 - Math.random() * 0.0005);
     const volume = Math.floor(Math.random() * 1000) + 500;
 
     const updateData = {

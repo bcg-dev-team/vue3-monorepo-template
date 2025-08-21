@@ -1,11 +1,10 @@
 <template>
-  <AuthContent title="개인회원 가입" :description="individualDescription[step].description">
-    <template #header>
-      <div class="flex items-center justify-between">
-        <BaseIcon name="arrow-backward" size="md" />
-        <BaseStepper variant="dot" :dot-config="{ count: 7 }" :current="step" />
-      </div>
-    </template>
+  <AuthContent
+    title="개인회원 가입"
+    :description="individualDescription[step].description"
+    :total-step="7"
+    v-model:current-step="step"
+  >
     <template #content>
       <IndividualTerms v-if="step === 0" />
       <PhoneAuth v-if="step === 1" />
@@ -26,7 +25,6 @@ import PhoneAuth from '@/components/auth/signup/common/PhoneAuth.vue';
 import EmailForm from '@/components/auth/signup/common/EmailForm.vue';
 import EmailAuth from '@/components/auth/signup/common/EmailAuth.vue';
 import AuthContent from '@/components/auth/common/AuthContent.vue';
-import { BaseIcon, BaseStepper } from '@template/ui';
 import type { AuthContentTitle } from '@/types/auth';
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';

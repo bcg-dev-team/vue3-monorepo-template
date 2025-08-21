@@ -151,12 +151,25 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (
-    from.name === 'sign-up-complete' &&
-    (to.name === 'individual-sign-up' || to.name === 'corporate-sign-up')
-  ) {
-    return next({ name: 'login' });
-  }
+  // step 마지막 단계에서 뒤로가기 막기 임시로 login으로 전환
+  const rules = [
+    { from: 'sign-up-complete', to: ['individual-sign-up', 'corporate-sign-up'] },
+    { from: 'reset-password-complete', to: ['reset-password'] },
+    {
+      from: 'find-id',
+      to: ['find-id'],
+      when: (_to: any, from: any) => String(from.query.step) === '1',
+    },
+  ];
+
+  const shouldRedirect = rules.some(
+    (rule) =>
+      from.name === rule.from &&
+      rule.to.includes(String(to.name)) &&
+      (!rule.when || rule.when(to, from))
+  );
+
+  if (shouldRedirect) return next({ name: 'login' });
   next();
 });
 

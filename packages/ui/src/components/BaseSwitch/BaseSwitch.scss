@@ -1,5 +1,10 @@
 /* BaseSwitch 컴포넌트 스타일 - 디자인 토큰 활용 */
 
+/* 기본 스위치 스타일 */
+.base-switch {
+  cursor: pointer;
+}
+
 /* 배경 스타일 */
 .base-switch__background--on {
   background-color: var(--input-check-radio-selected-bg);

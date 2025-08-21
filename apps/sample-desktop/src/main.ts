@@ -8,7 +8,7 @@ import '@/assets/scss/index.scss';
 import setupLocatorUI from '@locator/runtime';
 
 // MSW 모킹 시작 (개발 환경)
-import { startMocking } from '@/mocks';
+import { startMocking } from '@template/mocks';
 
 if ((import.meta as any).env.MODE === 'development') {
   setupLocatorUI({

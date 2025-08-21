@@ -265,6 +265,9 @@ importers:
       '@template/api':
         specifier: workspace:*
         version: link:../../packages/api
+      '@template/mocks':
+        specifier: workspace:*
+        version: link:../../packages/mocks
       '@template/theme':
         specifier: workspace:*
         version: link:../../packages/theme

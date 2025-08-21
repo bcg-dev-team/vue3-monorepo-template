@@ -56,8 +56,6 @@ export interface InnerIconProps {
   name: IconName;
   size?: ComponentSize | number;
   color?: string;
-  class?: string;
-  isLoading?: boolean;
 }
 
 // BaseTable

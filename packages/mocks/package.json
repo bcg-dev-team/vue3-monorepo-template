@@ -1,0 +1,33 @@
+{
+  "name": "@template/mocks",
+  "version": "0.1.0",
+  "description": "MSW 기반 API 모킹 패키지",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "msw": "^2.10.5"
+  },
+  "peerDependencies": {
+    "@template/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch",
+    "clean": "rimraf dist",
+    "type-check": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

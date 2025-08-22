@@ -1,25 +1,26 @@
 <template>
-  <ThreeWaySplitPane direction="vertical" v-bind="$attrs">
-    <template #left>
-      <slot name="left" />
+  <BaseTwoWaySplitPane
+    direction="vertical"
+    :min-sizes="minSizes"
+    :max-sizes="maxSizes"
+    v-bind="$attrs"
+  >
+    <template #first>
+      <slot name="top" />
     </template>
-    <template #center>
-      <slot name="center" />
+    <template #second>
+      <slot name="bottom" />
     </template>
-    <template #right>
-      <slot name="right" />
-    </template>
-  </ThreeWaySplitPane>
+  </BaseTwoWaySplitPane>
 </template>
 
 <script setup lang="ts">
-import ThreeWaySplitPane from '../BaseThreeWaySplitPane/BaseThreeWaySplitPane.vue';
+import BaseTwoWaySplitPane from '../BaseTwoWaySplitPane/BaseTwoWaySplitPane.vue';
 
-// BaseThreeWaySplitPane의 props를 상속받음
+// BaseTwoWaySplitPane의 props를 상속받음
 interface Props {
-  minSizes?: { left: number; right: number };
-  maxSizes?: { left: number; right: number };
-  breakpoint?: number;
+  minSizes?: { first: number; second: number };
+  maxSizes?: { first: number; second: number };
 }
 
 defineProps<Props>();

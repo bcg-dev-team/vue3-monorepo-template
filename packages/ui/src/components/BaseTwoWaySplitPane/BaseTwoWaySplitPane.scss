@@ -1,0 +1,56 @@
+/* BaseTwoWaySplitPane 컴포넌트 스타일 */
+
+.split-pane {
+  height: 100%;
+  width: 100%;
+}
+
+/* splitter 기본 스타일 */
+.splitpanes__splitter {
+  background-color: #e0e0e0;
+  transition: background-color 0.2s ease;
+  position: relative;
+}
+
+/* ::before를 사용한 hit-area 확장 */
+.splitpanes__splitter:before {
+  content: '';
+  position: absolute;
+  background-color: transparent;
+  z-index: 1;
+}
+
+/* 수직 splitter (상하 분할) - 좌우로만 확장 */
+.splitpanes--vertical > .splitpanes__splitter:before {
+  left: -8px;
+  right: -8px;
+  top: 0;
+  bottom: 0;
+  width: auto;
+  height: 100%;
+}
+
+/* 수평 splitter (좌우 분할) - 상하로만 확장 */
+.splitpanes--horizontal > .splitpanes__splitter:before {
+  top: -8px;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: auto;
+}
+
+/* 각 pane에 테두리 추가 */
+.splitpanes__pane {
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
+}
+
+/* 중복 테두리 제거 - splitter가 있는 부분의 테두리만 제거 */
+.splitpanes--vertical .splitpanes__splitter + .splitpanes__pane {
+  border-left: none;
+}
+
+.splitpanes--horizontal .splitpanes__splitter + .splitpanes__pane {
+  border-top: none;
+}

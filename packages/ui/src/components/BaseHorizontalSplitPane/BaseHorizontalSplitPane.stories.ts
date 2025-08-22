@@ -74,8 +74,8 @@ export const Default: Story = {
  */
 export const FixedSizes: Story = {
   args: {
-    minSizes: { first: 250, second: 400 },
-    maxSizes: { first: 400, second: 800 },
+    minSizes: { left: 250, right: 400 },
+    maxSizes: { left: 400, right: 800 },
   },
   render: (args) => ({
     components: { BaseHorizontalSplitPane },

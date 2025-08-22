@@ -57,15 +57,6 @@ defineSlots<{
   second: () => any;
 }>();
 
-// 컴포넌트 타입 정의
-interface ComponentSlots {
-  first: () => any;
-  second: () => any;
-}
-
-// 슬롯 타입을 명시적으로 export
-export type { ComponentSlots };
-
 const sizes = ref({ first: 30, second: 70 });
 </script>
 

@@ -1,43 +1,26 @@
 import BaseHorizontalSplitPane from './BaseHorizontalSplitPane.vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
 
-/**
- * BaseHorizontalSplitPane 컴포넌트
- *
- * 수평 방향으로 세 개의 패널을 분할하는 컴포넌트입니다.
- * BaseThreeWaySplitPane을 래핑하여 수평 분할만을 위한 편의 컴포넌트입니다.
- *
- * Figma 링크: [Figma 컴포넌트 링크 추가 필요]
- */
 const meta: Meta<typeof BaseHorizontalSplitPane> = {
-  title: 'Layout/HorizontalSplitPane',
+  title: 'Layout/BaseHorizontalSplitPane',
   component: BaseHorizontalSplitPane,
   parameters: {
+    layout: 'fullscreen',
     docs: {
       description: {
-        component: '수평 방향으로 세 개의 패널을 분할하는 컴포넌트입니다.',
+        component: '좌우로 분할되는 2-pane 컴포넌트입니다. BaseTwoWaySplitPane을 기반으로 합니다.',
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     minSizes: {
       control: { type: 'object' },
-      description: '좌측/우측 패널의 최소 크기 (%)',
+      description: '각 pane의 최소 크기',
     },
     maxSizes: {
       control: { type: 'object' },
-      description: '좌측/우측 패널의 최대 크기 (%)',
+      description: '각 pane의 최대 크기',
     },
-    breakpoint: {
-      control: { type: 'number' },
-      description: '반응형 브레이크포인트 (px)',
-    },
-  },
-  args: {
-    minSizes: { left: 10, right: 10 },
-    maxSizes: { left: 80, right: 80 },
-    breakpoint: 768,
   },
 };
 
@@ -45,7 +28,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * 기본 수평 분할 패널
+ * 기본 좌우 분할 예제
  */
 export const Default: Story = {
   args: {},
@@ -55,253 +38,126 @@ export const Default: Story = {
       return { args };
     },
     template: `
-      <div style="height: 100vh; width: 100%; border: 1px solid #ccc; margin: -1rem;">
+      <div style="height: 100vh; width: 100%; margin: -1rem;">
         <BaseHorizontalSplitPane v-bind="args">
           <template #left>
-            <div style="background: #e3f2fd; padding: 20px; height: 100%;">
-              <h3>좌측 패널</h3>
-              <p>사이드바 또는 네비게이션</p>
-            </div>
-          </template>
-          <template #center>
-            <div style="background: #f3e5f5; padding: 20px; height: 100%;">
-              <h3>중앙 패널</h3>
-              <p>메인 콘텐츠 영역</p>
-            </div>
-          </template>
-          <template #right>
-            <div style="background: #e8f5e8; padding: 20px; height: 100%;">
-              <h3>우측 패널</h3>
-              <p>도구 모음 또는 정보 패널</p>
-            </div>
-          </template>
-        </BaseHorizontalSplitPane>
-      </div>
-    `,
-  }),
-};
-
-/**
- * 넓은 사이드바
- */
-export const WideSidebars: Story = {
-  args: {
-    minSizes: { left: 20, right: 25 },
-    maxSizes: { left: 40, right: 45 },
-  },
-  render: (args) => ({
-    components: { BaseHorizontalSplitPane },
-    setup() {
-      return { args };
-    },
-    template: `
-      <div style="height: 100vh; width: 100%; border: 1px solid #ccc; margin: -1rem;">
-        <BaseHorizontalSplitPane v-bind="args">
-          <template #left>
-            <div style="background: #e3f2fd; padding: 20px; height: 100%;">
-              <h3>넓은 좌측 패널</h3>
-              <p>최소 20%, 최대 40%</p>
-              <p>더 많은 콘텐츠를 표시할 수 있습니다.</p>
-            </div>
-          </template>
-          <template #center>
-            <div style="background: #f3e5f5; padding: 20px; height: 100%;">
-              <h3>중앙 패널</h3>
-              <p>메인 콘텐츠</p>
-            </div>
-          </template>
-          <template #right>
-            <div style="background: #e8f5e8; padding: 20px; height: 100%;">
-              <h3>넓은 우측 패널</h3>
-              <p>최소 25%, 최대 45%</p>
-              <p>도구 모음이나 상세 정보를 표시합니다.</p>
-            </div>
-          </template>
-        </BaseHorizontalSplitPane>
-      </div>
-    `,
-  }),
-};
-
-/**
- * 좁은 사이드바
- */
-export const NarrowSidebars: Story = {
-  args: {
-    minSizes: { left: 5, right: 8 },
-    maxSizes: { left: 15, right: 20 },
-  },
-  render: (args) => ({
-    components: { BaseHorizontalSplitPane },
-    setup() {
-      return { args };
-    },
-    template: `
-      <div style="height: 100vh; width: 100%; border: 1px solid #ccc; margin: -1rem;">
-        <BaseHorizontalSplitPane v-bind="args">
-          <template #left>
-            <div style="background: #e3f2fd; padding: 20px; height: 100%;">
-              <h3>좁은 좌측 패널</h3>
-              <p>최소 5%, 최대 15%</p>
-              <p>아이콘만 표시하는 미니 사이드바</p>
-            </div>
-          </template>
-          <template #center>
-            <div style="background: #f3e5f5; padding: 20px; height: 100%;">
-              <h3>중앙 패널</h3>
-              <p>메인 콘텐츠가 더 넓은 공간을 차지합니다.</p>
-            </div>
-          </template>
-          <template #right>
-            <div style="background: #e8f5e8; padding: 20px; height: 100%;">
-              <h3>좁은 우측 패널</h3>
-              <p>최소 8%, 최대 20%</p>
-              <p>알림이나 상태 정보만 표시</p>
-            </div>
-          </template>
-        </BaseHorizontalSplitPane>
-      </div>
-    `,
-  }),
-};
-
-/**
- * 반응형 테스트
- */
-export const Responsive: Story = {
-  args: {
-    breakpoint: 1000,
-  },
-  render: (args) => ({
-    components: { BaseHorizontalSplitPane },
-    setup() {
-      return { args };
-    },
-    template: `
-      <div style="height: 100vh; width: 100%; border: 1px solid #ccc; margin: -1rem;">
-        <div style="position: absolute; top: 0; left: 0; right: 0; z-index: 10; padding: 10px; background: #f5f5f5; border-bottom: 1px solid #ccc;">
-          <strong>반응형 테스트</strong>
-          <br>
-          <small>브레이크포인트: {{ args.breakpoint }}px - 화면 너비가 이 값보다 작으면 좌측 패널이 자동으로 접힙니다.</small>
-        </div>
-        <BaseHorizontalSplitPane v-bind="args" style="padding-top: 80px;">
-          <template #left>
-            <div style="background: #e3f2fd; padding: 20px; height: 100%;">
-              <h3>좌측 패널</h3>
-              <p>반응형으로 접힘</p>
-            </div>
-          </template>
-          <template #center>
-            <div style="background: #f3e5f5; padding: 20px; height: 100%;">
-              <h3>중앙 패널</h3>
-              <p>메인 콘텐츠</p>
-            </div>
-          </template>
-          <template #right>
-            <div style="background: #e8f5e8; padding: 20px; height: 100%;">
-              <h3>우측 패널</h3>
-              <p>고정 패널</p>
-            </div>
-          </template>
-        </BaseHorizontalSplitPane>
-      </div>
-    `,
-  }),
-};
-
-/**
- * 라우팅 예제 - 이커머스 관리자 패널
- */
-export const EcommerceAdmin: Story = {
-  args: {
-    minSizes: { left: 18, right: 22 },
-    maxSizes: { left: 40, right: 45 },
-  },
-  render: (args) => ({
-    components: { BaseHorizontalSplitPane },
-    setup() {
-      return { args };
-    },
-    template: `
-      <div style="height: 100vh; width: 100%; border: 1px solid #ccc; margin: -1rem;">
-        <div style="position: absolute; top: 0; left: 0; right: 0; z-index: 10; padding: 10px; background: #f5f5f5; border-bottom: 1px solid #ccc;">
-          <strong>이커머스 관리자 패널 예제</strong>
-          <br>
-          <small>각 패널이 다른 관리 기능을 표시하는 라우팅 예제</small>
-        </div>
-        <BaseHorizontalSplitPane v-bind="args" style="padding-top: 80px;">
-          <template #left>
-            <div style="background: #e3f2fd; padding: 20px; height: 100%; overflow-y: auto;">
-              <h3>🛍️ 상품 관리</h3>
-              <div style="margin-top: 20px;">
-                <div style="background: #fff; padding: 15px; border-radius: 6px; margin-bottom: 10px; cursor: pointer;">
-                  <strong>📦 상품 목록</strong>
-                  <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">전체 상품 관리</p>
-                </div>
-                <div style="background: #fff; padding: 15px; border-radius: 6px; margin-bottom: 10px; cursor: pointer;">
-                  <strong>➕ 상품 등록</strong>
-                  <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">새 상품 추가</p>
-                </div>
-                <div style="background: #fff; padding: 15px; border-radius: 6px; margin-bottom: 10px; cursor: pointer;">
-                  <strong>🏷️ 카테고리</strong>
-                  <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">상품 분류 관리</p>
-                </div>
-                <div style="background: #fff; padding: 15px; border-radius: 6px; margin-bottom: 10px; cursor: pointer;">
-                  <strong>📊 재고 현황</strong>
-                  <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">재고 수량 확인</p>
-                </div>
-              </div>
-            </div>
-          </template>
-          <template #center>
-            <div style="background: #f3e5f5; padding: 20px; height: 100%; overflow-y: auto;">
-              <h3>📊 주문 현황</h3>
-              <div style="margin-top: 20px;">
-                <div style="background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
-                  <h4 style="margin: 0 0 10px 0;">🆕 신규 주문</h4>
-                  <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span>주문번호: #12345</span>
-                    <span style="color: #f44336; font-weight: bold;">처리 대기</span>
-                  </div>
-                  <p style="margin: 5px 0 0 0; color: #666;">고객: 김철수 | 총액: ₩45,000</p>
-                </div>
-                <div style="background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
-                  <h4 style="margin: 0 0 10px 0;">📦 배송 중</h4>
-                  <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span>주문번호: #12344</span>
-                    <span style="color: #ff9800; font-weight: bold;">배송 중</span>
-                  </div>
-                  <p style="margin: 5px 0 0 0; color: #666;">고객: 이영희 | 총액: ₩32,000</p>
-                </div>
-                <div style="background: #fff; padding: 20px; border-radius: 8px;">
-                  <h4 style="margin: 0 0 10px 0;">✅ 완료</h4>
-                  <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span>주문번호: #12343</span>
-                    <span style="color: #4caf50; font-weight: bold;">배송 완료</span>
-                  </div>
-                  <p style="margin: 5px 0 0 0; color: #666;">고객: 박민수 | 총액: ₩28,500</p>
-                </div>
+            <div class="pane-content left-pane">
+              <h3>왼쪽 사이드바</h3>
+              <p>네비게이션 및 메뉴</p>
+              <div class="content-demo">
+                <div class="demo-item">🏠 홈</div>
+                <div class="demo-item">👥 사용자</div>
+                <div class="demo-item">📊 대시보드</div>
+                <div class="demo-item">⚙️ 설정</div>
               </div>
             </div>
           </template>
           <template #right>
-            <div style="background: #e8f5e8; padding: 20px; height: 100%; overflow-y: auto;">
-              <h3>💰 매출 통계</h3>
-              <div style="margin-top: 20px;">
-                <div style="background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 15px; text-align: center;">
-                  <h4 style="margin: 0 0 10px 0;">오늘 매출</h4>
-                  <div style="font-size: 1.8em; color: #4caf50; font-weight: bold;">₩2,450,000</div>
-                  <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9em;">전일 대비 +12%</p>
-                </div>
-                <div style="background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 15px; text-align: center;">
-                  <h4 style="margin: 0 0 10px 0;">이번 주 매출</h4>
-                  <div style="font-size: 1.8em; color: #2196f3; font-weight: bold;">₩15,800,000</div>
-                  <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9em;">지난주 대비 +8%</p>
-                </div>
-                <div style="background: #fff; padding: 20px; border-radius: 8px; text-align: center;">
-                  <h4 style="margin: 0 0 10px 0;">이번 달 매출</h4>
-                  <div style="font-size: 1.8em; color: #ff9800; font-weight: bold;">₩68,500,000</div>
-                  <p style="margin: 5px 0 0 0; color: #666; font-size: 0.9em;">지난달 대비 +15%</p>
+            <div class="pane-content right-pane">
+              <h3>메인 컨텐츠</h3>
+              <p>사용자 정보 및 데이터</p>
+              <div class="content-demo">
+                <div class="demo-item">👤 사용자 프로필</div>
+                <div class="demo-item">📈 통계 차트</div>
+                <div class="demo-item">📝 최근 활동</div>
+              </div>
+            </div>
+          </template>
+        </BaseHorizontalSplitPane>
+      </div>
+    `,
+  }),
+};
+
+/**
+ * 고정 크기 제한 예제
+ */
+export const FixedSizes: Story = {
+  args: {
+    minSizes: { first: 250, second: 400 },
+    maxSizes: { first: 400, second: 800 },
+  },
+  render: (args) => ({
+    components: { BaseHorizontalSplitPane },
+    setup() {
+      return { args };
+    },
+    template: `
+      <div style="height: 100vh; width: 100%; margin: -1rem;">
+        <BaseHorizontalSplitPane v-bind="args">
+          <template #left>
+            <div class="pane-content left-pane">
+              <h3>사이드바 (250px-400px)</h3>
+              <p>최소 250px, 최대 400px로 제한</p>
+              <div class="size-info">
+                <div>최소: 250px</div>
+                <div>최대: 400px</div>
+              </div>
+            </div>
+          </template>
+          <template #right>
+            <div class="pane-content right-pane">
+              <h3>메인 영역 (400px-800px)</h3>
+              <p>최소 400px, 최대 800px로 제한</p>
+              <div class="size-info">
+                <div>최소: 400px</div>
+                <div>최대: 800px</div>
+              </div>
+            </div>
+          </template>
+        </BaseHorizontalSplitPane>
+      </div>
+    `,
+  }),
+};
+
+/**
+ * 실제 사용 사례 - 관리자 대시보드
+ */
+export const AdminDashboard: Story = {
+  args: {},
+  render: (args) => ({
+    components: { BaseHorizontalSplitPane },
+    setup() {
+      return { args };
+    },
+    template: `
+      <div style="height: 100vh; width: 100%; margin: -1rem;">
+        <BaseHorizontalSplitPane v-bind="args">
+          <template #left>
+            <div class="pane-content left-pane">
+              <div class="pane-header">
+                <h3>🎛️ 관리자 메뉴</h3>
+              </div>
+              <div class="admin-menu">
+                <div class="menu-item active">📊 대시보드</div>
+                <div class="menu-item">👥 사용자 관리</div>
+                <div class="menu-item">🔐 권한 관리</div>
+                <div class="menu-item">📈 통계</div>
+                <div class="menu-item">⚙️ 시스템 설정</div>
+                <div class="menu-item">📝 로그</div>
+              </div>
+            </div>
+          </template>
+          <template #right>
+            <div class="pane-content right-pane">
+              <div class="pane-header">
+                <h3>📊 대시보드</h3>
+              </div>
+              <div class="dashboard-content">
+                <div class="stats-grid">
+                  <div class="stat-card">
+                    <h4>총 사용자</h4>
+                    <div class="stat-value">1,234</div>
+                  </div>
+                  <div class="stat-card">
+                    <h4>활성 사용자</h4>
+                    <div class="stat-value">987</div>
+                  </div>
+                  <div class="stat-card">
+                    <h4>오늘 방문</h4>
+                    <div class="stat-value">156</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -311,3 +167,127 @@ export const EcommerceAdmin: Story = {
     `,
   }),
 };
+
+// 스토리용 CSS 스타일
+const style = document.createElement('style');
+style.textContent = `
+  .pane-content {
+    height: 100%;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow: auto;
+  }
+
+  .left-pane {
+    background-color: #f8f9fa;
+    border-right: 1px solid #e9ecef;
+  }
+
+  .right-pane {
+    background-color: #ffffff;
+  }
+
+  .pane-content h3 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .pane-content p {
+    margin: 0 0 16px 0;
+    color: #666;
+    font-size: 14px;
+  }
+
+  .content-demo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .demo-item {
+    padding: 8px 12px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #495057;
+  }
+
+  .size-info {
+    background-color: #e9ecef;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #495057;
+  }
+
+  .size-info div {
+    margin-bottom: 4px;
+  }
+
+  .pane-header {
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+
+  .admin-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .menu-item {
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #495057;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .menu-item:hover {
+    background-color: #e9ecef;
+  }
+
+  .menu-item.active {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .dashboard-content {
+    padding: 20px 0;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .stat-card {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .stat-card h4 {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+  }
+
+  .stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #007bff;
+  }
+`;
+
+// 스타일을 문서에 추가
+if (typeof document !== 'undefined') {
+  document.head.appendChild(style);
+}

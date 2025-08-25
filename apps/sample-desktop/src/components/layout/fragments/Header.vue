@@ -23,5 +23,5 @@ import StatusBarArea from '@/components/layout/fragments/StatusBarArea.vue';
 import NavBar from '@/components/layout/fragments/NavBar.vue';
 import { ref } from 'vue';
 
-const isLogin = ref(true);
+const isLogin = ref(false);
 </script>

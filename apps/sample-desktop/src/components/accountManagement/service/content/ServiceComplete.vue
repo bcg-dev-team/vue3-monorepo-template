@@ -42,6 +42,11 @@
   </div>
 </template>
 <script setup lang="ts">
+import type { TransferMenuState } from '@/components/accountManagement/accountManagement';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import { BaseButton } from '@template/ui';
+
+const props = defineProps<{
+  menuState?: TransferMenuState | null;
+}>();
 </script>

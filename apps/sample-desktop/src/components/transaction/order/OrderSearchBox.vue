@@ -7,10 +7,30 @@
         </template>
       </LabelContent>
       <LabelContent label="주문유형" size="md">
-        <template #content> </template>
+        <template #content>
+          <BaseRadioGroup
+            v-model="selectedType"
+            size="md"
+            :options="[
+              { value: 'all', label: '전체' },
+              { value: 'buy', label: '매입' },
+              { value: 'clear', label: '청산' },
+            ]"
+          />
+        </template>
       </LabelContent>
       <LabelContent label="포지션" size="md">
-        <template #content> </template>
+        <template #content>
+          <BaseRadioGroup
+            v-model="selectedPosition"
+            size="md"
+            :options="[
+              { value: 'all', label: '전체' },
+              { value: 'buy', label: '매입' },
+              { value: 'clear', label: '청산' },
+            ]"
+          />
+        </template>
       </LabelContent>
       <LabelContent label="주문일자" size="md">
         <template #content>
@@ -26,6 +46,10 @@
   </div>
 </template>
 <script setup lang="ts">
+import { BaseInput, BaseButton, BaseRadioGroup } from '@template/ui';
 import LabelContent from '@/components/common/LabelContent.vue';
-import { BaseInput, BaseButton } from '@template/ui';
+import { ref } from 'vue';
+
+const selectedType = ref('all');
+const selectedPosition = ref('all');
 </script>

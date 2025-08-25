@@ -12,7 +12,9 @@ export { default as BaseStepper } from './BaseStepper/BaseStepper.vue';
 export { default as BaseSwitch } from './BaseSwitch/BaseSwitch.vue';
 export { default as BaseRadioGroup } from './BaseRadioGroup/BaseRadioGroup.vue';
 export { default as BaseTwoWaySplitPane } from './BaseTwoWaySplitPane/BaseTwoWaySplitPane.vue';
+export { default as BaseForm } from './BaseForm/BaseForm.vue';
 
+export * from './BaseForm';
 export * from './BasePagination';
 export * from './BaseTable';
 export * from './BaseIcon';

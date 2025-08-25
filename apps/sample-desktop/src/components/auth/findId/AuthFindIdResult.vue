@@ -19,17 +19,17 @@
         <div class="bg-bg-bg-innerframe gap-size-10 p-size-16 flex flex-col rounded-md">
           <div class="flex items-center justify-between">
             <span class="text-font-16 font-medium">traderkim@email.com</span>
-            <span class="text-font-16 font-medium">:copy:</span>
+            <div class="cursor-pointer"></div>
           </div>
         </div>
       </div>
     </div>
     <div class="gap-size-8 mt-[33px] flex w-full items-center justify-center">
-      <BaseButton size="lg" label="비밀번호 재설정" variant="outlined" color="primary" full-width />
+      <BaseButton size="lg" label="비밀번호 재설정" variant="outlined" color="white" full-width />
       <BaseButton size="lg" label="로그인" variant="contained" color="primary" full-width />
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { BaseButton } from '@template/ui';
+import { BaseButton, BaseIcon } from '@template/ui';
 </script>

@@ -11,12 +11,16 @@
       <BaseProgressBar :strength-score="0" variant="password-strength" :show-label="true" />
     </FormField>
     <div
-      class="mt-size-12 border-primary-primary800 bg-primary-primary100 p-size-8 text-font-12 text-default-muted-dark rounded-md border"
+      class="mt-size-12 border-primary-primary800 bg-primary-primary100 p-size-8 gap-size-4 flex items-start rounded-md border"
     >
-      <p>8자 이상 입력해주세요</p>
-      <p>영문 대/소문자, 숫자, 특수문자를 포함해주세요</p>
-      <p>연속된 문자나 반복 문자는 피해주세요</p>
+      <BaseIcon name="info" size="sm" color="var(--chips-status-pending-text)" />
+      <div class="text-font-12 text-[var(--chips-status-pending-text)]">
+        <p>8자 이상 입력해주세요</p>
+        <p>영문 대/소문자, 숫자, 특수문자를 포함해주세요</p>
+        <p>연속된 문자나 반복 문자는 피해주세요</p>
+      </div>
     </div>
+
     <FormField label="비밀번호 확인">
       <BaseInput
         v-model="state.passwordCheck"
@@ -40,7 +44,7 @@
 </template>
 
 <script lang="ts" setup>
-import { BaseInput, BaseButton, BaseProgressBar } from '@template/ui';
+import { BaseInput, BaseButton, BaseProgressBar, BaseIcon } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
 import { useRouter } from 'vue-router';
 import { reactive } from 'vue';

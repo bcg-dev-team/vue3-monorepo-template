@@ -13,10 +13,13 @@
     </div>
   </div>
   <div
-    class="mt-size-24 border-primary-primary800 bg-primary-primary100 p-size-8 text-font-12 rounded-md border"
+    class="mt-size-12 border-primary-primary800 bg-primary-primary100 p-size-8 gap-size-4 flex items-start rounded-md border"
   >
-    <p>인증번호는 6자리 숫자이며, 유효기간은 10분입니다.</p>
-    <p>메일이 도착하지 않았다면 스팸함을 확인해주세요.</p>
+    <BaseIcon name="info" size="sm" color="var(--chips-status-pending-text)" />
+    <div class="text-font-12 text-[var(--chips-status-pending-text)]">
+      <p>인증번호는 6자리 숫자이며, 유효기간은 10분입니다.</p>
+      <p>메일이 도착하지 않았다면 스팸함을 확인해주세요.</p>
+    </div>
   </div>
 
   <div class="gap-size-12 mt-[33px] flex items-center">
@@ -38,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import { BaseInput, BaseButton } from '@template/ui';
+import { BaseInput, BaseButton, BaseIcon } from '@template/ui';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();

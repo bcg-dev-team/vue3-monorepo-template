@@ -60,6 +60,6 @@ const tabs = [
 ];
 
 const handleTabClick = () => {
-  router.push({ name: 'TransactionTab', params: { transactionTab: modelValue.value } });
+  router.push({ name: 'transaction-tab', params: { transactionTab: modelValue.value } });
 };
 </script>

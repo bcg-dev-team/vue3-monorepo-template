@@ -2,19 +2,27 @@
   <div class="mx-auto w-[1440px] py-6">
     <MainCardContent class="p-6" title="계좌관리" size="lg">
       <template #content>
-        <BaseTabs v-model="modelValue" size="lg" variant="underline" :tabs="tabs" />
+        <BaseTabs
+          v-model="modelValue"
+          size="lg"
+          variant="underline"
+          :tabs="tabs"
+          @click="handleTabClick"
+        />
       </template>
     </MainCardContent>
   </div>
 </template>
 
 <script setup lang="ts">
-import TransferAccountMain from '@/components/accountManagement/transfer/TransferAccountMain.vue';
+import AccountServiceMain from '@/components/accountManagement/service/AccountServiceMain.vue';
 import CreateAccountMain from '@/components/accountManagement/create/CreateAccountMain.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import { BaseTabs } from '@template/ui';
+import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 
+const router = useRouter();
 const modelValue = ref('create');
 const tabs = [
   {
@@ -25,7 +33,7 @@ const tabs = [
   {
     key: 'service',
     label: '출금/이체/입금',
-    component: TransferAccountMain,
+    component: AccountServiceMain,
   },
   {
     key: 'history',
@@ -33,7 +41,11 @@ const tabs = [
     component: '',
   },
 ];
-</script>
 
-<style scoped></style>
-/
+const handleTabClick = () => {
+  router.push({
+    name: 'account-management-tab',
+    params: { accountManagementTab: modelValue.value },
+  });
+};
+</script>

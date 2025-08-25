@@ -9,7 +9,21 @@
       <LabelContent label="청산일자" size="md">
         <template #content>
           <div class="gap-size-4 flex items-center">
-            <BaseInput size="sm" placeholder="input select 들어올 예정" />
+            <div>
+              <BaseInput size="sm" placeholder="input select 들어올 예정" />
+            </div>
+            <div>
+              <BaseRadioGroup
+                v-model="selectedType"
+                size="md"
+                :options="[
+                  { value: 'today', label: '오늘' },
+                  { value: 'weeks', label: '일주일' },
+                  { value: 'months', label: '30일' },
+                  { value: 'all', label: '전체' },
+                ]"
+              />
+            </div>
           </div>
         </template>
       </LabelContent>
@@ -20,6 +34,9 @@
   </div>
 </template>
 <script setup lang="ts">
+import { BaseInput, BaseButton, BaseRadioGroup } from '@template/ui';
 import LabelContent from '@/components/common/LabelContent.vue';
-import { BaseInput, BaseButton } from '@template/ui';
+import { ref } from 'vue';
+
+const selectedType = ref('today');
 </script>

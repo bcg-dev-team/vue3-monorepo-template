@@ -1,4 +1,8 @@
 <template>
+  <div class="gap-size-8 flex flex-col items-center justify-center">
+    <span class="text-font-24 font-semibold">{{ menuTitle.title }}</span>
+    <span class="text-font-14 text-default-muted-dark">{{ menuTitle.subTitle }}</span>
+  </div>
   <ApplyWithdrawal v-if="menuState === 'withdraw'" />
   <Transfer v-if="menuState === 'transfer'" />
   <Deposit v-if="menuState === 'deposit'" />
@@ -28,6 +32,11 @@ import Deposit from '@/components/accountManagement/service/fragments/Deposit.vu
 import { BaseButton } from '@template/ui';
 import { computed } from 'vue';
 
+interface ServiceMenuTitle {
+  title: string;
+  subTitle?: string;
+}
+
 const props = defineProps<{
   menuState: TransferMenuState | null;
 }>();
@@ -45,5 +54,16 @@ const nextButtonLabel = computed(() => {
     return '입금정보 입력완료';
   }
   return '다음';
+});
+
+const menuTitle = computed<ServiceMenuTitle>(() => {
+  if (props.menuState === 'withdraw') {
+    return { title: '출금신청', subTitle: '출금 신청하실 금액을 입력해주세요' };
+  } else if (props.menuState === 'transfer') {
+    return { title: '이체금액 입력', subTitle: '이체하실 계좌와 금액을 입력해주세요' };
+  } else if (props.menuState === 'deposit') {
+    return { title: '입금정보 입력', subTitle: '입금하신 정보를 정확히 입력해주세요' };
+  }
+  return { title: '', subTitle: '' };
 });
 </script>

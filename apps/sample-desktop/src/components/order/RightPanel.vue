@@ -59,7 +59,15 @@
       </button>
     </div>
 
-    <BaseProgressBar variant="performance" value="75" max="100" class="mt-2" />
+    <!-- 매수 매도 진행바 -->
+    <div class="mt-2 flex w-full flex-row items-start justify-start gap-2">
+      <div
+        class="h-1.5 w-[218px] flex-shrink-0 rounded-[999px] bg-[var(--base-colors-red-red800)]"
+      ></div>
+      <div class="h-1.5 min-w-0 flex-1">
+        <div class="bg-blue-blue800-deep h-1.5 w-full rounded-[999px]"></div>
+      </div>
+    </div>
 
     <!-- 거래 정보 섹션 -->
     <div

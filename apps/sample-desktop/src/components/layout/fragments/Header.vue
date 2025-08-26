@@ -21,9 +21,11 @@
 
 <script setup lang="ts">
 import LoginButtonArea from '@/components/layout/fragments/LoginButtonArea.vue';
+import LocalStorageService from '@/service/localStorage/local-storage.service';
 import StatusBarArea from '@/components/layout/fragments/StatusBarArea.vue';
+import LocalStorageKey from '@/service/localStorage/local-storage-key';
 import NavBar from '@/components/layout/fragments/NavBar.vue';
 import { ref } from 'vue';
 
-const isLogin = ref(true);
+const isLogin = ref(!!LocalStorageService.getItem(LocalStorageKey.TOKEN));
 </script>

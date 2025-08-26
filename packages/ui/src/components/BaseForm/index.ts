@@ -3,6 +3,7 @@
  */
 
 export { default as BaseForm } from './BaseForm.vue';
+export { default as BaseFormLabel } from './BaseFormLabel.vue';
 export * from './types';
 export * from './validationHelpers';
 

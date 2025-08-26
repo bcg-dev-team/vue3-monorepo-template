@@ -1,6 +1,5 @@
 <template>
   <form @submit.prevent="handleSubmit" @reset.prevent="handleReset">
-    <!-- Form Content Slot -->
     <slot
       :form-data="formData"
       :errors="errors"
@@ -30,7 +29,7 @@ import { computed, ref, watch, onMounted } from 'vue';
  *   @submit="handleSubmit"
  * >
  *   <template #default="{ formData, errors, validateField, submit, isValid, isSubmitting }">
- *     <BaseInput v-model="formData.email" @blur="validateField('email')" />
+ *     <BaseInput v-model="formData.email" />
  *     <p v-if="errors.email">{{ errors.email }}</p>
  *
  *     <div class="button-group">
@@ -96,46 +95,19 @@ const validateField = (field: string): boolean => {
     return true;
   }
 
-  console.log('validateField 실행', field);
-
   const rule = props.validationRules[field];
   const value = formData.value[field];
 
-  try {
-    // rule이 함수인 경우만 처리 (validationHelpers.combine 결과)
-    if (typeof rule === 'function') {
-      const result = rule(value, formData.value);
+  const result = rule(value, formData.value);
 
-      if (typeof result === 'string') {
-        errors.value[field] = result;
-        return false;
-      } else if (result === false) {
-        errors.value[field] = '유효하지 않은 값입니다.';
-        return false;
-      }
-
-      delete errors.value[field];
-      return true;
-    }
-
-    // 기존 로직 (rule이 객체인 경우)
-    const result = rule.validator(value, formData.value);
-
-    if (typeof result === 'string') {
-      errors.value[field] = result;
-      return false;
-    } else if (result === false) {
-      errors.value[field] = rule.message || '유효하지 않은 값입니다.';
-      return false;
-    }
-
+  if (result === true) {
     delete errors.value[field];
     return true;
-  } catch (error) {
-    console.error('Validation error for field:', field, error);
-    errors.value[field] = '유효성 검사 중 오류가 발생했습니다.';
-    return false;
   }
+
+  // 문자열이면 에러 메시지, false면 기본 메시지
+  errors.value[field] = typeof result === 'string' ? result : '유효하지 않은 값입니다.';
+  return false;
 };
 
 /**
@@ -234,7 +206,6 @@ onMounted(() => {
 // 외부에서 호출 가능한 메서드들 노출
 defineExpose({
   validateField,
-  validateForm,
   reset: handleReset,
   submit: handleSubmit,
   isValid: isFormValid,

@@ -13,6 +13,7 @@ export { default as BaseSwitch } from './BaseSwitch/BaseSwitch.vue';
 export { default as BaseRadioGroup } from './BaseRadioGroup/BaseRadioGroup.vue';
 export { default as BaseTwoWaySplitPane } from './BaseTwoWaySplitPane/BaseTwoWaySplitPane.vue';
 export { default as BaseForm } from './BaseForm/BaseForm.vue';
+export { default as BaseFormLabel } from './BaseForm/BaseFormLabel.vue';
 
 export * from './BaseForm';
 export * from './BasePagination';

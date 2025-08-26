@@ -8,7 +8,7 @@
     </template>
     <template #content>
       <BaseForm v-model="formData" :validation-rules="validationRules" @submit="handleSubmit">
-        <template #default="{ formData, errors, validateField, submit, isValid, isSubmitting }">
+        <template #default="{ formData, errors, validateField, submit, isValid }">
           <div>
             <!-- 본인인증 버튼 -->
             <div class="gap-size-12">
@@ -79,8 +79,7 @@
                 label="다음"
                 variant="contained"
                 color="primary"
-                :disabled="!isValid || isSubmitting"
-                :loading="isSubmitting"
+                :disabled="!isValid"
                 full-width
                 @click="submit"
               />
@@ -93,14 +92,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  BaseIcon,
-  BaseStepper,
-  BaseButton,
-  BaseInput,
-  BaseForm,
-  validationHelpers,
-} from '@template/ui';
+import { BaseIcon, BaseStepper, BaseButton, BaseInput, BaseForm } from '@template/ui';
 import AuthContent from '@/components/auth/AuthContent.vue';
 import { ref } from 'vue';
 
@@ -139,15 +131,22 @@ const formData = ref({
 
 // 유효성 검사 규칙
 const validationRules = {
-  number: validationHelpers.combine(
-    validationHelpers.required('휴대폰 번호를 입력해주세요.'),
-    validationHelpers.phoneNumber()
-  ),
-  isVerified: validationHelpers.custom(
-    (value: boolean) => value === true || '휴대폰 본인인증을 완료해주세요.'
-  ),
+  number: (value: string) => {
+    if (!value || value.trim() === '') {
+      return '휴대폰 번호를 입력해주세요.';
+    }
+    // 휴대폰 번호 형식 검증 (010-1234-5678 또는 01012345678)
+    const phoneRegex = /^01[0-9]-?[0-9]{3,4}-?[0-9]{4}$/;
+    if (!phoneRegex.test(value.replace(/-/g, ''))) {
+      return '올바른 휴대폰 번호 형식이 아닙니다.';
+    }
+    return true;
+  },
+  isVerified: (value: boolean) => {
+    if (value === true) return true;
+    return '휴대폰 본인인증을 완료해주세요.';
+  },
 };
-
 /**
  * 휴대폰 인증 시작
  */

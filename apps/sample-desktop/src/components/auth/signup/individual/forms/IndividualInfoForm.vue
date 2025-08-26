@@ -8,40 +8,40 @@
     </template>
     <template #content>
       <BaseForm v-model="formData" :validation-rules="validationRules" @submit="handleSubmit">
-        <template #default="{ formData, errors, validateField, submit, isValid, isSubmitting }">
+        <template #default="{ formData, errors, validateField, submit, isValid }">
           <div>
             <div class="gap-size-16 flex flex-col">
               <!-- 본인인증으로 받은 정보 (비활성화) -->
-              <FormField label="이름(한글)">
+              <BaseFormLabel label="이름(한글)">
                 <BaseInput
                   v-model="formData.koreanName"
                   size="md"
                   disabled
                   placeholder="본인인증으로 자동 입력됨"
                 />
-              </FormField>
+              </BaseFormLabel>
 
-              <FormField label="휴대폰번호">
+              <BaseFormLabel label="휴대폰번호">
                 <BaseInput
                   v-model="formData.phoneNumber"
                   size="md"
                   disabled
                   placeholder="본인인증으로 자동 입력됨"
                 />
-              </FormField>
+              </BaseFormLabel>
 
-              <FormField label="생년월일">
+              <BaseFormLabel label="생년월일">
                 <BaseInput
                   v-model="formData.birthDate"
                   size="md"
                   disabled
                   placeholder="본인인증으로 자동 입력됨"
                 />
-              </FormField>
+              </BaseFormLabel>
 
               <!-- 사용자 입력 정보 -->
               <div class="gap-size-8 flex items-center">
-                <FormField label="이름(영문)">
+                <BaseFormLabel label="이름(영문)">
                   <BaseInput
                     v-model="formData.englishFirstName"
                     size="md"
@@ -50,8 +50,8 @@
                     :errorMessage="errors.englishFirstName"
                     @blur="validateField('englishFirstName')"
                   />
-                </FormField>
-                <FormField label="성(영문)">
+                </BaseFormLabel>
+                <BaseFormLabel label="성(영문)">
                   <BaseInput
                     v-model="formData.englishLastName"
                     size="md"
@@ -60,11 +60,11 @@
                     :errorMessage="errors.englishLastName"
                     @blur="validateField('englishLastName')"
                   />
-                </FormField>
+                </BaseFormLabel>
               </div>
 
               <!-- 거주지 주소 (한글) -->
-              <FormField label="거주지 주소(한글)">
+              <BaseFormLabel label="거주지 주소(한글)">
                 <div class="gap-size-8 flex flex-col">
                   <div class="flex gap-2">
                     <BaseInput
@@ -85,10 +85,10 @@
                     @blur="validateField('koreanDetailAddress')"
                   />
                 </div>
-              </FormField>
+              </BaseFormLabel>
 
               <!-- 거주지 주소 (영문) -->
-              <FormField label="거주지 주소(영문)">
+              <BaseFormLabel label="거주지 주소(영문)">
                 <div class="gap-size-8 flex flex-col">
                   <div class="flex gap-2">
                     <BaseInput
@@ -109,7 +109,7 @@
                     @blur="validateField('englishDetailAddress')"
                   />
                 </div>
-              </FormField>
+              </BaseFormLabel>
             </div>
 
             <!-- 다음 버튼 -->
@@ -119,8 +119,7 @@
                 label="다음"
                 variant="contained"
                 color="primary"
-                :disabled="!isValid || isSubmitting"
-                :loading="isSubmitting"
+                :disabled="!isValid"
                 full-width
                 @click="submit"
               />
@@ -139,9 +138,8 @@ import {
   BaseButton,
   BaseInput,
   BaseForm,
-  validationHelpers,
+  BaseFormLabel,
 } from '@template/ui';
-import FormField from '@/components/auth/common/FormField.vue';
 import AuthContent from '@/components/auth/AuthContent.vue';
 import { ref, onMounted } from 'vue';
 

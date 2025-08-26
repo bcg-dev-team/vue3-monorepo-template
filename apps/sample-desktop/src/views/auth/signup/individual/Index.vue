@@ -44,7 +44,7 @@ import { ref, reactive } from 'vue';
  */
 
 // 현재 단계
-const step = ref(6);
+const step = ref(5);
 
 // 전체 회원가입 데이터 통합 관리
 const signUpData = reactive({

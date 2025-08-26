@@ -8,7 +8,7 @@
     </template>
     <template #content>
       <BaseForm v-model="formData" :validation-rules="validationRules" @submit="handleSubmit">
-        <template #default="{ formData, errors, validateField, submit, isValid, isSubmitting }">
+        <template #default="{ formData, errors, validateField, submit, isValid }">
           <div class="flex flex-col gap-[33px]">
             <!-- 신분증 업로드 -->
             <FormField label="신분증 (주민등록증 또는 운전면허증)*">
@@ -60,8 +60,7 @@
                 label="제출하기"
                 variant="contained"
                 color="primary"
-                :disabled="!isValid || isSubmitting"
-                :loading="isSubmitting"
+                :disabled="!isValid"
                 full-width
                 @click="submit"
               />
@@ -118,19 +117,18 @@ const formData = ref({
 });
 
 // 동적 유효성 검사 규칙
-const validationRules = computed(() => {
-  const rules: Record<string, any> = {
-    idCard: (value: File | null) => value !== null || '신분증을 업로드해주세요.',
-  };
-
-  // 주소가 다른 경우 추가 서류 필수
-  if (formData.value.hasAddressDifference) {
-    rules.additionalDocument = (value: File | null) =>
-      value !== null || '추가 서류를 업로드해주세요.';
-  }
-
-  return rules;
-});
+const validationRules = {
+  idCard: (value: File | null) => {
+    if (value !== null) return true;
+    return '신분증을 업로드해주세요.';
+  },
+  additionalDocument: (value: File | null) => {
+    // 주소가 다른 경우에만 필수 검사
+    if (!formData.value.hasAddressDifference) return true;
+    if (value !== null) return true;
+    return '추가 서류를 업로드해주세요.';
+  },
+};
 
 // 설명 텍스트
 const description = `

@@ -1,6 +1,8 @@
 <template>
   <header class="fixed sticky left-0 right-0 top-0 z-[100] min-w-[1920px] bg-black">
-    <div class="mx-auto flex w-[1920px] items-center justify-between py-[10px] pl-3 pr-6">
+    <div
+      class="header-container flex w-screen min-w-[1400px] max-w-[1920px] items-center justify-between py-[10px] pl-3 pr-6"
+    >
       <div class="flex shrink-0 items-center">
         <div class="mr-9">
           <img class="h-10 w-auto" src="@/assets/logo/moda_logo.svg" alt="logo" />

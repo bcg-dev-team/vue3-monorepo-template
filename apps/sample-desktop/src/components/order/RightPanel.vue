@@ -1,12 +1,38 @@
 <template>
   <div class="flex flex-col bg-white p-4">
-    <div>
-      <BaseInput />
+    <!-- 계좌 선택 -->
+    <div class="mt-3">
+      <div class="relative">
+        <div
+          @click="toggleDropdown"
+          class="flex h-[42px] w-full cursor-pointer items-center justify-between rounded-md border border-[#b4b6bb] bg-white px-[15px] py-3 pr-3 text-[14px] font-normal leading-[18px] tracking-[-0.35px] text-[#131313]"
+        >
+          <span>{{ selectedAccountLabel }}</span>
+          <div class="pointer-events-none">
+            <BaseIcon name="arrow-down" size="md" :class="{ 'rotate-180': isDropdownOpen }" />
+          </div>
+        </div>
+
+        <div
+          v-if="isDropdownOpen"
+          class="absolute left-0 right-0 top-full z-50 mt-1 max-h-48 overflow-y-auto rounded-md border border-[#b4b6bb] bg-white shadow-lg"
+        >
+          <div
+            v-for="option in accountOptions"
+            :key="option.value"
+            @click="selectAccount(option.value)"
+            class="cursor-pointer px-[15px] py-3 text-[14px] font-normal leading-[18px] tracking-[-0.35px] text-[#131313] transition-colors duration-200 first:rounded-t-md last:rounded-b-md hover:bg-[#f8f9fa]"
+            :class="{ 'bg-[#f0f7ff] text-[#0067ef]': selectedAccount === option.value }"
+          >
+            {{ option.label }}
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 통화 페어 섹션 -->
     <div
-      class="relative mt-3 flex items-center justify-between rounded-md border border-[#0067ef] bg-[#f5f7f9] p-4"
+      class="h-13 relative mt-3 flex items-center justify-between rounded-md border border-[#0067ef] bg-[#f5f7f9] p-4"
     >
       <div class="flex w-52 flex-col gap-1">
         <div class="text-base font-semibold leading-5 tracking-[-0.35px] text-[#131313]">
@@ -17,37 +43,24 @@
     </div>
 
     <!-- 주문 유형 선택 -->
-    <div class="mt-2">
-      <BaseRadioGroup
-        v-model="selectedOrderType"
-        :options="orderTypeOptions"
-        label="주문 유형"
-        name="orderType"
-      />
+    <div class="mt-3">
+      <BaseRadioGroup v-model="selectedOrderType" :options="orderTypeOptions" name="orderType" />
     </div>
 
     <!-- 매도 매수 버튼 -->
     <div class="mt-2 flex gap-2">
-      <BaseButton
-        variant="outlined"
-        color="red"
-        size="lg"
-        label="매도"
-        subLabel="1.17100"
-        customClass="h-16"
-        fullWidth
-      />
-      <BaseButton
-        variant="contained-grey"
-        color="blue"
-        size="lg"
-        label="매수"
-        subLabel="1.17096"
-        customClass="h-16"
-        fullWidth
-      />
+      <button :class="buyButtonClasses" @click="handleBuyClick">
+        <div class="text-font-14 font-medium leading-5 tracking-[-0.35px]">매수</div>
+        <div class="text-base font-semibold leading-5 tracking-[-0.35px]">1.17096</div>
+      </button>
+      <button :class="sellButtonClasses" @click="handleSellClick">
+        <div class="text-font-14 font-medium leading-5 tracking-[-0.35px]">매도</div>
+        <div class="text-base font-semibold leading-5 tracking-[-0.35px]">1.17096</div>
+      </button>
     </div>
+
     <BaseProgressBar variant="performance" value="75" max="100" class="mt-2" />
+
     <!-- 거래 정보 섹션 -->
     <div
       class="text-color-default mt-2 flex items-center justify-center gap-2 text-center text-[11px] leading-[14px] tracking-[-0.1px]"
@@ -91,17 +104,17 @@
         <div class="flex flex-col gap-2">
           <!-- 1 Lot 값 -->
           <div class="flex w-full items-center justify-between text-[12px] leading-[16px]">
-            <div class="font-normal tracking-[-0.35px] text-[#717375]">1 Lot 값</div>
+            <div class="text-default-muted-dark font-normal tracking-[-0.35px]">1 Lot 값</div>
             <div class="font-medium text-[#131313]">$650,840.00</div>
           </div>
           <!-- Pip Value -->
           <div class="flex w-full items-center justify-between text-[12px] leading-[16px]">
-            <div class="font-normal tracking-[-0.35px] text-[#717375]">Pip Value</div>
+            <div class="text-default-muted-dark font-normal tracking-[-0.35px]">Pip Value</div>
             <div class="font-medium text-[#131313]">$100.00</div>
           </div>
           <!-- 최소 증거금 -->
           <div class="flex w-full items-center justify-between text-[12px] leading-[16px]">
-            <div class="font-normal tracking-[-0.35px] text-[#717375]">최소 증거금</div>
+            <div class="text-default-muted-dark font-normal tracking-[-0.35px]">최소 증거금</div>
             <div class="font-medium text-[#131313]">$1,301.70</div>
           </div>
         </div>
@@ -109,259 +122,254 @@
     </div>
 
     <!-- 자동 청산 섹션 -->
-    <div class="mt-6 flex w-full flex-col gap-3">
-      <!-- 자동 청산 헤더 -->
-      <div class="flex w-full flex-col gap-2">
-        <button class="flex w-full cursor-pointer items-center justify-start">
-          <div class="text-[15px] font-semibold leading-[20px] tracking-[-0.35px] text-[#131313]">
-            자동 청산
-          </div>
-          <BaseIcon name="arrow-down" size="md" />
-        </button>
+    <div class="mt-6 flex w-full flex-col gap-2">
+      <button class="flex w-full cursor-pointer items-center justify-start">
+        <div class="text-[15px] font-semibold leading-[20px] tracking-[-0.35px] text-[#131313]">
+          자동 청산
+        </div>
+        <BaseIcon name="arrow-down" size="md" />
+      </button>
 
-        <!-- 자동 청산 콘텐츠 -->
-        <div class="flex w-full flex-col gap-3">
-          <!-- Stop Loss & Take Profit 체크박스 -->
-          <div class="flex w-full items-center justify-between">
-            <div class="flex w-[150px] items-center gap-1">
-              <BaseCheckbox v-model="state.stopLoss" />
-              <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
-                Stop Loss
-              </div>
+      <!-- 자동 청산 콘텐츠 -->
+      <!-- Stop Loss & Take Profit 체크박스 -->
+      <div class="flex w-full items-center justify-between">
+        <div class="flex w-[150px] items-center gap-1">
+          <BaseCheckbox v-model="state.stopLoss" />
+          <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
+            Stop Loss
+          </div>
+        </div>
+        <div
+          class="w-10 text-center text-[12px] font-normal leading-[16px] tracking-[-0.35px] text-[#131313]"
+        ></div>
+        <div class="flex w-[150px] items-center gap-1">
+          <BaseCheckbox v-model="state.takeProfit" />
+          <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
+            Take Profit
+          </div>
+        </div>
+      </div>
+
+      <!-- Stop Loss 입력 필드들 -->
+      <div class="flex w-full flex-col gap-1">
+        <!-- 핍 입력 -->
+        <div class="flex h-8 w-full items-center justify-between gap-1">
+          <div class="flex h-full w-[150px] items-center">
+            <div
+              class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
+            >
+              <div class="text-[13px] font-normal leading-[16px] text-[#131313]">-100.1</div>
             </div>
             <div
-              class="w-10 text-center text-[12px] font-normal leading-[16px] tracking-[-0.35px] text-[#131313]"
-            ></div>
-            <div class="flex w-[150px] items-center gap-1">
-              <BaseCheckbox v-model="state.takeProfit" />
-              <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
-                Take Profit
-              </div>
+              class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
+            >
+              <BaseIcon name="plus" size="sm" />
+            </div>
+            <div
+              class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
+            >
+              <BaseIcon name="minus" size="sm" />
             </div>
           </div>
-
-          <!-- Stop Loss 입력 필드들 -->
-          <div class="flex w-full flex-col gap-1">
-            <!-- 핍 입력 -->
-            <div class="flex h-8 w-full items-center justify-between gap-1">
-              <div class="flex h-full w-[150px] items-center">
-                <div
-                  class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
-                >
-                  <div class="text-[13px] font-normal leading-[16px] text-[#131313]">-100.1</div>
-                </div>
-                <div
-                  class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
-                >
-                  <BaseIcon name="plus" size="sm" />
-                </div>
-                <div
-                  class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
-                >
-                  <BaseIcon name="minus" size="sm" />
-                </div>
-              </div>
-              <div
-                class="w-10 text-center text-[12px] font-normal leading-[16px] tracking-[-0.35px] text-[#131313]"
-              >
-                핍
-              </div>
-              <div class="flex h-full w-[150px] items-center">
-                <div
-                  class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
-                >
-                  <div class="text-[13px] font-normal leading-[16px] text-[#131313]">-100.1</div>
-                </div>
-                <div
-                  class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
-                >
-                  <BaseIcon name="plus" size="sm" />
-                </div>
-                <div
-                  class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
-                >
-                  <BaseIcon name="minus" size="sm" />
-                </div>
-              </div>
+          <div
+            class="w-10 text-center text-[12px] font-normal leading-[16px] tracking-[-0.35px] text-[#131313]"
+          >
+            핍
+          </div>
+          <div class="flex h-full w-[150px] items-center">
+            <div
+              class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
+            >
+              <div class="text-[13px] font-normal leading-[16px] text-[#131313]">-100.1</div>
             </div>
-
-            <!-- 가격 입력 -->
-            <div class="flex h-8 w-full items-center justify-between gap-1">
-              <div class="flex h-full w-[150px] items-center">
-                <div
-                  class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
-                >
-                  <div class="text-[13px] font-normal leading-[16px] text-[#131313]">~1.18356</div>
-                </div>
-                <div
-                  class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
-                >
-                  <BaseIcon name="plus" size="sm" />
-                </div>
-                <div
-                  class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
-                >
-                  <BaseIcon name="minus" size="sm" />
-                </div>
-              </div>
-              <div
-                class="w-10 text-center text-[12px] font-normal leading-[16px] tracking-[-0.35px] text-[#131313]"
-              >
-                가격
-              </div>
-              <div class="flex h-full w-[150px] items-center">
-                <div
-                  class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
-                >
-                  <div class="text-[13px] font-normal leading-[16px] text-[#131313]">~1.18356</div>
-                </div>
-                <div
-                  class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
-                >
-                  <BaseIcon name="plus" size="sm" />
-                </div>
-                <div
-                  class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
-                >
-                  <BaseIcon name="minus" size="sm" />
-                </div>
-              </div>
+            <div
+              class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
+            >
+              <BaseIcon name="plus" size="sm" />
+            </div>
+            <div
+              class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
+            >
+              <BaseIcon name="minus" size="sm" />
             </div>
           </div>
+        </div>
 
-          <!-- Trailing Stop 체크박스 -->
-          <button class="flex w-[150px] cursor-pointer items-center gap-1">
-            <div class="flex w-[150px] items-center gap-1">
-              <BaseCheckbox v-model="state.trailingStop" />
-              <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
-                Trailing Stop
-              </div>
+        <!-- 가격 입력 -->
+        <div class="flex h-8 w-full items-center justify-between gap-1">
+          <div class="flex h-full w-[150px] items-center">
+            <div
+              class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
+            >
+              <div class="text-[13px] font-normal leading-[16px] text-[#131313]">~1.18356</div>
             </div>
-          </button>
+            <div
+              class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
+            >
+              <BaseIcon name="plus" size="sm" />
+            </div>
+            <div
+              class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
+            >
+              <BaseIcon name="minus" size="sm" />
+            </div>
+          </div>
+          <div
+            class="w-10 text-center text-[12px] font-normal leading-[16px] tracking-[-0.35px] text-[#131313]"
+          >
+            가격
+          </div>
+          <div class="flex h-full w-[150px] items-center">
+            <div
+              class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
+            >
+              <div class="text-[13px] font-normal leading-[16px] text-[#131313]">~1.18356</div>
+            </div>
+            <div
+              class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
+            >
+              <BaseIcon name="plus" size="sm" />
+            </div>
+            <div
+              class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
+            >
+              <BaseIcon name="minus" size="sm" />
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- 버튼 섹션 -->
-      <div class="flex w-full flex-col gap-2.5">
-        <BaseButton label="주문 실행" />
+      <!-- Trailing Stop 체크박스 -->
+      <button class="flex w-[150px] cursor-pointer items-center gap-1">
+        <div class="flex w-[150px] items-center gap-1">
+          <BaseCheckbox v-model="state.trailingStop" />
+          <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
+            Trailing Stop
+          </div>
+        </div>
+      </button>
+    </div>
+
+    <!-- 버튼 섹션 -->
+    <div class="mt-3 flex w-full flex-col gap-2.5">
+      <BaseButton label="주문 실행" :disabled="!isBuyActive && !isSellActive" />
+    </div>
+
+    <!-- 5단계 호가 섹션 -->
+    <div class="mt-6 flex w-full flex-col gap-2">
+      <div class="text-[15px] font-semibold leading-[20px] tracking-[-0.35px] text-[#131313]">
+        5단계 호가
       </div>
 
-      <!-- 5단계 호가 섹션 -->
-      <div class="mt-6 flex w-full flex-col gap-2">
-        <div class="text-[15px] font-semibold leading-[20px] tracking-[-0.35px] text-[#131313]">
-          5단계 호가
+      <!-- 호가 차트 -->
+      <div class="flex flex-col items-center gap-1">
+        <!-- 1단계 호가 -->
+        <div class="flex h-6 w-full gap-1">
+          <div class="flex h-6 w-full items-center justify-between text-xs">
+            <div class="relative z-10">1.00</div>
+            <div class="relative">
+              <div class="relative z-10 mr-[9px]">1.16790</div>
+              <div
+                class="absolute right-0 top-1/2 h-6 w-[5px] -translate-y-1/2 rounded bg-[#E0EDFF]"
+              ></div>
+            </div>
+          </div>
+          <div class="flex w-full items-center justify-between text-xs">
+            <div class="relative">
+              <div class="relative z-10 ml-[9px]">1.00</div>
+              <div
+                class="absolute left-0 top-1/2 h-6 w-[5px] -translate-y-1/2 rounded bg-[#FFDBDC]"
+              ></div>
+            </div>
+            <div class="relative z-10">1.16790</div>
+          </div>
         </div>
 
-        <!-- 호가 차트 -->
-        <div class="flex flex-col items-center gap-1">
-          <!-- 1단계 호가 -->
-          <div class="flex h-6 w-full gap-1">
-            <div class="flex h-6 w-full items-center justify-between text-xs">
-              <div class="relative z-10">1.00</div>
-              <div class="relative">
-                <div class="relative z-10 mr-[9px]">1.16790</div>
-                <div
-                  class="absolute right-0 top-1/2 h-6 w-[5px] -translate-y-1/2 rounded bg-[#E0EDFF]"
-                ></div>
-              </div>
-            </div>
-            <div class="flex w-full items-center justify-between text-xs">
-              <div class="relative">
-                <div class="relative z-10 ml-[9px]">1.00</div>
-                <div
-                  class="absolute left-0 top-1/2 h-6 w-[5px] -translate-y-1/2 rounded bg-[#FFDBDC]"
-                ></div>
-              </div>
-              <div class="relative z-10">1.16790</div>
+        <!-- 2단계 호가 -->
+        <div class="flex h-6 w-full gap-1">
+          <div class="flex h-6 w-full items-center justify-between text-xs">
+            <div class="relative z-10">1.00</div>
+            <div class="relative">
+              <div class="relative z-10 mr-[9px]">1.16790</div>
+              <div
+                class="absolute right-0 top-1/2 h-6 w-[40px] -translate-y-1/2 rounded bg-[#E0EDFF]"
+              ></div>
             </div>
           </div>
-
-          <!-- 2단계 호가 -->
-          <div class="flex h-6 w-full gap-1">
-            <div class="flex h-6 w-full items-center justify-between text-xs">
-              <div class="relative z-10">1.00</div>
-              <div class="relative">
-                <div class="relative z-10 mr-[9px]">1.16790</div>
-                <div
-                  class="absolute right-0 top-1/2 h-6 w-[40px] -translate-y-1/2 rounded bg-[#E0EDFF]"
-                ></div>
-              </div>
+          <div class="flex w-full items-center justify-between text-xs">
+            <div class="relative">
+              <div class="relative z-10 ml-[9px]">1.00</div>
+              <div
+                class="absolute left-0 top-1/2 h-6 w-[40px] -translate-y-1/2 rounded bg-[#FFDBDC]"
+              ></div>
             </div>
-            <div class="flex w-full items-center justify-between text-xs">
-              <div class="relative">
-                <div class="relative z-10 ml-[9px]">1.00</div>
-                <div
-                  class="absolute left-0 top-1/2 h-6 w-[40px] -translate-y-1/2 rounded bg-[#FFDBDC]"
-                ></div>
-              </div>
-              <div class="relative z-10">1.16790</div>
+            <div class="relative z-10">1.16790</div>
+          </div>
+        </div>
+
+        <!-- 3단계 호가 -->
+        <div class="flex h-6 w-full gap-1">
+          <div class="flex h-6 w-full items-center justify-between text-xs">
+            <div class="relative z-10">1.00</div>
+            <div class="relative">
+              <div class="relative z-10 mr-[9px]">1.16790</div>
+              <div
+                class="absolute right-0 top-1/2 h-6 w-[60px] -translate-y-1/2 rounded bg-[#E0EDFF]"
+              ></div>
             </div>
           </div>
-
-          <!-- 3단계 호가 -->
-          <div class="flex h-6 w-full gap-1">
-            <div class="flex h-6 w-full items-center justify-between text-xs">
-              <div class="relative z-10">1.00</div>
-              <div class="relative">
-                <div class="relative z-10 mr-[9px]">1.16790</div>
-                <div
-                  class="absolute right-0 top-1/2 h-6 w-[60px] -translate-y-1/2 rounded bg-[#E0EDFF]"
-                ></div>
-              </div>
+          <div class="flex w-full items-center justify-between text-xs">
+            <div class="relative">
+              <div class="relative z-10 ml-[9px]">1.00</div>
+              <div
+                class="absolute left-0 top-1/2 h-6 w-[60px] -translate-y-1/2 rounded bg-[#FFDBDC]"
+              ></div>
             </div>
-            <div class="flex w-full items-center justify-between text-xs">
-              <div class="relative">
-                <div class="relative z-10 ml-[9px]">1.00</div>
-                <div
-                  class="absolute left-0 top-1/2 h-6 w-[60px] -translate-y-1/2 rounded bg-[#FFDBDC]"
-                ></div>
-              </div>
-              <div class="relative z-10">1.16790</div>
+            <div class="relative z-10">1.16790</div>
+          </div>
+        </div>
+
+        <!-- 4단계 호가 -->
+        <div class="flex h-6 w-full gap-1">
+          <div class="flex h-6 w-full items-center justify-between text-xs">
+            <div class="relative z-10">1.00</div>
+            <div class="relative">
+              <div class="relative z-10 mr-[9px]">1.16790</div>
+              <div
+                class="absolute right-0 top-1/2 h-6 w-[100px] -translate-y-1/2 rounded bg-[#E0EDFF]"
+              ></div>
             </div>
           </div>
-
-          <!-- 4단계 호가 -->
-          <div class="flex h-6 w-full gap-1">
-            <div class="flex h-6 w-full items-center justify-between text-xs">
-              <div class="relative z-10">1.00</div>
-              <div class="relative">
-                <div class="relative z-10 mr-[9px]">1.16790</div>
-                <div
-                  class="absolute right-0 top-1/2 h-6 w-[100px] -translate-y-1/2 rounded bg-[#E0EDFF]"
-                ></div>
-              </div>
+          <div class="flex w-full items-center justify-between text-xs">
+            <div class="relative">
+              <div class="relative z-10 ml-[9px]">1.00</div>
+              <div
+                class="absolute left-0 top-1/2 h-6 w-[100px] -translate-y-1/2 rounded bg-[#FFDBDC]"
+              ></div>
             </div>
-            <div class="flex w-full items-center justify-between text-xs">
-              <div class="relative">
-                <div class="relative z-10 ml-[9px]">1.00</div>
-                <div
-                  class="absolute left-0 top-1/2 h-6 w-[100px] -translate-y-1/2 rounded bg-[#FFDBDC]"
-                ></div>
-              </div>
-              <div class="relative z-10">1.16790</div>
+            <div class="relative z-10">1.16790</div>
+          </div>
+        </div>
+
+        <!-- 5단계 호가 -->
+        <div class="flex h-6 w-full gap-1">
+          <div class="flex h-6 w-full items-center justify-between text-xs">
+            <div class="relative z-10">1.00</div>
+            <div class="relative">
+              <div class="relative z-10 mr-[9px]">1.16790</div>
+              <div
+                class="absolute right-0 top-1/2 h-6 w-[150px] -translate-y-1/2 rounded bg-[#E0EDFF]"
+              ></div>
             </div>
           </div>
-
-          <!-- 5단계 호가 -->
-          <div class="flex h-6 w-full gap-1">
-            <div class="flex h-6 w-full items-center justify-between text-xs">
-              <div class="relative z-10">1.00</div>
-              <div class="relative">
-                <div class="relative z-10 mr-[9px]">1.16790</div>
-                <div
-                  class="absolute right-0 top-1/2 h-6 w-[150px] -translate-y-1/2 rounded bg-[#E0EDFF]"
-                ></div>
-              </div>
+          <div class="flex w-full items-center justify-between text-xs">
+            <div class="relative z-10">
+              <div class="relative z-10 ml-[9px]">1.00</div>
+              <div
+                class="absolute left-0 top-1/2 h-6 w-[150px] -translate-y-1/2 rounded bg-[#FFDBDC]"
+              ></div>
             </div>
-            <div class="flex w-full items-center justify-between text-xs">
-              <div class="relative z-10">
-                <div class="relative z-10 ml-[9px]">1.00</div>
-                <div
-                  class="absolute left-0 top-1/2 h-6 w-[150px] -translate-y-1/2 rounded bg-[#FFDBDC]"
-                ></div>
-              </div>
-              <div class="relative z-10">1.16790</div>
-            </div>
+            <div class="relative z-10">1.16790</div>
           </div>
         </div>
       </div>
@@ -378,8 +386,8 @@ import {
   BaseCheckbox,
   BaseProgressBar,
 } from '@template/ui';
+import { reactive, ref, computed, onMounted, onUnmounted } from 'vue';
 import type { RadioOption } from '@template/ui';
-import { reactive } from 'vue';
 
 const state = reactive({
   stopLoss: false,
@@ -388,18 +396,93 @@ const state = reactive({
 });
 
 /**
- * 주문 패널의 우측 섹션 컴포넌트
- * 통화 페어와 현재 가격을 표시하고 주문 유형을 선택할 수 있습니다.
+ * 선택된 계좌
  */
-interface Props {
-  currencyPair?: string;
-  price?: string;
-}
+const selectedAccount = ref('account1');
 
-const props = withDefaults(defineProps<Props>(), {
-  currencyPair: 'EURUSD',
-  price: '1.17100',
+// 드롭다운 상태 관리
+const isDropdownOpen = ref(false);
+
+// 계좌 옵션 데이터
+const accountOptions = [
+  { value: 'account1', label: '라이브계좌#1 110-81-345150' },
+  { value: 'account2', label: '라이브계좌#2 110-81-345151' },
+  { value: 'account3', label: '데모계좌#1 110-81-345152' },
+];
+
+// 선택된 계좌의 라벨
+const selectedAccountLabel = computed(() => {
+  const option = accountOptions.find((opt) => opt.value === selectedAccount.value);
+  return option?.label || '계좌를 선택하세요';
 });
+
+// 드롭다운 토글
+const toggleDropdown = () => {
+  isDropdownOpen.value = !isDropdownOpen.value;
+};
+
+// 계좌 선택
+const selectAccount = (value: string) => {
+  selectedAccount.value = value;
+  isDropdownOpen.value = false;
+};
+
+// 외부 클릭 시 드롭다운 닫기
+onMounted(() => {
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    if (!target.closest('.relative')) {
+      isDropdownOpen.value = false;
+    }
+  });
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', () => {});
+});
+
+const isBuyActive = ref(false);
+const isSellActive = ref(false);
+
+/**
+ * 매수 버튼의 동적 클래스
+ */
+const buyButtonClasses = computed(() => {
+  const baseClasses = 'flex w-full flex-col items-center justify-center gap-1 rounded-md p-3 ';
+
+  if (isBuyActive.value) {
+    return `${baseClasses} bg-[var(--base-colors-red-red050)] text-[var(--base-colors-red-red800)] outline outline-1 outline-[var(--base-colors-red-red800)] outline-offset-[-2px]`;
+  }
+
+  return `${baseClasses} bg-[var(--button-red-background-none)]  text-[var(--base-colors-red-red800)]  `;
+});
+
+/**
+ * 매도 버튼의 동적 클래스
+ */
+const sellButtonClasses = computed(() => {
+  const baseClasses = 'flex w-full flex-col items-center justify-center gap-1 rounded-md  p-3 ';
+
+  if (isSellActive.value) {
+    return `${baseClasses} bg-[var(--base-colors-blue-blue050)] text-[var(--base-colors-blue-blue800-deep)] outline outline-1 outline-[var(--base-colors-blue-blue800-deep)] outline-offset-[-2px]`;
+  }
+
+  return `${baseClasses} bg-[var(--button-red-background-none)] text-[var(--base-colors-blue-blue800-deep)]`;
+});
+
+const handleBuyClick = () => {
+  if (isSellActive.value) {
+    isSellActive.value = false;
+  }
+  isBuyActive.value = !isBuyActive.value;
+};
+
+const handleSellClick = () => {
+  if (isBuyActive.value) {
+    isBuyActive.value = false;
+  }
+  isSellActive.value = !isSellActive.value;
+};
 
 /**
  * 선택된 주문 유형
@@ -430,18 +513,3 @@ const orderTypeOptions: RadioOption[] = [
   },
 ];
 </script>
-
-<style scoped>
-/* Pretendard GOV 폰트가 없는 경우를 대비한 fallback */
-.font-semibold {
-  font-family:
-    'Pretendard GOV',
-    'Pretendard',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    sans-serif;
-  font-weight: 600;
-}
-</style>

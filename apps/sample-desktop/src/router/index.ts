@@ -16,13 +16,6 @@ type CustomRouteRecordRaw = RouteRecordRaw & {
   children?: CustomRouteRecordRaw[];
 };
 
-// 리다이렉트 규칙 타입 정의
-interface RedirectRule {
-  from: string;
-  to: string[];
-  when?: (to: RouteLocationNormalized, from: RouteLocationNormalized) => boolean;
-}
-
 const routes: CustomRouteRecordRaw[] = [
   {
     path: '/auth',

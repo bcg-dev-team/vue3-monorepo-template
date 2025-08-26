@@ -54,7 +54,7 @@ const routes: CustomRouteRecordRaw[] = [
           {
             path: 'complete',
             name: 'sign-up-complete',
-            component: () => import('@/views/auth/signup/complete/index.vue'),
+            component: () => import('@/views/auth/signup/complete/Index.vue'),
           },
         ],
       },

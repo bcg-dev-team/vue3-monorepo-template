@@ -3,7 +3,13 @@
     <MainCardContent class="p-6" title="고객지원" size="lg">
       <template #content>
         <div>
-          <BaseTabs variant="underline" size="lg" :tabs="tabs" v-model="selectedTab" />
+          <BaseTabs
+            variant="underline"
+            size="lg"
+            :tabs="tabs"
+            v-model="selectedTab"
+            @update:model-value="handleTabChange"
+          />
         </div>
       </template>
     </MainCardContent>
@@ -17,8 +23,10 @@ import Event from '@/components/support/event/Event.vue';
 import QnA from '@/components/support/qna/QnaMain.vue';
 import Faq from '@/components/support/faq/Faq.vue';
 import { BaseTabs } from '@template/ui';
+import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 
+const router = useRouter();
 const selectedTab = ref('notice');
 
 const tabs = [
@@ -48,4 +56,8 @@ const tabs = [
     component: UserGuide,
   },
 ];
+
+const handleTabChange = (tab: string) => {
+  router.push({ name: 'support-tab', params: { supportTab: tab } });
+};
 </script>

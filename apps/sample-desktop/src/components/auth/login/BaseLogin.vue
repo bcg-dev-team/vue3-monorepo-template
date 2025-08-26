@@ -20,7 +20,14 @@
     </div>
   </div>
   <div class="mt-[33px]">
-    <BaseButton size="lg" label="로그인" variant="contained" color="primary" full-width />
+    <BaseButton
+      size="lg"
+      label="로그인"
+      variant="contained"
+      color="primary"
+      full-width
+      @click="handleLogin"
+    />
   </div>
   <div class="mt-6 flex justify-center">
     <Anchor size="sm" to="sign-up">가입하기</Anchor>
@@ -28,6 +35,8 @@
 </template>
 
 <script lang="ts" setup>
+import LocalStorageService from '@/service/localStorage/local-storage.service';
+import LocalStorageKey from '@/service/localStorage/local-storage-key';
 import { BaseInput, BaseButton, BaseCheckbox } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
 import Anchor from '@/components/common/Anchor.vue';
@@ -37,4 +46,9 @@ import { ref } from 'vue';
 const router = useRouter();
 
 const isChecked = ref<boolean>(false);
+
+const handleLogin = () => {
+  LocalStorageService.setItem(LocalStorageKey.TOKEN, 'Authorized Token');
+  router.push({ name: 'home' });
+};
 </script>

@@ -1,8 +1,8 @@
 import type { RouteRecordRaw, NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
 import LocalStorageService from '@/service/localStorage/local-storage.service';
+import { createRouter, createWebHistory, HistoryState } from 'vue-router';
 import LocalStorageKey from '@/service/localStorage/local-storage-key';
 import MainLayout from '@/components/layout/MainLayout.vue';
-import { createRouter, createWebHistory } from 'vue-router';
 
 // 커스텀 메타 타입 정의
 interface CustomRouteMeta {
@@ -177,33 +177,9 @@ const router = createRouter({
  */
 router.beforeEach(
   (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
-    // step 마지막 단계에서 뒤로가기 막기 임시로 login으로 전환
-    const rules: RedirectRule[] = [
-      { from: 'sign-up-complete', to: ['individual-sign-up', 'corporate-sign-up'] },
-      { from: 'reset-password-complete', to: ['reset-password'] },
-      {
-        from: 'find-id',
-        to: ['find-id'],
-        when: (_to: RouteLocationNormalized, fromRoute: RouteLocationNormalized) =>
-          String(fromRoute.query.step) === '1',
-      },
-    ];
-
-    const shouldRedirect = rules.some(
-      (rule) =>
-        from.name === rule.from &&
-        rule.to.includes(String(to.name)) &&
-        (!rule.when || rule.when(to, from))
-    );
-
-    if (shouldRedirect) {
-      window.history.replaceState(null, '', '/');
-      return next({ name: 'login', replace: true });
-    }
-
     // 인증이 필요한 페이지인지 확인
     if (to.meta?.auth) {
-      const token = LocalStorageService.getItem(LocalStorageKey.TOKEN, false);
+      const token = LocalStorageService.getItem(LocalStorageKey.TOKEN);
       if (!token || Object.keys(token).length === 0) {
         // 임시 alert 처리
         alert('로그인 후 이용해주세요.');

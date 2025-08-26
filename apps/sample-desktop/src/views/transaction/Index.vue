@@ -30,7 +30,7 @@ import HistoryTableContent from '@/components/transaction/history/HistoryTableCo
 import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
 import HistorySearchBox from '@/components/transaction/history/HistorySearchBox.vue';
 import OrderTableContent from '@/components/transaction/order/OrderTableContent.vue';
-import ClearTableContent from '@/components/transaction/clear/ClearTbaleContent.vue';
+import ClearTableContent from '@/components/transaction/clear/ClearTableContent.vue';
 import OrderSearchBox from '@/components/transaction/order/OrderSearchBox.vue';
 import ClearSearchBox from '@/components/transaction/clear/ClearSearchBox.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';

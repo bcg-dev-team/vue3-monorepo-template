@@ -81,7 +81,8 @@
           <!-- 우측 패널: 주문 처리 (25%) -->
           <template #second>
             <div class="order-action-panel">
-              <div class="panel-header">
+              <RightPanel />
+              <!-- <div class="panel-header">
                 <h2 class="panel-title">⚡ 주문 패널</h2>
                 <p class="panel-subtitle">주문 상태 변경 및 액션 패널</p>
               </div>
@@ -90,7 +91,7 @@
                   <div class="placeholder-icon">⚡</div>
                   <p>주문 처리 옵션이 여기에 표시됩니다</p>
                 </div>
-              </div>
+              </div> -->
             </div>
           </template>
         </BaseTwoWaySplitPane>
@@ -102,6 +103,7 @@
 <script setup lang="ts">
 import TradingViewChart from '@/components/chart/TradingViewChart.vue';
 import { BaseTwoWaySplitPane, BaseTable } from '@template/ui';
+import RightPanel from '@/components/order/RightPanel.vue';
 import type { TableHeader, TableRow } from '@template/ui';
 
 const orderTableHeaders: TableHeader[] = [

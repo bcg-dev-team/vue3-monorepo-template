@@ -138,7 +138,7 @@ const buttonClasses = computed(() => {
   if (props.disabled) classes.push('btn-disabled');
   if (props.pill) classes.push('btn-pill');
   // customClass가 없을 때만 color 클래스 적용
-  if (!props.customClass && predefinedColors.includes(props.color as ButtonColor)) {
+  if (predefinedColors.includes(props.color as ButtonColor)) {
     classes.push(`btn-color-${props.color}`);
   }
   // customClass는 항상 마지막에 push (우선순위 보장)

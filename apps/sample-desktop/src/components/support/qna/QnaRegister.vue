@@ -33,7 +33,9 @@
                 <BaseFileUploadButton class="w-[130px]" status="hover" />
               </div>
               <div class="gap-size-4 flex items-center">
-                <a class="text-blue underline" href="#">20250601_Screenshot_14.00.01.jpg</a>
+                <Anchor @click="() => console.log('첨부파일 클릭!')">
+                  20250601_Screenshot_14.00.01.jpg
+                </Anchor>
                 <BaseIcon name="icn-delete" size="sm" color="rgba(180, 182, 187, 1)" />
               </div>
             </div>
@@ -49,6 +51,7 @@
 </template>
 <script setup lang="ts">
 import { BaseInput, BaseIcon, BaseFileUploadButton, BaseButton } from '@template/ui';
+import Anchor from '@/components/common/Anchor.vue';
 
 const type = defineModel<null | 'register' | 'detail'>('type', { required: true });
 </script>

@@ -13,19 +13,22 @@
     <div class="h-size-20 border-bg-divider-muted border" />
     <div class="flex items-center gap-4">
       <div
-        class="bg-bg-bg-surface-muted flex h-[34px] w-[34px] items-center justify-center rounded-full"
+        class="bg-bg-bg-surface-muted flex h-[34px] w-[34px] cursor-pointer items-center justify-center rounded-full"
       >
         <BaseIcon name="person" color="black" />
       </div>
-      <BaseIcon name="mode-light" color="white" />
-      <BaseIcon name="notification" color="white" />
-      <BaseIcon name="logout" color="white" />
+      <BaseIcon name="mode-light" color="white" class="cursor-pointer" />
+      <BaseIcon name="notification" color="white" class="cursor-pointer" />
+      <BaseIcon name="logout" color="white" class="cursor-pointer" @click="handleLogout" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import LocalStorageService from '@/service/localStorage/local-storage.service';
+import LocalStorageKey from '@/service/localStorage/local-storage-key';
 import { BaseIcon } from '@template/ui';
+import { useRouter } from 'vue-router';
 
 interface FinancialMetric {
   id: string;
@@ -40,4 +43,11 @@ const financialMetrics: FinancialMetric[] = [
   { id: 'pl-total', label: 'P/L 합계', value: '$0.00' },
   { id: 'margin-rate', label: '증거금율', value: '0.00%' },
 ];
+
+const router = useRouter();
+
+const handleLogout = () => {
+  LocalStorageService.removeItem(LocalStorageKey.TOKEN);
+  router.push({ name: 'login' });
+};
 </script>

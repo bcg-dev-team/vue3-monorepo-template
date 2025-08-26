@@ -1,14 +1,28 @@
+import type { RouteRecordRaw, NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
+import LocalStorageService from '@/service/localStorage/local-storage.service';
+import { createRouter, createWebHistory, HistoryState } from 'vue-router';
+import LocalStorageKey from '@/service/localStorage/local-storage-key';
 import MainLayout from '@/components/layout/MainLayout.vue';
-import { createRouter, createWebHistory } from 'vue-router';
-import type { RouteRecordRaw } from 'vue-router';
 
-const routes: RouteRecordRaw[] = [
+// 커스텀 메타 타입 정의
+interface CustomRouteMeta {
+  layout?: typeof MainLayout;
+  auth?: boolean;
+}
+
+// 라우트 타입을 커스텀 메타로 확장
+type CustomRouteRecordRaw = RouteRecordRaw & {
+  meta?: CustomRouteMeta;
+  children?: CustomRouteRecordRaw[];
+};
+
+const routes: CustomRouteRecordRaw[] = [
   {
     path: '/auth',
     children: [
       {
         path: 'login',
-        name: 'Login',
+        name: 'login',
         component: () => import('@/views/auth/login/Index.vue'),
       },
 
@@ -30,6 +44,11 @@ const routes: RouteRecordRaw[] = [
             name: 'corporate-sign-up',
             component: () => import('@/views/auth/signup/corporate/Index.vue'),
           },
+          {
+            path: 'complete',
+            name: 'sign-up-complete',
+            component: () => import('@/views/auth/signup/complete/Index.vue'),
+          },
         ],
       },
       {
@@ -39,94 +58,102 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: 'reset-password',
-        name: 'reset-password',
-        component: () => import('@/views/auth/resetPassword/Index.vue'),
+        children: [
+          {
+            path: '',
+            name: 'reset-password',
+            component: () => import('@/views/auth/resetPassword/Index.vue'),
+          },
+          {
+            path: 'complete',
+            name: 'reset-password-complete',
+            component: () => import('@/views/auth/resetPassword/complete/Index.vue'),
+          },
+        ],
       },
     ],
   },
   {
     path: '/',
-    name: 'Home',
+    name: 'home',
     meta: { layout: MainLayout },
     component: () => import('@/views/home/Index.vue'),
   },
   {
     path: '/order',
-    name: 'Order',
+    name: 'order',
     meta: { layout: MainLayout },
     component: () => import('@/views/order/Index.vue'),
   },
   {
     path: '/transaction',
-    name: 'Transaction',
-    meta: { layout: MainLayout },
+    meta: { layout: MainLayout, auth: true },
     children: [
       {
         path: '',
-        name: 'TransactionDefault',
+        name: 'transaction',
         component: () => import('@/views/transaction/Index.vue'),
       },
       {
         path: ':transactionTab',
-        name: 'TransactionTab',
+        name: 'transaction-tab',
         component: () => import('@/views/transaction/Index.vue'),
       },
     ],
   },
   {
     path: '/assets',
-    name: 'Assets',
+    name: 'assets',
     meta: { layout: MainLayout },
     component: () => import('@/views/assets/Index.vue'),
   },
   {
     path: '/accounts',
-    name: 'AccountManagement',
     meta: { layout: MainLayout },
     children: [
       {
         path: '',
-        name: 'AccountManagementDefault',
+        name: 'account-management',
         component: () => import('@/views/accountManagement/Index.vue'),
       },
       {
         path: ':accountManagementTab',
-        name: 'AccountManagementTab',
+        name: 'account-management-tab',
         component: () => import('@/views/accountManagement/Index.vue'),
       },
     ],
   },
   {
     path: '/support',
-    name: 'Support',
+
     meta: { layout: MainLayout },
     children: [
       {
         path: '',
-        name: 'SupportDefault',
+        name: 'support',
         component: () => import('@/views/support/Index.vue'),
       },
       {
         path: ':supportTab',
-        name: 'SupportTab',
+        name: 'support-tab',
         component: () => import('@/views/support/Index.vue'),
       },
     ],
   },
   {
     path: '/mypage',
-    name: 'MyPage',
+    name: 'mypage',
     meta: { layout: MainLayout },
     component: () => import('@/views/myPage/Index.vue'),
   },
   {
     path: '/markup',
-    name: 'Markup',
+    name: 'markup',
     component: () => import('@/views/markup/Index.vue'),
   },
   {
     path: '/chart',
-    name: 'Chart',
+    name: 'chart',
     meta: { layout: MainLayout },
     component: () => import('@/views/chart/Index.vue'),
   },
@@ -136,5 +163,25 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+/**
+ * 네비게이션 가드
+ * 인증 및 리다이렉트 규칙을 처리합니다.
+ */
+router.beforeEach(
+  (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+    // 인증이 필요한 페이지인지 확인
+    if (to.meta?.auth) {
+      const token = LocalStorageService.getItem(LocalStorageKey.TOKEN);
+      if (!token || Object.keys(token).length === 0) {
+        // 임시 alert 처리
+        alert('로그인 후 이용해주세요.');
+        return next({ name: 'login' });
+      }
+    }
+
+    next();
+  }
+);
 
 export default router;

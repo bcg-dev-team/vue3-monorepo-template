@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import AccountServiceMain from '@/components/accountManagement/service/AccountServiceMain.vue';
 import CreateAccountMain from '@/components/accountManagement/create/CreateAccountMain.vue';
+import HistoryMain from '@/components/accountManagement/history/HistoryMain.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import { BaseTabs } from '@template/ui';
 import { useRouter } from 'vue-router';
@@ -28,17 +29,20 @@ const tabs = [
   {
     key: 'create',
     label: '계좌개설',
+    icon: 'card',
     component: CreateAccountMain,
   },
   {
     key: 'service',
     label: '출금/이체/입금',
+    icon: 'send',
     component: AccountServiceMain,
   },
   {
     key: 'history',
     label: '입출금내역',
-    component: '',
+    icon: 'description',
+    component: HistoryMain,
   },
 ];
 

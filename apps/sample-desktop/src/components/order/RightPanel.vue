@@ -4,7 +4,7 @@
     <div class="mt-3">
       <div class="relative">
         <div
-          @click="toggleDropdown"
+          @click="isDropdownOpen = !isDropdownOpen"
           class="flex h-[42px] w-full cursor-pointer items-center justify-between rounded-md border border-[#b4b6bb] bg-white px-[15px] py-3 pr-3 text-[14px] font-normal leading-[18px] tracking-[-0.35px] text-[#131313]"
         >
           <span>{{ selectedAccountLabel }}</span>
@@ -123,131 +123,142 @@
 
     <!-- 자동 청산 섹션 -->
     <div class="mt-6 flex w-full flex-col gap-2">
-      <button class="flex w-full cursor-pointer items-center justify-start">
+      <button
+        @click="isAutoLiquidationOpen = !isAutoLiquidationOpen"
+        class="flex w-full cursor-pointer items-center justify-start"
+      >
         <div class="text-[15px] font-semibold leading-[20px] tracking-[-0.35px] text-[#131313]">
           자동 청산
         </div>
-        <BaseIcon name="arrow-down" size="md" />
+        <BaseIcon
+          name="arrow-down"
+          size="md"
+          :class="{ 'rotate-180': isAutoLiquidationOpen }"
+          class="transition-transform duration-200"
+        />
       </button>
 
       <!-- 자동 청산 콘텐츠 -->
-      <!-- Stop Loss & Take Profit 체크박스 -->
-      <div class="flex w-full items-center justify-between">
-        <div class="flex w-[150px] items-center gap-1">
-          <BaseCheckbox v-model="state.stopLoss" />
-          <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
-            Stop Loss
-          </div>
-        </div>
-        <div
-          class="w-10 text-center text-[12px] font-normal leading-[16px] tracking-[-0.35px] text-[#131313]"
-        ></div>
-        <div class="flex w-[150px] items-center gap-1">
-          <BaseCheckbox v-model="state.takeProfit" />
-          <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
-            Take Profit
-          </div>
-        </div>
-      </div>
-
-      <!-- Stop Loss 입력 필드들 -->
-      <div class="flex w-full flex-col gap-1">
-        <!-- 핍 입력 -->
-        <div class="flex h-8 w-full items-center justify-between gap-1">
-          <div class="flex h-full w-[150px] items-center">
-            <div
-              class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
-            >
-              <div class="text-[13px] font-normal leading-[16px] text-[#131313]">-100.1</div>
-            </div>
-            <div
-              class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
-            >
-              <BaseIcon name="plus" size="sm" />
-            </div>
-            <div
-              class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
-            >
-              <BaseIcon name="minus" size="sm" />
+      <div
+        v-if="isAutoLiquidationOpen"
+        class="flex w-full flex-col gap-2 overflow-hidden transition-all duration-200"
+      >
+        <!-- Stop Loss & Take Profit 체크박스 -->
+        <div class="flex w-full items-center justify-between">
+          <div class="flex w-[150px] items-center gap-1">
+            <BaseCheckbox v-model="state.stopLoss" />
+            <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
+              Stop Loss
             </div>
           </div>
           <div
             class="w-10 text-center text-[12px] font-normal leading-[16px] tracking-[-0.35px] text-[#131313]"
-          >
-            핍
-          </div>
-          <div class="flex h-full w-[150px] items-center">
-            <div
-              class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
-            >
-              <div class="text-[13px] font-normal leading-[16px] text-[#131313]">-100.1</div>
-            </div>
-            <div
-              class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
-            >
-              <BaseIcon name="plus" size="sm" />
-            </div>
-            <div
-              class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
-            >
-              <BaseIcon name="minus" size="sm" />
+          ></div>
+          <div class="flex w-[150px] items-center gap-1">
+            <BaseCheckbox v-model="state.takeProfit" />
+            <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
+              Take Profit
             </div>
           </div>
         </div>
 
-        <!-- 가격 입력 -->
-        <div class="flex h-8 w-full items-center justify-between gap-1">
-          <div class="flex h-full w-[150px] items-center">
-            <div
-              class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
-            >
-              <div class="text-[13px] font-normal leading-[16px] text-[#131313]">~1.18356</div>
+        <!-- Stop Loss 입력 필드들 -->
+        <div class="flex w-full flex-col gap-1">
+          <!-- 핍 입력 -->
+          <div class="flex h-8 w-full items-center justify-between gap-1">
+            <div class="flex h-full w-[150px] items-center">
+              <div
+                class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
+              >
+                <div class="text-[13px] font-normal leading-[16px] text-[#131313]">-100.1</div>
+              </div>
+              <div
+                class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
+              >
+                <BaseIcon name="plus" size="sm" />
+              </div>
+              <div
+                class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
+              >
+                <BaseIcon name="minus" size="sm" />
+              </div>
             </div>
             <div
-              class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
+              class="w-10 text-center text-[12px] font-normal leading-[16px] tracking-[-0.35px] text-[#131313]"
             >
-              <BaseIcon name="plus" size="sm" />
+              핍
             </div>
-            <div
-              class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
-            >
-              <BaseIcon name="minus" size="sm" />
+            <div class="flex h-full w-[150px] items-center">
+              <div
+                class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
+              >
+                <div class="text-[13px] font-normal leading-[16px] text-[#131313]">-100.1</div>
+              </div>
+              <div
+                class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
+              >
+                <BaseIcon name="plus" size="sm" />
+              </div>
+              <div
+                class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
+              >
+                <BaseIcon name="minus" size="sm" />
+              </div>
             </div>
           </div>
-          <div
-            class="w-10 text-center text-[12px] font-normal leading-[16px] tracking-[-0.35px] text-[#131313]"
-          >
-            가격
-          </div>
-          <div class="flex h-full w-[150px] items-center">
-            <div
-              class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
-            >
-              <div class="text-[13px] font-normal leading-[16px] text-[#131313]">~1.18356</div>
+
+          <!-- 가격 입력 -->
+          <div class="flex h-8 w-full items-center justify-between gap-1">
+            <div class="flex h-full w-[150px] items-center">
+              <div
+                class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
+              >
+                <div class="text-[13px] font-normal leading-[16px] text-[#131313]">~1.18356</div>
+              </div>
+              <div
+                class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
+              >
+                <BaseIcon name="plus" size="sm" />
+              </div>
+              <div
+                class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
+              >
+                <BaseIcon name="minus" size="sm" />
+              </div>
             </div>
             <div
-              class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
+              class="w-10 text-center text-[12px] font-normal leading-[16px] tracking-[-0.35px] text-[#131313]"
             >
-              <BaseIcon name="plus" size="sm" />
+              가격
             </div>
-            <div
-              class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
-            >
-              <BaseIcon name="minus" size="sm" />
+            <div class="flex h-full w-[150px] items-center">
+              <div
+                class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
+              >
+                <div class="text-[13px] font-normal leading-[16px] text-[#131313]">~1.18356</div>
+              </div>
+              <div
+                class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
+              >
+                <BaseIcon name="plus" size="sm" />
+              </div>
+              <div
+                class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
+              >
+                <BaseIcon name="minus" size="sm" />
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Trailing Stop 체크박스 -->
-      <button class="flex w-[150px] cursor-pointer items-center gap-1">
+        <!-- Trailing Stop 체크박스 -->
         <div class="flex w-[150px] items-center gap-1">
           <BaseCheckbox v-model="state.trailingStop" />
           <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
             Trailing Stop
           </div>
         </div>
-      </button>
+      </div>
     </div>
 
     <!-- 버튼 섹션 -->
@@ -378,16 +389,9 @@
 </template>
 
 <script setup lang="ts">
-import {
-  BaseRadioGroup,
-  BaseButton,
-  BaseIcon,
-  BaseInput,
-  BaseCheckbox,
-  BaseProgressBar,
-} from '@template/ui';
-import { reactive, ref, computed, onMounted, onUnmounted } from 'vue';
+import { BaseRadioGroup, BaseButton, BaseIcon, BaseCheckbox, BaseProgressBar } from '@template/ui';
 import type { RadioOption } from '@template/ui';
+import { reactive, ref, computed } from 'vue';
 
 const state = reactive({
   stopLoss: false,
@@ -395,58 +399,28 @@ const state = reactive({
   trailingStop: false,
 });
 
-/**
- * 선택된 계좌
- */
-const selectedAccount = ref('account1');
+const isAutoLiquidationOpen = ref(false); // 자동 청산 토글 상태
+const isBuyActive = ref(false); // 매수 버튼 토글 상태
+const isSellActive = ref(false); // 매도 버튼 토글 상태
+const selectedAccount = ref('account1'); // 선택된 계좌
+const isDropdownOpen = ref(false); // 드롭다운 토글 상태
 
-// 드롭다운 상태 관리
-const isDropdownOpen = ref(false);
-
-// 계좌 옵션 데이터
 const accountOptions = [
   { value: 'account1', label: '라이브계좌#1 110-81-345150' },
   { value: 'account2', label: '라이브계좌#2 110-81-345151' },
   { value: 'account3', label: '데모계좌#1 110-81-345152' },
 ];
 
-// 선택된 계좌의 라벨
 const selectedAccountLabel = computed(() => {
   const option = accountOptions.find((opt) => opt.value === selectedAccount.value);
   return option?.label || '계좌를 선택하세요';
 });
 
-// 드롭다운 토글
-const toggleDropdown = () => {
-  isDropdownOpen.value = !isDropdownOpen.value;
-};
-
-// 계좌 선택
 const selectAccount = (value: string) => {
   selectedAccount.value = value;
   isDropdownOpen.value = false;
 };
 
-// 외부 클릭 시 드롭다운 닫기
-onMounted(() => {
-  document.addEventListener('click', (e) => {
-    const target = e.target as HTMLElement;
-    if (!target.closest('.relative')) {
-      isDropdownOpen.value = false;
-    }
-  });
-});
-
-onUnmounted(() => {
-  document.removeEventListener('click', () => {});
-});
-
-const isBuyActive = ref(false);
-const isSellActive = ref(false);
-
-/**
- * 매수 버튼의 동적 클래스
- */
 const buyButtonClasses = computed(() => {
   const baseClasses = 'flex w-full flex-col items-center justify-center gap-1 rounded-md p-3 ';
 
@@ -457,9 +431,6 @@ const buyButtonClasses = computed(() => {
   return `${baseClasses} bg-[var(--button-red-background-none)]  text-[var(--base-colors-red-red800)]  `;
 });
 
-/**
- * 매도 버튼의 동적 클래스
- */
 const sellButtonClasses = computed(() => {
   const baseClasses = 'flex w-full flex-col items-center justify-center gap-1 rounded-md  p-3 ';
 
@@ -484,16 +455,10 @@ const handleSellClick = () => {
   isSellActive.value = !isSellActive.value;
 };
 
-/**
- * 선택된 주문 유형
- */
 const selectedOrderType = defineModel<string>('orderType', {
   default: 'market',
 });
 
-/**
- * 주문 유형 옵션들
- */
 const orderTypeOptions: RadioOption[] = [
   {
     value: 'market',

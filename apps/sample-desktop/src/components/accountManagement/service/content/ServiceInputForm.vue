@@ -37,8 +37,15 @@ interface ServiceMenuTitle {
   subTitle?: string;
 }
 
+interface ServiceMenuSecond {
+  label: string;
+  value: string;
+  highlight?: boolean;
+}
+
 const props = defineProps<{
   menuState: TransferMenuState | null;
+  second?: ServiceMenuSecond[];
 }>();
 
 const emit = defineEmits<{

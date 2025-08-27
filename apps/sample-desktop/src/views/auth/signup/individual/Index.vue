@@ -33,7 +33,7 @@ import { ref, reactive } from 'vue';
  */
 
 // 현재 단계
-const step = ref(6);
+const step = ref(0);
 
 // 전체 회원가입 데이터 통합 관리
 const signUpData = reactive({
@@ -80,7 +80,7 @@ const handleDocumentSubmit = async (data: typeof signUpData.documents) => {
 
   // 최종 회원가입 API 호출
   try {
-    await submitSignUp(signUpData);
+    // await submitSignUp(signUpData);
     step.value = 7; // 완료 페이지로 이동
   } catch (error) {
     console.error('회원가입 실패:', error);
@@ -88,43 +88,4 @@ const handleDocumentSubmit = async (data: typeof signUpData.documents) => {
     alert('회원가입 중 오류가 발생했습니다. 다시 시도해주세요.');
   }
 };
-
-/**
- * 최종 회원가입 API 호출
- * @param data - 전체 회원가입 폼 데이터
- */
-async function submitSignUp(data: typeof signUpData) {
-  console.log('최종 회원가입 데이터:', data);
-
-  // FormData 생성 (파일 업로드 포함)
-  const formData = new FormData();
-
-  // 기본 정보 추가
-  formData.append('terms', JSON.stringify(data.terms));
-  formData.append('phone', JSON.stringify(data.phone));
-  formData.append('email', JSON.stringify(data.email));
-  formData.append('password', data.password.password);
-  formData.append('personalInfo', JSON.stringify(data.personalInfo));
-
-  // 파일 추가
-  if (data.documents.idCard) {
-    formData.append('idCard', data.documents.idCard);
-  }
-  if (data.documents.additionalDocument) {
-    formData.append('additionalDocument', data.documents.additionalDocument);
-  }
-
-  // API 호출
-  const response = await fetch('/api/auth/signup/individual', {
-    method: 'POST',
-    body: formData,
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || '회원가입 실패');
-  }
-
-  return response.json();
-}
 </script>

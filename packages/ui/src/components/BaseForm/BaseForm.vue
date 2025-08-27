@@ -4,7 +4,6 @@
       :form-data="formData"
       :errors="errors"
       :is-valid="isFormValid"
-      :is-submitting="isSubmitting"
       :validate-field="validateField"
       :submit="handleSubmit"
       :reset="handleReset"
@@ -13,7 +12,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch, onMounted } from 'vue';
+import { computed, ref, watch } from 'vue';
+
+type ValidationResult = { isValid: true } | { isValid: false; message: string };
+
+interface ValidationRule<T = unknown> {
+  (value: T, formData?: Record<string, unknown>): ValidationResult;
+}
 
 /**
  * 재사용 가능한 폼 컴포넌트
@@ -28,12 +33,12 @@ import { computed, ref, watch, onMounted } from 'vue';
  *   :validation-rules="validationRules"
  *   @submit="handleSubmit"
  * >
- *   <template #default="{ formData, errors, validateField, submit, isValid, isSubmitting }">
+ *   <template #default="{ formData, errors, validateField, submit, isValid }">
  *     <BaseInput v-model="formData.email" />
  *     <p v-if="errors.email">{{ errors.email }}</p>
  *
  *     <div class="button-group">
- *       <BaseButton @click="submit" :disabled="!isValid || isSubmitting">
+ *       <BaseButton @click="submit" :disabled="!isValid">
  *         제출
  *       </BaseButton>
  *       <BaseButton variant="outlined" @click="otherAction">
@@ -47,17 +52,11 @@ import { computed, ref, watch, onMounted } from 'vue';
 
 interface Props {
   modelValue?: Record<string, any>;
-  validationRules?: Record<string, any>;
-  validateOnBlur?: boolean;
-  validateOnInput?: boolean;
-  validateOnMount?: boolean;
+  validationRules?: Record<string, ValidationRule<any>>;
   disabled?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  validateOnBlur: true,
-  validateOnInput: false,
-  validateOnMount: false,
   disabled: false,
 });
 
@@ -74,9 +73,7 @@ interface Emits {
 const emit = defineEmits<Emits>();
 
 // 내부 상태
-const isSubmitting = ref(false);
 const errors = ref<FormFieldErrors>({});
-const hasBeenSubmitted = ref(false);
 
 // 폼 데이터 (v-model)
 const formData = computed({
@@ -97,34 +94,15 @@ const validateField = (field: string): boolean => {
 
   const rule = props.validationRules[field];
   const value = formData.value[field];
+  const result = rule(value);
 
-  const result = rule(value, formData.value);
-
-  if (result === true) {
+  if (result.isValid) {
     delete errors.value[field];
     return true;
   }
 
-  // 문자열이면 에러 메시지, false면 기본 메시지
-  errors.value[field] = typeof result === 'string' ? result : '유효하지 않은 값입니다.';
+  errors.value[field] = result.message;
   return false;
-};
-
-/**
- * 전체 폼 유효성 검사
- * @returns 폼 전체 유효성 여부
- */
-const validateForm = (): boolean => {
-  if (!props.validationRules) return true;
-
-  let isValid = true;
-  for (const field in props.validationRules) {
-    if (!validateField(field)) {
-      isValid = false;
-    }
-  }
-
-  return isValid;
 };
 
 // 폼 유효성 상태
@@ -137,8 +115,8 @@ const isFormValid = computed(() => {
     const rule = props.validationRules![field];
     const value = formData.value[field];
 
-    const result = rule(value, formData.value);
-    return result === true; // 정확히 true일 때만 유효
+    const result = rule(value);
+    return result.isValid;
   });
 });
 
@@ -146,24 +124,19 @@ const isFormValid = computed(() => {
  * 폼 제출 처리
  */
 const handleSubmit = async (): Promise<void> => {
-  if (props.disabled || isSubmitting.value) return;
+  if (props.disabled) return;
 
-  hasBeenSubmitted.value = true;
+  const hasErrors = Object.keys(errors.value).length > 0;
 
-  // 전체 유효성 검사
-  if (!validateForm()) {
+  if (hasErrors) {
     emit('validation-failed', { ...errors.value });
     return;
   }
-
-  isSubmitting.value = true;
 
   try {
     await emit('submit', { ...formData.value });
   } catch (error) {
     emit('error', error instanceof Error ? error : new Error('폼 제출 중 오류가 발생했습니다.'));
-  } finally {
-    isSubmitting.value = false;
   }
 };
 
@@ -171,37 +144,35 @@ const handleSubmit = async (): Promise<void> => {
  * 폼 초기화 처리
  */
 const handleReset = (): void => {
-  if (props.disabled || isSubmitting.value) return;
+  if (props.disabled) return;
 
   errors.value = {};
-  hasBeenSubmitted.value = false;
   emit('reset');
 };
 
-// 입력값 변경 감지 및 유효성 검사
+// 입력값 변경 감지 및 유효성 검사 (개별 필드 감시)
 watch(
-  () => formData.value,
-  (newData, oldData) => {
-    if (!props.validationRules || !oldData) return;
+  () =>
+    props.validationRules
+      ? Object.keys(props.validationRules).map((field) => formData.value[field])
+      : [],
+  (newValues, oldValues) => {
+    if (!props.validationRules) return;
 
-    // 변경된 필드들에 대해서만 유효성 검사 수행
-    for (const field in newData) {
-      if (newData[field] !== oldData[field]) {
-        if (props.validateOnInput || (hasBeenSubmitted.value && props.validateOnBlur)) {
-          validateField(field);
-        }
-      }
+    if (!oldValues) {
+      Object.keys(props.validationRules).forEach(validateField);
+      return;
     }
-  },
-  { deep: true }
-);
 
-// 마운트 시 유효성 검사
-onMounted(() => {
-  if (props.validateOnMount) {
-    validateForm();
+    // 변경된 필드만 검사
+    const fields = Object.keys(props.validationRules);
+    fields.forEach((field, index) => {
+      if (newValues[index] !== oldValues[index]) {
+        validateField(field);
+      }
+    });
   }
-});
+);
 
 // 외부에서 호출 가능한 메서드들 노출
 defineExpose({
@@ -209,7 +180,6 @@ defineExpose({
   reset: handleReset,
   submit: handleSubmit,
   isValid: isFormValid,
-  isSubmitting,
   errors,
 });
 </script>

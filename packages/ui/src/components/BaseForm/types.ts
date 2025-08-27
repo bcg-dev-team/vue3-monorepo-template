@@ -8,8 +8,7 @@ export type FormData = Record<string, any>;
 // 폼 필드 에러 타입
 export type FormFieldErrors = Record<string, string>;
 
-// 유효성 검사 결과 타입
-export type ValidationResult = boolean | string;
+type ValidationResult = { isValid: true } | { isValid: false; message: string };
 
 // 유효성 검사 함수 타입
 export type ValidationFunction<T = any> = (

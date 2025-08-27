@@ -1,41 +1,30 @@
 <template>
-  <!-- 약관 동의 단계 -->
-  <IndividualTermsForm v-if="step === 0" v-model:step="step" @submit="handleTermsSubmit" />
-  <!-- <IndividualTerms v-if="step === 0" v-model:step="step" /> -->
-
-  <!-- 휴대폰 인증 단계 -->
-  <IndividualPhoneForm v-if="step === 1" v-model:step="step" @submit="handlePhoneSubmit" />
-
-  <!-- 이메일 입력 단계 -->
-  <IndividualEmailForm v-if="step === 2" v-model:step="step" @submit="handleEmailSubmit" />
-
-  <!-- 이메일 인증 단계 -->
-  <IndividualEmailAuth v-if="step === 3" v-model:step="step" @submit="handleEmailAuthSubmit" />
-
-  <!-- 비밀번호 설정 단계 -->
-  <IndividualPasswordForm v-if="step === 4" v-model:step="step" @submit="handlePasswordSubmit" />
+  <IndividualTerms v-if="step === 0" v-model:step="step" />
+  <IndividualPhone v-if="step === 1" v-model:step="step" />
+  <IndividualEmailForm v-if="step === 2" v-model:step="step" />
+  <IndividualEmailAuth v-if="step === 3" v-model:step="step" />
+  <IndividualSetPassword v-if="step === 4" v-model:step="step" />
 
   <!-- 개인정보 입력 단계 -->
-  <IndividualInfoForm v-if="step === 5" v-model:step="step" @submit="handleInfoSubmit" />
+  <IndividualInfo v-if="step === 5" v-model:step="step" @submit="handleInfoSubmit" />
 
   <!-- 서류 제출 단계 -->
-  <IndividualDocumentForm v-if="step === 6" v-model:step="step" @submit="handleDocumentSubmit" />
+  <IndividualDocument v-if="step === 6" v-model:step="step" @submit="handleDocumentSubmit" />
 
   <!-- 가입 완료 단계 -->
   <SingUpComplete v-if="step === 7" v-model:step="step" />
 </template>
 
 <script lang="ts" setup>
-import IndividualTerms from '@/components/auth/signup/individual/IndividualTerms.vue';
-
-import IndividualPasswordForm from '@/components/auth/signup/individual/forms/IndividualPasswordForm.vue';
-import IndividualDocumentForm from '@/components/auth/signup/individual/forms/IndividualDocumentForm.vue';
-import IndividualTermsForm from '@/components/auth/signup/individual/forms/IndividualTermsForm.vue';
-import IndividualPhoneForm from '@/components/auth/signup/individual/forms/IndividualPhoneForm.vue';
-import IndividualEmailForm from '@/components/auth/signup/individual/forms/IndividualEmailForm.vue';
-import IndividualInfoForm from '@/components/auth/signup/individual/forms/IndividualInfoForm.vue';
+import IndividualSetPassword from '@/components/auth/signup/individual/IndividualSetPassword.vue';
+import IndividualEmailForm from '@/components/auth/signup/individual/IndividualEmailForm.vue';
 import IndividualEmailAuth from '@/components/auth/signup/individual/IndividualEmailAuth.vue';
+import IndividualDocument from '@/components/auth/signup/individual/IndividualDocument.vue';
+import IndividualTerms from '@/components/auth/signup/individual/IndividualTerms.vue';
+import IndividualPhone from '@/components/auth/signup/individual/IndividualPhone.vue';
+import IndividualInfo from '@/components/auth/signup/individual/IndividualInfo.vue';
 import SingUpComplete from '@/components/auth/signup/common/SingUpComplete.vue';
+
 import { ref, reactive } from 'vue';
 
 /**
@@ -44,37 +33,10 @@ import { ref, reactive } from 'vue';
  */
 
 // 현재 단계
-const step = ref(5);
+const step = ref(6);
 
 // 전체 회원가입 데이터 통합 관리
 const signUpData = reactive({
-  // 약관 동의 정보
-  terms: {
-    serviceAgreement: false,
-    personalInfoAgreement: false,
-    marketingAgreement: false,
-  },
-
-  // 휴대폰 인증 정보
-  phone: {
-    number: '',
-    isVerified: false,
-    verificationMethod: 'sms', // or 'call'
-  },
-
-  // 이메일 정보
-  email: {
-    address: '',
-    verificationCode: '',
-    isVerified: false,
-  },
-
-  // 비밀번호 정보
-  password: {
-    password: '',
-    passwordCheck: '',
-  },
-
   // 개인정보
   personalInfo: {
     // 본인인증으로 받은 정보 (비활성화)
@@ -102,32 +64,6 @@ const signUpData = reactive({
 /**
  * 각 단계별 데이터 수집 핸들러들
  */
-
-const handleTermsSubmit = (data: typeof signUpData.terms) => {
-  signUpData.terms = { ...data };
-  console.log('약관 동의 완료:', data);
-};
-
-const handlePhoneSubmit = (data: typeof signUpData.phone) => {
-  signUpData.phone = { ...data };
-  console.log('휴대폰 인증 완료:', data);
-};
-
-const handleEmailSubmit = (data: typeof signUpData.email) => {
-  signUpData.email = { ...data };
-  console.log('이메일 설정 완료:', data);
-};
-
-const handleEmailAuthSubmit = (data: { verificationCode: string }) => {
-  signUpData.email.verificationCode = data.verificationCode;
-  signUpData.email.isVerified = true;
-  console.log('이메일 인증 완료:', data);
-};
-
-const handlePasswordSubmit = (data: typeof signUpData.password) => {
-  signUpData.password = { ...data };
-  console.log('비밀번호 설정 완료:', data);
-};
 
 const handleInfoSubmit = (data: typeof signUpData.personalInfo) => {
   // 기존 본인인증 정보는 유지하고 새로운 정보만 업데이트

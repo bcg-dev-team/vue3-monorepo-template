@@ -16,12 +16,6 @@
                 :status="formData.idCard ? 'success' : 'hover'"
                 @file-selected="handleIdCardUpload"
               />
-              <p v-if="errors.idCard" class="text-red text-font-12 mt-1">
-                {{ errors.idCard }}
-              </p>
-              <p v-if="formData.idCard" class="text-green text-font-12 mt-1">
-                파일 업로드 완료: {{ formData.idCard.name }}
-              </p>
             </FormField>
 
             <!-- 주소 차이 확인 -->
@@ -118,14 +112,20 @@ const formData = ref({
 // 동적 유효성 검사 규칙
 const validationRules = {
   idCard: (value: File | null) => {
-    if (value !== null) return true;
-    return '신분증을 업로드해주세요.';
+    if (value !== null) {
+      return { isValid: true };
+    }
+    return { isValid: false, message: '신분증을 업로드해주세요.' };
   },
   additionalDocument: (value: File | null) => {
     // 주소가 다른 경우에만 필수 검사
-    if (!formData.value.hasAddressDifference) return true;
-    if (value !== null) return true;
-    return '추가 서류를 업로드해주세요.';
+    if (!formData.value.hasAddressDifference) {
+      return { isValid: true };
+    }
+    if (value !== null) {
+      return { isValid: true };
+    }
+    return { isValid: false, message: '추가 서류를 업로드해주세요.' };
   },
 };
 
@@ -138,30 +138,44 @@ const description = `
 
 /**
  * 신분증 파일 업로드 처리
- * @param file - 업로드된 파일
+ * @param files - 업로드된 파일 배열
  */
-const handleIdCardUpload = (file: File) => {
-  // 파일 유효성 검사
-  if (!validateFile(file)) {
-    return;
-  }
+const handleIdCardUpload = (files: File[]) => {
+  // files 배열에서 첫 번째 파일을 가져와서 formData에 저장
+  if (files.length > 0) {
+    const file = files[0];
 
-  formData.value.idCard = file;
-  console.log('신분증 파일 업로드:', file.name);
+    // 파일 유효성 검사
+    if (!validateFile(file)) {
+      return;
+    }
+
+    formData.value.idCard = file;
+    console.log('신분증 파일 업로드:', file.name);
+  } else {
+    formData.value.idCard = null;
+  }
 };
 
 /**
  * 추가 서류 파일 업로드 처리
- * @param file - 업로드된 파일
+ * @param files - 업로드된 파일 배열
  */
-const handleAdditionalDocumentUpload = (file: File) => {
-  // 파일 유효성 검사
-  if (!validateFile(file)) {
-    return;
-  }
+const handleAdditionalDocumentUpload = (files: File[]) => {
+  // files 배열에서 첫 번째 파일을 가져와서 formData에 저장
+  if (files.length > 0) {
+    const file = files[0];
 
-  formData.value.additionalDocument = file;
-  console.log('추가 서류 파일 업로드:', file.name);
+    // 파일 유효성 검사
+    if (!validateFile(file)) {
+      return;
+    }
+
+    formData.value.additionalDocument = file;
+    console.log('추가 서류 파일 업로드:', file.name);
+  } else {
+    formData.value.additionalDocument = null;
+  }
 };
 
 /**

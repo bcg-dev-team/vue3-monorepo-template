@@ -1,6 +1,7 @@
 import {
   MemberType,
   MemberApprovalRequest,
+  MemberApprovalResponse,
   MemberLoginRequest,
   LoginResponse,
   EmailVerificationRequest,
@@ -31,7 +32,7 @@ export class UserService {
       approvedAdminUser,
     };
 
-    return this.axios.post(`/members/${email}/approve`, requestBody);
+    return this.axios.post<MemberApprovalResponse>(`/members/${email}/approve`, requestBody); // 제네릭 타입 추가
   }
 
   /**

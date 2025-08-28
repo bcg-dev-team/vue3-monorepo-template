@@ -1,4 +1,6 @@
 // 약관 타입 정의
+import { ApiSuccessResponse } from './api.types';
+
 export type TermsType =
   | 'SERVICE_USAGE_TERMS'
   | 'PERSONAL_INFO_COLLECTION'
@@ -11,14 +13,11 @@ export type TermsType =
   | 'TRADING_PRECAUTIONS_CONFIRM';
 
 // 약관 목록 응답 타입
-export interface TermsListResponse {
-  status: string;
-  code: number;
-  data: {
+export interface TermsListResponse
+  extends ApiSuccessResponse<{
     required: TermsType[];
     optional: TermsType[];
-  };
-}
+  }> {}
 
 // 약관 상세 정보 타입
 export interface TermsDetail {
@@ -27,10 +26,7 @@ export interface TermsDetail {
 }
 
 // 약관 상세 조회 응답 타입
-export interface TermsDetailResponse {
-  status: string;
-  code: number;
-  data: {
+export interface TermsDetailResponse
+  extends ApiSuccessResponse<{
     contents: TermsDetail[];
-  };
-}
+  }> {}

@@ -1,4 +1,6 @@
-import { ExampleService } from '@template/api';
+import { TermsService } from './terms.service';
+import { UserService } from './user.service';
 import api from './axios';
 
-export const exampleService = new ExampleService(api);
+export const userService = new UserService(api);
+export const termsService = new TermsService(api);

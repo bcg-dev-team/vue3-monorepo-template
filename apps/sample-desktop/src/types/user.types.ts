@@ -1,4 +1,6 @@
 // 회원 관련 타입들을 별도 파일로 분리
+import { ApiResponse } from './api.types';
+
 export type MemberType = 'INDIVIDUAL' | 'CORPORATE';
 
 export interface MemberApprovalRequest {
@@ -28,31 +30,19 @@ export interface MemberInfo {
   accountList: AccountInfo[];
 }
 
-export interface LoginResponse {
-  status: string;
-  code: number;
-  data: {
-    contents: MemberInfo[];
-  };
-}
+export interface LoginResponse extends ApiResponse<{
+  contents: MemberInfo[];
+}> {}
 
 export interface EmailVerificationRequest {
   email: string;
 }
 
-export interface EmailVerificationResponse {
-  status: string;
-  code: number;
-  data: string;
-}
+export interface EmailVerificationResponse extends ApiResponse<string> {}
 
 export interface EmailVerificationCodeRequest {
   email: string;
   verificationCode: string;
 }
 
-export interface EmailVerificationCodeResponse {
-  status: string;
-  code: number;
-  data: string;
-}
+export interface EmailVerificationCodeResponse extends ApiResponse<string> {}

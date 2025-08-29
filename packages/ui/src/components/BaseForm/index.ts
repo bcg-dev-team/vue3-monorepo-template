@@ -4,6 +4,7 @@
 
 export { default as BaseForm } from './BaseForm.vue';
 export { default as BaseFormLabel } from './BaseFormLabel.vue';
+export { default as BaseFormControlLabel } from './BaseFormControlLabel.vue';
 export * from './types';
 export * from './validationHelpers';
 

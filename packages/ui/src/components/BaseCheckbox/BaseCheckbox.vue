@@ -103,8 +103,12 @@ const containerBoxStyle = computed(() => {
 });
 
 // 이벤트 핸들러
-const handleClick = () => {
+const handleClick = (event?: MouseEvent) => {
   if (!isDisabled.value) {
+    // 이벤트 전파 방지 - 부모 컴포넌트의 클릭 핸들러와 충돌 방지
+    if (event) {
+      event.stopPropagation();
+    }
     emit('update:modelValue', !isChecked.value);
   }
 };

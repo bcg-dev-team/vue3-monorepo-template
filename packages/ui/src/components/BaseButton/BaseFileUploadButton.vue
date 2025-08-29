@@ -8,13 +8,18 @@ import { ref, computed } from 'vue';
 
 /**
  * 파일 업로드 버튼 컴포넌트
+ * 파일 선택 시에는 버튼으로, 파일 선택 후에는 파일명과 제거 버튼으로 UI가 대체됩니다.
  *
  * @props label - 버튼 텍스트
  * @props status - 버튼 상태 (default, hover)
  * @props disabled - 비활성화 여부
  * @props showIcon - 아이콘 표시 여부
+ * @props multiple - 다중 파일 선택 여부
+ * @props accept - 허용할 파일 타입
  * @emits click - 버튼 클릭 시
  * @emits change - 파일 선택 시
+ * @emits remove - 파일 제거 시
+ * @emits file-selected - 파일 선택/제거 시 현재 파일 목록
  */
 interface Props {
   /**
@@ -37,6 +42,15 @@ interface Props {
    * @default true
    */
   showIcon?: boolean;
+  /**
+   * 다중 파일 선택 여부
+   * @default false
+   */
+  multiple?: boolean;
+  /**
+   * 허용할 파일 타입
+   */
+  accept?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -44,14 +58,19 @@ const props = withDefaults(defineProps<Props>(), {
   status: 'default',
   disabled: false,
   showIcon: true,
+  multiple: false,
+  accept: '*/*',
 });
 
 const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void;
   (e: 'change', files: FileList | null): void;
+  (e: 'remove', file: File): void;
+  (e: 'file-selected', files: File[]): void;
 }>();
 
 const inputRef = ref<HTMLInputElement | null>(null);
+const selectedFiles = ref<File[]>([]);
 
 // 정적 색상은 Tailwind arbitrary value로 처리
 const staticClasses = computed(() => {
@@ -90,6 +109,9 @@ const dynamicStyle = computed(() => {
   return {};
 });
 
+// 파일 선택 후 UI 상태
+const hasSelectedFiles = computed(() => selectedFiles.value.length > 0);
+
 function handleClick(e: MouseEvent) {
   if (!props.disabled) {
     inputRef.value?.click();
@@ -99,33 +121,72 @@ function handleClick(e: MouseEvent) {
 
 function handleChange(e: Event) {
   const files = (e.target as HTMLInputElement).files;
-  emit('change', files);
+  if (files) {
+    selectedFiles.value = Array.from(files);
+    emit('change', files);
+    emit('file-selected', selectedFiles.value);
+  }
+}
+
+// 파일 제거
+function removeFile(file: File) {
+  const index = selectedFiles.value.findIndex((f) => f.name === file.name && f.size === file.size);
+  if (index > -1) {
+    selectedFiles.value.splice(index, 1);
+    emit('remove', file);
+    emit('file-selected', selectedFiles.value);
+  }
 }
 </script>
 
 <template>
-  <button
-    type="button"
-    :class="staticClasses"
-    :style="dynamicStyle"
-    :disabled="props.disabled"
-    @click="handleClick"
-  >
-    <input
-      ref="inputRef"
-      type="file"
-      class="sr-only"
+  <div>
+    <!-- 파일 선택 버튼 (파일이 선택되지 않았을 때만 표시) -->
+    <button
+      v-if="!hasSelectedFiles"
+      type="button"
+      :class="staticClasses"
+      :style="dynamicStyle"
       :disabled="props.disabled"
-      @change="handleChange"
-    />
-    <span class="flex w-full flex-row items-center justify-center gap-1 px-6 py-2">
-      <span class="text-sm font-normal">{{ label }}</span>
-      <BaseIcon
-        v-if="showIcon"
-        name="plus"
-        size="md"
-        :color="props.disabled ? 'primary' : 'current'"
+      @click="handleClick"
+    >
+      <input
+        ref="inputRef"
+        type="file"
+        class="sr-only"
+        :disabled="props.disabled"
+        :multiple="multiple"
+        :accept="accept"
+        @change="handleChange"
       />
-    </span>
-  </button>
+      <span class="flex w-full flex-row items-center justify-center gap-1 px-6 py-2">
+        <span class="text-sm font-normal">{{ label }}</span>
+        <BaseIcon
+          v-if="showIcon"
+          name="plus"
+          size="md"
+          :color="props.disabled ? 'primary' : 'current'"
+        />
+      </span>
+    </button>
+
+    <!-- 선택된 파일 UI (파일이 선택되었을 때만 표시) -->
+    <div v-else>
+      <div
+        v-for="(file, index) in selectedFiles"
+        :key="`${file.name}-${index}`"
+        class="flex w-full items-center justify-between rounded-sm border border-gray-200 bg-gray-50 px-4 py-[8px]"
+      >
+        <span class="text-blue truncate text-sm underline underline-offset-1">{{ file.name }}</span>
+        <button
+          type="button"
+          @click="removeFile(file)"
+          class="ml-2 flex-shrink-0 text-gray-400 transition-colors duration-150 hover:text-red-500"
+          title="파일 제거"
+        >
+          <BaseIcon name="close" size="sm" />
+        </button>
+      </div>
+    </div>
+  </div>
 </template>

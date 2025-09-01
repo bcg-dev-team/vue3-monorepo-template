@@ -51,22 +51,28 @@
     <div class="mt-2 flex gap-2">
       <button :class="buyButtonClasses" @click="handleBuyClick">
         <div class="text-font-14 font-medium leading-5 tracking-[-0.35px]">매수</div>
-        <div class="text-base font-semibold leading-5 tracking-[-0.35px]">1.17096</div>
+        <div class="text-base font-semibold leading-5 tracking-[-0.35px]">
+          {{ buyPrice.toFixed(5) }}
+        </div>
       </button>
       <button :class="sellButtonClasses" @click="handleSellClick">
         <div class="text-font-14 font-medium leading-5 tracking-[-0.35px]">매도</div>
-        <div class="text-base font-semibold leading-5 tracking-[-0.35px]">1.17096</div>
+        <div class="text-base font-semibold leading-5 tracking-[-0.35px]">
+          {{ sellPrice.toFixed(5) }}
+        </div>
       </button>
     </div>
 
     <!-- 매수 매도 진행바 -->
     <div class="mt-2 flex w-full flex-row items-start justify-start gap-2">
       <div
-        class="h-1.5 w-[218px] flex-shrink-0 rounded-[999px] bg-[var(--base-colors-red-red800)]"
+        class="h-1.5 rounded-[999px] bg-[var(--base-colors-red-red800)]"
+        :style="progressBarStyles.buyBarStyle"
       ></div>
-      <div class="h-1.5 min-w-0 flex-1">
-        <div class="bg-blue-blue800-deep h-1.5 w-full rounded-[999px]"></div>
-      </div>
+      <div
+        class="h-1.5 rounded-[999px] bg-[var(--base-colors-blue-blue800-deep)]"
+        :style="progressBarStyles.sellBarStyle"
+      ></div>
     </div>
 
     <!-- 거래 정보 섹션 -->
@@ -412,6 +418,40 @@ const isBuyActive = ref(false); // 매수 버튼 토글 상태
 const isSellActive = ref(false); // 매도 버튼 토글 상태
 const selectedAccount = ref('account1'); // 선택된 계좌
 const isDropdownOpen = ref(false); // 드롭다운 토글 상태
+
+// 매수/매도 가격 데이터
+const buyPrice = ref(1.171);
+const sellPrice = ref(1.17096);
+
+// 진행바 비율 계산
+const progressBarRatio = computed(() => {
+  const total = buyPrice.value + sellPrice.value;
+  const buyRatio = (buyPrice.value / total) * 100;
+  const sellRatio = (sellPrice.value / total) * 100;
+
+  return {
+    buyRatio,
+    sellRatio,
+  };
+});
+
+// 진행바 스타일 계산 (gap: 8px 유지)
+const progressBarStyles = computed(() => {
+  const { buyRatio, sellRatio } = progressBarRatio.value;
+
+  // 전체 너비에서 gap(8px)을 제외한 사용 가능한 너비
+  // flex로 처리되므로 비율로 계산
+  return {
+    buyBarStyle: {
+      width: `${buyRatio}%`,
+      flexShrink: 0,
+    },
+    sellBarStyle: {
+      width: `${sellRatio}%`,
+      flexShrink: 0,
+    },
+  };
+});
 
 const accountOptions = [
   { value: 'account1', label: '라이브계좌#1 110-81-345150' },

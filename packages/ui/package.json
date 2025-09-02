@@ -44,6 +44,8 @@
   "dependencies": {
     "@template/theme": "workspace:*",
     "@template/types": "workspace:*",
+    "ag-grid-community": "^34.1.2",
+    "ag-grid-vue3": "^34.1.2",
     "splitpanes": "^4.0.4"
   },
   "devDependencies": {

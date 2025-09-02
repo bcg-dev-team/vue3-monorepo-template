@@ -16,6 +16,7 @@ export { default as BaseInputStepper } from './BaseInput/BaseInputStepper.vue';
 export { default as BaseInputSelect } from './BaseInput/BaseInputSelect.vue';
 export { default as BaseInputCalendar } from './BaseInput/BaseInputCalendar.vue';
 export { default as BaseDisclosure } from './BaseDisclosure/BaseDisclosure.vue';
+export { default as BaseDataGrid } from './BaseDataGrid/BaseDataGrid.vue';
 
 export * from './BasePagination';
 export * from './BaseTable';

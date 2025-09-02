@@ -39,7 +39,6 @@
           EURUSD
         </div>
       </div>
-      <div class="text-base font-semibold leading-5 tracking-[-0.35px] text-[#0067ef]">1.17100</div>
     </div>
 
     <!-- 주문 유형 선택 -->
@@ -89,28 +88,118 @@
     <!-- 수량 및 증거금율 섹션 -->
     <div class="mt-6 flex w-full flex-col gap-3">
       <!-- 수량 입력 섹션 -->
-      <div class="flex flex-col gap-1">
-        <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
-          수량(Lots)
-        </div>
-        <div class="flex h-[34px] w-[168px] items-center">
-          <!-- 수량 입력 필드 -->
-          <div class="flex-1 rounded-l-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2">
-            <div class="text-[14px] font-normal leading-[18px] text-[#131313]">1.0</div>
+      <div class="grid grid-cols-2 gap-2">
+        <!-- 시장가: 수량만 -->
+        <template v-if="selectedOrderType === 'market'">
+          <div class="flex min-w-0 flex-col gap-1">
+            <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
+              수량(Lots)
+            </div>
+            <BaseInputStepper
+              v-model="quantity"
+              :min="0"
+              :max="100"
+              :step="0.01"
+              variant="default"
+            />
           </div>
-          <!-- 증가 버튼 -->
-          <div
-            class="flex items-center justify-center border border-[#b4b6bb] bg-white px-1 py-[9px]"
-          >
-            <BaseIcon name="plus" size="sm" />
+        </template>
+
+        <!-- Limit: 진입가격, 수량 -->
+        <template v-else-if="selectedOrderType === 'limit'">
+          <div class="flex min-w-0 flex-col gap-1">
+            <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
+              진입가격 Pip
+            </div>
+            <BaseInputStepper
+              v-model="entryPrice"
+              :min="0"
+              :max="100"
+              :step="0.01"
+              variant="default"
+            />
           </div>
-          <!-- 감소 버튼 -->
-          <div
-            class="flex items-center justify-center rounded-r-[6px] border border-l-0 border-[#b4b6bb] bg-white px-1 py-[9px]"
-          >
-            <BaseIcon name="minus" size="sm" />
+          <div class="flex min-w-0 flex-col gap-1">
+            <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
+              수량(Lots)
+            </div>
+            <BaseInputStepper
+              v-model="quantity"
+              :min="0"
+              :max="100"
+              :step="0.01"
+              variant="default"
+            />
           </div>
-        </div>
+        </template>
+
+        <!-- Stop: 배리어, 수량 -->
+        <template v-else-if="selectedOrderType === 'stop'">
+          <div class="flex min-w-0 flex-col gap-1">
+            <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
+              배리어
+            </div>
+            <BaseInputStepper
+              v-model="barrier"
+              :min="0"
+              :max="100"
+              :step="0.01"
+              variant="default"
+            />
+          </div>
+          <div class="flex min-w-0 flex-col gap-1">
+            <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
+              수량(Lots)
+            </div>
+            <BaseInputStepper
+              v-model="quantity"
+              :min="0"
+              :max="100"
+              :step="0.01"
+              variant="default"
+            />
+          </div>
+        </template>
+
+        <!-- Stop Limit: 배리어, 수량, 진입가격 -->
+        <template v-else-if="selectedOrderType === 'stopLimit'">
+          <div class="flex min-w-0 flex-col gap-1">
+            <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
+              배리어
+            </div>
+            <BaseInputStepper
+              v-model="barrier"
+              :min="0"
+              :max="100"
+              :step="0.01"
+              variant="default"
+            />
+          </div>
+          <div class="flex min-w-0 flex-col gap-1">
+            <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
+              수량(Lots)
+            </div>
+            <BaseInputStepper
+              v-model="quantity"
+              :min="0"
+              :max="100"
+              :step="0.01"
+              variant="default"
+            />
+          </div>
+          <div class="flex min-w-0 flex-col gap-1">
+            <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
+              진입가격 Pip
+            </div>
+            <BaseInputStepper
+              v-model="entryPrice"
+              :min="0"
+              :max="100"
+              :step="0.01"
+              variant="default"
+            />
+          </div>
+        </template>
       </div>
 
       <!-- 증거금율 정보 섹션 -->
@@ -178,89 +267,57 @@
 
         <!-- Stop Loss 입력 필드들 -->
         <div class="flex w-full flex-col gap-1">
-          <!-- 핍 입력 -->
+          <!-- Stop Loss 핍 입력 -->
           <div class="flex h-8 w-full items-center justify-between gap-1">
             <div class="flex h-full w-[150px] items-center">
-              <div
-                class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
-              >
-                <div class="text-[13px] font-normal leading-[16px] text-[#131313]">-100.1</div>
-              </div>
-              <div
-                class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
-              >
-                <BaseIcon name="plus" size="sm" />
-              </div>
-              <div
-                class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
-              >
-                <BaseIcon name="minus" size="sm" />
-              </div>
+              <BaseInputStepper
+                v-model="stopLossPip"
+                :max="100"
+                :step="0.00001"
+                variant="default"
+              />
             </div>
+
             <div
               class="w-10 text-center text-[12px] font-normal leading-[16px] tracking-[-0.35px] text-[#131313]"
             >
               핍
             </div>
             <div class="flex h-full w-[150px] items-center">
-              <div
-                class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
-              >
-                <div class="text-[13px] font-normal leading-[16px] text-[#131313]">-100.1</div>
-              </div>
-              <div
-                class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
-              >
-                <BaseIcon name="plus" size="sm" />
-              </div>
-              <div
-                class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
-              >
-                <BaseIcon name="minus" size="sm" />
-              </div>
+              <BaseInputStepper
+                v-model="takeProfitPip"
+                :max="100"
+                :step="0.00001"
+                variant="default"
+              />
             </div>
           </div>
 
-          <!-- 가격 입력 -->
+          <!-- Stop Loss & Take Profit 가격 입력 -->
           <div class="flex h-8 w-full items-center justify-between gap-1">
             <div class="flex h-full w-[150px] items-center">
-              <div
-                class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
-              >
-                <div class="text-[13px] font-normal leading-[16px] text-[#131313]">~1.18356</div>
-              </div>
-              <div
-                class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
-              >
-                <BaseIcon name="plus" size="sm" />
-              </div>
-              <div
-                class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
-              >
-                <BaseIcon name="minus" size="sm" />
-              </div>
+              <BaseInputStepper
+                v-model="stopLossPrice"
+                :min="0"
+                :max="100"
+                :step="0.00001"
+                variant="range"
+              />
             </div>
+
             <div
               class="w-10 text-center text-[12px] font-normal leading-[16px] tracking-[-0.35px] text-[#131313]"
             >
               가격
             </div>
             <div class="flex h-full w-[150px] items-center">
-              <div
-                class="flex-1 rounded-bl-[6px] rounded-tl-[6px] border border-r-0 border-[#b4b6bb] bg-white px-3 py-2"
-              >
-                <div class="text-[13px] font-normal leading-[16px] text-[#131313]">~1.18356</div>
-              </div>
-              <div
-                class="flex items-center justify-center border border-r-0 border-[#b4b6bb] bg-white px-1 py-2"
-              >
-                <BaseIcon name="plus" size="sm" />
-              </div>
-              <div
-                class="flex items-center justify-center rounded-br-[6px] rounded-tr-[6px] border border-[#b4b6bb] bg-white px-1 py-2"
-              >
-                <BaseIcon name="minus" size="sm" />
-              </div>
+              <BaseInputStepper
+                v-model="takeProfitPrice"
+                :min="0"
+                :max="100"
+                :step="0.00001"
+                variant="range"
+              />
             </div>
           </div>
         </div>
@@ -287,125 +344,16 @@
       </div>
 
       <!-- 호가 차트 -->
-      <div class="flex flex-col items-center gap-1">
-        <!-- 1단계 호가 -->
-        <div class="flex h-6 w-full gap-1">
-          <div class="flex h-6 w-full items-center justify-between text-xs">
-            <div class="relative z-10">1.00</div>
-            <div class="relative">
-              <div class="relative z-10 mr-[9px]">1.16790</div>
-              <div
-                class="absolute right-0 top-1/2 h-6 w-[5px] -translate-y-1/2 rounded bg-[#E0EDFF]"
-              ></div>
-            </div>
-          </div>
-          <div class="flex w-full items-center justify-between text-xs">
-            <div class="relative">
-              <div class="relative z-10 ml-[9px]">1.00</div>
-              <div
-                class="absolute left-0 top-1/2 h-6 w-[5px] -translate-y-1/2 rounded bg-[#FFDBDC]"
-              ></div>
-            </div>
-            <div class="relative z-10">1.16790</div>
-          </div>
-        </div>
-
-        <!-- 2단계 호가 -->
-        <div class="flex h-6 w-full gap-1">
-          <div class="flex h-6 w-full items-center justify-between text-xs">
-            <div class="relative z-10">1.00</div>
-            <div class="relative">
-              <div class="relative z-10 mr-[9px]">1.16790</div>
-              <div
-                class="absolute right-0 top-1/2 h-6 w-[40px] -translate-y-1/2 rounded bg-[#E0EDFF]"
-              ></div>
-            </div>
-          </div>
-          <div class="flex w-full items-center justify-between text-xs">
-            <div class="relative">
-              <div class="relative z-10 ml-[9px]">1.00</div>
-              <div
-                class="absolute left-0 top-1/2 h-6 w-[40px] -translate-y-1/2 rounded bg-[#FFDBDC]"
-              ></div>
-            </div>
-            <div class="relative z-10">1.16790</div>
-          </div>
-        </div>
-
-        <!-- 3단계 호가 -->
-        <div class="flex h-6 w-full gap-1">
-          <div class="flex h-6 w-full items-center justify-between text-xs">
-            <div class="relative z-10">1.00</div>
-            <div class="relative">
-              <div class="relative z-10 mr-[9px]">1.16790</div>
-              <div
-                class="absolute right-0 top-1/2 h-6 w-[60px] -translate-y-1/2 rounded bg-[#E0EDFF]"
-              ></div>
-            </div>
-          </div>
-          <div class="flex w-full items-center justify-between text-xs">
-            <div class="relative">
-              <div class="relative z-10 ml-[9px]">1.00</div>
-              <div
-                class="absolute left-0 top-1/2 h-6 w-[60px] -translate-y-1/2 rounded bg-[#FFDBDC]"
-              ></div>
-            </div>
-            <div class="relative z-10">1.16790</div>
-          </div>
-        </div>
-
-        <!-- 4단계 호가 -->
-        <div class="flex h-6 w-full gap-1">
-          <div class="flex h-6 w-full items-center justify-between text-xs">
-            <div class="relative z-10">1.00</div>
-            <div class="relative">
-              <div class="relative z-10 mr-[9px]">1.16790</div>
-              <div
-                class="absolute right-0 top-1/2 h-6 w-[100px] -translate-y-1/2 rounded bg-[#E0EDFF]"
-              ></div>
-            </div>
-          </div>
-          <div class="flex w-full items-center justify-between text-xs">
-            <div class="relative">
-              <div class="relative z-10 ml-[9px]">1.00</div>
-              <div
-                class="absolute left-0 top-1/2 h-6 w-[100px] -translate-y-1/2 rounded bg-[#FFDBDC]"
-              ></div>
-            </div>
-            <div class="relative z-10">1.16790</div>
-          </div>
-        </div>
-
-        <!-- 5단계 호가 -->
-        <div class="flex h-6 w-full gap-1">
-          <div class="flex h-6 w-full items-center justify-between text-xs">
-            <div class="relative z-10">1.00</div>
-            <div class="relative">
-              <div class="relative z-10 mr-[9px]">1.16790</div>
-              <div
-                class="absolute right-0 top-1/2 h-6 w-[150px] -translate-y-1/2 rounded bg-[#E0EDFF]"
-              ></div>
-            </div>
-          </div>
-          <div class="flex w-full items-center justify-between text-xs">
-            <div class="relative z-10">
-              <div class="relative z-10 ml-[9px]">1.00</div>
-              <div
-                class="absolute left-0 top-1/2 h-6 w-[150px] -translate-y-1/2 rounded bg-[#FFDBDC]"
-              ></div>
-            </div>
-            <div class="relative z-10">1.16790</div>
-          </div>
-        </div>
-      </div>
+      <OrderBook />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { BaseRadioGroup, BaseButton, BaseIcon, BaseCheckbox, BaseProgressBar } from '@template/ui';
+import { BaseRadioGroup, BaseButton, BaseIcon, BaseCheckbox, BaseInputStepper } from '@template/ui';
 import type { RadioOption } from '@template/ui';
 import { reactive, ref, computed } from 'vue';
+import OrderBook from './OrderBook.vue';
 
 const state = reactive({
   stopLoss: false,
@@ -423,6 +371,17 @@ const isDropdownOpen = ref(false); // 드롭다운 토글 상태
 const buyPrice = ref(1.171);
 const sellPrice = ref(1.17096);
 
+// 주문 입력 데이터
+const quantity = ref(0);
+const entryPrice = ref(0);
+const barrier = ref(0);
+
+// Stop Loss & Take Profit 데이터
+const stopLossPip = ref(0);
+const stopLossPrice = ref(0);
+const takeProfitPip = ref(0);
+const takeProfitPrice = ref(0);
+
 // 진행바 비율 계산
 const progressBarRatio = computed(() => {
   const total = buyPrice.value + sellPrice.value;
@@ -439,8 +398,6 @@ const progressBarRatio = computed(() => {
 const progressBarStyles = computed(() => {
   const { buyRatio, sellRatio } = progressBarRatio.value;
 
-  // 전체 너비에서 gap(8px)을 제외한 사용 가능한 너비
-  // flex로 처리되므로 비율로 계산
   return {
     buyBarStyle: {
       width: `${buyRatio}%`,

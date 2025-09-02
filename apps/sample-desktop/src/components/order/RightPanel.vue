@@ -2,6 +2,7 @@
   <div class="flex flex-col bg-white p-4">
     <!-- 계좌 선택 -->
     <div class="mt-3">
+      <!-- TODO: BaseInputSelect로 대체될 영역-->
       <div class="relative">
         <div
           @click="isDropdownOpen = !isDropdownOpen"
@@ -248,20 +249,22 @@
       >
         <!-- Stop Loss & Take Profit 체크박스 -->
         <div class="flex w-full items-center justify-between">
-          <div class="flex w-[150px] items-center gap-1">
-            <BaseCheckbox v-model="state.stopLoss" />
-            <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
-              Stop Loss
-            </div>
+          <div class="w-[150px]">
+            <BaseCheckbox v-model="state.stopLoss">
+              <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
+                Stop Loss
+              </div>
+            </BaseCheckbox>
           </div>
           <div
             class="w-10 text-center text-[12px] font-normal leading-[16px] tracking-[-0.35px] text-[#131313]"
           ></div>
-          <div class="flex w-[150px] items-center gap-1">
-            <BaseCheckbox v-model="state.takeProfit" />
-            <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
-              Take Profit
-            </div>
+          <div class="w-[150px]">
+            <BaseCheckbox v-model="state.takeProfit">
+              <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
+                Take Profit
+              </div>
+            </BaseCheckbox>
           </div>
         </div>
 
@@ -324,10 +327,11 @@
 
         <!-- Trailing Stop 체크박스 -->
         <div class="flex w-[150px] items-center gap-1">
-          <BaseCheckbox v-model="state.trailingStop" />
-          <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
-            Trailing Stop
-          </div>
+          <BaseCheckbox v-model="state.trailingStop">
+            <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
+              Trailing Stop
+            </div>
+          </BaseCheckbox>
         </div>
       </div>
     </div>

@@ -348,6 +348,12 @@ importers:
       '@template/types':
         specifier: workspace:*
         version: link:../types
+      ag-grid-community:
+        specifier: ^34.1.2
+        version: 34.1.2
+      ag-grid-vue3:
+        specifier: ^34.1.2
+        version: 34.1.2(vue@3.5.18(typescript@5.8.3))
       splitpanes:
         specifier: ^4.0.4
         version: 4.0.4(vue@3.5.18(typescript@5.8.3))
@@ -2509,6 +2515,17 @@ packages:
     resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
     engines: {node: '>=0.4.0'}
     hasBin: true
+
+  ag-charts-types@12.1.2:
+    resolution: {integrity: sha512-B5IEMzaDxpJRko9sREIBEZOn44tlMX353tMJ1RGYHZrjDFx4on/p6q3YxBvway3nViAM2POmFOS45+1fF9YC8g==}
+
+  ag-grid-community@34.1.2:
+    resolution: {integrity: sha512-PN79zG/tigZaVKkQZXaithLO3j4JWp+9CjqEFth6kFUwMJ0E6OcNzNtn4NFEKM38fEdpGsr+k+gFk5KUE2h5fA==}
+
+  ag-grid-vue3@34.1.2:
+    resolution: {integrity: sha512-ioBKNLENrtvorUsl/tbhMxjh3CxTukt4UoySmerDH88SE8E03UKk2enNOa4hMlTdbDCbc15FuwPEgh3bNI+0WA==}
+    peerDependencies:
+      vue: ^3.5.0
 
   agent-base@7.1.4:
     resolution: {integrity: sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==}
@@ -9255,6 +9272,17 @@ snapshots:
   acorn@7.4.1: {}
 
   acorn@8.15.0: {}
+
+  ag-charts-types@12.1.2: {}
+
+  ag-grid-community@34.1.2:
+    dependencies:
+      ag-charts-types: 12.1.2
+
+  ag-grid-vue3@34.1.2(vue@3.5.18(typescript@5.8.3)):
+    dependencies:
+      ag-grid-community: 34.1.2
+      vue: 3.5.18(typescript@5.8.3)
 
   agent-base@7.1.4: {}
 

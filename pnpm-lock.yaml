@@ -359,6 +359,12 @@ importers:
       '@template/types':
         specifier: workspace:*
         version: link:../types
+      ag-grid-community:
+        specifier: ^34.1.2
+        version: 34.1.2
+      ag-grid-vue3:
+        specifier: ^34.1.2
+        version: 34.1.2(vue@3.5.18(typescript@5.8.3))
       element-plus:
         specifier: ^2.11.1
         version: 2.11.1(vue@3.5.18(typescript@5.8.3))
@@ -2591,6 +2597,17 @@ packages:
     resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
     engines: {node: '>=0.4.0'}
     hasBin: true
+
+  ag-charts-types@12.1.2:
+    resolution: {integrity: sha512-B5IEMzaDxpJRko9sREIBEZOn44tlMX353tMJ1RGYHZrjDFx4on/p6q3YxBvway3nViAM2POmFOS45+1fF9YC8g==}
+
+  ag-grid-community@34.1.2:
+    resolution: {integrity: sha512-PN79zG/tigZaVKkQZXaithLO3j4JWp+9CjqEFth6kFUwMJ0E6OcNzNtn4NFEKM38fEdpGsr+k+gFk5KUE2h5fA==}
+
+  ag-grid-vue3@34.1.2:
+    resolution: {integrity: sha512-ioBKNLENrtvorUsl/tbhMxjh3CxTukt4UoySmerDH88SE8E03UKk2enNOa4hMlTdbDCbc15FuwPEgh3bNI+0WA==}
+    peerDependencies:
+      vue: ^3.5.0
 
   agent-base@7.1.4:
     resolution: {integrity: sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==}
@@ -6573,8 +6590,8 @@ packages:
   vue-component-type-helpers@2.2.12:
     resolution: {integrity: sha512-YbGqHZ5/eW4SnkPNR44mKVc6ZKQoRs/Rux1sxC6rdwXb4qpbOSYfDr9DsTHolOTGmIKgM9j141mZbBeg05R1pw==}
 
-  vue-component-type-helpers@3.0.6:
-    resolution: {integrity: sha512-6CRM8X7EJqWCJOiKPvSLQG+hJPb/Oy2gyJx3pLjUEhY7PuaCthQu3e0zAGI1lqUBobrrk9IT0K8sG2GsCluxoQ==}
+  vue-component-type-helpers@3.0.7:
+    resolution: {integrity: sha512-TvyUcFXmjZcXUvU+r1MOyn4/vv4iF+tPwg5Ig33l/FJ3myZkxeQpzzQMLMFWcQAjr6Xs7BRwVy/TwbmNZUA/4w==}
 
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
@@ -8842,7 +8859,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.5.18(typescript@5.8.3)
-      vue-component-type-helpers: 3.0.6
+      vue-component-type-helpers: 3.0.7
 
   '@sxzz/popperjs-es@2.11.7': {}
 
@@ -9522,6 +9539,17 @@ snapshots:
   acorn@7.4.1: {}
 
   acorn@8.15.0: {}
+
+  ag-charts-types@12.1.2: {}
+
+  ag-grid-community@34.1.2:
+    dependencies:
+      ag-charts-types: 12.1.2
+
+  ag-grid-vue3@34.1.2(vue@3.5.18(typescript@5.8.3)):
+    dependencies:
+      ag-grid-community: 34.1.2
+      vue: 3.5.18(typescript@5.8.3)
 
   agent-base@7.1.4: {}
 
@@ -13867,7 +13895,7 @@ snapshots:
 
   vue-component-type-helpers@2.2.12: {}
 
-  vue-component-type-helpers@3.0.6: {}
+  vue-component-type-helpers@3.0.7: {}
 
   vue-demi@0.14.10(vue@3.5.18(typescript@5.8.3)):
     dependencies:

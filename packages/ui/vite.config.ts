@@ -4,6 +4,9 @@ import { resolve } from 'node:path';
 import dts from 'vite-plugin-dts';
 import svgLoader from 'vite-svg-loader';
 import path from 'node:path';
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 export default defineConfig({
   plugins: [
@@ -16,6 +19,12 @@ export default defineConfig({
       insertTypesEntry: true,
       rollupTypes: false, // 순환참조 방지를 위해 false로 변경
       outDir: 'dist',
+    }),
+    AutoImport({
+      resolvers: [ElementPlusResolver()],
+    }),
+    Components({
+      resolvers: [ElementPlusResolver()],
     }),
   ],
   build: {

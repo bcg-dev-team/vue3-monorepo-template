@@ -1,25 +1,8 @@
-<!--
-  Figma 컴포넌트: Input/Calendar-SM
-  BaseInput을 확장한 캘린더 입력 컴포넌트
--->
 <script setup lang="ts">
-import BaseIcon from '../BaseIcon/BaseIcon.vue';
-import BaseInput from './BaseInput.vue';
-import { computed } from 'vue';
+import { ElDatePicker } from 'element-plus';
+import 'element-plus/dist/index.css';
+import { h, shallowRef } from 'vue';
 
-/**
- * BaseInputCalendar - 캘린더 입력 컴포넌트
- *
- * @props modelValue - 선택된 날짜 (v-model)
- * @props placeholder - 플레이스홀더 텍스트
- * @props size - 크기 (sm, md)
- * @props disabled - 비활성화 여부
- * @props error - 에러 상태 여부
- * @props errorMessage - 에러 메시지
- * @emits update:modelValue - 날짜 변경 시 발생
- * @emits focus - 포커스 시 발생
- * @emits blur - 블러 시 발생
- */
 interface Props {
   /**
    * 선택된 날짜 (v-model)
@@ -27,78 +10,119 @@ interface Props {
   modelValue?: string;
   /**
    * 플레이스홀더 텍스트
+   * @default 'YYYY-MM-DD'
    */
   placeholder?: string;
-  /**
-   * 크기
-   * @default 'sm'
-   */
-  size?: 'sm' | 'md';
   /**
    * 비활성화 여부
    * @default false
    */
   disabled?: boolean;
   /**
-   * 에러 상태 여부
-   * @default false
+   * 비활성화할 날짜를 결정하는 함수
    */
-  error?: boolean;
-  /**
-   * 에러 메시지
-   */
-  errorMessage?: string;
+  disabledDate?: (date: Date) => boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  modelValue: '',
+  modelValue: undefined,
   placeholder: 'YYYY-MM-DD',
-  size: 'sm',
   disabled: false,
-  error: false,
-  errorMessage: '',
+  disabledDate: undefined,
 });
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void;
-  (e: 'focus', event: FocusEvent): void;
-  (e: 'blur', event: FocusEvent): void;
+  (e: 'update:modelValue', value: string | null): void;
+  (e: 'change', value: string | null): void;
 }>();
 
-// 아이콘 크기 계산
-const iconSize = computed(() => {
-  return props.size === 'sm' ? 'sm' : 'md';
+const customPrefix = shallowRef({
+  render() {
+    return h('p', '');
+  },
 });
 
-// 이벤트 핸들러
-const handleInput = (value: string) => {
+const customSuffix = shallowRef({
+  render() {
+    return h('p', '');
+  },
+});
+
+const handleDateChange = (value: string | null) => {
+  if (value) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const selectedDate = new Date(value);
+
+    if (selectedDate > today) {
+      emit('update:modelValue', null);
+      emit('change', null);
+      return;
+    }
+  }
+
   emit('update:modelValue', value);
-};
-
-const handleFocus = (event: FocusEvent) => {
-  emit('focus', event);
-};
-
-const handleBlur = (event: FocusEvent) => {
-  emit('blur', event);
+  emit('change', value);
 };
 </script>
 
 <template>
-  <BaseInput
-    :model-value="modelValue"
-    :placeholder="placeholder"
-    :size="size"
-    :disabled="disabled"
-    :error="error"
-    :error-message="errorMessage"
+  <ElDatePicker
+    :model-value="props.modelValue"
     type="date"
-    @update:model-value="handleInput"
-    @focus="handleFocus"
-    @blur="handleBlur"
-  >
-    <template #suffix>
-      <BaseIcon name="calendar" :size="iconSize" :color="disabled ? 'disabled' : 'default'" />
-    </template>
-  </BaseInput>
+    :placeholder="props.placeholder"
+    class="input-date"
+    format="YYYY-MM-DD"
+    value-format="YYYY-MM-DD"
+    :prefix-icon="customPrefix"
+    :suffix-icon="customSuffix"
+    :disabled="props.disabled"
+    :disabled-date="props.disabledDate"
+    @update:model-value="handleDateChange"
+    :editable="false"
+  />
 </template>
+
+<style>
+.el-date-editor.el-input.input-date {
+  width: 100%;
+  height: 42px;
+  .el-input__wrapper {
+    height: 48px;
+    border-radius: 6px !important;
+    border: 1px solid var(--input-color-border-static) !important;
+
+    &.is-focus {
+      box-shadow: 0 0 0 1px var(--input-color-border-focus) inset !important;
+    }
+
+    .el-input__prefix {
+      display: none;
+    }
+    .el-input__inner {
+      margin-left: 15px;
+      font-size: 16px;
+      border: none !important;
+    }
+
+    .el-input__suffix {
+      display: flex;
+      align-items: center;
+      height: 100%;
+
+      &::after {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        /* TODO: 이미지 불러오기 안됨. 수정 필요 */
+        /* background-image: url('/packages/ui/src/assets/icons/calendar.svg'); */
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin-right: 10px;
+      }
+    }
+  }
+}
+</style>

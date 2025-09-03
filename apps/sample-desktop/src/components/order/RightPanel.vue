@@ -3,32 +3,7 @@
     <!-- 계좌 선택 -->
     <div class="mt-3">
       <!-- TODO: BaseInputSelect로 대체될 영역-->
-      <div class="relative">
-        <div
-          @click="isDropdownOpen = !isDropdownOpen"
-          class="flex h-[42px] w-full cursor-pointer items-center justify-between rounded-md border border-[#b4b6bb] bg-white px-[15px] py-3 pr-3 text-[14px] font-normal leading-[18px] tracking-[-0.35px] text-[#131313]"
-        >
-          <span>{{ selectedAccountLabel }}</span>
-          <div class="pointer-events-none">
-            <BaseIcon name="arrow-down" size="md" :class="{ 'rotate-180': isDropdownOpen }" />
-          </div>
-        </div>
-
-        <div
-          v-if="isDropdownOpen"
-          class="absolute left-0 right-0 top-full z-50 mt-1 max-h-48 overflow-y-auto rounded-md border border-[#b4b6bb] bg-white shadow-lg"
-        >
-          <div
-            v-for="option in accountOptions"
-            :key="option.value"
-            @click="selectAccount(option.value)"
-            class="cursor-pointer px-[15px] py-3 text-[14px] font-normal leading-[18px] tracking-[-0.35px] text-[#131313] transition-colors duration-200 first:rounded-t-md last:rounded-b-md hover:bg-[#f8f9fa]"
-            :class="{ 'bg-[#f0f7ff] text-[#0067ef]': selectedAccount === option.value }"
-          >
-            {{ option.label }}
-          </div>
-        </div>
-      </div>
+      <BaseInputSelect v-model="selectedAccount" :options="accountOptions" />
     </div>
 
     <!-- 통화 페어 섹션 -->
@@ -354,7 +329,14 @@
 </template>
 
 <script setup lang="ts">
-import { BaseRadioGroup, BaseButton, BaseIcon, BaseCheckbox, BaseInputStepper } from '@template/ui';
+import {
+  BaseRadioGroup,
+  BaseButton,
+  BaseIcon,
+  BaseCheckbox,
+  BaseInputStepper,
+  BaseInputSelect,
+} from '@template/ui';
 import type { RadioOption } from '@template/ui';
 import { reactive, ref, computed } from 'vue';
 import OrderBook from './OrderBook.vue';

@@ -100,16 +100,20 @@ onMounted(() => {
         'volume_force_overlay',
         'create_volume_indicator_by_default',
 
-        // 'left_toolbar', // 왼쪽 도구모음 안보이게
-        // 'header_widget', // 헤더 위젯 안보이게
-        // 'header_symbol_search', // 헤더 위젯 안보이게
-        // 'header_settings', // 헤더 위젯 안보이게
-        // 'header_quick_search', // 헤더 위젯 안보이게
-        // 'main_series_scale_menu', // 오른쪽하단 설정버튼 안보이게
-        'right_toolbar',
+        'left_toolbar', // 왼쪽 도구모음 숨기기
+
+        'header_widget', // 헤더 위젯 숨기기
+        // 'header_symbol_search', // 헤더 위젯 숨기기
+        // 'header_settings', // 헤더 위젯 숨기기
+        // 'header_quick_search', // 헤더 위젯 숨기기
+
+        'right_toolbar', // 우측 도구모음 숨기기
+
+        'main_series_scale_menu', // 오른쪽하단 설정버튼 숨기기
+        'legend_inplace_edit', // 범례 수정 안보이게 (Symbol Search Dialog 숨기기)
       ],
-      charts_storage_url: 'https://saveload.tradingview.com',
-      charts_storage_api_version: '1.1',
+      // charts_storage_url: 'https://saveload.tradingview.com',
+      // charts_storage_api_version: '1.1',
       client_id: 'tradingview.com',
       user_id: 'public_user_id',
       // 가격 스케일 및 차트 스타일 설정

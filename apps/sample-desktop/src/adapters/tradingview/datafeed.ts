@@ -28,6 +28,7 @@ const datafeed: TradingViewDatafeed = {
     setTimeout(() => callback(configurationData));
   },
 
+  // TODO: 기본 검색 불필요 시 로직 제거
   searchSymbols: async (
     userInput: string,
     exchange: string,
@@ -246,7 +247,7 @@ const configurationData: TradingViewConfiguration = {
   supports_marks: false,
   supports_timescale_marks: false,
   supports_time: true,
-  supports_search: true,
+  supports_search: false,
   supports_group_request: false,
 };
 
@@ -260,6 +261,7 @@ function getSupportedResolutions(symbol: string): string[] {
   return configurationData.supported_resolutions;
 }
 
+// TODO: API 호출 방식으로 변경
 // Obtains all symbols for all exchanges supported by CryptoCompare API
 // MSW 환경에서 사용할 심볼 목록 (모킹된 데이터)
 async function getAllSymbols(): Promise<TradingSymbol[]> {

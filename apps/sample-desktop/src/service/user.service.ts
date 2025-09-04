@@ -12,7 +12,7 @@ import {
   IndividualMemberJoinResponse,
   CorporateMemberJoinRequest,
   CorporateMemberJoinResponse,
-} from '../types/user.types';
+} from '../types/api/user.types';
 import { AxiosInstance } from '@template/api';
 
 export class UserService {

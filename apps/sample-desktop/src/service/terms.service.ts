@@ -1,4 +1,4 @@
-import { TermsListResponse, TermsDetailResponse, TermsType } from '../types/terms.type';
+import { TermsListResponse, TermsDetailResponse, TermsType } from '../types/api/terms.type';
 import { AxiosInstance } from '@template/api';
 
 export class TermsService {

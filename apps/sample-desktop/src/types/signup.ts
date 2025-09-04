@@ -110,15 +110,3 @@ export interface CorporateSignUpInfo {
   /** 법인대표 여권 사본 */
   corpAdminPassportCopy: UploadedFile[] | null;
 }
-
-/**
- * 회원가입 스토어 상태 인터페이스
- */
-export interface SignUpStoreState {
-  /** 약관 동의 정보 */
-  agreements: AgreementInfo;
-  /** 개인 회원가입 정보 */
-  individual: IndividualSignUpInfo;
-  /** 법인 회원가입 정보 */
-  corporate: CorporateSignUpInfo;
-}

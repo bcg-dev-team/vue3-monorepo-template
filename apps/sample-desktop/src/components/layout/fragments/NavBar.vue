@@ -26,6 +26,5 @@ const navMenus: NavMenu[] = [
   { id: 'assets', text: '자산', to: 'assets' },
   { id: 'account-management', text: '계좌관리', to: 'account-management' },
   { id: 'support', text: '고객지원', to: 'support' },
-  { id: 'chart', text: '차트 테스트', to: 'chart' },
 ];
 </script>

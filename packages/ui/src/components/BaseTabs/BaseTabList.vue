@@ -32,6 +32,10 @@ interface Props {
    * 현재 선택된 탭 key
    */
   selectedTabKey?: string;
+  /**
+   * 전체 너비 사용 여부
+   */
+  fullwidth?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -39,6 +43,7 @@ const props = withDefaults(defineProps<Props>(), {
   size: 'md',
   underline: false,
   hasBackground: false,
+  fullwidth: false,
   selectedTabKey: '',
 });
 
@@ -49,7 +54,7 @@ const props = withDefaults(defineProps<Props>(), {
  * @returns CSS 클래스 문자열
  */
 const getTabButtonClasses = (selected: boolean, disabled: boolean = false): string => {
-  const baseClasses = 'focus:outline-none focus:ring-0 flex items-center gap-x-2 ';
+  const baseClasses = `focus:outline-none focus:ring-0 flex items-center gap-x-2 ${props.fullwidth ? 'flex-1 justify-center' : ''}`;
 
   // 비활성화 상태
   if (disabled) {
@@ -108,7 +113,7 @@ const getContainerClasses = (): string => {
   if (props.variant === 'inner') {
     return 'flex p-1 bg-neutral-neutral050 rounded-[6px] gap-x-[10px]';
   }
-  return 'flex flex-nowrap';
+  return props.fullwidth ? 'flex w-full' : 'flex flex-nowrap';
 };
 </script>
 

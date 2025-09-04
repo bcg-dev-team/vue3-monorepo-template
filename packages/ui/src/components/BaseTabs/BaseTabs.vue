@@ -10,6 +10,7 @@ interface Props {
   size?: TabsSize;
   underline?: boolean;
   hasBackground?: boolean;
+  fullwidth?: boolean;
   ariaLabel?: string;
 }
 
@@ -23,6 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   variant: 'underline',
   underline: false,
   hasBackground: false,
+  fullwidth: false,
   size: 'lg',
   ariaLabel: '탭 목록',
 });
@@ -47,18 +49,24 @@ const handleTabChange = (index: number) => {
     selectedTabKey.value = tab.key;
   }
 };
+
+// TabList 클래스 계산
+const tabListClasses = computed(() => {
+  return props.fullwidth ? 'flex' : 'flex items-center';
+});
 </script>
 
 <template>
   <div>
     <TabGroup as="div" :selectedIndex="selectedTabIndex" @change="handleTabChange">
-      <TabList class="flex items-center" :aria-label="ariaLabel">
+      <TabList :class="tabListClasses" :aria-label="ariaLabel">
         <BaseTabList
           :tabs="tabs"
           :size="size"
           :variant="variant"
           :underline="underline"
           :hasBackground="hasBackground"
+          :fullwidth="fullwidth"
           :selectedTabKey="defaultSelectedTabKey"
         />
       </TabList>

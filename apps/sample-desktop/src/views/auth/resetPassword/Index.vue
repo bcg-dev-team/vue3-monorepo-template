@@ -17,8 +17,8 @@
 import ResetPasswordNewPassword from '@/components/auth/resetPassword/ResetPasswordNewPassword.vue';
 import ResetPasswordEmailForm from '@/components/auth/resetPassword/ResetPasswordEmailForm.vue';
 import ResetPasswordEmailAuth from '@/components/auth/resetPassword/ResetPasswordEmailAuth.vue';
+import type { AuthContentTitle } from '@/types/components/auth.types';
 import AuthContent from '@/components/auth/common/AuthContent.vue';
-import type { AuthContentTitle } from '@/types/auth';
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';
 

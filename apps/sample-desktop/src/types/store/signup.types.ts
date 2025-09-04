@@ -36,20 +36,25 @@ export interface AgreementInfo {
 }
 
 /**
- * 개인 회원가입 정보 인터페이스
+ * 회원가입 정보 인터페이스
  */
-export interface IndividualSignUpInfo {
+export interface UserInfo {
   /** 이름(한글) */
   name: string;
   /** 이메일 */
-  email: string;
+  email?: string;
   /** 휴대폰번호 */
   phone: string;
   /** 생년월일 */
   birth: string;
   /** 비밀번호 */
-  password: string;
+  password?: string;
+}
 
+/**
+ * 개인 회원가입 정보 인터페이스
+ */
+export interface IndividualSignUpInfo {
   /** 성(영문) */
   lastName: string;
   /** 이름(영문) */
@@ -73,17 +78,6 @@ export interface IndividualSignUpInfo {
  * 법인 회원가입 정보 인터페이스
  */
 export interface CorporateSignUpInfo {
-  /** 이름(한글) */
-  name: string;
-  /** 이메일 */
-  email: string;
-  /** 휴대폰번호 */
-  phone: string;
-  /** 생년월일 */
-  birth: string;
-  /** 비밀번호 */
-  password: string;
-
   /** 법인명 */
   corpName: string;
   /** 법인등록번호 */

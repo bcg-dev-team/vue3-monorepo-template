@@ -2,11 +2,11 @@ import {
   AgreementInfo,
   CorporateSignUpInfo,
   IndividualSignUpInfo,
-  UploadedFile,
   UserInfo,
 } from '@/types/store/signup.types';
+import { CorporateMemberJoinRequest, IndividualMemberJoinRequest } from '@/types/api/user.types';
+import { reactive, computed } from 'vue';
 import { defineStore } from 'pinia';
-import { reactive } from 'vue';
 
 export const useSignupStore = defineStore('signup', () => {
   const terms = reactive<AgreementInfo>({
@@ -49,7 +49,61 @@ export const useSignupStore = defineStore('signup', () => {
     corporateRepresentative: null, //법인대표 초본(영문)
     billPaymentCorporate: null, //법인명 공과금 납부서
     shareholderRegister: null, //주주 명부(영문 공증 필요)
-    additionalCorporateRepresentativePassport: [], //법인대표 여권 사본(2명 이상일 경우 2개 이상상)
+    corporateRepresentativePassport: null, //법인대표 여권 사본
+    additionalCorporateRepresentativePassport: [], //법인대표 여권 사본(2명 이상일 경우)
+  });
+
+  /**
+   *
+   */
+  const getIndividualSignupInfo = computed((): IndividualMemberJoinRequest => {
+    // 필수 파일이 업로드되지 않은 경우 에러 발생
+    if (individualInfo.idCard === null) {
+      throw new Error('신분증이 업로드되지 않았습니다.');
+    }
+
+    return {
+      ...userInfo,
+      ...individualInfo,
+
+      zipCode: '', // TODO: 제거될 예정
+      birthAsLocalDate: '', // TODO: 제거될 예정
+      idCard: individualInfo.idCard, // File 타입으로 명시적 할당
+      additionalIdDocument: individualInfo.additionalIdDocument || undefined,
+    };
+  });
+
+  const getCorporateSignupInfo = computed((): CorporateMemberJoinRequest => {
+    // 필수 파일이 업로드되지 않은 경우 에러 발생
+    if (
+      corporateInfo.businessRegistration === null ||
+      corporateInfo.corporateRepresentative === null ||
+      corporateInfo.billPaymentCorporate === null ||
+      corporateInfo.shareholderRegister === null ||
+      corporateInfo.corporateRepresentativePassport === null
+    ) {
+      throw new Error(
+        '사업자등록증명원, 법인대표 초본, 법인명 공과금 납부서, 주주 명부가 업로드되지 않았습니다.'
+      );
+    }
+
+    return {
+      ...userInfo,
+      ...corporateInfo,
+      zipCode: '', // TODO: 제거될 예정
+      representativeCount: 0, // TODO: 제거될 예정
+      representativeBirthAsLocalDate: '', // TODO: 제거될 예정
+      addressEn: '', // TODO: 제거될 예정
+      detailAddressEn: '', // TODO: 제거될 예정
+
+      businessRegistration: corporateInfo.businessRegistration,
+      corporateRepresentative: corporateInfo.corporateRepresentative,
+      billPaymentCorporate: corporateInfo.billPaymentCorporate,
+      shareholderRegister: corporateInfo.shareholderRegister,
+      corporateRepresentativePassport: corporateInfo.corporateRepresentativePassport,
+      additionalCorporateRepresentativePassport:
+        corporateInfo.additionalCorporateRepresentativePassport || undefined,
+    };
   });
 
   /**
@@ -174,6 +228,9 @@ export const useSignupStore = defineStore('signup', () => {
     userInfo,
     individualInfo,
     corporateInfo,
+
+    getIndividualSignupInfo,
+    getCorporateSignupInfo,
 
     updateTerms,
     updateUserInfo,

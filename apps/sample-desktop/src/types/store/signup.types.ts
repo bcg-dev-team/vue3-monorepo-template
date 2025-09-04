@@ -43,13 +43,13 @@ export interface UserInfo {
   /** 이름(한글) */
   name: string;
   /** 이메일 */
-  email?: string;
+  email: string;
   /** 휴대폰번호 */
   phoneNo: string;
   /** 생년월일 */
   birth: string;
   /** 비밀번호 */
-  password?: string;
+  password: string;
 }
 
 /**
@@ -103,5 +103,7 @@ export interface CorporateSignUpInfo {
   /** 주주 명부(영문 공증 필요) */
   shareholderRegister: File | null;
   /** 법인대표 여권 사본 */
+  corporateRepresentativePassport: File | null;
+  /** 법인대표 여권 사본(2명 이상일 경우) */
   additionalCorporateRepresentativePassport: File[] | null;
 }

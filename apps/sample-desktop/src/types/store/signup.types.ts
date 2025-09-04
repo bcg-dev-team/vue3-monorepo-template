@@ -39,12 +39,13 @@ export interface AgreementInfo {
  * 회원가입 정보 인터페이스
  */
 export interface UserInfo {
+  ci: string;
   /** 이름(한글) */
   name: string;
   /** 이메일 */
   email?: string;
   /** 휴대폰번호 */
-  phone: string;
+  phoneNo: string;
   /** 생년월일 */
   birth: string;
   /** 비밀번호 */
@@ -56,22 +57,22 @@ export interface UserInfo {
  */
 export interface IndividualSignUpInfo {
   /** 성(영문) */
-  lastName: string;
+  lastNameEn: string;
   /** 이름(영문) */
-  firstName: string;
+  firstNameEn: string;
   /** 주소(한글) */
   address: string;
   /** 상세주소(한글) */
-  addressDetail: string;
+  detailAddress: string;
   /** 주소(영문) */
   addressEn: string;
   /** 상세주소(영문) */
-  addressDetailEn: string;
+  detailAddressEn: string;
 
   /** 신분증(주민등록증 또는 운전면허증) */
-  identityDocument: UploadedFile | null;
+  idCard: File | null;
   /** 신분증 초본(영문) */
-  identityCertificateDocument: UploadedFile | null;
+  additionalIdDocument: File | null;
 }
 
 /**
@@ -79,28 +80,28 @@ export interface IndividualSignUpInfo {
  */
 export interface CorporateSignUpInfo {
   /** 법인명 */
-  corpName: string;
+  companyName: string;
   /** 법인등록번호 */
-  corpNumber: string;
+  businessNumber: string;
   /** 법인대표 성(영문) */
-  corpAdminLastName: string;
+  representativeLastName: string;
   /** 법인대표 이름(영문) */
-  corpAdminFirstName: string;
+  representativeFirstName: string;
   /** 법인대표 생년월일 */
-  corpAdminBirth: string;
+  representativeBirth: string;
   /** 법인주소 */
-  corpAddress: string;
+  address: string;
   /** 법인주소 상세 */
-  corpAddressDetail: string;
+  detailAddress: string;
 
   /** 사업자등록증명원 */
-  businessCertificateDocument: UploadedFile | null;
+  businessRegistration: File | null;
   /** 법인대표 초본(영문) */
-  corpAdminRegistrationDocument: UploadedFile | null;
+  corporateRepresentative: File | null;
   /** 법인명 공과금 납부서 */
-  utilityReceiptDocument: UploadedFile | null;
+  billPaymentCorporate: File | null;
   /** 주주 명부(영문 공증 필요) */
-  shareholderListDocument: UploadedFile | null;
+  shareholderRegister: File | null;
   /** 법인대표 여권 사본 */
-  corpAdminPassportCopy: UploadedFile[] | null;
+  additionalCorporateRepresentativePassport: File[] | null;
 }

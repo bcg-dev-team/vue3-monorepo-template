@@ -59,6 +59,10 @@ const meta: Meta<typeof BaseTabs> = {
       control: 'boolean',
       description: '배경색 여부',
     },
+    fullwidth: {
+      control: 'boolean',
+      description: '전체 너비 사용 여부',
+    },
   },
 };
 
@@ -406,6 +410,87 @@ export const UserProfileManagement: Story = {
       description: {
         story:
           'UI 패키지 내 컴포넌트들을 활용한 실용적인 사용자 프로필 관리 페이지 예시입니다. BaseInput, BaseButton, BaseTable, BaseChip 등 다양한 컴포넌트가 탭 콘텐츠로 사용됩니다.',
+      },
+    },
+  },
+};
+
+export const FullWidth: Story = {
+  args: {
+    tabs: [
+      {
+        key: 'recent',
+        label: 'Recent',
+        component: markRaw({
+          template: `
+            <div class="p-4">
+              <ul class="space-y-3">
+                <li class="p-3 bg-gray-50 rounded-lg">
+                  <h3 class="font-medium">Does drinking coffee make you smarter?</h3>
+                  <p class="text-sm text-gray-500 mt-1">5h ago • 5 comments • 2 shares</p>
+                </li>
+                <li class="p-3 bg-gray-50 rounded-lg">
+                  <h3 class="font-medium">So you've bought coffee... now what?</h3>
+                  <p class="text-sm text-gray-500 mt-1">2h ago • 3 comments • 2 shares</p>
+                </li>
+              </ul>
+            </div>
+          `,
+        }),
+      },
+      {
+        key: 'popular',
+        label: 'Popular',
+        component: markRaw({
+          template: `
+            <div class="p-4">
+              <ul class="space-y-3">
+                <li class="p-3 bg-gray-50 rounded-lg">
+                  <h3 class="font-medium">Is tech making coffee better or worse?</h3>
+                  <p class="text-sm text-gray-500 mt-1">Jan 7 • 29 comments • 16 shares</p>
+                </li>
+                <li class="p-3 bg-gray-50 rounded-lg">
+                  <h3 class="font-medium">The most innovative things happening in coffee</h3>
+                  <p class="text-sm text-gray-500 mt-1">Mar 19 • 24 comments • 12 shares</p>
+                </li>
+              </ul>
+            </div>
+          `,
+        }),
+      },
+      {
+        key: 'trending',
+        label: 'Trending',
+        component: markRaw({
+          template: `
+            <div class="p-4">
+              <ul class="space-y-3">
+                <li class="p-3 bg-gray-50 rounded-lg">
+                  <h3 class="font-medium">Ask Me Anything: 10 answers to your questions about coffee</h3>
+                  <p class="text-sm text-gray-500 mt-1">2d ago • 9 comments • 5 shares</p>
+                </li>
+                <li class="p-3 bg-gray-50 rounded-lg">
+                  <h3 class="font-medium">The worst advice we've ever heard about coffee</h3>
+                  <p class="text-sm text-gray-500 mt-1">4d ago • 1 comment • 2 shares</p>
+                </li>
+              </ul>
+            </div>
+          `,
+        }),
+      },
+    ],
+    modelValue: 'recent',
+    variant: 'underline',
+    size: 'lg',
+    fullwidth: true,
+    ariaLabel: '전체 너비 탭',
+  },
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        story:
+          'fullwidth prop이 true로 설정된 탭입니다. Headless UI 공식 예제와 같은 방식으로 각 탭 버튼이 전체 너비를 균등하게 사용합니다.',
       },
     },
   },

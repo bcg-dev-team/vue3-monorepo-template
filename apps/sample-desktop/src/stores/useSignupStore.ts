@@ -16,39 +16,40 @@ export const useSignupStore = defineStore('signup', () => {
   });
 
   const userInfo = reactive<UserInfo>({
+    ci: '',
     name: '', //이름(한글)
     email: '', //이메일
-    phone: '', //휴대폰번호
+    phoneNo: '', //휴대폰번호
     birth: '', //생년월일
     password: '', //비밀번호
   });
 
   const individualInfo = reactive<IndividualSignUpInfo>({
-    lastName: '', //성(영문)
-    firstName: '', //이름(영문)
+    lastNameEn: '', //성(영문)
+    firstNameEn: '', //이름(영문)
     address: '', //주소(한글)
-    addressDetail: '', //상세주소(한글)
+    detailAddress: '', //상세주소(한글)
     addressEn: '', //주소(영문)
-    addressDetailEn: '', //상세주소(영문)
+    detailAddressEn: '', //상세주소(영문)
 
-    identityDocument: null, //신분증(주민등록증 또는 운전면허증)
-    identityCertificateDocument: null, //신분증 초본(영문)
+    idCard: null, //신분증(주민등록증 또는 운전면허증)
+    additionalIdDocument: null, //신분증 초본(영문)
   });
 
   const corporateInfo = reactive<CorporateSignUpInfo>({
-    corpName: '', //법인명
-    corpNumber: '', //법인등록번호
-    corpAdminLastName: '', //법인대표 성(영문)
-    corpAdminFirstName: '', //법인대표 이름(영문)
-    corpAdminBirth: '', //법인대표 생년월일
-    corpAddress: '', //법인주소
-    corpAddressDetail: '', //법인주소 상세
+    companyName: '', //법인명
+    businessNumber: '', //법인등록번호
+    representativeLastName: '', //법인대표 성(영문)
+    representativeFirstName: '', //법인대표 이름(영문)
+    representativeBirth: '', //법인대표 생년월일
+    address: '', //법인주소
+    detailAddress: '', //법인주소 상세
 
-    businessCertificateDocument: null, //사업자등록증명원
-    corpAdminRegistrationDocument: null, //법인대표 초본(영문)
-    utilityReceiptDocument: null, //법인명 공과금 납부서
-    shareholderListDocument: null, //주주 명부(영문 공증 필요)
-    corpAdminPassportCopy: [], //법인대표 여권 사본(2명 이상일 경우 2개 이상상)
+    businessRegistration: null, //사업자등록증명원
+    corporateRepresentative: null, //법인대표 초본(영문)
+    billPaymentCorporate: null, //법인명 공과금 납부서
+    shareholderRegister: null, //주주 명부(영문 공증 필요)
+    additionalCorporateRepresentativePassport: [], //법인대표 여권 사본(2명 이상일 경우 2개 이상상)
   });
 
   /**
@@ -73,8 +74,9 @@ export const useSignupStore = defineStore('signup', () => {
    * @description 휴대폰인증(PASS) 후 얻은 사용자 정보를 업데이트합니다.
    */
   const updateUserInfo = (value: UserInfo) => {
+    userInfo.ci = value.ci;
     userInfo.name = value.name;
-    userInfo.phone = value.phone;
+    userInfo.phoneNo = value.phoneNo;
     userInfo.birth = value.birth;
   };
 
@@ -105,12 +107,12 @@ export const useSignupStore = defineStore('signup', () => {
    * @description 개인 회원가입 시 필요한 정보를 업데이트합니다.
    */
   const updateIndividual = (value: IndividualSignUpInfo) => {
-    individualInfo.lastName = value.lastName;
-    individualInfo.firstName = value.firstName;
+    individualInfo.lastNameEn = value.lastNameEn;
+    individualInfo.firstNameEn = value.firstNameEn;
     individualInfo.address = value.address;
-    individualInfo.addressDetail = value.addressDetail;
+    individualInfo.detailAddress = value.detailAddress;
     individualInfo.addressEn = value.addressEn;
-    individualInfo.addressDetailEn = value.addressDetailEn;
+    individualInfo.detailAddressEn = value.detailAddressEn;
   };
 
   /**
@@ -119,12 +121,9 @@ export const useSignupStore = defineStore('signup', () => {
    *
    * @description 개인 회원가입 시 필요한 파일을 업데이트합니다.
    */
-  const uploadIndividualDocument = (
-    individualDocument: UploadedFile,
-    identityCertificateDocument: UploadedFile
-  ) => {
-    individualInfo.identityDocument = individualDocument;
-    individualInfo.identityCertificateDocument = identityCertificateDocument;
+  const uploadIndividualDocument = (individualDocument: File, additionalIdDocument: File) => {
+    individualInfo.idCard = individualDocument;
+    individualInfo.additionalIdDocument = additionalIdDocument;
   };
 
   /**
@@ -134,13 +133,13 @@ export const useSignupStore = defineStore('signup', () => {
    * @description 법인 회원가입 시 필요한 정보를 업데이트합니다.
    */
   const updateCorporate = (value: CorporateSignUpInfo) => {
-    corporateInfo.corpName = value.corpName;
-    corporateInfo.corpNumber = value.corpNumber;
-    corporateInfo.corpAdminLastName = value.corpAdminLastName;
-    corporateInfo.corpAdminFirstName = value.corpAdminFirstName;
-    corporateInfo.corpAdminBirth = value.corpAdminBirth;
-    corporateInfo.corpAddress = value.corpAddress;
-    corporateInfo.corpAddressDetail = value.corpAddressDetail;
+    corporateInfo.companyName = value.companyName;
+    corporateInfo.businessNumber = value.businessNumber;
+    corporateInfo.representativeLastName = value.representativeLastName;
+    corporateInfo.representativeFirstName = value.representativeFirstName;
+    corporateInfo.representativeBirth = value.representativeBirth;
+    corporateInfo.address = value.address;
+    corporateInfo.detailAddress = value.detailAddress;
   };
 
   /**
@@ -150,13 +149,13 @@ export const useSignupStore = defineStore('signup', () => {
    * @description 법인 회원가입 시 필요한 파일을 업데이트합니다.
    */
   const uploadCorpInfoDocument = (
-    businessCertificateDocument: UploadedFile,
-    corpAdminRegistrationDocument: UploadedFile,
-    utilityReceiptDocument: UploadedFile
+    businessCertificateDocument: File,
+    corporateRepresentative: File,
+    billPaymentCorporate: File
   ) => {
-    corporateInfo.businessCertificateDocument = businessCertificateDocument;
-    corporateInfo.corpAdminRegistrationDocument = corpAdminRegistrationDocument;
-    corporateInfo.utilityReceiptDocument = utilityReceiptDocument;
+    corporateInfo.businessRegistration = businessCertificateDocument;
+    corporateInfo.corporateRepresentative = corporateRepresentative;
+    corporateInfo.billPaymentCorporate = billPaymentCorporate;
   };
 
   /**
@@ -165,8 +164,9 @@ export const useSignupStore = defineStore('signup', () => {
    *
    * @description 법인 회원가입 시 필요한 법인대표 관련 파일을 업데이트합니다.
    */
-  const uploadCorpAdminDocument = (corpAdminPassportCopy: UploadedFile[]) => {
-    corporateInfo.corpAdminPassportCopy = corpAdminPassportCopy;
+  const uploadCorpAdminDocument = (additionalCorporateRepresentativePassport: File[]) => {
+    corporateInfo.additionalCorporateRepresentativePassport =
+      additionalCorporateRepresentativePassport;
   };
 
   return {

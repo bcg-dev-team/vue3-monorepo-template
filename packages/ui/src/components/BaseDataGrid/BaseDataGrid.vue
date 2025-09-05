@@ -1,7 +1,7 @@
 <template>
   <div v-if="isReady" class="grid-container">
     <AgGridVue
-      class="ag-theme-alpine"
+      :theme="theme"
       :columnDefs="columnDefs"
       :rowData="rowData"
       :defaultColDef="defaultColDef"
@@ -25,6 +25,10 @@ import {
   TextFilterModule,
   NumberFilterModule,
   CsvExportModule,
+  themeQuartz,
+  themeBalham,
+  themeMaterial,
+  themeAlpine,
 } from 'ag-grid-community';
 import type { GridOptions, ColDef } from 'ag-grid-community';
 
@@ -42,10 +46,6 @@ ModuleRegistry.registerModules([
   NumberFilterModule,
   CsvExportModule,
 ]);
-
-// AG-Grid 스타일 import
-import 'ag-grid-community/styles/ag-theme-alpine.css';
-import 'ag-grid-community/styles/ag-grid.css';
 
 /**
  * BaseDataGrid 컴포넌트 Props
@@ -73,6 +73,8 @@ interface Props {
   pagination?: boolean;
   /** 컬럼 리사이징 가능 여부 (기본값: true) */
   resizable?: boolean;
+  /** 테마 선택 (기본값: 'quartz') */
+  theme?: 'quartz' | 'balham' | 'material' | 'alpine';
 }
 
 /**
@@ -97,9 +99,21 @@ const props = withDefaults(defineProps<Props>(), {
   selectable: false,
   pagination: false,
   resizable: true,
+  theme: 'quartz',
 });
 
 const emit = defineEmits<Emits>();
+
+// 테마 매핑
+const themeMap = {
+  quartz: themeQuartz,
+  balham: themeBalham,
+  material: themeMaterial,
+  alpine: themeAlpine,
+};
+
+// 선택된 테마
+const theme = computed(() => themeMap[props.theme]);
 
 const isReady = ref(false);
 

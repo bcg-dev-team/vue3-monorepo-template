@@ -23,7 +23,9 @@
     "@template/theme": "workspace:*",
     "@template/types": "workspace:*",
     "@template/ui": "workspace:*",
-    "@template/utils": "workspace:*"
+    "@template/utils": "workspace:*",
+    "ag-grid-community": "^34.1.2",
+    "ag-grid-vue3": "^34.1.2"
   },
   "devDependencies": {
     "msw": "^2.10.5",

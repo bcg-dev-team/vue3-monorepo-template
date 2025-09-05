@@ -288,6 +288,12 @@ importers:
       '@template/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      ag-grid-community:
+        specifier: ^34.1.2
+        version: 34.1.2
+      ag-grid-vue3:
+        specifier: ^34.1.2
+        version: 34.1.2(vue@3.5.18(typescript@5.8.3))
     devDependencies:
       msw:
         specifier: ^2.10.5

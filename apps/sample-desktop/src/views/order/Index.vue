@@ -58,24 +58,19 @@
                       <p class="panel-subtitle">최근 주문 데이터</p>
                     </div> -->
                     <div class="panel-content">
-<<<<<<< HEAD
-                      <BaseTable
-                        :headers="orderTableHeaders"
-                        :data="displayedOrderData"
-                        :selectable="true"
-=======
+                      <!-- theme: 'quartz' | 'balham' | 'material' | 'alpine' -->
                       <BaseDataGrid
                         :columnDefs="columnDefs"
                         :rowData="rowData"
                         :defaultColDef="defaultColDef"
                         :gridOptions="gridOptions"
->>>>>>> 6766f84 (feat(packages/ui): AG Grid를 활용한 BaseDataGrid 컴포넌트 작성 및 주문 페이지 내 삽입)
                         :sortable="true"
                         :filterable="false"
                         :selectable="true"
                         :pagination="false"
                         :resizable="false"
                         :disalbeColumnAutoSize="false"
+                        theme="alpine"
                         @grid-ready="onGridReady"
                         @sort-changed="onSortChanged"
                         @row-selected="onRowSelected"
@@ -115,15 +110,12 @@ import TradingViewChart from '@/components/chart/TradingViewChart.vue';
 import { BaseTwoWaySplitPane, BaseDataGrid } from '@template/ui';
 import SymbolList from '@/components/order/SymbolList.vue';
 import RightPanel from '@/components/order/RightPanel.vue';
-import type { TableHeader, TableRow } from '@template/ui';
 import type { TradingSymbol } from '@/types/tradingview';
-import { getOrderData } from '@template/mocks';
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
 // 상태 관리
 const selectedSymbol = ref('EURTRY');
 const tradingViewChartRef = ref<InstanceType<typeof TradingViewChart> | null>(null);
-const allOrderData = ref<TableRow[]>([]);
 
 // 이벤트 핸들러
 const handleSymbolSelect = (symbol: TradingSymbol) => {
@@ -149,13 +141,6 @@ interface PositionData {
   profitLoss: number; // TODO: 실시간으로 변경되어야 하는 값
 }
 
-<<<<<<< HEAD
-const displayedOrderData = computed(() => {
-  console.log('allOrderData.value', allOrderData.value);
-  return allOrderData.value;
-  // return allOrderData.value.slice(0, 100);
-});
-=======
 // 컬럼 정의
 const columnDefs = ref<ColDef[]>([
   {
@@ -232,7 +217,6 @@ const columnDefs = ref<ColDef[]>([
     width: 120,
   },
 ]);
->>>>>>> 6766f84 (feat(packages/ui): AG Grid를 활용한 BaseDataGrid 컴포넌트 작성 및 주문 페이지 내 삽입)
 
 // 기본 컬럼 설정
 const defaultColDef = ref({});
@@ -294,84 +278,6 @@ const onGridReady = (params: any) => {
   });
 };
 
-<<<<<<< HEAD
-const handleSort = (key: string, direction: 'asc' | 'desc') => {
-  console.log('Sorted by:', key, 'Direction:', direction);
-
-  // 실제 정렬 로직 구현
-  allOrderData.value.sort((a, b) => {
-    const aValue = a[key as keyof TableRow];
-    const bValue = b[key as keyof TableRow];
-
-    if (typeof aValue === 'number' && typeof bValue === 'number') {
-      return direction === 'asc' ? aValue - bValue : bValue - aValue;
-    }
-
-    const aStr = String(aValue).toLowerCase();
-    const bStr = String(bValue).toLowerCase();
-
-    if (direction === 'asc') {
-      return aStr.localeCompare(bStr);
-    } else {
-      return bStr.localeCompare(aStr);
-    }
-  });
-};
-
-// 데이터 로드
-const loadOrderData = async () => {
-  try {
-    // mocks 패키지에서 주문 데이터 가져오기 (처음 1000개)
-    const orderData = getOrderData(1000, 0);
-
-    // TableRow 형태로 변환
-    allOrderData.value = orderData.map((order: any) => ({
-      id: order.id,
-      symbol: order.symbol,
-      type: order.type,
-      price: order.price,
-      quantity: order.quantity,
-      status: order.status,
-      time: order.time,
-    }));
-  } catch (error) {
-    console.error('Failed to load order data:', error);
-    // 에러 발생 시 기본 데이터 사용
-    allOrderData.value = [
-      {
-        id: 1,
-        symbol: 'EURTRY',
-        type: 'Buy',
-        price: 32.0,
-        quantity: 1000,
-        status: 'Open',
-        time: '2023-10-27 10:00',
-      },
-      {
-        id: 2,
-        symbol: 'USDSEK',
-        type: 'Sell',
-        price: 10.8,
-        quantity: 1000,
-        status: 'Closed',
-        time: '2023-10-27 11:30',
-      },
-      {
-        id: 3,
-        symbol: 'SUI30',
-        type: 'Buy',
-        price: 12000,
-        quantity: 1,
-        status: 'Open',
-        time: '2023-10-27 12:00',
-      },
-    ];
-  }
-};
-
-onMounted(() => {
-  loadOrderData();
-=======
 // 정렬 변경 이벤트
 const onSortChanged = (event: any) => {
   console.log('Sort changed:', event);
@@ -411,7 +317,6 @@ const updateRealTimeData = () => {
 onUnmounted(() => {
   delete (window as any).handleSettle;
   delete (window as any).handleMarketSettle;
->>>>>>> 6766f84 (feat(packages/ui): AG Grid를 활용한 BaseDataGrid 컴포넌트 작성 및 주문 페이지 내 삽입)
 });
 </script>
 

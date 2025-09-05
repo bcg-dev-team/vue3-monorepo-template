@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
+import BaseIcon from '../../BaseIcon/BaseIcon.vue';
 import BaseInput from '../BaseInput.vue';
 
 const meta: Meta<typeof BaseInput> = {
@@ -160,6 +161,417 @@ export const SizeComparison: Story = {
         <div>
           <h4 style="margin-bottom: 8px; color: #131313;">중간 크기 (MD)</h4>
           <BaseInput placeholder="중간 크기 입력" size="md" />
+        </div>
+      </div>
+    `,
+  }),
+};
+
+// Prepend-inner 단위 표시
+export const WithPrependInnerUnit: Story = {
+  render: () => ({
+    components: { BaseInput },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 16px; max-width: 400px;">
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">달러 단위 ($)</h4>
+          <BaseInput 
+            placeholder="금액을 입력하세요" 
+            size="md"
+            model-value="1000"
+          >
+            <template #prepend-inner>
+              <span style="color: var(--input-color-text-static); font-weight: 500;">$</span>
+            </template>
+          </BaseInput>
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">작은 크기 달러 단위</h4>
+          <BaseInput 
+            placeholder="소액 입력" 
+            size="sm"
+            model-value="50"
+          >
+            <template #prepend-inner>
+              <span style="color: var(--input-color-text-static); font-weight: 500;">$</span>
+            </template>
+          </BaseInput>
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">에러 상태 달러 단위</h4>
+          <BaseInput 
+            placeholder="잘못된 금액" 
+            size="md"
+            model-value="abc"
+            :error="true"
+            error-message="숫자만 입력 가능합니다"
+          >
+            <template #prepend-inner>
+              <span style="color: var(--input-color-text-static); font-weight: 500;">$</span>
+            </template>
+          </BaseInput>
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">비활성화 상태 달러 단위</h4>
+          <BaseInput 
+            placeholder="비활성화된 금액" 
+            size="md"
+            model-value="5000"
+            :disabled="true"
+          >
+            <template #prepend-inner>
+              <span style="color: var(--input-color-text-static); font-weight: 500;">$</span>
+            </template>
+          </BaseInput>
+        </div>
+      </div>
+    `,
+  }),
+};
+
+// Append-inner 아이콘과 클릭 이벤트
+export const WithAppendInnerIcon: Story = {
+  render: () => ({
+    components: { BaseInput, BaseIcon },
+    setup() {
+      const handleIconClick = () => {
+        alert('아이콘이 클릭되었습니다!');
+      };
+
+      const handleSearchIconClick = () => {
+        alert('검색 아이콘이 클릭되었습니다!');
+      };
+
+      const handleClearIconClick = () => {
+        alert('지우기 아이콘이 클릭되었습니다!');
+      };
+
+      return {
+        handleIconClick,
+        handleSearchIconClick,
+        handleClearIconClick,
+      };
+    },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 16px; max-width: 400px;">
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">검색 아이콘</h4>
+          <BaseInput 
+            placeholder="검색어를 입력하세요" 
+            size="md"
+            model-value="검색 예시"
+          >
+            <template #append-inner>
+              <BaseIcon 
+                name="search" 
+                size="md" 
+                style="cursor: pointer; color: #666;"
+                @click="handleSearchIconClick"
+              />
+            </template>
+          </BaseInput>
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">지우기 아이콘</h4>
+          <BaseInput 
+            placeholder="텍스트를 입력하세요" 
+            size="md"
+            model-value="입력된 텍스트"
+          >
+            <template #append-inner>
+              <BaseIcon 
+                name="close" 
+                size="md" 
+                style="cursor: pointer; color: #999;"
+                @click="handleClearIconClick"
+              />
+            </template>
+          </BaseInput>
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">눈 아이콘 (비밀번호 표시)</h4>
+          <BaseInput 
+            placeholder="비밀번호를 입력하세요" 
+            size="md"
+            type="password"
+            model-value="password123"
+          >
+            <template #append-inner>
+              <BaseIcon 
+                name="eye" 
+                size="md" 
+                style="cursor: pointer; color: #666;"
+                @click="handleIconClick"
+              />
+            </template>
+          </BaseInput>
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">정보 아이콘</h4>
+          <BaseInput 
+            placeholder="도움말이 있는 입력" 
+            size="md"
+            model-value="도움말이 필요한 입력"
+          >
+            <template #append-inner>
+              <BaseIcon 
+                name="info" 
+                size="md" 
+                style="cursor: pointer; color: #2196F3;"
+                @click="handleIconClick"
+              />
+            </template>
+          </BaseInput>
+        </div>
+      </div>
+    `,
+  }),
+};
+
+// Prepend 외부 슬롯
+export const WithPrepend: Story = {
+  render: () => ({
+    components: { BaseInput },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 16px; max-width: 500px;">
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">라벨과 함께</h4>
+          <BaseInput 
+            placeholder="이름을 입력하세요" 
+            size="md"
+            model-value="홍길동"
+          >
+            <template #prepend>
+              <label style="color: #333; font-weight: 500; font-size: 14px; white-space: nowrap;">이름</label>
+            </template>
+          </BaseInput>
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">아이콘과 함께</h4>
+          <BaseInput 
+            placeholder="검색어를 입력하세요" 
+            size="md"
+            model-value=""
+          >
+            <template #prepend>
+              <div style="display: flex; align-items: center; gap: 8px; color: #666; white-space: nowrap;">
+                <span>🔍</span>
+                <span style="font-size: 12px;">검색</span>
+              </div>
+            </template>
+          </BaseInput>
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">복합 정보</h4>
+          <BaseInput 
+            placeholder="전화번호를 입력하세요" 
+            size="md"
+            model-value="010-1234-5678"
+          >
+            <template #prepend>
+              <div style="display: flex; flex-direction: column; gap: 2px; white-space: nowrap;">
+                <span style="color: #333; font-weight: 500; font-size: 12px;">연락처</span>
+                <span style="color: #666; font-size: 10px;">필수 입력</span>
+              </div>
+            </template>
+          </BaseInput>
+        </div>
+      </div>
+    `,
+  }),
+};
+
+// Append 외부 슬롯
+export const WithAppend: Story = {
+  render: () => ({
+    components: { BaseInput },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 16px; max-width: 500px;">
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">도움말 텍스트</h4>
+          <BaseInput 
+            placeholder="비밀번호를 입력하세요" 
+            size="md"
+            model-value=""
+          >
+            <template #append>
+              <span style="color: #666; font-size: 12px; white-space: nowrap;">8자 이상 입력하세요</span>
+            </template>
+          </BaseInput>
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">버튼과 함께</h4>
+          <BaseInput 
+            placeholder="이메일을 입력하세요" 
+            size="md"
+            model-value="user@example.com"
+          >
+            <template #append>
+              <button 
+                style="
+                  background: #007bff; 
+                  color: white; 
+                  border: none; 
+                  padding: 4px 8px; 
+                  border-radius: 4px; 
+                  font-size: 12px; 
+                  cursor: pointer;
+                  white-space: nowrap;
+                "
+                @click="() => alert('인증 메일을 발송했습니다!')"
+              >
+                인증
+              </button>
+            </template>
+          </BaseInput>
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">상태 표시</h4>
+          <BaseInput 
+            placeholder="사용자명을 입력하세요" 
+            size="md"
+            model-value="available_user"
+          >
+            <template #append>
+              <div style="display: flex; align-items: center; gap: 4px; color: #28a745; white-space: nowrap;">
+                <span>✓</span>
+                <span style="font-size: 12px;">사용 가능</span>
+              </div>
+            </template>
+          </BaseInput>
+        </div>
+      </div>
+    `,
+  }),
+};
+
+// 모든 슬롯 조합
+export const AllSlotsCombined: Story = {
+  render: () => ({
+    components: { BaseInput, BaseIcon },
+    setup() {
+      const handleSearchClick = () => {
+        alert('검색이 실행되었습니다!');
+      };
+
+      const handleClearClick = () => {
+        alert('내용이 지워졌습니다!');
+      };
+
+      const handleVerifyClick = () => {
+        alert('인증이 완료되었습니다!');
+      };
+
+      return {
+        handleSearchClick,
+        handleClearClick,
+        handleVerifyClick,
+      };
+    },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 20px; max-width: 500px;">
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">모든 슬롯 조합 예시</h4>
+          <BaseInput 
+            placeholder="검색어를 입력하세요" 
+            size="md"
+            model-value="검색 예시"
+          >
+            <template #prepend>
+              <div style="display: flex; align-items: center; gap: 8px; color: #666; white-space: nowrap;">
+                <span>🔍</span>
+                <span style="font-size: 12px;">통합 검색</span>
+              </div>
+            </template>
+            
+            <template #prepend-inner>
+              <span style="color: var(--input-color-text-static); font-weight: 500;">@</span>
+            </template>
+            
+            <template #append-inner>
+              <BaseIcon 
+                name="close" 
+                size="md" 
+                style="cursor: pointer; color: #999;"
+                @click="handleClearClick"
+              />
+            </template>
+            
+            <template #append>
+              <button 
+                style="
+                  background: #28a745; 
+                  color: white; 
+                  border: none; 
+                  padding: 4px 12px; 
+                  border-radius: 4px; 
+                  font-size: 12px; 
+                  cursor: pointer;
+                  white-space: nowrap;
+                "
+                @click="handleSearchClick"
+              >
+                검색
+              </button>
+            </template>
+          </BaseInput>
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">인증 폼 예시</h4>
+          <BaseInput 
+            placeholder="인증번호를 입력하세요" 
+            size="md"
+            model-value="123456"
+          >
+            <template #prepend>
+              <label style="color: #333; font-weight: 500; font-size: 14px; white-space: nowrap;">인증번호</label>
+            </template>
+            
+            <template #prepend-inner>
+              <span style="color: var(--input-color-text-static); font-weight: 500;">#</span>
+            </template>
+            
+            <template #append-inner>
+              <BaseIcon 
+                name="info" 
+                size="md" 
+                style="cursor: pointer; color: #2196F3;"
+                @click="() => alert('6자리 숫자를 입력하세요')"
+              />
+            </template>
+            
+            <template #append>
+              <div style="display: flex; align-items: center; gap: 4px; white-space: nowrap;">
+                <span style="color: #28a745; font-size: 12px;">✓ 인증됨</span>
+                <button 
+                  style="
+                    background: #007bff; 
+                    color: white; 
+                    border: none; 
+                    padding: 4px 8px; 
+                    border-radius: 4px; 
+                    font-size: 12px; 
+                    cursor: pointer;
+                    margin-left: 8px;
+                  "
+                  @click="handleVerifyClick"
+                >
+                  재인증
+                </button>
+              </div>
+            </template>
+          </BaseInput>
         </div>
       </div>
     `,

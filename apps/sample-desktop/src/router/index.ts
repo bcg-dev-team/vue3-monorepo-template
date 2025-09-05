@@ -172,7 +172,7 @@ router.beforeEach(
   (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
     // 인증이 필요한 페이지인지 확인
     if (to.meta?.auth) {
-      const token = LocalStorageService.getItem(LocalStorageKey.TOKEN);
+      const token = LocalStorageService.getItem(LocalStorageKey.ACCESS_TOKEN);
       if (!token || Object.keys(token).length === 0) {
         // 임시 alert 처리
         alert('로그인 후 이용해주세요.');

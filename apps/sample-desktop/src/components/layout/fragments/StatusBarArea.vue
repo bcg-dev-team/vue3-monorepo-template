@@ -47,7 +47,7 @@ const financialMetrics: FinancialMetric[] = [
 const router = useRouter();
 
 const handleLogout = () => {
-  LocalStorageService.removeItem(LocalStorageKey.TOKEN);
+  LocalStorageService.removeItem(LocalStorageKey.ACCESS_TOKEN);
   router.push({ name: 'login' });
 };
 </script>

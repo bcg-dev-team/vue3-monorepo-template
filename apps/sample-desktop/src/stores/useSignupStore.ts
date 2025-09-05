@@ -57,18 +57,13 @@ export const useSignupStore = defineStore('signup', () => {
    * 개인 회원가입에 필요한 정보를 반환합니다.
    */
   const getIndividualSignupInfo = computed((): IndividualMemberJoinRequest => {
-    // 필수 파일이 업로드되지 않은 경우 에러 발생
-    if (individualInfo.idCard === null) {
-      throw new Error('신분증이 업로드되지 않았습니다.');
-    }
-
     return {
       ...userInfo,
       ...individualInfo,
 
       zipCode: '',
       birthAsLocalDate: '', // TODO: 제거될 예정
-      idCard: individualInfo.idCard, // File 타입으로 명시적 할당
+      idCard: individualInfo.idCard!, // File 타입으로 명시적 할당
       additionalIdDocument: individualInfo.additionalIdDocument || undefined,
     };
   });
@@ -77,19 +72,6 @@ export const useSignupStore = defineStore('signup', () => {
    * 법인 회원가입에 필요한 정보를 반환합니다.
    */
   const getCorporateSignupInfo = computed((): CorporateMemberJoinRequest => {
-    // 필수 파일이 업로드되지 않은 경우 에러 발생
-    if (
-      corporateInfo.businessRegistration === null ||
-      corporateInfo.corporateRepresentative === null ||
-      corporateInfo.billPaymentCorporate === null ||
-      corporateInfo.shareholderRegister === null ||
-      corporateInfo.corporateRepresentativePassport === null
-    ) {
-      throw new Error(
-        '사업자등록증명원, 법인대표 초본, 법인명 공과금 납부서, 주주 명부가 업로드되지 않았습니다.'
-      );
-    }
-
     return {
       ...userInfo,
       ...corporateInfo,
@@ -99,11 +81,11 @@ export const useSignupStore = defineStore('signup', () => {
       addressEn: '', // TODO: 제거될 예정
       detailAddressEn: '', // TODO: 제거될 예정
 
-      businessRegistration: corporateInfo.businessRegistration,
-      corporateRepresentative: corporateInfo.corporateRepresentative,
-      billPaymentCorporate: corporateInfo.billPaymentCorporate,
-      shareholderRegister: corporateInfo.shareholderRegister,
-      corporateRepresentativePassport: corporateInfo.corporateRepresentativePassport,
+      businessRegistration: corporateInfo.businessRegistration!,
+      corporateRepresentative: corporateInfo.corporateRepresentative!,
+      billPaymentCorporate: corporateInfo.billPaymentCorporate!,
+      shareholderRegister: corporateInfo.shareholderRegister!,
+      corporateRepresentativePassport: corporateInfo.corporateRepresentativePassport!,
       additionalCorporateRepresentativePassport:
         corporateInfo.additionalCorporateRepresentativePassport || undefined,
     };

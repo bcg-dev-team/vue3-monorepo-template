@@ -60,7 +60,7 @@
                     <div class="panel-content">
                       <BaseTable
                         :headers="orderTableHeaders"
-                        :data="orderTableData"
+                        :data="displayedOrderData"
                         :selectable="true"
                         :sortable="true"
                         @row-select="handleRowSelect"
@@ -102,11 +102,13 @@ import SymbolList from '@/components/order/SymbolList.vue';
 import RightPanel from '@/components/order/RightPanel.vue';
 import type { TableHeader, TableRow } from '@template/ui';
 import type { TradingSymbol } from '@/types/tradingview';
-import { ref } from 'vue';
+import { getOrderData } from '@template/mocks';
+import { ref, computed, onMounted } from 'vue';
 
 // 상태 관리
-const selectedSymbol = ref('ETH/EUR');
+const selectedSymbol = ref('EURTRY');
 const tradingViewChartRef = ref<InstanceType<typeof TradingViewChart> | null>(null);
+const allOrderData = ref<TableRow[]>([]);
 
 // 이벤트 핸들러
 const handleSymbolSelect = (symbol: TradingSymbol) => {
@@ -130,35 +132,11 @@ const orderTableHeaders: TableHeader[] = [
   { key: 'time', title: 'Time', width: '150px' },
 ];
 
-const orderTableData: TableRow[] = [
-  {
-    id: 1,
-    symbol: 'BTC/USD',
-    type: 'Buy',
-    price: 50000,
-    quantity: 0.01,
-    status: 'Open',
-    time: '2023-10-27 10:00',
-  },
-  {
-    id: 2,
-    symbol: 'ETH/EUR',
-    type: 'Sell',
-    price: 300,
-    quantity: 1.5,
-    status: 'Closed',
-    time: '2023-10-27 11:30',
-  },
-  {
-    id: 3,
-    symbol: 'XRP/JPY',
-    type: 'Buy',
-    price: 100,
-    quantity: 1000,
-    status: 'Open',
-    time: '2023-10-27 12:00',
-  },
-];
+const displayedOrderData = computed(() => {
+  console.log('allOrderData.value', allOrderData.value);
+  return allOrderData.value;
+  // return allOrderData.value.slice(0, 100);
+});
 
 const handleRowSelect = (rowId: string | number, selected: boolean) => {
   console.log('Selected row:', rowId, 'Selected:', selected);
@@ -166,7 +144,81 @@ const handleRowSelect = (rowId: string | number, selected: boolean) => {
 
 const handleSort = (key: string, direction: 'asc' | 'desc') => {
   console.log('Sorted by:', key, 'Direction:', direction);
+
+  // 실제 정렬 로직 구현
+  allOrderData.value.sort((a, b) => {
+    const aValue = a[key as keyof TableRow];
+    const bValue = b[key as keyof TableRow];
+
+    if (typeof aValue === 'number' && typeof bValue === 'number') {
+      return direction === 'asc' ? aValue - bValue : bValue - aValue;
+    }
+
+    const aStr = String(aValue).toLowerCase();
+    const bStr = String(bValue).toLowerCase();
+
+    if (direction === 'asc') {
+      return aStr.localeCompare(bStr);
+    } else {
+      return bStr.localeCompare(aStr);
+    }
+  });
 };
+
+// 데이터 로드
+const loadOrderData = async () => {
+  try {
+    // mocks 패키지에서 주문 데이터 가져오기 (처음 1000개)
+    const orderData = getOrderData(1000, 0);
+
+    // TableRow 형태로 변환
+    allOrderData.value = orderData.map((order: any) => ({
+      id: order.id,
+      symbol: order.symbol,
+      type: order.type,
+      price: order.price,
+      quantity: order.quantity,
+      status: order.status,
+      time: order.time,
+    }));
+  } catch (error) {
+    console.error('Failed to load order data:', error);
+    // 에러 발생 시 기본 데이터 사용
+    allOrderData.value = [
+      {
+        id: 1,
+        symbol: 'EURTRY',
+        type: 'Buy',
+        price: 32.0,
+        quantity: 1000,
+        status: 'Open',
+        time: '2023-10-27 10:00',
+      },
+      {
+        id: 2,
+        symbol: 'USDSEK',
+        type: 'Sell',
+        price: 10.8,
+        quantity: 1000,
+        status: 'Closed',
+        time: '2023-10-27 11:30',
+      },
+      {
+        id: 3,
+        symbol: 'SUI30',
+        type: 'Buy',
+        price: 12000,
+        quantity: 1,
+        status: 'Open',
+        time: '2023-10-27 12:00',
+      },
+    ];
+  }
+};
+
+onMounted(() => {
+  loadOrderData();
+});
 </script>
 
 <style scoped>

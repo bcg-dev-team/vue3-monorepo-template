@@ -112,6 +112,7 @@ import SymbolList from '@/components/order/SymbolList.vue';
 import RightPanel from '@/components/order/RightPanel.vue';
 import type { TradingSymbol } from '@/types/tradingview';
 import { ref, onMounted, onUnmounted } from 'vue';
+import { getOrderData } from '@template/mocks';
 
 // 상태 관리
 const selectedSymbol = ref('EURTRY');
@@ -202,12 +203,18 @@ const columnDefs = ref<ColDef[]>([
   },
   {
     headerName: '손익',
-    field: 'profitLoss', // TODO: 실시간으로 변경되어야 하는 값
+    field: 'profitLoss',
     sortable: true,
     width: 80,
-    cellStyle: { textAlign: 'right', fontWeight: 'bold' },
+    cellRenderer: 'agAnimateShowChangeCellRenderer',
+    cellStyle: {
+      textAlign: 'right',
+      fontWeight: 'bold',
+    },
     valueFormatter: (params: any) => {
-      return params.value.toLocaleString();
+      const value = params.value;
+      const sign = value > 0 ? '+' : '';
+      return `${sign}${value.toLocaleString()}`;
     },
   },
   {
@@ -224,39 +231,8 @@ const defaultColDef = ref({});
 // 그리드 옵션
 const gridOptions = ref<GridOptions>({});
 
-// 테이블 데이터 (이미지 참고)
-const rowData = ref<PositionData[]>([
-  {
-    itemCode: 'AUDUSD',
-    currency: 'AUD',
-    positionType: 'LONG',
-    purchaseDate: '2025-08-12',
-    quantity: 1,
-    price: 1.10086,
-    currentPrice: 1.10086, // TODO: 실시간으로 변경되어야 하는 값
-    profitLoss: -2127, // TODO: 실시간으로 변경되어야 하는 값
-  },
-  {
-    itemCode: 'AUDUSD',
-    currency: 'AUD',
-    positionType: 'SHORT',
-    purchaseDate: '2025-08-12',
-    quantity: 999999,
-    price: 1.10086,
-    currentPrice: 1.10086, // TODO: 실시간으로 변경되어야 하는 값
-    profitLoss: 9999000000, // TODO: 실시간으로 변경되어야 하는 값
-  },
-  {
-    itemCode: 'CHFJPY',
-    currency: 'JPY',
-    positionType: 'SHORT',
-    purchaseDate: '2025-08-12',
-    quantity: 1,
-    price: 169435,
-    currentPrice: 169435, // TODO: 실시간으로 변경되어야 하는 값
-    profitLoss: -41, // TODO: 실시간으로 변경되어야 하는 값
-  },
-]);
+// 테이블 데이터 (mocks에서 가져오기)
+const rowData = ref<PositionData[]>([]);
 
 // 그리드 API 참조
 const gridApi = ref<GridApi | null>(null);
@@ -300,21 +276,224 @@ const handleMarketSettle = (itemCode: string) => {
   // TODO: 시장가청산 로직 구현
 };
 
-// 전역 함수 등록 (버튼 클릭 이벤트 처리용)
-onMounted(() => {
-  (window as any).handleSettle = handleSettle;
-  (window as any).handleMarketSettle = handleMarketSettle;
-});
+// 데이터 로드 함수
+const loadOrderData = async () => {
+  try {
+    // mocks 패키지에서 주문 데이터 가져오기
+    // test data size: 10000
+    const orderData = getOrderData(10000, 0);
 
-// 실시간 데이터 업데이트 함수 (예시)
-const updateRealTimeData = () => {
-  // TODO: WebSocket 또는 API를 통해 실시간 데이터 수신
-  // TODO: 현재가, 손익 등 실시간으로 변경되어야 하는 값들 업데이트
-  console.log('실시간 데이터 업데이트 필요');
+    // PositionData 형태로 변환
+    rowData.value = orderData.map((order: any) => {
+      const itemCode = order.symbol;
+      const price = order.price;
+      const quantity = order.quantity;
+      const positionType = order.type === 'Buy' ? 'LONG' : 'SHORT';
+
+      // 초기 현재가는 주문가와 동일하게 설정
+      const currentPrice = price;
+
+      // 초기 손익은 0 (현재가 = 주문가)
+      const profitLoss = 0;
+
+      return {
+        itemCode,
+        currency: itemCode.substring(0, 3), // 심볼의 앞 3자리를 통화로 사용
+        positionType,
+        purchaseDate: order.time.split(' ')[0], // 날짜 부분만 추출
+        quantity,
+        price,
+        currentPrice,
+        profitLoss,
+      };
+    });
+
+    // 초기 현재가 설정
+    const symbols = [...new Set(rowData.value.map((item) => item.itemCode))];
+    symbols.forEach((symbol) => {
+      const firstOrder = rowData.value.find((item) => item.itemCode === symbol);
+      if (firstOrder) {
+        currentPrices.value[symbol] = firstOrder.price;
+      }
+    });
+  } catch (error) {
+    console.error('Failed to load order data:', error);
+  }
 };
 
-// 컴포넌트 언마운트 시 전역 함수 제거
+// 실시간 업데이트 타이머
+let realTimeInterval: NodeJS.Timeout | null = null;
+
+// 성능 최적화를 위한 업데이트 제어
+const isUpdating = ref(false);
+
+// 전역 함수 등록 (버튼 클릭 이벤트 처리용)
+onMounted(() => {
+  loadOrderData();
+  (window as any).handleSettle = handleSettle;
+  (window as any).handleMarketSettle = handleMarketSettle;
+
+  // 실시간 시세 업데이트 시작 (100ms마다)
+  realTimeInterval = setInterval(updateRealTimeData, 100);
+});
+
+// 실시간 시세 시뮬레이션을 위한 심볼별 현재가 저장
+const currentPrices = ref<Record<string, number>>({});
+
+// 손익 계산 함수
+const calculateProfitLoss = (
+  orderPrice: number,
+  currentPrice: number,
+  quantity: number,
+  positionType: 'LONG' | 'SHORT'
+): number => {
+  if (positionType === 'LONG') {
+    // 롱 포지션: (현재가 - 주문가) * 수량
+    return (currentPrice - orderPrice) * quantity;
+  } else {
+    // 숏 포지션: (주문가 - 현재가) * 수량
+    return (orderPrice - currentPrice) * quantity;
+  }
+};
+
+// 실시간 시세 업데이트 함수
+const updateRealTimePrices = () => {
+  if (isUpdating.value) return; // 업데이트 중이면 스킵
+  isUpdating.value = true;
+
+  try {
+    // 기존 데이터의 심볼들을 추출
+    const symbols = [...new Set(rowData.value.map((item) => item.itemCode))];
+
+    // 심볼별로 가격 업데이트
+    symbols.forEach((symbol) => {
+      // 기존 가격이 없으면 주문가를 기준으로 설정
+      if (!currentPrices.value[symbol]) {
+        const firstOrder = rowData.value.find((item) => item.itemCode === symbol);
+        if (firstOrder) {
+          currentPrices.value[symbol] = firstOrder.price;
+        }
+      }
+
+      // ±1% 범위에서 랜덤 변동 시뮬레이션 (변동폭 축소)
+      const basePrice = currentPrices.value[symbol];
+      const variation = (Math.random() - 0.5) * 0.02; // -1% ~ +1%
+      const newPrice = basePrice * (1 + variation);
+
+      currentPrices.value[symbol] = Math.round(newPrice * 100000) / 100000; // 소수점 5자리
+    });
+
+    // AG Grid API를 사용한 효율적인 업데이트 (하이브리드 접근법)
+    if (gridApi.value) {
+      const updatedRowNodes: any[] = [];
+      const updatedItems: any[] = [];
+
+      // 방법 1: 보이는 행만 처리 시도 (가장 효율적)
+      try {
+        const displayedRowModel = gridApi.value.getDisplayedRowModel();
+        if (displayedRowModel && displayedRowModel.getRows().length > 0) {
+          // 보이는 행들만 처리
+          displayedRowModel.getRows().forEach((rowNode) => {
+            if (rowNode.data) {
+              const item = rowNode.data;
+              const currentPrice = currentPrices.value[item.itemCode] || item.price;
+              const profitLoss = calculateProfitLoss(
+                item.price,
+                currentPrice,
+                item.quantity,
+                item.positionType
+              );
+
+              const roundedProfitLoss = Math.round(profitLoss * 100) / 100;
+
+              // 값이 변경된 경우만 업데이트
+              if (item.currentPrice !== currentPrice || item.profitLoss !== roundedProfitLoss) {
+                const updatedItem = {
+                  ...item,
+                  currentPrice,
+                  profitLoss: roundedProfitLoss,
+                };
+
+                // 로컬 데이터 업데이트
+                const index = rowData.value.findIndex((dataItem) => dataItem === item);
+                if (index !== -1) {
+                  rowData.value[index] = updatedItem;
+                }
+
+                updatedRowNodes.push(rowNode);
+                updatedItems.push(updatedItem);
+              }
+            }
+          });
+
+          // 셀 새로고침으로 효율적인 업데이트
+          if (updatedRowNodes.length > 0) {
+            gridApi.value.refreshCells({
+              rowNodes: updatedRowNodes,
+              columns: ['currentPrice', 'profitLoss'],
+              force: true,
+            });
+          }
+        } else {
+          throw new Error('No displayed rows');
+        }
+      } catch (error) {
+        // 방법 2: 전체 데이터 처리 (fallback)
+        console.log('Falling back to full data update');
+
+        rowData.value.forEach((item, index) => {
+          const currentPrice = currentPrices.value[item.itemCode] || item.price;
+          const profitLoss = calculateProfitLoss(
+            item.price,
+            currentPrice,
+            item.quantity,
+            item.positionType
+          );
+
+          const roundedProfitLoss = Math.round(profitLoss * 100) / 100;
+
+          if (item.currentPrice !== currentPrice || item.profitLoss !== roundedProfitLoss) {
+            const updatedItem = {
+              ...item,
+              currentPrice,
+              profitLoss: roundedProfitLoss,
+            };
+
+            rowData.value[index] = updatedItem;
+            updatedItems.push(updatedItem);
+          }
+        });
+
+        // 트랜잭션 업데이트
+        if (updatedItems.length > 0) {
+          gridApi.value.batchUpdate(() => {
+            gridApi.value.applyTransactionAsync({
+              update: updatedItems,
+            });
+          });
+        }
+      }
+    }
+  } finally {
+    isUpdating.value = false;
+  }
+};
+
+// 실시간 데이터 업데이트 함수
+const updateRealTimeData = () => {
+  updateRealTimePrices();
+  console.log('실시간 데이터 업데이트 완료');
+};
+
+// 컴포넌트 언마운트 시 정리
 onUnmounted(() => {
+  // 실시간 업데이트 타이머 정리
+  if (realTimeInterval) {
+    clearInterval(realTimeInterval);
+    realTimeInterval = null;
+  }
+
+  // 전역 함수 제거
   delete (window as any).handleSettle;
   delete (window as any).handleMarketSettle;
 });
@@ -456,5 +635,22 @@ onUnmounted(() => {
 
 :deep(.splitpanes__splitter:hover) {
   background-color: #6c757d !important;
+}
+
+/* AG Grid 애니메이션 셀 렌더러 커스터마이징 */
+:deep(.ag-theme-alpine) {
+  --ag-value-change-value-highlight-background-color: rgba(34, 197, 94, 0.1);
+  --ag-value-change-delta-down-color: #ef4444;
+  --ag-value-change-delta-up-color: #22c55e;
+}
+
+/* 손익 셀 기본 색상 */
+:deep(.ag-cell[col-id='profitLoss']) {
+  color: #6b7280;
+}
+
+:deep(.ag-cell[col-id='profitLoss'] .ag-cell-value) {
+  font-weight: bold;
+  text-align: right;
 }
 </style>

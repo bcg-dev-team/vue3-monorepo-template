@@ -10,6 +10,7 @@ Vue 3 모노레포의 패키지 구조, 데이터 흐름, 그리고 개발 가�
 @template/types     # 타입 정의 (기반 패키지)
 @template/utils     # 유틸리티 함수 (비즈니스 로직)
 @template/api       # API 통신 (외부 서비스 연동)
+@template/mocks     # API 모킹 (MSW 기반)
 @template/theme     # 디자인 토큰 (스타일링)
 @template/ui        # UI 컴포넌트 (재사용 가능한 컴포넌트)
 ```
@@ -20,16 +21,56 @@ Vue 3 모노레포의 패키지 구조, 데이터 흐름, 그리고 개발 가�
 graph TD
     A[@template/types] --> B[@template/utils]
     A --> C[@template/api]
-    A --> D[@template/theme]
-    A --> E[@template/ui]
+    A --> D[@template/mocks]
+    A --> E[@template/theme]
+    A --> F[@template/ui]
     B --> C
-    D --> E
+    D --> C
+    E --> F
     
-    F[apps/desktop] --> A
-    F --> B
-    F --> C
-    F --> D
-    F --> E
+    G[apps/desktop] --> A
+    G --> B
+    G --> C
+    G --> D
+    G --> E
+    G --> F
+    
+    H[apps/mobile] --> A
+    H --> B
+    H --> C
+    H --> D
+    H --> E
+    H --> F
+    
+    I[apps/sample-desktop] --> A
+    I --> B
+    I --> C
+    I --> D
+    I --> E
+    I --> F
+```
+
+### **TypeScript 프로젝트 참조**
+
+각 패키지는 TypeScript 프로젝트 참조를 통해 안전한 의존성 관리를 제공합니다:
+
+```json
+// packages/ui/tsconfig.json
+{
+  "references": [
+    { "path": "../types" }
+  ]
+}
+
+// apps/desktop/tsconfig.json
+{
+  "references": [
+    { "path": "../../packages/types" },
+    { "path": "../../packages/utils" },
+    { "path": "../../packages/api" },
+    { "path": "../../packages/ui" }
+  ]
+}
 ```
 
 ### **패키지 선택 기준**
@@ -39,6 +80,7 @@ graph TD
 | 타입 정의 | `@template/types` | API 응답 타입, 컴포넌트 Props 타입 |
 | 순수 함수 | `@template/utils` | 날짜 포맷팅, 검증 로직, 암호화 |
 | 외부 API | `@template/api` | HTTP 클라이언트, API 서비스 |
+| API 모킹 | `@template/mocks` | MSW 핸들러, 모킹 데이터 |
 | 디자인 시스템 | `@template/theme` | 색상, 폰트, 간격 토큰 |
 | UI 컴포넌트 | `@template/ui` | 버튼, 입력 필드, 테이블 |
 
@@ -178,6 +220,19 @@ import type { User, PaginatedResponse } from '@template/types'
 4. **디자인 토큰인가?** → `@template/theme`
 5. **재사용 가능한 UI인가?** → `@template/ui`
 
+### **패키지 추가 가이드**
+
+새 패키지를 추가할 때는 다음 단계를 따르세요:
+
+1. **패키지 디렉토리 생성**
+2. **package.json 설정**
+3. **TypeScript 설정 파일 생성** (tsconfig.json, tsconfig.build.json)
+4. **루트 설정 업데이트** (tsconfig.base.json)
+5. **의존성 패키지에 참조 추가**
+6. **빌드 및 테스트**
+
+자세한 내용은 [패키지 관리 가이드](./package-management.md)를 참조하세요.
+
 ### **컴포넌트 설계 원칙**
 
 1. **단일 책임**: 각 컴포넌트는 하나의 명확한 역할만
@@ -214,6 +269,7 @@ describe('Password Strength Analysis', () => {
 
 ## 🔗 관련 문서
 
+- [패키지 관리 가이드](./package-management.md)
 - [순환 의존성 방지](./circular-dependency-prevention.md)
 - [Figma 설정](./figma-setup.md)
 - [모바일 배포](./mobile-deployment.md)

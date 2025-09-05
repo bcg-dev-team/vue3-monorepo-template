@@ -1,4 +1,3 @@
-import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import path from 'path';
 
@@ -20,7 +19,7 @@ export const createCommonConfig = () => {
     build: {
       sourcemap: true,
       target: 'esnext',
-      minify: 'esbuild',
+      minify: 'esbuild' as const,
       rollupOptions: {
         output: {
           manualChunks: {

@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vite --host --mode dev",
     "build": "vite build",
+    "build:analyze": "ANALYZE=true vite build",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path ../../.gitignore",
@@ -18,14 +19,15 @@
   },
   "dependencies": {
     "@template/api": "workspace:*",
+    "@template/mocks": "workspace:*",
     "@template/theme": "workspace:*",
     "@template/types": "workspace:*",
     "@template/ui": "workspace:*",
-    "@template/utils": "workspace:*",
-    "@template/mocks": "workspace:*"
+    "@template/utils": "workspace:*"
   },
   "devDependencies": {
-    "msw": "^2.10.5"
+    "msw": "^2.10.5",
+    "rollup-plugin-visualizer": "^6.0.3"
   },
   "msw": {
     "workerDirectory": [

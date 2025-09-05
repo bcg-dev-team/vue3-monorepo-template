@@ -167,6 +167,7 @@ function initializeSocket(): void {
     connectionState = 'connecting';
     connectionStartTime = Date.now();
 
+    // TODO: 실제 Websocket 연동
     // MSW로 모킹된 Binance WebSocket 연결
     socket = new WebSocket('wss://stream.binance.com/ws/combined');
 

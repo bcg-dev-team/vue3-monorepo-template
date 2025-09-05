@@ -1,29 +1,16 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "target": "es2020",
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "lib": ["es2020"],
     "outDir": "./dist",
     "rootDir": "./src",
+    "noEmit": false,
+    "composite": false,
+    "incremental": false,
     "baseUrl": ".",
     "paths": {
       "*": ["src/*"]
     },
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "noEmit": false,
-    "emitDeclarationOnly": false,
-    "skipLibCheck": true,
-    "strict": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "allowImportingTsExtensions": false,
-    "preserveConstEnums": true
+    "emitDeclarationOnly": false
   },
   "include": [
     "src/**/*"

@@ -15,6 +15,7 @@ vue3-monorepo-template/
 │   ├── api/             # API 통신 모듈
 │   ├── utils/           # 공통 유틸리티 함수
 │   ├── types/           # 공통 타입 정의
+│   ├── mocks/           # API 모킹 (MSW 기반)
 │   └── theme/           # 디자인 토큰 및 테마 관리
 ├── shared/              # 공통 설정 및 도구
 │   ├── config/          # 설정 파일들
@@ -24,12 +25,19 @@ vue3-monorepo-template/
     └── rules/           # 기술별 베스트 프랙티스
 ```
 
-## 📚 패키지별 문서
+## 📚 문서
+
+### 📖 가이드
+- [아키텍처 가이드](./docs/architecture.md) - 프로젝트 구조 및 패키지 관계
+- [패키지 관리 가이드](./docs/package-management.md) - 패키지 추가/수정/삭제 방법
+- [개발 환경 설정](./docs/development-setup.md) - 개발 환경 구축 방법
+- [순환 의존성 방지](./docs/circular-dependency-prevention.md) - 순환 참조 방지 가이드
 
 ### 📦 Packages
 - [@template/types](./packages/types/README.md) - 공통 타입 정의
 - [@template/utils](./packages/utils/README.md) - 공통 유틸리티 함수
 - [@template/api](./packages/api/README.md) - API 통신 라이브러리
+- [@template/mocks](./packages/mocks/README.md) - API 모킹 (MSW 기반)
 - [@template/theme](./packages/theme/README.md) - 디자인 토큰 및 테마 관리
 - [@template/ui](./packages/ui/README.md) - UI 컴포넌트 라이브러리
 

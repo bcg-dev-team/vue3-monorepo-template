@@ -2,15 +2,16 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src",
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true
+    "rootDir": "./src"
   },
   "include": ["src/**/*"],
   "exclude": [
     "dist",
     "node_modules",
     "../../types/src"
+  ],
+  "references": [
+    { "path": "../types" },
+    { "path": "../mocks" }
   ]
 } 

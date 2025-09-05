@@ -9,6 +9,14 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./data/symbols": {
+      "types": "./dist/data/symbols.d.ts",
+      "import": "./dist/data/symbols.js"
+    },
+    "./data/orders": {
+      "types": "./dist/data/orders.d.ts",
+      "import": "./dist/data/orders.js"
     }
   },
   "dependencies": {

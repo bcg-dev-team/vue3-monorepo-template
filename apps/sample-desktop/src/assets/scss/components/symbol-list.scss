@@ -1,0 +1,142 @@
+.symbol-list {
+  height: 100%;
+  background-color: #ffffff;
+  border: 1px solid #dadbdd;
+  display: flex;
+  flex-direction: column;
+  font-family:
+    'Pretendard GOV',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+}
+
+/* 검색 입력창 */
+.search-container {
+  padding: 8px;
+  border-bottom: 1px solid #dadbdd;
+}
+
+/* 종목 리스트 */
+.symbol-list-container {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+}
+
+.symbol-item {
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #ffffff;
+
+  &:hover {
+    background-color: #f8f9fa;
+  }
+
+  &.selected {
+    background-color: #f5f7f9;
+  }
+}
+
+.symbol-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.symbol-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.symbol-icon {
+  width: 30px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.symbol-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #131313;
+  white-space: nowrap;
+}
+
+.symbol-values {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.price-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: right;
+}
+
+.price {
+  font-size: 14px;
+  font-weight: 500;
+  color: #131313;
+  white-space: nowrap;
+}
+
+.change {
+  font-size: 13px;
+  font-weight: 400;
+  width: 56px;
+  white-space: nowrap;
+
+  &.positive {
+    color: #f63338;
+  }
+
+  &.negative {
+    color: #0067ef;
+  }
+}
+
+.favorite-icon {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+/* 스크롤바 스타일 */
+.symbol-list-container {
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #dadbdd;
+    border-radius: 2px;
+
+    &:hover {
+      background: #b4b6bb;
+    }
+  }
+}

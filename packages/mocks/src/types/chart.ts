@@ -66,3 +66,24 @@ export interface Bar {
   close: number;
   volume: number;
 }
+
+// 거래 심볼 타입
+export interface TradingSymbol {
+  symbol: string;
+  ticker: string;
+  description: string;
+  exchange: string;
+  type: string;
+}
+
+// 주문 데이터 타입
+export interface OrderData {
+  id: number;
+  symbol: string;
+  type: 'Buy' | 'Sell';
+  price: number;
+  quantity: number;
+  status: 'Open' | 'Closed' | 'Pending' | 'Cancelled';
+  time: string;
+  createdAt: number;
+}

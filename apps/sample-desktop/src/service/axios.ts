@@ -1,7 +1,9 @@
+import LocalStorageService from '@/service/localStorage/local-storage.service';
+import LocalStorageKey from '@/service/localStorage/local-storage-key';
 import { createAxiosInstance, AxiosError } from '@template/api';
 import router from '@/router';
 
-const tokenResolver = () => undefined; // 실제 토큰이 필요할 때 구현
+const tokenResolver = () => LocalStorageService.getItem(LocalStorageKey.ACCESS_TOKEN) || undefined;
 
 const errorHandler = async (error: AxiosError) => {
   if (error.response) {
@@ -14,8 +16,28 @@ const errorHandler = async (error: AxiosError) => {
         break;
       case 401:
         // Unauthorized 처리 (로그인 페이지로 리다이렉트 등)
-        alert('인증되지 않았습니다.');
-        await router.push('/login');
+        if (error.code === 'TOKEN_EXPIRED') {
+          try {
+            //TODO: 올바른 토큰 갱신 로직 구현 필요 - 현재 임시 구현
+            const result = await api.post('/auth/refresh');
+
+            if (result.status === 200) {
+              LocalStorageService.setItem(LocalStorageKey.ACCESS_TOKEN, result.data.accessToken);
+
+              // 토큰 갱신 후 원래 요청을 재시도
+              if (error.config) {
+                // 새로운 토큰으로 원래 요청 재시도
+                return api.request(error.config);
+              }
+            } else {
+              console.error('토큰 갱신 실패:', error);
+              await router.push('/login');
+            }
+          } catch (error) {
+            console.error('토큰 갱신 요청 실패:', error);
+            await router.push('/login');
+          }
+        }
         break;
       case 403:
         // Forbidden 처리

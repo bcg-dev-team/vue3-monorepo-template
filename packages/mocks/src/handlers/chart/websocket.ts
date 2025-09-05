@@ -15,10 +15,84 @@ class MockWebSocketManager {
   private lastBars = new Map<string, Bar>();
 
   private basePrices: Record<string, number> = {
-    BTCEUR: 45000,
-    BTCUSD: 50000,
-    ETHEUR: 2800,
+    // 실제 심볼 리스트의 첫 번째 심볼들
+    EURTRY: 32.0,
+    USDSEK: 10.8,
+    SUI30: 12000,
+    AUDJPY: 97.5,
+    GBPJPY: 187.5,
+    AAPL: 180.0,
+    XRPUSD: 0.5,
+    GBPAUD: 1.92,
+    NOKSEK: 0.95,
+    CHFPLN: 4.16,
+    US30: 35000,
+    UKOil: 75.0,
+    EURNZD: 1.75,
+    GBPNOK: 13.2,
+    AUDCAD: 0.88,
+    EURHUF: 390.0,
+    XAGUSD: 25.0,
+    GBPEUR: 1.19,
+    NZDCAD: 0.81,
+    JPN225: 33000,
+    EURUSD: 1.05,
+    ESP35: 9500,
+    EURHKD: 8.2,
+    AUDCHF: 0.585,
+    DKKJPY: 22.0,
+    NZDUSD: 0.6,
+    GER30: 16000,
+    CHFNOK: 11.5,
+    GBPCAD: 1.69,
+    EURSEK: 11.4,
+    EURCAD: 1.42,
+    EURGBP: 0.84,
+    GBPDKK: 8.7,
+    GBPCHF: 1.125,
+    MXNJPY: 8.5,
+    GBPSEK: 13.5,
+    HKG33: 18000,
+    USDCZK: 23.0,
+    PLNJPY: 37.5,
+    USDCAD: 1.35,
+    AUS200: 7500,
+    USDDKK: 6.9,
+    TRYJPY: 4.8,
+    EURAUD: 1.62,
+    EURSGD: 1.44,
+    CHFSEK: 12.6,
+    NZDAUD: 1.08,
+    GBPUSD: 1.25,
+    USOil: 75.0,
+    EURNOK: 11.2,
+    CADJPY: 111.0,
+    NZDJPY: 90.0,
+    GBPPLN: 4.95,
+    FRA40: 7500,
+    CHFJPY: 166.7,
+    EURCHF: 0.945,
+    GBPNZD: 2.08,
+    EURPLN: 4.16,
+    CADCHF: 0.67,
+    EURZAR: 19.5,
+    EURJPY: 157.5,
+    USDCHF: 0.9,
+    EUSTX50: 4500,
+    XAUUSD: 2000.0,
+    UK100: 7500,
+    USDJPY: 150.0,
+    USDNOK: 10.7,
+    USDSGD: 1.37,
+    EURCZK: 24.5,
+    NOKDKK: 0.65,
+    USDTRY: 30.0,
+    NZDCHF: 0.54,
+    SGDJPY: 109.5,
+    USDHKD: 7.8,
     ETHUSD: 3000,
+    AUDUSD: 0.65,
+    NAS100: 15000,
   };
 
   subscribe(symbol: string, callback: (data: any) => void): void {
@@ -59,7 +133,7 @@ class MockWebSocketManager {
   }
 
   private startPriceUpdates(symbol: string): void {
-    const basePrice = this.basePrices[symbol] || 1000;
+    const basePrice = this.basePrices[symbol] || this.getDefaultPrice(symbol);
     this.currentPrices.set(symbol, basePrice);
 
     const now = Date.now();
@@ -92,8 +166,41 @@ class MockWebSocketManager {
     }
   }
 
+  private getDefaultPrice(symbol: string): number {
+    // 심볼 타입에 따른 기본 가격 설정
+    if (symbol.includes('BTC') || symbol.includes('ETH') || symbol.includes('XRP')) {
+      return symbol.includes('BTC') ? 50000 : symbol.includes('ETH') ? 3000 : 0.5;
+    }
+    if (
+      symbol.includes('Oil') ||
+      symbol.includes('Gold') ||
+      symbol.includes('XAU') ||
+      symbol.includes('XAG')
+    ) {
+      return symbol.includes('XAU') ? 2000 : symbol.includes('XAG') ? 25 : 75;
+    }
+    if (
+      symbol.includes('AAPL') ||
+      symbol.includes('US30') ||
+      symbol.includes('NAS100') ||
+      symbol.includes('JPN225')
+    ) {
+      return symbol.includes('AAPL')
+        ? 180
+        : symbol.includes('US30')
+          ? 35000
+          : symbol.includes('NAS100')
+            ? 15000
+            : 33000;
+    }
+    if (symbol.length === 6 && /^[A-Z]{6}$/.test(symbol)) {
+      return 1.0; // 외환 기본값
+    }
+    return 1000; // 기본값
+  }
+
   private generatePriceUpdate(symbol: string): void {
-    const currentPrice = this.currentPrices.get(symbol) || 1000;
+    const currentPrice = this.currentPrices.get(symbol) || this.getDefaultPrice(symbol);
     const callbacks = this.subscriptions.get(symbol);
 
     if (!callbacks || callbacks.size === 0) {

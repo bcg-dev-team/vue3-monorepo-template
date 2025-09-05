@@ -264,7 +264,7 @@ function getSupportedResolutions(symbol: string): string[] {
 // TODO: API 호출 방식으로 변경
 // Obtains all symbols for all exchanges supported by CryptoCompare API
 // MSW 환경에서 사용할 심볼 목록 (모킹된 데이터)
-async function getAllSymbols(): Promise<TradingSymbol[]> {
+export async function getAllSymbols(): Promise<TradingSymbol[]> {
   // MSW 환경에서는 하드코딩된 심볼 목록 사용
   return [
     {

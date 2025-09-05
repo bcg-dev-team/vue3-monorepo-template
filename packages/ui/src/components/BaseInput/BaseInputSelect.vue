@@ -3,8 +3,8 @@
   BaseInput을 확장한 셀렉트 박스 컴포넌트
 -->
 <script setup lang="ts">
+import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
-import BaseInput from './BaseInput.vue';
 import { computed } from 'vue';
 
 /**
@@ -24,6 +24,7 @@ import { computed } from 'vue';
 interface Option {
   value: string;
   label: string;
+  disabled?: boolean;
 }
 
 interface Props {
@@ -61,8 +62,8 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  modelValue: '',
-  placeholder: '',
+  modelValue: undefined,
+  placeholder: '선택하세요',
   size: 'sm',
   disabled: false,
   error: false,
@@ -76,62 +77,87 @@ const emit = defineEmits<{
   (e: 'blur', event: FocusEvent): void;
 }>();
 
-// 선택된 옵션 라벨
-const selectedLabel = computed(() => {
-  if (!props.modelValue) return '';
-  const option = props.options.find((opt) => opt.value === props.modelValue);
-  return option ? option.label : props.modelValue;
+// 선택된 옵션 객체
+const selectedOption = computed({
+  get() {
+    return props.options.find((opt) => opt.value === props.modelValue) || null;
+  },
+  set(option: Option | null) {
+    if (option) {
+      emit('update:modelValue', option.value);
+    }
+  },
 });
 
-// 아이콘 크기 계산
-const iconSize = computed(() => {
-  return props.size === 'sm' ? 'sm' : 'md';
+// 버튼 클래스
+const buttonClasses = computed(() => {
+  const base =
+    'relative w-full min-w-0 rounded-md transition-all duration-150 bg-white border border-solid flex items-center justify-between tracking-[-0.35px]';
+  const size =
+    props.size === 'sm'
+      ? 'px-[15px] py-3 text-[14px] leading-[16px]'
+      : 'px-[15px] py-3.5 text-[16px] leading-[20px]';
+
+  let state = '';
+  if (props.disabled) {
+    state =
+      'bg-input-bg-disabled border-input-border-disabled text-input-text-disable cursor-not-allowed';
+  } else {
+    state = 'border-input-border-static';
+  }
+
+  const textColor = selectedOption.value ? 'text-input-text-static' : 'text-input-text-placeholder';
+
+  return `${base} ${size} ${state} ${textColor}`;
 });
-
-// 이벤트 핸들러
-const handleSelect = (event: Event) => {
-  const target = event.target as HTMLSelectElement;
-  emit('update:modelValue', target.value);
-};
-
-const handleFocus = (event: FocusEvent) => {
-  emit('focus', event);
-};
-
-const handleBlur = (event: FocusEvent) => {
-  emit('blur', event);
-};
 </script>
 
 <template>
-  <BaseInput
-    :model-value="selectedLabel"
-    :placeholder="placeholder"
-    :size="size"
-    :disabled="disabled"
-    :error="error"
-    :error-message="errorMessage"
-    readonly
-    @focus="handleFocus"
-    @blur="handleBlur"
-  >
-    <template #suffix>
-      <BaseIcon name="arrow-down" :size="iconSize" :color="disabled ? 'disabled' : 'default'" />
-    </template>
-  </BaseInput>
+  <div class="w-full">
+    <Listbox v-model="selectedOption" :disabled="disabled" v-slot="{ open }">
+      <div class="relative w-full">
+        <ListboxButton
+          :class="buttonClasses"
+          @focus="emit('focus', $event)"
+          @blur="emit('blur', $event)"
+          style="width: 100% !important; max-width: 100% !important"
+        >
+          <span class="truncate">{{ selectedOption?.label || placeholder }}</span>
+          <BaseIcon
+            name="arrow-down"
+            :size="size === 'sm' ? 'sm' : 'md'"
+            :color="disabled ? 'disabled' : 'default'"
+            :class="{ 'rotate-180': open }"
+            class="ml-2 flex-shrink-0 transition-transform duration-200"
+          />
+        </ListboxButton>
 
-  <!-- 실제 셀렉트 요소 (숨김) -->
-  <select
-    :value="modelValue"
-    :disabled="disabled"
-    class="base-input-select-hidden"
-    @change="handleSelect"
-    @focus="handleFocus"
-    @blur="handleBlur"
-  >
-    <option value="" disabled>{{ placeholder }}</option>
-    <option v-for="option in options" :key="option.value" :value="option.value">
-      {{ option.label }}
-    </option>
-  </select>
+        <ListboxOptions
+          class="border-input-border-static absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white py-1 shadow-lg"
+        >
+          <ListboxOption
+            v-for="option in options"
+            :key="option.value"
+            :value="option"
+            :disabled="option.disabled"
+            v-slot="{ active, selected }"
+          >
+            <li
+              :class="[
+                'relative cursor-default select-none py-2 pl-3 pr-9 text-[13px] leading-[16px] tracking-[-0.35px]',
+                option.disabled
+                  ? 'text-input-text-disable cursor-not-allowed opacity-50'
+                  : active
+                    ? 'bg-blue-50 text-blue-900'
+                    : 'text-input-text-static',
+                selected && !option.disabled ? 'font-medium' : '',
+              ]"
+            >
+              <span class="block truncate">{{ option.label }}</span>
+            </li>
+          </ListboxOption>
+        </ListboxOptions>
+      </div>
+    </Listbox>
+  </div>
 </template>

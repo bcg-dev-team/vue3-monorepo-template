@@ -48,7 +48,7 @@ const router = useRouter();
 const isChecked = ref<boolean>(false);
 
 const handleLogin = () => {
-  LocalStorageService.setItem(LocalStorageKey.TOKEN, 'Authorized Token');
+  LocalStorageService.setItem(LocalStorageKey.ACCESS_TOKEN, 'Authorized Token');
   router.push({ name: 'home' });
 };
 </script>

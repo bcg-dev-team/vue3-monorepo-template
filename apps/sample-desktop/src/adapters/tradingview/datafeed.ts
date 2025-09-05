@@ -253,11 +253,37 @@ const configurationData: TradingViewConfiguration = {
 
 // 시간 간격 매핑 함수
 function getSupportedResolutions(symbol: string): string[] {
-  // ETH/EUR에 대해서는 이미지 메시지와 일치하는 시간 간격 설정
-  if (symbol === 'ETH/EUR') {
+  // 암호화폐는 모든 시간 간격 지원
+  if (symbol.includes('BTC') || symbol.includes('ETH') || symbol.includes('XRP')) {
     return ['1', '5', '15', '30', '60', '240', '1D', '1W', '1M'];
   }
-  // 다른 심볼들은 기본 설정 사용
+
+  // 외환은 분 단위 제한
+  if (symbol.length === 6 && /^[A-Z]{6}$/.test(symbol)) {
+    return ['5', '15', '30', '60', '240', '1D', '1W', '1M'];
+  }
+
+  // 주식은 일 단위 이상
+  if (
+    symbol.includes('AAPL') ||
+    symbol.includes('US30') ||
+    symbol.includes('NAS100') ||
+    symbol.includes('JPN225')
+  ) {
+    return ['60', '240', '1D', '1W', '1M'];
+  }
+
+  // 상품은 일 단위 이상
+  if (
+    symbol.includes('Oil') ||
+    symbol.includes('Gold') ||
+    symbol.includes('XAU') ||
+    symbol.includes('XAG')
+  ) {
+    return ['60', '240', '1D', '1W', '1M'];
+  }
+
+  // 기본 설정 사용
   return configurationData.supported_resolutions;
 }
 
@@ -265,37 +291,44 @@ function getSupportedResolutions(symbol: string): string[] {
 // Obtains all symbols for all exchanges supported by CryptoCompare API
 // MSW 환경에서 사용할 심볼 목록 (모킹된 데이터)
 export async function getAllSymbols(): Promise<TradingSymbol[]> {
-  // MSW 환경에서는 하드코딩된 심볼 목록 사용
-  return [
-    {
-      symbol: 'BTC/EUR',
-      ticker: 'BTC/EUR',
-      description: 'Bitcoin / Euro',
-      exchange: 'Bitfinex',
-      type: 'crypto',
-    },
-    {
-      symbol: 'BTC/USD',
-      ticker: 'BTC/USD',
-      description: 'Bitcoin / US Dollar',
-      exchange: 'Bitfinex',
-      type: 'crypto',
-    },
-    {
-      symbol: 'ETH/EUR',
-      ticker: 'ETH/EUR',
-      description: 'Ethereum / Euro',
-      exchange: 'Bitfinex',
-      type: 'crypto',
-    },
-    {
-      symbol: 'ETH/USD',
-      ticker: 'ETH/USD',
-      description: 'Ethereum / US Dollar',
-      exchange: 'Bitfinex',
-      type: 'crypto',
-    },
-  ];
+  try {
+    // mocks 패키지에서 실제 심볼 목록 가져오기
+    const { getAllSymbols } = await import('@template/mocks');
+    return getAllSymbols();
+  } catch (error) {
+    console.error('Failed to load symbols from mocks:', error);
+    // 에러 발생 시 기본 심볼 목록 사용
+    return [
+      {
+        symbol: 'BTCUSD',
+        ticker: 'BTCUSD',
+        description: 'Bitcoin / US Dollar',
+        exchange: 'Crypto',
+        type: 'crypto',
+      },
+      {
+        symbol: 'ETHUSD',
+        ticker: 'ETHUSD',
+        description: 'Ethereum / US Dollar',
+        exchange: 'Crypto',
+        type: 'crypto',
+      },
+      {
+        symbol: 'EURUSD',
+        ticker: 'EURUSD',
+        description: 'Euro / US Dollar',
+        exchange: 'Forex',
+        type: 'forex',
+      },
+      {
+        symbol: 'GBPUSD',
+        ticker: 'GBPUSD',
+        description: 'British Pound / US Dollar',
+        exchange: 'Forex',
+        type: 'forex',
+      },
+    ];
+  }
 }
 
 export default datafeed;

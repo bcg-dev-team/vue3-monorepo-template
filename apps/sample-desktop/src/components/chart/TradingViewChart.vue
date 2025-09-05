@@ -235,36 +235,6 @@ onMounted(() => {
   });
 });
 
-// 심볼 변경 감시
-watch(
-  () => props.symbol,
-  (newSymbol) => {
-    if (tvWidget.value && tvWidget.value.chart && typeof tvWidget.value.setSymbol === 'function') {
-      try {
-        console.log('[TradingView] 심볼 변경:', newSymbol);
-        tvWidget.value.setSymbol(newSymbol, props.interval);
-      } catch (error) {
-        console.error('[TradingView] 심볼 변경 중 오류 발생:', error);
-      }
-    }
-  }
-);
-
-// 인터벌 변경 감시
-watch(
-  () => props.interval,
-  (newInterval) => {
-    if (tvWidget.value && tvWidget.value.chart && typeof tvWidget.value.setSymbol === 'function') {
-      try {
-        console.log('[TradingView] 인터벌 변경:', newInterval);
-        tvWidget.value.setSymbol(props.symbol, newInterval);
-      } catch (error) {
-        console.error('[TradingView] 인터벌 변경 중 오류 발생:', error);
-      }
-    }
-  }
-);
-
 // 차트 마크업 테이블 숨기기 (타입 안전하게 수정)
 const rightScale = document.querySelector('.chart-markup-table') as HTMLElement;
 if (rightScale) {
@@ -283,6 +253,26 @@ const handleResize = () => {
 
 // 윈도우 리사이즈 이벤트 리스너 추가
 window.addEventListener('resize', handleResize);
+
+// 차트 심볼 변경 메서드 (TradingView 위젯의 setSymbol을 래핑)
+const changeChartSymbol = (symbol: string) => {
+  if (tvWidget.value && typeof tvWidget.value.setSymbol === 'function') {
+    try {
+      console.log('[TradingView] 차트 심볼 변경:', symbol);
+      tvWidget.value.setSymbol(symbol, props.interval);
+      currentSymbol.value = symbol;
+    } catch (error) {
+      console.error('[TradingView] 차트 심볼 변경 중 오류 발생:', error);
+    }
+  } else {
+    console.warn('[TradingView] 차트 심볼 변경 메서드를 사용할 수 없습니다.');
+  }
+};
+
+// 컴포넌트 메서드 노출
+defineExpose({
+  changeChartSymbol,
+});
 
 // 컴포넌트 언마운트 시 이벤트 리스너 정리
 onUnmounted(() => {

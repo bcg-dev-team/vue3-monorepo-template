@@ -1,25 +1,16 @@
 <template>
-  <div class="order-page">
+  <div class="order-page min-w-[1920px]">
     <!-- 좌측(20%) + 우측(80%) 분할 -->
     <BaseTwoWaySplitPane
       direction="horizontal"
-      :min-sizes="{ first: 20, second: 80 }"
-      :max-sizes="{ first: 20, second: 80 }"
+      :min-sizes="{ first: 15, second: 85 }"
+      :max-sizes="{ first: 15, second: 85 }"
       :push-other-panes="false"
     >
-      <!-- 좌측 패널: 주문 목록 (20%) -->
+      <!-- 좌측 패널: 종목 리스트 (15%) -->
       <template #first>
         <div class="order-list-panel">
-          <div class="panel-header">
-            <h2 class="panel-title">📋 종목 리스트</h2>
-            <p class="panel-subtitle">전체 종목 리스트를 확인하세요</p>
-          </div>
-          <div class="panel-content">
-            <div class="placeholder-content">
-              <div class="placeholder-icon">📋</div>
-              <p>주문 목록이 여기에 표시됩니다</p>
-            </div>
-          </div>
+          <SymbolList :selected-symbol="selectedSymbol" @symbol-select="handleSymbolSelect" />
         </div>
       </template>
 
@@ -50,7 +41,11 @@
                       <p class="panel-subtitle">주문 데이터 시각화</p>
                     </div> -->
                     <div class="panel-content">
-                      <TradingViewChart :symbol="'ETH/EUR'" :interval="'1'" />
+                      <TradingViewChart
+                        ref="tradingViewChartRef"
+                        :symbol="selectedSymbol"
+                        :interval="'1'"
+                      />
                     </div>
                   </div>
                 </template>
@@ -103,8 +98,27 @@
 <script setup lang="ts">
 import TradingViewChart from '@/components/chart/TradingViewChart.vue';
 import { BaseTwoWaySplitPane, BaseTable } from '@template/ui';
+import SymbolList from '@/components/order/SymbolList.vue';
 import RightPanel from '@/components/order/RightPanel.vue';
 import type { TableHeader, TableRow } from '@template/ui';
+import type { TradingSymbol } from '@/types/tradingview';
+import { ref } from 'vue';
+
+// 상태 관리
+const selectedSymbol = ref('ETH/EUR');
+const tradingViewChartRef = ref<InstanceType<typeof TradingViewChart> | null>(null);
+
+// 이벤트 핸들러
+const handleSymbolSelect = (symbol: TradingSymbol) => {
+  selectedSymbol.value = symbol.ticker;
+
+  if (
+    tradingViewChartRef.value &&
+    typeof tradingViewChartRef.value.changeChartSymbol === 'function'
+  ) {
+    tradingViewChartRef.value.changeChartSymbol(symbol.ticker);
+  }
+};
 
 const orderTableHeaders: TableHeader[] = [
   { key: 'id', title: 'ID', width: '80px' },

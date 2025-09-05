@@ -164,22 +164,108 @@ function getBasePrice(fsym: string, tsym: string): number {
 
 /**
  * 심볼별 기본 가격 설정
+ * 실제 심볼 목록을 기반으로 한 현실적인 가격 설정
  */
 const symbolBasePrices: Record<string, number> = {
-  // 정확한 심볼 매칭 (우선순위 높음)
-  ETHEUR: 2800,
-  ETHUSD: 3000,
-  BTCEUR: 45000,
+  // 암호화폐 (Crypto)
   BTCUSD: 50000,
+  ETHUSD: 3000,
+  XRPUSD: 0.5,
 
-  // 부분 매칭 (기존 호환성)
-  ETH: 3000,
+  // 외환 (Forex) - 주요 통화쌍
+  EURUSD: 1.05,
+  GBPUSD: 1.25,
+  USDJPY: 150.0,
+  USDCHF: 0.9,
+  USDCAD: 1.35,
+  AUDUSD: 0.65,
+  NZDUSD: 0.6,
+  EURGBP: 0.84,
+  EURJPY: 157.5,
+  EURCHF: 0.945,
+  EURCAD: 1.42,
+  EURAUD: 1.62,
+  EURNZD: 1.75,
+  GBPJPY: 187.5,
+  GBPCHF: 1.125,
+  GBPCAD: 1.69,
+  GBPAUD: 1.92,
+  GBPNZD: 2.08,
+  AUDJPY: 97.5,
+  AUDCHF: 0.585,
+  AUDCAD: 0.88,
+  AUDNZD: 1.08,
+  NZDJPY: 90.0,
+  NZDCHF: 0.54,
+  NZDCAD: 0.81,
+  CADJPY: 111.0,
+  CADCHF: 0.67,
+  CHFJPY: 166.7,
+
+  // 기타 외환
+  EURTRY: 32.0,
+  USDSEK: 10.8,
+  NOKSEK: 0.95,
+  GBPNOK: 13.2,
+  EURHUF: 390.0,
+  GBPEUR: 1.19,
+  EURHKD: 8.2,
+  DKKJPY: 22.0,
+  CHFNOK: 11.5,
+  EURSEK: 11.4,
+  GBPDKK: 8.7,
+  MXNJPY: 8.5,
+  GBPSEK: 13.5,
+  HKG33: 18000,
+  USDCZK: 23.0,
+  PLNJPY: 37.5,
+  AUS200: 7500,
+  USDDKK: 6.9,
+  TRYJPY: 4.8,
+  EURSGD: 1.44,
+  CHFSEK: 12.6,
+  NZDAUD: 1.08,
+  USOil: 75.0,
+  EURNOK: 11.2,
+  GBPPLN: 4.95,
+  FRA40: 7500,
+  EURPLN: 4.16,
+  EURZAR: 19.5,
+  EUSTX50: 4500,
+  XAUUSD: 2000.0,
+  UK100: 7500,
+  USDNOK: 10.7,
+  USDSGD: 1.37,
+  EURCZK: 24.5,
+  NOKDKK: 0.65,
+  USDTRY: 30.0,
+  SGDJPY: 109.5,
+  USDHKD: 7.8,
+
+  // 주식 (Stock)
+  AAPL: 180.0,
+
+  // 상품 (Commodity)
+  UKOil: 75.0,
+  XAGUSD: 25.0,
+
+  // 지수 (Index)
+  US30: 35000,
+  ESP35: 9500,
+  SUI30: 12000,
+
+  // 부분 매칭 (기존 호환성 유지)
   BTC: 50000,
-
-  // 기타
-  ADA: 0.5,
-  DOT: 25,
-  SOL: 100,
+  ETH: 3000,
+  XRP: 0.5,
+  EUR: 1.05,
+  GBP: 1.25,
+  USD: 1.0,
+  JPY: 150.0,
+  CHF: 0.9,
+  CAD: 1.35,
+  AUD: 0.65,
+  NZD: 0.6,
 };
 
 /**
@@ -189,8 +275,8 @@ export const chartHttpHandlers = [
   // 통합 data/history API 모킹
   http.get('https://min-api.cryptocompare.com/data/history', ({ request }) => {
     const url = new URL(request.url);
-    const fsym = url.searchParams.get('fsym') || 'BTC';
-    const tsym = url.searchParams.get('tsym') || 'USD';
+    const fsym = url.searchParams.get('fsym') || 'EUR';
+    const tsym = url.searchParams.get('tsym') || 'TRY';
     const resolution = url.searchParams.get('resolution') || '1D';
     const limit = parseInt(url.searchParams.get('limit') || getDefaultLimit(resolution).toString());
     const toTs = url.searchParams.get('toTs');

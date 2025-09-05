@@ -27,5 +27,5 @@ import LocalStorageKey from '@/service/localStorage/local-storage-key';
 import NavBar from '@/components/layout/fragments/NavBar.vue';
 import { ref } from 'vue';
 
-const isLogin = ref(!!LocalStorageService.getItem(LocalStorageKey.TOKEN));
+const isLogin = ref(!!LocalStorageService.getItem(LocalStorageKey.ACCESS_TOKEN));
 </script>

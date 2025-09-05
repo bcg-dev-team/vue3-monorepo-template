@@ -1,3 +1,3 @@
 export default class LocalStorageKey {
-  static TOKEN = 'token';
+  static ACCESS_TOKEN = 'access_token';
 }

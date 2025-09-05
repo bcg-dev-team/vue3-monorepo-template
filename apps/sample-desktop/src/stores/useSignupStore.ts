@@ -54,7 +54,7 @@ export const useSignupStore = defineStore('signup', () => {
   });
 
   /**
-   *
+   * 개인 회원가입에 필요한 정보를 반환합니다.
    */
   const getIndividualSignupInfo = computed((): IndividualMemberJoinRequest => {
     // 필수 파일이 업로드되지 않은 경우 에러 발생
@@ -66,13 +66,16 @@ export const useSignupStore = defineStore('signup', () => {
       ...userInfo,
       ...individualInfo,
 
-      zipCode: '', // TODO: 제거될 예정
+      zipCode: '',
       birthAsLocalDate: '', // TODO: 제거될 예정
       idCard: individualInfo.idCard, // File 타입으로 명시적 할당
       additionalIdDocument: individualInfo.additionalIdDocument || undefined,
     };
   });
 
+  /**
+   * 법인 회원가입에 필요한 정보를 반환합니다.
+   */
   const getCorporateSignupInfo = computed((): CorporateMemberJoinRequest => {
     // 필수 파일이 업로드되지 않은 경우 에러 발생
     if (
@@ -90,7 +93,7 @@ export const useSignupStore = defineStore('signup', () => {
     return {
       ...userInfo,
       ...corporateInfo,
-      zipCode: '', // TODO: 제거될 예정
+      zipCode: '',
       representativeCount: 0, // TODO: 제거될 예정
       representativeBirthAsLocalDate: '', // TODO: 제거될 예정
       addressEn: '', // TODO: 제거될 예정

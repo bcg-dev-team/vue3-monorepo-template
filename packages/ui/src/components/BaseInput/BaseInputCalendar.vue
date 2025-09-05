@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ElDatePicker } from 'element-plus';
 import 'element-plus/dist/index.css';
-import { h, shallowRef } from 'vue';
 
 interface Props {
   /**
@@ -36,31 +35,7 @@ const emit = defineEmits<{
   (e: 'change', value: string | null): void;
 }>();
 
-const customPrefix = shallowRef({
-  render() {
-    return h('p', '');
-  },
-});
-
-const customSuffix = shallowRef({
-  render() {
-    return h('p', '');
-  },
-});
-
 const handleDateChange = (value: string | null) => {
-  if (value) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const selectedDate = new Date(value);
-
-    if (selectedDate > today) {
-      emit('update:modelValue', null);
-      emit('change', null);
-      return;
-    }
-  }
-
   emit('update:modelValue', value);
   emit('change', value);
 };
@@ -74,12 +49,11 @@ const handleDateChange = (value: string | null) => {
     class="input-date"
     format="YYYY-MM-DD"
     value-format="YYYY-MM-DD"
-    :prefix-icon="customPrefix"
-    :suffix-icon="customSuffix"
     :disabled="props.disabled"
     :disabled-date="props.disabledDate"
     @update:model-value="handleDateChange"
     :editable="false"
+    :clearable="false"
   />
 </template>
 
@@ -88,7 +62,7 @@ const handleDateChange = (value: string | null) => {
   width: 100%;
   height: 42px;
   .el-input__wrapper {
-    height: 48px;
+    height: 42px;
     border-radius: 6px !important;
     border: 1px solid var(--input-color-border-static) !important;
 
@@ -99,28 +73,32 @@ const handleDateChange = (value: string | null) => {
     .el-input__prefix {
       display: none;
     }
+
     .el-input__inner {
       margin-left: 15px;
+      padding-right: 40px;
       font-size: 16px;
       border: none !important;
     }
 
     .el-input__suffix {
+      position: relative;
       display: flex;
       align-items: center;
       height: 100%;
 
       &::after {
         content: '';
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        /* TODO: 이미지 불러오기 안됨. 수정 필요 */
-        /* background-image: url('/packages/ui/src/assets/icons/calendar.svg'); */
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 24px;
+        height: 24px;
+        background-image: url('../../assets/icons/calendar.svg');
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
-        margin-right: 10px;
       }
     }
   }

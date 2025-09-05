@@ -20,7 +20,7 @@ interface Emits {
 const emit = defineEmits<Emits>();
 
 const props = withDefaults(defineProps<Props>(), {
-  symbol: 'ETH/EUR', // datafeed.js의 getAllSymbols()와 일치하도록 수정
+  symbol: 'EURTRY', // 심볼 리스트의 첫 번째 심볼
   interval: '1', // 1분 간격으로 변경 (지원되는 시간 간격 중 하나)
 });
 
@@ -45,6 +45,18 @@ watch(
     }
 
     currentSymbol.value = newSymbol;
+
+    // 실제 차트 심볼 변경 로직 추가
+    if (tvWidget.value && typeof tvWidget.value.setSymbol === 'function') {
+      try {
+        console.log('[TradingView] 차트 심볼 변경 실행:', newSymbol);
+        tvWidget.value.setSymbol(newSymbol, props.interval);
+      } catch (error) {
+        console.error('[TradingView] 차트 심볼 변경 중 오류 발생:', error);
+      }
+    } else {
+      console.warn('[TradingView] 차트 위젯이 준비되지 않았습니다.');
+    }
   }
 );
 

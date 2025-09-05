@@ -41,11 +41,9 @@
           </div>
           <div class="symbol-values">
             <div class="price-info">
-              <!-- FIXME: 실제 가격 데이터 연동 필요 -->
-              <div class="price">1.17100</div>
-              <div class="change" :class="getChangeClass()">
-                <!-- FIXME: 실제 변동률 데이터 연동 필요 -->
-                {{ getRandomChange() }}%
+              <div class="price">{{ getSymbolPrice(symbol.ticker) }}</div>
+              <div class="change" :class="getChangeClass(symbol.ticker)">
+                {{ getSymbolChange(symbol.ticker) }}%
               </div>
             </div>
             <div class="favorite-icon" @click.stop="toggleFavorite(symbol.ticker)">
@@ -71,6 +69,7 @@
 import { BaseTabs, BaseInput, BaseIcon } from '@template/ui';
 import type { TradingSymbol } from '@/types/tradingview';
 import { ref, computed, onMounted, markRaw } from 'vue';
+import type { SymbolPrice } from '@template/mocks';
 import type { TabItem } from '@template/ui';
 
 interface Props {
@@ -82,7 +81,7 @@ interface Emits {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  selectedSymbol: 'ETH/EUR',
+  selectedSymbol: 'EURTRY',
 });
 
 const emit = defineEmits<Emits>();
@@ -91,6 +90,7 @@ const emit = defineEmits<Emits>();
 const activeTab = ref('all');
 const searchQuery = ref('');
 const symbols = ref<TradingSymbol[]>([]);
+const symbolPrices = ref<Map<string, SymbolPrice>>(new Map());
 const favorites = ref<Set<string>>(new Set());
 
 // BaseTabs용 탭 데이터 (빈 컴포넌트로 설정)
@@ -118,7 +118,8 @@ const filteredSymbols = computed(() => {
     filtered = filtered.filter((symbol) => favorites.value.has(symbol.ticker));
   } else if (activeTab.value === 'holding') {
     // FIXME: 보유 종목 데이터 연동 필요
-    filtered = filtered.filter((symbol) => symbol.ticker.includes('BTC'));
+    // 현재는 암호화폐만 보유 종목으로 표시
+    filtered = filtered.filter((symbol) => symbol.type === 'crypto');
   }
 
   // 검색 필터링
@@ -155,40 +156,84 @@ const isFavorite = (ticker: string) => {
   return favorites.value.has(ticker);
 };
 
-const getChangeClass = () => {
-  // FIXME: 실제 변동률에 따른 클래스 적용 필요
-  return Math.random() > 0.5 ? 'positive' : 'negative';
+const getSymbolPrice = (ticker: string): string => {
+  const priceData = symbolPrices.value.get(ticker);
+  if (!priceData) return '0.00';
+
+  // 가격 포맷팅 (소수점 자릿수 조정)
+  if (priceData.price < 1) {
+    return priceData.price.toFixed(4);
+  } else if (priceData.price < 100) {
+    return priceData.price.toFixed(2);
+  } else {
+    return priceData.price.toFixed(0);
+  }
 };
 
-const getRandomChange = () => {
-  // FIXME: 실제 변동률 데이터로 교체 필요
-  const change = (Math.random() - 0.5) * 2;
+const getSymbolChange = (ticker: string): string => {
+  const priceData = symbolPrices.value.get(ticker);
+  if (!priceData) return '0.00';
+
+  const change = priceData.changePercent;
   return change > 0 ? `+${change.toFixed(2)}` : change.toFixed(2);
+};
+
+const getChangeClass = (ticker: string): string => {
+  const priceData = symbolPrices.value.get(ticker);
+  if (!priceData) return 'neutral';
+
+  return priceData.changePercent > 0
+    ? 'positive'
+    : priceData.changePercent < 0
+      ? 'negative'
+      : 'neutral';
 };
 
 // 데이터 로드
 const loadSymbols = async () => {
   try {
-    // getAllSymbols 함수를 직접 import하여 사용
-    const { getAllSymbols } = await import('@/adapters/tradingview/datafeed');
-    symbols.value = await getAllSymbols();
+    // mocks 패키지에서 심볼 목록과 가격 데이터 가져오기
+    const { getAllSymbols, getAllSymbolPrices } = await import('@template/mocks');
+    symbols.value = getAllSymbols();
+
+    // 가격 데이터 로드
+    const prices = getAllSymbolPrices();
+    const priceMap = new Map<string, SymbolPrice>();
+    prices.forEach((price: SymbolPrice) => {
+      priceMap.set(price.ticker, price);
+    });
+    symbolPrices.value = priceMap;
   } catch (error) {
     console.error('Failed to load symbols:', error);
     // 에러 발생 시 기본 데이터 사용
     symbols.value = [
       {
-        symbol: 'BTC/EUR',
-        ticker: 'BTC/EUR',
-        description: 'Bitcoin / Euro',
-        exchange: 'Bitfinex',
-        type: 'crypto',
+        symbol: 'EURTRY',
+        ticker: 'EURTRY',
+        description: 'Euro / Turkish Lira',
+        exchange: 'Forex',
+        type: 'forex',
       },
       {
-        symbol: 'ETH/EUR',
-        ticker: 'ETH/EUR',
-        description: 'Ethereum / Euro',
-        exchange: 'Bitfinex',
-        type: 'crypto',
+        symbol: 'USDSEK',
+        ticker: 'USDSEK',
+        description: 'US Dollar / Swedish Krona',
+        exchange: 'Forex',
+        type: 'forex',
+      },
+      {
+        symbol: 'SUI30',
+        ticker: 'SUI30',
+        description: 'Swiss Market Index',
+        exchange: 'Index',
+        type: 'index',
+      },
+      {
+        symbol: 'AUDJPY',
+        ticker: 'AUDJPY',
+        description: 'Australian Dollar / Japanese Yen',
+        exchange: 'Forex',
+        type: 'forex',
       },
     ];
   }

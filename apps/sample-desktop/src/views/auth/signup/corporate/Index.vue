@@ -26,8 +26,8 @@ import SetPassword from '@/components/auth/signup/common/SetPassword.vue';
 import PhoneAuth from '@/components/auth/signup/common/PhoneAuth.vue';
 import EmailForm from '@/components/auth/signup/common/EmailForm.vue';
 import EmailAuth from '@/components/auth/signup/common/EmailAuth.vue';
+import type { AuthContentTitle } from '@/types/components/auth.types';
 import AuthContent from '@/components/auth/common/AuthContent.vue';
-import type { AuthContentTitle } from '@/types/auth';
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';
 

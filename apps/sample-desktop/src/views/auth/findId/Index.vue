@@ -14,9 +14,9 @@
 
 <script lang="ts" setup>
 import AuthFindIdResult from '@/components/auth/findId/AuthFindIdResult.vue';
+import type { AuthContentTitle } from '@/types/components/auth.types';
 import AuthContent from '@/components/auth/common/AuthContent.vue';
 import AuthFindId from '@/components/auth/findId/AuthFindId.vue';
-import type { AuthContentTitle } from '@/types/auth';
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';
 

@@ -12,5 +12,6 @@ export type TokenResolver = () => string | Promise<string> | undefined;
 /**
  * 에러 처리를 담당하는 함수 타입
  * 각 앱에서 에러 상황에 맞는 처리를 구현
+ * 토큰 갱신 후 원래 요청을 재시도하는 경우 Promise<any>를 반환할 수 있음
  */
-export type ErrorHandler = (error: AxiosError) => Promise<void> | void;
+export type ErrorHandler = (error: AxiosError) => Promise<any> | void;

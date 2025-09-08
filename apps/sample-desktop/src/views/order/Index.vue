@@ -148,13 +148,17 @@ const columnDefs = ref<ColDef[]>([
     field: 'itemCode',
     sortable: true,
     width: 100,
-    cellStyle: { fontWeight: 'bold' as const },
+    headerClass: 'text-center',
+    cellStyle: {
+      textAlign: 'center' as const,
+    },
   },
   {
     headerName: '통화',
     field: 'currency',
     sortable: true,
     width: 60,
+    headerClass: 'text-center',
     cellStyle: { textAlign: 'center' as const },
   },
   {
@@ -162,12 +166,15 @@ const columnDefs = ref<ColDef[]>([
     field: 'positionType',
     sortable: true,
     width: 70,
+    headerClass: 'text-center',
+    cellStyle: { textAlign: 'center' as const },
   },
   {
     headerName: '매입일자',
     field: 'purchaseDate',
     sortable: true,
     width: 90,
+    headerClass: 'text-center',
     cellStyle: { textAlign: 'center' as const },
   },
   {
@@ -175,6 +182,7 @@ const columnDefs = ref<ColDef[]>([
     field: 'quantity',
     sortable: true,
     width: 80,
+    headerClass: 'text-center',
     cellStyle: { textAlign: 'right' as const },
     valueFormatter: (params: any) => {
       return params.value.toLocaleString();
@@ -185,6 +193,7 @@ const columnDefs = ref<ColDef[]>([
     field: 'price',
     sortable: true,
     width: 80,
+    headerClass: 'text-center',
     cellStyle: { textAlign: 'right' as const },
     valueFormatter: (params: any) => {
       return params.value.toLocaleString();
@@ -195,7 +204,10 @@ const columnDefs = ref<ColDef[]>([
     field: 'currentPrice', // TODO: 실시간으로 변경되어야 하는 값
     sortable: true,
     width: 80,
-    cellStyle: { textAlign: 'right' as const, fontWeight: 'bold' as const },
+    headerClass: 'text-center',
+    cellStyle: {
+      textAlign: 'right' as const,
+    },
     valueFormatter: (params: any) => {
       return params.value.toLocaleString();
     },
@@ -205,14 +217,16 @@ const columnDefs = ref<ColDef[]>([
     field: 'profitLoss',
     sortable: true,
     width: 80,
+    headerClass: 'text-center',
     cellStyle: (params: any) => {
       const value = params.value;
+      const baseStyle = { textAlign: 'right' as const };
       if (value > 0) {
-        return { color: 'var(--font-color-red)' }; // 수익 - 빨간색
+        return { ...baseStyle, color: 'var(--font-color-red)' }; // 수익 - 빨간색
       } else if (value < 0) {
-        return { color: 'var(--font-color-blue)' }; // 손실 - 파란색
+        return { ...baseStyle, color: 'var(--font-color-blue)' }; // 손실 - 파란색
       } else {
-        return { color: 'var(--font-color-default)' }; // 무손익 - 회색
+        return { ...baseStyle, color: 'var(--font-color-default)' }; // 무손익 - 회색
       }
     },
     valueFormatter: (params: any) => {
@@ -226,6 +240,8 @@ const columnDefs = ref<ColDef[]>([
     field: 'actions',
     sortable: false,
     width: 120,
+    headerClass: 'text-center',
+    cellStyle: { textAlign: 'center' as const },
   },
 ]);
 
@@ -626,6 +642,16 @@ onUnmounted(() => {
 
 :deep(.splitpanes__splitter:hover) {
   background-color: #6c757d !important;
+}
+
+/* AG Grid 헤더 가운데 정렬 */
+:deep(.ag-header-cell-label) {
+  justify-content: center;
+  text-align: center;
+}
+
+:deep(.ag-header-cell-text) {
+  text-align: center;
 }
 
 /* AG Grid 기본 스타일 사용 */

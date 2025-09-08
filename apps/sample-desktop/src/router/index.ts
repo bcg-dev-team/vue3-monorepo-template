@@ -86,20 +86,10 @@ const routes: CustomRouteRecordRaw[] = [
     component: () => import('@/views/order/Index.vue'),
   },
   {
-    path: '/transaction',
+    path: '/transaction/:transactionTab?',
+    name: 'transaction',
     meta: { layout: MainLayout, auth: true },
-    children: [
-      {
-        path: '',
-        name: 'transaction',
-        component: () => import('@/views/transaction/Index.vue'),
-      },
-      {
-        path: ':transactionTab',
-        name: 'transaction-tab',
-        component: () => import('@/views/transaction/Index.vue'),
-      },
-    ],
+    component: () => import('@/views/transaction/Index.vue'),
   },
   {
     path: '/assets',
@@ -108,37 +98,16 @@ const routes: CustomRouteRecordRaw[] = [
     component: () => import('@/views/assets/Index.vue'),
   },
   {
-    path: '/accounts',
+    path: '/accounts/:accountManagementTab?',
+    name: 'account-management',
     meta: { layout: MainLayout },
-    children: [
-      {
-        path: '',
-        name: 'account-management',
-        component: () => import('@/views/accountManagement/Index.vue'),
-      },
-      {
-        path: ':accountManagementTab',
-        name: 'account-management-tab',
-        component: () => import('@/views/accountManagement/Index.vue'),
-      },
-    ],
+    component: () => import('@/views/accountManagement/Index.vue'),
   },
   {
-    path: '/support',
-
+    path: '/support/:supportTab?',
+    name: 'support',
     meta: { layout: MainLayout },
-    children: [
-      {
-        path: '',
-        name: 'support',
-        component: () => import('@/views/support/Index.vue'),
-      },
-      {
-        path: ':supportTab',
-        name: 'support-tab',
-        component: () => import('@/views/support/Index.vue'),
-      },
-    ],
+    component: () => import('@/views/support/Index.vue'),
   },
   {
     path: '/mypage',

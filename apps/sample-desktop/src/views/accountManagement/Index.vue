@@ -48,7 +48,7 @@ const tabs = [
 
 const handleTabClick = () => {
   router.push({
-    name: 'account-management-tab',
+    name: 'account-management',
     params: { accountManagementTab: modelValue.value },
   });
 };

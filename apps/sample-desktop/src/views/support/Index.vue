@@ -58,6 +58,6 @@ const tabs = [
 ];
 
 const handleTabChange = (tab: string) => {
-  router.push({ name: 'support-tab', params: { supportTab: tab } });
+  router.push({ name: 'support', params: { supportTab: tab } });
 };
 </script>

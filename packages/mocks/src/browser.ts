@@ -53,6 +53,9 @@ export const startMocking = async (): Promise<void> => {
       // HTTP 모킹 시작 (MSW Service Worker)
       await worker.start({
         onUnhandledRequest: 'warn', // 처리되지 않은 요청에 대해 경고 표시
+        serviceWorker: {
+          url: '/mockServiceWorker.js', // 명시적으로 Service Worker 경로 지정
+        },
       });
       console.log('🔧 MSW HTTP 모킹이 활성화되었습니다.');
 

@@ -33,7 +33,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: var(--font-color-default);
-    background-color: #f3f4f6;
+    background-color: var(--background-bg-surface);
     transition:
       color 0.3s ease,
       background-color 0.3s ease;
@@ -41,7 +41,7 @@
 
   #app {
     min-height: 100vh;
-    background-color: #f3f4f6;
+    background-color: var(--background-bg-surface);
     transition: background-color 0.3s ease;
   }
 

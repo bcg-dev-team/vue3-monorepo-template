@@ -1,6 +1,6 @@
 <template>
   <Header />
-  <main class="bg-bg-bg-surface min-h-screen min-w-[1920px]">
+  <main class="min-h-screen">
     <slot />
   </main>
   <Footer />

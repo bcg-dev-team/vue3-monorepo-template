@@ -75,7 +75,7 @@ const tabListClasses = computed(() => {
         <TabPanel
           v-for="tabItem in tabs"
           :key="tabItem.key"
-          :class="['rounded-xl bg-white p-3']"
+          :class="['bg-bg-bg-default rounded-xl p-3']"
           role="tabpanel"
           :tabindex="0"
         >

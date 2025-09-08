@@ -147,14 +147,14 @@ const columnDefs = ref<ColDef[]>([
     field: 'itemCode',
     sortable: true,
     width: 100,
-    cellStyle: { fontWeight: 'bold' },
+    cellStyle: { fontWeight: 'bold' as const },
   },
   {
     headerName: '통화',
     field: 'currency',
     sortable: true,
     width: 60,
-    cellStyle: { textAlign: 'center' },
+    cellStyle: { textAlign: 'center' as const },
   },
   {
     headerName: 'L/S',
@@ -167,14 +167,14 @@ const columnDefs = ref<ColDef[]>([
     field: 'purchaseDate',
     sortable: true,
     width: 90,
-    cellStyle: { textAlign: 'center' },
+    cellStyle: { textAlign: 'center' as const },
   },
   {
     headerName: '수량',
     field: 'quantity',
     sortable: true,
     width: 80,
-    cellStyle: { textAlign: 'right' },
+    cellStyle: { textAlign: 'right' as const },
     valueFormatter: (params: any) => {
       return params.value.toLocaleString();
     },
@@ -184,7 +184,7 @@ const columnDefs = ref<ColDef[]>([
     field: 'price',
     sortable: true,
     width: 80,
-    cellStyle: { textAlign: 'right' },
+    cellStyle: { textAlign: 'right' as const },
     valueFormatter: (params: any) => {
       return params.value.toLocaleString();
     },
@@ -194,7 +194,7 @@ const columnDefs = ref<ColDef[]>([
     field: 'currentPrice', // TODO: 실시간으로 변경되어야 하는 값
     sortable: true,
     width: 80,
-    cellStyle: { textAlign: 'right', fontWeight: 'bold' },
+    cellStyle: { textAlign: 'right' as const, fontWeight: 'bold' as const },
     valueFormatter: (params: any) => {
       return params.value.toLocaleString();
     },
@@ -205,9 +205,20 @@ const columnDefs = ref<ColDef[]>([
     sortable: true,
     width: 80,
     cellRenderer: 'agAnimateShowChangeCellRenderer',
-    cellStyle: {
-      textAlign: 'right',
-      fontWeight: 'bold',
+    cellStyle: (params: any) => {
+      const baseStyle = {
+        textAlign: 'right' as const,
+        fontWeight: 'bold' as const,
+      };
+
+      // 손익에 따른 색상 변경
+      if (params.value > 0) {
+        return { ...baseStyle, color: '#22c55e' }; // 수익 - 녹색
+      } else if (params.value < 0) {
+        return { ...baseStyle, color: '#ef4444' }; // 손실 - 빨간색
+      } else {
+        return { ...baseStyle, color: '#6b7280' }; // 무손익 - 회색
+      }
     },
     valueFormatter: (params: any) => {
       const value = params.value;
@@ -628,15 +639,38 @@ onUnmounted(() => {
   --ag-value-change-value-highlight-background-color: rgba(34, 197, 94, 0.1);
   --ag-value-change-delta-down-color: #ef4444;
   --ag-value-change-delta-up-color: #22c55e;
+  --ag-value-change-duration: 0.3s;
+  --ag-value-change-delay: 0s;
 }
 
-/* 손익 셀 기본 색상 */
+/* 손익 셀 애니메이션 효과 */
 :deep(.ag-cell[col-id='profitLoss']) {
-  color: #6b7280;
+  transition: all 0.3s ease;
 }
 
 :deep(.ag-cell[col-id='profitLoss'] .ag-cell-value) {
   font-weight: bold;
   text-align: right;
+}
+
+/* 애니메이션 셀 렌더러 스타일 */
+:deep(.ag-animate-show-change-cell-renderer) {
+  transition: all 0.3s ease;
+}
+
+:deep(.ag-animate-show-change-cell-renderer.ag-value-change-value-highlight) {
+  animation: valueChangeHighlight 0.6s ease-in-out;
+}
+
+@keyframes valueChangeHighlight {
+  0% {
+    background-color: rgba(34, 197, 94, 0.2);
+  }
+  50% {
+    background-color: rgba(34, 197, 94, 0.4);
+  }
+  100% {
+    background-color: transparent;
+  }
 }
 </style>

@@ -108,7 +108,7 @@
   },
   "msw": {
     "workerDirectory": [
-      "apps/sample-desktop/public"
+      "packages/mocks/public"
     ]
   }
 }

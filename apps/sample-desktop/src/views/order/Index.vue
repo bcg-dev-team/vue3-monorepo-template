@@ -466,10 +466,8 @@ const updateRealTimePrices = () => {
 
         // 트랜잭션 업데이트
         if (updatedItems.length > 0) {
-          gridApi.value.batchUpdate(() => {
-            gridApi.value.applyTransactionAsync({
-              update: updatedItems,
-            });
+          gridApi.value.applyTransactionAsync({
+            update: updatedItems,
           });
         }
       }

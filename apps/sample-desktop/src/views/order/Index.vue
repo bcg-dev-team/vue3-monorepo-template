@@ -243,15 +243,8 @@ const onGridReady = (params: any) => {
   gridApi.value = params.api;
   columnApi.value = params.columnApi;
 
-  // 그리드 크기 자동 조정
-  params.api.sizeColumnsToFit();
-
-  // 윈도우 리사이즈 이벤트 리스너 추가
-  window.addEventListener('resize', () => {
-    setTimeout(() => {
-      params.api.sizeColumnsToFit();
-    });
-  });
+  // BaseDataGrid 컴포넌트에서 자동으로 sizeColumnsToFit을 처리하므로
+  // 여기서는 추가 처리 불필요
 };
 
 // 정렬 변경 이벤트
@@ -390,10 +383,10 @@ const updateRealTimePrices = () => {
 
       // 방법 1: 보이는 행만 처리 시도 (가장 효율적)
       try {
-        const displayedRowModel = gridApi.value.getDisplayedRowModel();
+        const displayedRowModel = (gridApi.value as any).getDisplayedRowModel();
         if (displayedRowModel && displayedRowModel.getRows().length > 0) {
           // 보이는 행들만 처리
-          displayedRowModel.getRows().forEach((rowNode) => {
+          displayedRowModel.getRows().forEach((rowNode: any) => {
             if (rowNode.data) {
               const item = rowNode.data;
               const currentPrice = currentPrices.value[item.itemCode] || item.price;

@@ -168,12 +168,8 @@ const onGridReady = (params: any) => {
   gridApi.value = params.api;
   columnApi.value = params.columnApi;
 
-  // 그리드 크기 자동 조정
-  params.api.sizeColumnsToFit();
-
-  // 추가적인 컬럼 너비 최적화
+  // 컬럼 너비 최적화를 한 번에 처리
   setTimeout(() => {
-    // 컬럼들이 viewport를 가득 차지하도록 조정
     const allColumns = params.columnApi.getAllColumns();
     if (allColumns && allColumns.length > 0) {
       // 전체 너비를 컬럼 수로 나누어 균등 분배
@@ -186,10 +182,10 @@ const onGridReady = (params: any) => {
           params.columnApi.setColumnWidth(column, equalWidth);
         }
       });
-
-      // 다시 한 번 크기 조정
-      params.api.sizeColumnsToFit();
     }
+
+    // 컬럼 너비 최적화 후 한 번만 호출
+    params.api.sizeColumnsToFit();
   }, 100);
 
   // 윈도우 리사이즈 이벤트 리스너 추가

@@ -47,52 +47,82 @@ vue3-monorepo-template/
 
 ## 🚀 빠른 시작
 
-### 0. 개발 환경 설정
+### 설치 전 준비사항
 
-#### Git 설정 (필수)
-이 프로젝트는 파일명의 대소문자를 구분하고 줄바꿈 문자를 일관되게 관리하므로 다음 설정이 필요합니다:
+1. **Node.js 설치**
 
-```bash
-# 대소문자 구분 설정 (모든 개발자가 실행해야 함)
-git config core.ignorecase false
+    a. **Vercel 설치 스크립트 사용 (권장)**
+    ```bash
+    curl -sfLS install-node.vercel.app/v20 | bash
+    ```
 
-# 줄바꿈 문자 설정 (운영체제별로 다름)
-# Windows 사용자
-git config --global core.autocrlf true
+    b. **공식 웹사이트 통한 설치**
+    - [Node.js 공식 웹사이트](https://nodejs.org/)에서 20.0.0 이상 버전 다운로드 및 설치
 
-# Mac/Linux 사용자
-git config --global core.autocrlf input
-```
+    - **Node.js 버전 확인**
+    ```bash
+    node --version
+    ```
 
-**중요:** 이 설정은 각 개발자가 개별적으로 실행해야 합니다. 설정하지 않으면 파일명 변경사항이 Git에서 추적되지 않거나 줄바꿈 문자 차이로 인한 불필요한 diff가 발생할 수 있습니다.
+2. **PNPM 설치**
 
-### 1. 의존성 설치
+    - **PNPM 설치 (Node.js 16.13+ 필요)**
+    ```bash
+    npm install -g pnpm
+    ```
 
-```bash
-# PNPM 설치
-npm install -g pnpm
+    - **PNPM 버전 확인**
+    ```bash
+    pnpm --version
+    ```
 
-# 프로젝트 의존성 설치
-pnpm install
-```
+3. **Git 설치 및 설정**
 
-### 2. 개발 서버 실행
+    - **Git 설치 (Ubuntu/Debian)**
+    ```bash
+    sudo apt-get install git
+    ```
 
-```bash
-# 데스크톱 앱 개발 서버
-pnpm dev:desktop
+    - **Git 설정 (필수)**
+    ```bash
+    # 대소문자 구분 설정 (모든 개발자가 실행해야 함)
+    git config core.ignorecase false
 
-# 모바일 앱 개발 서버
-pnpm dev:mobile
+    # 줄바꿈 문자 설정 (운영체제별로 다름)
+    # Windows 사용자
+    git config --global core.autocrlf true
 
-# 네이티브 앱 개발 서버
-pnpm mobile:start
+    # Mac/Linux 사용자
+    git config --global core.autocrlf input
+    ```
 
-# UI 패키지 개발 서버
-pnpm dev:ui
-```
+### 설치 방법
 
-### 3. 빌드
+1. **저장소 클론**
+    ```bash
+    git clone <repository-url>
+    cd vue3-monorepo-template-2
+    ```
+
+2. **의존성 설치**
+    ```bash
+    # PNPM을 사용하여 의존성 설치
+    pnpm install
+    ```
+
+3. **개발 서버 실행**
+    ```bash
+    # MODA 앱 개발 서버
+    pnpm dev
+
+    # 데스크톱 앱 개발 서버
+    pnpm dev:desktop
+
+    # 모바일 앱 개발 서버
+    pnpm dev:mobile
+    ```
+
+### 4. 빌드
 
 ```bash
 # 전체 빌드
@@ -101,7 +131,6 @@ pnpm build:all
 # 개별 앱 빌드
 pnpm build:desktop
 pnpm build:mobile
-pnpm build:ui
 
 # 네이티브 앱 빌드
 pnpm mobile:build:android    # Android APK/AAB 빌드
@@ -116,13 +145,11 @@ pnpm mobile:build:ios        # iOS 빌드
 # 개발
 pnpm dev:desktop          # 데스크톱 앱 개발 서버
 pnpm dev:mobile           # 모바일 앱 개발 서버
-pnpm dev:ui               # UI 패키지 개발 서버
 
 # 빌드
 pnpm build:all            # 전체 빌드
 pnpm build:desktop        # 데스크톱 앱 빌드
 pnpm build:mobile         # 모바일 앱 빌드
-pnpm build:ui             # UI 패키지 빌드
 
 # 테스팅 (TBD)
 pnpm test                 # 전체 테스트 실행
@@ -138,16 +165,6 @@ pnpm type-check           # TypeScript 타입 검사
 # Storybook
 pnpm storybook            # Storybook 개발 서버
 pnpm build-storybook      # Storybook 빌드
-```
-
-## 🎯 성능 최적화
-
-### WebSocket 배칭
-
-실시간 데이터를 효율적으로 처리하기 위해 100ms 배칭을 구현합니다:
-
-```typescript
-const batchedMessages = useBatchedMessages(100);
 ```
 
 ## 📚 문서

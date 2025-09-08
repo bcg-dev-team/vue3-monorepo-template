@@ -5,14 +5,14 @@
         <template v-for="(link, index) in footerLinks" :key="link.id">
           <a
             :href="link.href"
-            class="font-regular"
-            :class="{ 'text-neutral-neutral800 !font-medium': index === footerLinks.length - 1 }"
+            class="font-regular text-footer"
+            :class="{ '!text-default !font-medium': index === footerLinks.length - 1 }"
             >{{ link.text }}</a
           >
-          <span v-if="index < footerLinks.length - 1" class="separator">|</span>
+          <span v-if="index < footerLinks.length - 1" class="separator text-footer">|</span>
         </template>
       </div>
-      <p class="text-text-footer text-sm">Copyright&copy;2025 MODA Co.Ltd. All Rights Reserved.</p>
+      <p class="text-footer text-sm">Copyright&copy;2025 MODA Co.Ltd. All Rights Reserved.</p>
     </div>
   </footer>
 </template>

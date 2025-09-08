@@ -157,18 +157,44 @@ const batchedMessages = useBatchedMessages(100);
 - [모바일 배포 가이드](./docs/mobile-deployment.md) - React Native 앱 배포 방법
 - [순환 의존성 방지](./docs/circular-dependency-prevention.md) - 모노레포에서 순환 의존성 방지
 
-## Used Technology
+### 필수 요구사항
 
-이 템플릿은 다음 기술들을 기반으로 합니다:
+![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20.0.0-339933?logo=node.js&logoColor=white)
+![PNPM](https://img.shields.io/badge/PNPM-%3E%3D8.0.0-F69220?logo=pnpm&logoColor=white)
 
-- [Vue 3](https://vuejs.org/)
-- [Vite](https://vitejs.dev/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Vuetify](https://vuetifyjs.com/)
-- [TailwindCSS](https://tailwindcss.com/)
-- [Pinia](https://pinia.vuejs.org/)
-- [Vitest](https://vitest.dev/)
-- [Cypress](https://cypress.io/)
-- [Storybook](https://storybook.js.org/)
+## Technology Used
+
+| Category      | Name/Version                                                                                                                          | Description                                          | License    |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ---------- |
+| 핵심 기술     | [![Vue.js](https://img.shields.io/badge/Vue.js-3.5.18-4FC08D?logo=vue.js&logoColor=white)](https://vuejs.org/)                        | 프로그레시브 JavaScript 프레임워크                   | MIT        |
+|               | [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20.0.0-339933?logo=node.js&logoColor=white)](https://nodejs.org/)              | JavaScript 런타임 환경                               | MIT        |
+|               | [![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/) | JavaScript의 타입이 있는 상위 집합                   | Apache-2.0 |
+| 빌드 도구     | [![Vite](https://img.shields.io/badge/Vite-5.4.19-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)                              | 차세대 프론트엔드 빌드 도구                          | MIT        |
+|               | [![PNPM](https://img.shields.io/badge/PNPM-%3E%3D8.0.0-F69220?logo=pnpm&logoColor=white)](https://pnpm.io/)                           | 빠르고 효율적인 패키지 매니저                        | MIT        |
+| 라우팅        | [![Vue Router](https://img.shields.io/badge/Vue_Router-4.5.1-4FC08D?logo=vue.js&logoColor=white)](https://router.vuejs.org/)          | Vue.js 공식 라우터                                   | MIT        |
+| 상태 관리     | [![Pinia](https://img.shields.io/badge/Pinia-2.3.1-4FC08D?logo=vue.js&logoColor=white)](https://pinia.vuejs.org/)                     | Vue.js를 위한 직관적인 상태 관리 라이브러리          | MIT        |
+| UI/스타일링   | [![Headless UI](https://img.shields.io/badge/Headless_UI-1.7.23-000000?logo=headlessui&logoColor=white)](https://headlessui.com/)     | 완전히 스타일이 없는 접근 가능한 UI 컴포넌트         | MIT        |
+|               | [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4.0-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)   | 유틸리티 우선 CSS 프레임워크                         | MIT        |
+|               | [![SASS](https://img.shields.io/badge/SASS-1.89.2-CC6699?logo=sass&logoColor=white)](https://sass-lang.com/)                          | CSS 전처리기                                         | MIT        |
+| 폼 검증       | [![VeeValidate](https://img.shields.io/badge/VeeValidate-4.15.1-4FC08D?logo=vue.js&logoColor=white)](https://vee-validate.logaretm.com/) | Vue.js용 폼 검증 라이브러리                          | MIT        |
+|               | [![Zod](https://img.shields.io/badge/Zod-3.25.76-3E67B1?logo=zod&logoColor=white)](https://zod.dev/)                                  | TypeScript 우선 스키마 검증 라이브러리               | MIT        |
+| 비동기 통신   | [![Axios](https://img.shields.io/badge/Axios-1.11.0-5A29E4?logo=axios&logoColor=white)](https://axios-http.com/)                      | Promise 기반 HTTP 클라이언트                         | MIT        |
+|               | [![MSW](https://img.shields.io/badge/MSW-2.10.5-FF6B6B?logo=msw&logoColor=white)](https://mswjs.io/)                                  | API 모킹 라이브러리                                  | MIT        |
+| 개발 도구     | [![ESLint](https://img.shields.io/badge/ESLint-9.32.0-4B32C3?logo=eslint&logoColor=white)](https://eslint.org/)                        | JavaScript 린터                                      | MIT        |
+|               | [![Prettier](https://img.shields.io/badge/Prettier-3.6.2-F7B93E?logo=prettier&logoColor=black)](https://prettier.io/)                 | 코드 포맷터                                          | MIT        |
+|               | [![PostCSS](https://img.shields.io/badge/PostCSS-8.5.6-DD3A0A?logo=postcss&logoColor=white)](https://postcss.org/)                   | CSS 변환 도구                                        | MIT        |
+| 테스트        | [![Vitest](https://img.shields.io/badge/Vitest-1.6.1-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)                        | 빠른 단위 테스트 프레임워크                          | MIT        |
+|               | [![Vue Test Utils](https://img.shields.io/badge/Vue_Test_Utils-2.4.0-4FC08D?logo=vue.js&logoColor=white)](https://test-utils.vuejs.org/) | Vue 컴포넌트 테스트 유틸리티                         | MIT        |
+| 문서화        | [![Storybook](https://img.shields.io/badge/Storybook-8.6.14-FF4785?logo=storybook&logoColor=white)](https://storybook.js.org/)         | UI 컴포넌트 개발 도구                                | MIT        |
+| 유틸리티      | [![date-fns](https://img.shields.io/badge/date_fns-3.6.0-770C56)](https://date-fns.org/)                                               | 모듈러 JavaScript 날짜 유틸리티 라이브러리           | MIT        |
+|               | [![date-fns-tz](https://img.shields.io/badge/date_fns_tz-3.2.0-770C56)](https://github.com/marnusw/date-fns-tz)                       | 타임존 지원 날짜 유틸리티                            | MIT        |
+|               | [![zxcvbn](https://img.shields.io/badge/zxcvbn-4.4.2-000000)](https://github.com/dropbox/zxcvbn)                                       | 비밀번호 강도 측정 라이브러리                        | MIT        |
+|               | [![change-case](https://img.shields.io/badge/change_case-5.4.4-000000)](https://github.com/blakeembrey/change-case)                    | 문자열 케이스 변환 유틸리티                          | MIT        |
+| 디자인 토큰   | [![Style Dictionary](https://img.shields.io/badge/Style_Dictionary-4.4.0-000000)](https://amzn.github.io/style-dictionary/)             | 디자인 토큰 변환 도구                                | Apache-2.0 |
+|               | [![Tokens Studio](https://img.shields.io/badge/Tokens_Studio-2.0.1-000000)](https://tokens.studio/)                                    | Figma 디자인 토큰 플러그인                           | MIT        |
+| 모바일        | [![Expo](https://img.shields.io/badge/Expo-53.0.20-000020?logo=expo&logoColor=white)](https://expo.dev/)                               | React Native 개발 플랫폼                             | MIT        |
+|               | [![React](https://img.shields.io/badge/React-19.1.1-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)                         | 사용자 인터페이스 구축을 위한 JavaScript 라이브러리 | MIT        |
+|               | [![React Native](https://img.shields.io/badge/React_Native-0.80.1-61DAFB?logo=react&logoColor=white)](https://reactnative.dev/)       | 모바일 앱 개발 프레임워크                            | MIT        |
+| UI 컴포넌트   | [![Splitpanes](https://img.shields.io/badge/Splitpanes-4.0.4-000000)](https://github.com/antoniandre/splitpanes)                       | Vue.js용 분할 패널 컴포넌트                          | MIT        |
 
 ---

@@ -24,6 +24,7 @@ import {
   HighlightChangesModule,
   ClientSideRowModelModule,
   ColumnAutoSizeModule,
+  ClientSideRowModelApiModule,
   themeQuartz,
   themeBalham,
   themeMaterial,
@@ -43,6 +44,7 @@ ModuleRegistry.registerModules([
   CellStyleModule,
   HighlightChangesModule,
   ColumnAutoSizeModule,
+  ClientSideRowModelApiModule,
   // agAnimateShowChangeCellRenderer는 내장 렌더러로 별도 모듈 불필요
 ]);
 

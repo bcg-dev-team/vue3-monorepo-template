@@ -103,8 +103,8 @@
 </template>
 
 <script setup lang="ts">
-import type { GridOptions, ColDef, GridApi, Column } from 'ag-grid-community';
 import TradingViewChart from '@/components/chart/TradingViewChart.vue';
+import type { GridOptions, ColDef, GridApi } from 'ag-grid-community';
 import { BaseTwoWaySplitPane, BaseDataGrid } from '@template/ui';
 import SymbolList from '@/components/order/SymbolList.vue';
 import RightPanel from '@/components/order/RightPanel.vue';
@@ -246,12 +246,10 @@ const rowData = ref<PositionData[]>([]);
 
 // 그리드 API 참조
 const gridApi = ref<GridApi | null>(null);
-const columnApi = ref<Column | null>(null);
 
 // 그리드 준비 완료 이벤트
 const onGridReady = (params: any) => {
   gridApi.value = params.api;
-  columnApi.value = params.columnApi;
 
   // BaseDataGrid 컴포넌트에서 자동으로 sizeColumnsToFit을 처리하므로
   // 여기서는 추가 처리 불필요

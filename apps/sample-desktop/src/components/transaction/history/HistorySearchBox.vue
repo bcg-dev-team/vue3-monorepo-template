@@ -20,7 +20,6 @@
                   { value: 'today', label: '오늘' },
                   { value: 'weeks', label: '일주일' },
                   { value: 'months', label: '30일' },
-                  { value: 'all', label: '전체' },
                 ]"
               />
             </div>

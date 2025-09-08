@@ -1,25 +1,20 @@
 <template>
   <div class="gap-size-8 p-padding-24 flex items-end">
     <div class="gap-size-36 flex">
-      <LabelContent label="계좌번호" size="md">
-        <template #content>
-          <BaseInput size="sm" placeholder="input select 들어올 예정" />
-        </template>
-      </LabelContent>
-      <LabelContent label="주문유형" size="md">
+      <LabelContent label="L/S" size="md">
         <template #content>
           <BaseRadioGroup
             v-model="selectedType"
             size="md"
             :options="[
               { value: 'all', label: '전체' },
-              { value: 'buy', label: '매입' },
-              { value: 'clear', label: '청산' },
+              { value: 'long', label: 'LONG' },
+              { value: 'short', label: 'SHORT' },
             ]"
           />
         </template>
       </LabelContent>
-      <LabelContent label="포지션" size="md">
+      <LabelContent label="구분" size="md">
         <template #content>
           <BaseRadioGroup
             v-model="selectedPosition"
@@ -36,6 +31,15 @@
         <template #content>
           <div class="gap-size-4 flex items-center">
             <BaseInput size="sm" placeholder="input select 들어올 예정" />
+            <BaseRadioGroup
+              v-model="selectedDate"
+              size="md"
+              :options="[
+                { value: 'today', label: '오늘' },
+                { value: 'weeks', label: '일주일' },
+                { value: 'months', label: '30일' },
+              ]"
+            />
           </div>
         </template>
       </LabelContent>
@@ -52,4 +56,5 @@ import { ref } from 'vue';
 
 const selectedType = ref('all');
 const selectedPosition = ref('all');
+const selectedDate = ref('today');
 </script>

@@ -15,9 +15,23 @@
       <div
         class="bg-bg-bg-surface-muted flex h-[34px] w-[34px] cursor-pointer items-center justify-center rounded-full"
       >
-        <BaseIcon name="person" color="black" />
+        <BaseIcon name="person" color="var(--input-icon-default)" />
       </div>
-      <BaseIcon name="mode-light" color="white" class="cursor-pointer" />
+
+      <BaseIcon
+        v-if="isDark"
+        name="mode-dark"
+        color="white"
+        class="cursor-pointer"
+        @click="toggleTheme"
+      />
+      <BaseIcon
+        v-else
+        name="mode-light"
+        color="white"
+        class="cursor-pointer"
+        @click="toggleTheme"
+      />
       <BaseIcon name="notification" color="white" class="cursor-pointer" />
       <BaseIcon name="logout" color="white" class="cursor-pointer" @click="handleLogout" />
     </div>
@@ -27,7 +41,7 @@
 <script setup lang="ts">
 import LocalStorageService from '@/service/localStorage/local-storage.service';
 import LocalStorageKey from '@/service/localStorage/local-storage-key';
-import { BaseIcon } from '@template/ui';
+import { BaseIcon, useTheme } from '@template/ui';
 import { useRouter } from 'vue-router';
 
 interface FinancialMetric {
@@ -35,6 +49,7 @@ interface FinancialMetric {
   label: string;
   value: string;
 }
+const { isDark, toggleTheme } = useTheme();
 
 const financialMetrics: FinancialMetric[] = [
   { id: 'available-margin', label: '사용 가능 증거금', value: '$2,500.00' },

@@ -1,5 +1,5 @@
 <template>
-  <footer class="bg-bg-surface min-w-[1920px] pb-[64px] pt-[36px]">
+  <footer class="bg-bg-bg-surface min-w-[1920px] pb-[64px] pt-[36px]">
     <div class="text-text-footer mx-auto flex w-[1920px] flex-col items-center justify-center">
       <div class="mb-[16px] flex items-center gap-[16px] text-sm">
         <template v-for="(link, index) in footerLinks" :key="link.id">

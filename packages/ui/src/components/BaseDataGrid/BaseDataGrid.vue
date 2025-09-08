@@ -23,6 +23,7 @@ import {
   CellStyleModule,
   HighlightChangesModule,
   ClientSideRowModelModule,
+  ColumnAutoSizeModule,
   themeQuartz,
   themeBalham,
   themeMaterial,
@@ -41,6 +42,7 @@ ModuleRegistry.registerModules([
   ClientSideRowModelModule, // 기본 행 모델 (필수)
   CellStyleModule,
   HighlightChangesModule,
+  ColumnAutoSizeModule,
   // agAnimateShowChangeCellRenderer는 내장 렌더러로 별도 모듈 불필요
 ]);
 
@@ -77,7 +79,7 @@ interface Props {
  */
 interface Emits {
   /** 그리드 준비 완료 시 발생 */
-  (e: 'grid-ready', params: { api: any; columnApi: any }): void;
+  (e: 'grid-ready', params: { api: any }): void;
   /** 정렬 변경 시 발생 */
   (e: 'sort-changed', event: any): void;
 }
@@ -138,10 +140,11 @@ const defaultColDef = computed(() => ({
   suppressMenu: !props.filterable,
   sortable: props.sortable,
 
-  // 컬럼 너비 최적화
+  // 컬럼 너비 최적화 (v31+ 권장 방식)
   minWidth: 50, // 최소 너비 설정
   maxWidth: undefined, // 최대 너비 제한 해제
-  flex: 1, // 유연한 너비 분배
+  flex: 1, // 유연한 너비 분배 (자동으로 컨테이너 너비에 맞춤)
+  autoHeaderHeight: true, // 헤더 높이 자동 조정
 
   ...props.defaultColDef,
 }));
@@ -154,6 +157,11 @@ const gridOptions = computed(() => ({
   pagination: props.pagination,
   domLayout: 'normal',
   suppressHorizontalScroll: false,
+
+  // v31+ 권장 설정
+  suppressColumnVirtualisation: false, // 컬럼 가상화 활성화
+  suppressRowVirtualisation: false, // 행 가상화 활성화
+  enableBrowserTooltips: true, // 브라우저 툴팁 활성화
 
   // 성능 최적화: 행 ID 추적을 위한 getRowId 함수
   getRowId: (params: any) => {
@@ -170,37 +178,30 @@ const gridOptions = computed(() => ({
 
 // 그리드 API 참조
 const gridApi = ref<any | null>(null);
-const columnApi = ref<any | null>(null);
 
 // 그리드 준비 완료 이벤트
 const onGridReady = (params: any) => {
   gridApi.value = params.api;
-  columnApi.value = params.columnApi;
 
-  // 컬럼 너비 최적화를 한 번에 처리
+  // 컬럼 너비 최적화 (v31+ 안전한 방식)
   setTimeout(() => {
-    const allColumns = params.columnApi.getAllColumns();
-    if (allColumns && allColumns.length > 0) {
-      // 전체 너비를 컬럼 수로 나누어 균등 분배
-      const containerWidth = params.api.getContainerWidth();
-      const columnCount = allColumns.length;
-      const equalWidth = Math.floor(containerWidth / columnCount);
-
-      allColumns.forEach((column: any) => {
-        if (column.getColDef().width === undefined) {
-          params.columnApi.setColumnWidth(column, equalWidth);
-        }
-      });
+    try {
+      // 기본 sizeColumnsToFit 사용 (가장 안전한 방법)
+      params.api.sizeColumnsToFit();
+    } catch (error) {
+      console.warn('sizeColumnsToFit 호출 실패:', error);
+      // API가 사용 불가능한 경우 무시
     }
-
-    // 컬럼 너비 최적화 후 한 번만 호출
-    params.api.sizeColumnsToFit();
   }, 100);
 
   // 윈도우 리사이즈 이벤트 리스너 추가
   const handleResize = () => {
     setTimeout(() => {
-      params.api.sizeColumnsToFit();
+      try {
+        params.api.sizeColumnsToFit();
+      } catch (error) {
+        console.warn('리사이즈 시 sizeColumnsToFit 호출 실패:', error);
+      }
     });
   };
 
@@ -211,7 +212,8 @@ const onGridReady = (params: any) => {
     window.removeEventListener('resize', handleResize);
   });
 
-  emit('grid-ready', { api: params.api, columnApi: params.columnApi });
+  // Grid API만 전달 (Column API는 deprecated)
+  emit('grid-ready', { api: params.api });
 };
 
 // 정렬 변경 이벤트
@@ -222,7 +224,6 @@ const onSortChanged = (event: any) => {
 // 그리드 API 노출 (ref를 통해 접근 가능)
 defineExpose({
   gridApi,
-  columnApi,
 });
 </script>
 

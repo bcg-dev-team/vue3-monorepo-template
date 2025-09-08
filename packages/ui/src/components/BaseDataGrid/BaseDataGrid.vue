@@ -17,9 +17,11 @@
 </template>
 
 <script setup lang="ts">
-// 239.7k (gzipped: 68.2k)
+// 250k (gzipped: 70k) - cellRenderer 지원을 위한 모듈 추가
 import {
   ModuleRegistry,
+  CellStyleModule,
+  HighlightChangesModule,
   ClientSideRowModelModule,
   themeQuartz,
   themeBalham,
@@ -28,15 +30,19 @@ import {
 } from 'ag-grid-community';
 import type { GridOptions, ColDef } from 'ag-grid-community';
 
-// 635.9k (gzipped: 177.4k)
+// 635.9k (gzipped: 177.4k) - 전체 모듈 (사용하지 않음)
 // import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue';
 import { AgGridVue } from 'ag-grid-vue3';
 
-// AG-Grid 모듈 등록
-// ModuleRegistry.registerModules([AllCommunityModule]);
-ModuleRegistry.registerModules([ClientSideRowModelModule]);
+// AG-Grid 모듈 등록 - cellRenderer 지원을 위한 기본 모듈
+ModuleRegistry.registerModules([
+  ClientSideRowModelModule, // 기본 행 모델 (필수)
+  CellStyleModule,
+  HighlightChangesModule,
+  // agAnimateShowChangeCellRenderer는 내장 렌더러로 별도 모듈 불필요
+]);
 
 /**
  * BaseDataGrid 컴포넌트 Props

@@ -22,9 +22,6 @@
 import {
   ModuleRegistry,
   ClientSideRowModelModule,
-  TextFilterModule,
-  NumberFilterModule,
-  CsvExportModule,
   themeQuartz,
   themeBalham,
   themeMaterial,
@@ -40,12 +37,7 @@ import { AgGridVue } from 'ag-grid-vue3';
 
 // AG-Grid 모듈 등록
 // ModuleRegistry.registerModules([AllCommunityModule]);
-ModuleRegistry.registerModules([
-  ClientSideRowModelModule,
-  TextFilterModule,
-  NumberFilterModule,
-  CsvExportModule,
-]);
+ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
 /**
  * BaseDataGrid 컴포넌트 Props

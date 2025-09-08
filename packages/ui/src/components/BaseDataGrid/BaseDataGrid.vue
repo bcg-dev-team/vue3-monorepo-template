@@ -9,7 +9,6 @@
       :style="gridStyle"
       @grid-ready="onGridReady"
       @sort-changed="onSortChanged"
-      @row-selected="onRowSelected"
     />
   </div>
   <div v-else class="grid-placeholder" :style="gridStyle">
@@ -59,8 +58,6 @@ interface Props {
   sortable?: boolean;
   /** 필터링 가능 여부 (기본값: false) */
   filterable?: boolean;
-  /** 행 선택 가능 여부 (기본값: false) */
-  selectable?: boolean;
   /** 페이지네이션 사용 여부 (기본값: false) */
   pagination?: boolean;
   /** 컬럼 리사이징 가능 여부 (기본값: true) */
@@ -77,8 +74,6 @@ interface Emits {
   (e: 'grid-ready', params: { api: any; columnApi: any }): void;
   /** 정렬 변경 시 발생 */
   (e: 'sort-changed', event: any): void;
-  /** 행 선택 시 발생 */
-  (e: 'row-selected', event: any): void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -88,7 +83,6 @@ const props = withDefaults(defineProps<Props>(), {
   width: '100%',
   sortable: true,
   filterable: false,
-  selectable: false,
   pagination: false,
   resizable: true,
   theme: 'quartz',
@@ -148,10 +142,9 @@ const defaultColDef = computed(() => ({
 
 // 그리드 옵션
 const gridOptions = computed(() => ({
-  rowSelection: props.selectable ? 'single' : undefined,
   animateRows: true,
   enableCellTextSelection: true,
-  suppressRowClickSelection: !props.selectable,
+  suppressRowClickSelection: true, // 행 선택 기능 비활성화
   pagination: props.pagination,
   domLayout: 'normal',
   suppressHorizontalScroll: false,
@@ -208,11 +201,6 @@ const onGridReady = (params: any) => {
 // 정렬 변경 이벤트
 const onSortChanged = (event: any) => {
   emit('sort-changed', event);
-};
-
-// 행 선택 이벤트
-const onRowSelected = (event: any) => {
-  emit('row-selected', event);
 };
 
 // 그리드 API 노출 (ref를 통해 접근 가능)

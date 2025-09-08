@@ -66,14 +66,12 @@
                         :gridOptions="gridOptions"
                         :sortable="true"
                         :filterable="false"
-                        :selectable="true"
                         :pagination="false"
                         :resizable="false"
                         :disalbeColumnAutoSize="false"
                         theme="alpine"
                         @grid-ready="onGridReady"
                         @sort-changed="onSortChanged"
-                        @row-selected="onRowSelected"
                       />
                     </div>
                   </div>
@@ -252,10 +250,7 @@ const onSortChanged = (event: any) => {
   console.log('Sort changed:', event);
 };
 
-// 행 선택 이벤트
-const onRowSelected = (event: any) => {
-  console.log('Row selected:', event);
-};
+// 행 선택 이벤트는 사용하지 않음 (selectable=false)
 
 // 청산 버튼 클릭 핸들러 (전역 함수로 등록)
 const handleSettle = (itemCode: string) => {

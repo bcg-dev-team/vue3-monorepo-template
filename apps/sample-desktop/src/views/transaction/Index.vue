@@ -17,6 +17,7 @@
 
       <MainCardContent class="p-6" size="lg">
         <template #content>
+          <router-view />
           <OrderTableContent v-if="modelValue === 'order'" />
           <ClearTableContent v-if="modelValue === 'clear'" />
           <HistoryTableContent v-if="modelValue === 'history'" />
@@ -60,6 +61,6 @@ const tabs = [
 ];
 
 const handleTabClick = () => {
-  router.push({ name: 'transaction-tab', params: { transactionTab: modelValue.value } });
+  router.push({ name: 'transaction', params: { transactionTab: modelValue.value } });
 };
 </script>

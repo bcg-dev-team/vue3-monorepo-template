@@ -205,20 +205,14 @@ const columnDefs = ref<ColDef[]>([
     field: 'profitLoss',
     sortable: true,
     width: 80,
-    cellRenderer: 'agAnimateShowChangeCellRenderer',
     cellStyle: (params: any) => {
-      const baseStyle = {
-        textAlign: 'right' as const,
-        fontWeight: 'bold' as const,
-      };
-
-      // 손익에 따른 색상 변경
-      if (params.value > 0) {
-        return { ...baseStyle, color: '#22c55e' }; // 수익 - 녹색
-      } else if (params.value < 0) {
-        return { ...baseStyle, color: '#ef4444' }; // 손실 - 빨간색
+      const value = params.value;
+      if (value > 0) {
+        return { color: 'var(--font-color-red)' }; // 수익 - 빨간색
+      } else if (value < 0) {
+        return { color: 'var(--font-color-blue)' }; // 손실 - 파란색
       } else {
-        return { ...baseStyle, color: '#6b7280' }; // 무손익 - 회색
+        return { color: 'var(--font-color-default)' }; // 무손익 - 회색
       }
     },
     valueFormatter: (params: any) => {
@@ -634,43 +628,5 @@ onUnmounted(() => {
   background-color: #6c757d !important;
 }
 
-/* AG Grid 애니메이션 셀 렌더러 커스터마이징 */
-:deep(.ag-theme-alpine) {
-  --ag-value-change-value-highlight-background-color: rgba(34, 197, 94, 0.1);
-  --ag-value-change-delta-down-color: #ef4444;
-  --ag-value-change-delta-up-color: #22c55e;
-  --ag-value-change-duration: 0.3s;
-  --ag-value-change-delay: 0s;
-}
-
-/* 손익 셀 애니메이션 효과 */
-:deep(.ag-cell[col-id='profitLoss']) {
-  transition: all 0.3s ease;
-}
-
-:deep(.ag-cell[col-id='profitLoss'] .ag-cell-value) {
-  font-weight: bold;
-  text-align: right;
-}
-
-/* 애니메이션 셀 렌더러 스타일 */
-:deep(.ag-animate-show-change-cell-renderer) {
-  transition: all 0.3s ease;
-}
-
-:deep(.ag-animate-show-change-cell-renderer.ag-value-change-value-highlight) {
-  animation: valueChangeHighlight 0.6s ease-in-out;
-}
-
-@keyframes valueChangeHighlight {
-  0% {
-    background-color: rgba(34, 197, 94, 0.2);
-  }
-  50% {
-    background-color: rgba(34, 197, 94, 0.4);
-  }
-  100% {
-    background-color: transparent;
-  }
-}
+/* AG Grid 기본 스타일 사용 */
 </style>

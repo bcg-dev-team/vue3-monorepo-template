@@ -25,6 +25,7 @@ import {
   ClientSideRowModelModule,
   ColumnAutoSizeModule,
   ClientSideRowModelApiModule,
+  ValidationModule,
   themeQuartz,
   themeBalham,
   themeMaterial,
@@ -47,6 +48,11 @@ ModuleRegistry.registerModules([
   ClientSideRowModelApiModule,
   // agAnimateShowChangeCellRenderer는 내장 렌더러로 별도 모듈 불필요
 ]);
+
+// via process.env.NODE_ENV
+if (process.env.NODE_ENV !== 'production') {
+  ModuleRegistry.registerModules([ValidationModule]);
+}
 
 /**
  * BaseDataGrid 컴포넌트 Props

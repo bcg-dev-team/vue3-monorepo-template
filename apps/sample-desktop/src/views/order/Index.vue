@@ -130,6 +130,7 @@ const handleSymbolSelect = (symbol: TradingSymbol) => {
 
 // 테이블 데이터 타입 정의
 interface PositionData {
+  id: string; // 고유 ID 추가 (성능 최적화)
   itemCode: string;
   currency: string;
   positionType: 'LONG' | 'SHORT';
@@ -283,7 +284,7 @@ const loadOrderData = async () => {
     const orderData = getOrderData(10000, 0);
 
     // PositionData 형태로 변환
-    rowData.value = orderData.map((order: any) => {
+    rowData.value = orderData.map((order: any, index: number) => {
       const itemCode = order.symbol;
       const price = order.price;
       const quantity = order.quantity;
@@ -296,6 +297,7 @@ const loadOrderData = async () => {
       const profitLoss = 0;
 
       return {
+        id: `${itemCode}-${index}-${Date.now()}`, // 고유 ID 생성
         itemCode,
         currency: itemCode.substring(0, 3), // 심볼의 앞 3자리를 통화로 사용
         positionType,
@@ -413,8 +415,8 @@ const updateRealTimePrices = () => {
                   profitLoss: roundedProfitLoss,
                 };
 
-                // 로컬 데이터 업데이트
-                const index = rowData.value.findIndex((dataItem) => dataItem === item);
+                // 로컬 데이터 업데이트 (ID 기반으로 찾기)
+                const index = rowData.value.findIndex((dataItem) => dataItem.id === item.id);
                 if (index !== -1) {
                   rowData.value[index] = updatedItem;
                 }

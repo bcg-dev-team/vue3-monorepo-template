@@ -155,6 +155,16 @@ const gridOptions = computed(() => ({
   domLayout: 'normal',
   suppressHorizontalScroll: false,
 
+  // 성능 최적화: 행 ID 추적을 위한 getRowId 함수
+  getRowId: (params: any) => {
+    // 데이터에 고유 ID가 있는 경우 사용
+    if (params.data && params.data.id) {
+      return params.data.id;
+    }
+    // 고유 ID가 없는 경우 인덱스 기반으로 생성
+    return `row-${params.node.rowIndex}`;
+  },
+
   ...props.gridOptions,
 }));
 

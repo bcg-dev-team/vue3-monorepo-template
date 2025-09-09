@@ -21,8 +21,8 @@
 }
 
 .chip-red {
-  background-color: var(--chips-status-red-bg);
-  color: var(--chips-status-red-text);
+  background-color: var(--trade-long-background);
+  color: var(--trade-long-text);
 }
 
 .chip-green {
@@ -31,8 +31,8 @@
 }
 
 .chip-blue {
-  background-color: var(--chips-status-blue-bg);
-  color: var(--chips-status-blue-text);
+  background-color: var(--trade-short-background);
+  color: var(--trade-short-text);
 }
 
 .chip-yellow {

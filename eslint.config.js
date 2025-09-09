@@ -107,6 +107,7 @@ export default typescriptEslint.config({
   },
   rules: {
     'no-debugger': 'error',
+    'no-console': 'off', // console 사용을 경고로 설정
     'no-unused-vars': [
       'warn',
       {
@@ -145,5 +146,11 @@ export default typescriptEslint.config({
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/ban-types': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
+  },
+}, {
+  // logger 유틸리티 파일에 대해 no-console 룰 비활성화
+  files: ['packages/utils/src/logger.ts', 'packages/utils/src/env.ts'],
+  rules: {
+    'no-console': 'off',
   },
 }, eslintConfigPrettier, storybook.configs["flat/recommended"]);

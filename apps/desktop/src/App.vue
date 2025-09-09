@@ -3,51 +3,58 @@
     <header class="app-header sticky top-0 z-50">
       <div class="mx-auto flex max-w-7xl items-center justify-between px-8">
         <div class="flex items-baseline gap-2">
-          <h1 class="text-text-primary m-0 text-2xl font-bold">Vue 3 Monorepo Template</h1>
-          <span class="text-text-secondary text-sm font-medium">v1.0.0</span>
+          <h1 class="text-primary m-0 text-2xl font-bold">Vue 3 Monorepo Template</h1>
+          <span class="text-default-muted text-sm font-medium">v1.0.0</span>
         </div>
         <nav class="flex gap-6">
           <router-link
             to="/"
-            class="hover:bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
-            :class="{ 'bg-primary-light text-primary': $route.path === '/' }"
+            class="hover:bg-bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
+            :class="{ 'bg-primary-primary100 text-primary': $route.path === '/' }"
           >
             시작하기
           </router-link>
           <router-link
             to="/packages"
-            class="hover:bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
-            :class="{ 'bg-primary-light text-primary': $route.path === '/packages' }"
+            class="hover:bg-bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
+            :class="{ 'bg-primary-primary100 text-primary': $route.path === '/packages' }"
           >
             패키지 구조
           </router-link>
           <router-link
             to="/development"
-            class="hover:bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
-            :class="{ 'bg-primary-light text-primary': $route.path === '/development' }"
+            class="hover:bg-bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
+            :class="{ 'bg-primary-primary100 text-primary': $route.path === '/development' }"
           >
             개발 가이드
           </router-link>
           <router-link
             to="/components"
-            class="hover:bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
-            :class="{ 'bg-primary-light text-primary': $route.path === '/components' }"
+            class="hover:bg-bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
+            :class="{ 'bg-primary-primary100 text-primary': $route.path === '/components' }"
           >
             컴포넌트
           </router-link>
           <router-link
             to="/api-examples"
-            class="hover:bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
-            :class="{ 'bg-primary-light text-primary': $route.path === '/api-examples' }"
+            class="hover:bg-bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
+            :class="{ 'bg-primary-primary100 text-primary': $route.path === '/api-examples' }"
           >
             API 예제
           </router-link>
           <router-link
             to="/theme-test"
-            class="hover:bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
-            :class="{ 'bg-primary-light text-primary': $route.path === '/theme-test' }"
+            class="hover:bg-bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
+            :class="{ 'bg-primary-primary100 text-primary': $route.path === '/theme-test' }"
           >
             테마 테스트
+          </router-link>
+          <router-link
+            to="/logger-test"
+            class="hover:bg-bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
+            :class="{ 'bg-primary-primary100 text-primary': $route.path === '/logger-test' }"
+          >
+            로거 테스트
           </router-link>
         </nav>
       </div>
@@ -59,7 +66,7 @@
 
     <footer class="app-footer mt-auto">
       <div class="mx-auto flex max-w-7xl items-center justify-between px-8">
-        <p class="text-text-footer m-0 text-sm">
+        <p class="text-footer m-0 text-sm">
           &copy; 2024 Vue 3 Monorepo Template - TypeScript, Vite, Performance Optimized
         </p>
         <div class="flex gap-6">
@@ -67,7 +74,7 @@
             href="https://github.com/your-username/vue3-monorepo-template"
             target="_blank"
             rel="noopener"
-            class="text-text-footer hover:text-text-primary text-sm transition-colors duration-200"
+            class="text-footer hover:text-primary text-sm transition-colors duration-200"
           >
             GitHub
           </a>
@@ -75,7 +82,7 @@
             href="https://vuejs.org"
             target="_blank"
             rel="noopener"
-            class="text-text-footer hover:text-text-primary text-sm transition-colors duration-200"
+            class="text-footer hover:text-primary text-sm transition-colors duration-200"
           >
             Vue.js
           </a>
@@ -83,7 +90,7 @@
             href="https://vitejs.dev"
             target="_blank"
             rel="noopener"
-            class="text-text-footer hover:text-text-primary text-sm transition-colors duration-200"
+            class="text-footer hover:text-primary text-sm transition-colors duration-200"
           >
             Vite
           </a>

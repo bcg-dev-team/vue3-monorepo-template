@@ -210,10 +210,10 @@ pnpm test</code></pre>
 }
 
 .feature-card {
-  background: white;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: var(--background-bg-default);
+  padding: var(--padding-padding-24);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-box);
   text-align: center;
   transition: transform 0.2s ease;
 }
@@ -228,24 +228,24 @@ pnpm test</code></pre>
 }
 
 .feature-card h3 {
-  font-size: 1.25rem;
+  font-size: var(--font-size-font-20);
   font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 1rem;
+  color: var(--font-color-default);
+  margin-bottom: var(--padding-padding-16);
 }
 
 .feature-card p {
-  color: #6c757d;
+  color: var(--font-color-default-muted);
   line-height: 1.6;
 }
 
 .quick-start h2,
 .project-structure h2,
 .next-steps h2 {
-  font-size: 2rem;
+  font-size: var(--font-size-font-24);
   font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 1.5rem;
+  color: var(--font-color-default);
+  margin-bottom: var(--padding-padding-24);
 }
 
 .code-block {
@@ -274,10 +274,10 @@ pnpm test</code></pre>
 }
 
 .structure-tree {
-  background: white;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: var(--background-bg-default);
+  padding: var(--padding-padding-24);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-box);
 }
 
 .tree-item {

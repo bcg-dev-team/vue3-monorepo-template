@@ -59,7 +59,7 @@ const inputValue2 = ref('');
 
 <style scoped>
 .theme-test {
-  padding: 2rem;
+  padding: var(--padding-padding-24);
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -67,37 +67,37 @@ const inputValue2 = ref('');
 .theme-info {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background: var(--n-color);
-  border-radius: 8px;
+  gap: var(--padding-padding-16);
+  margin-bottom: var(--padding-padding-24);
+  padding: var(--padding-padding-16);
+  background: var(--background-bg-default);
+  border-radius: var(--radius-default);
 }
 
 .component-examples {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: var(--padding-padding-24);
 }
 
 .example-section {
-  padding: 1.5rem;
-  border: 1px solid var(--n-border-color);
-  border-radius: 8px;
-  background: var(--n-color);
+  padding: var(--padding-padding-24);
+  border: 1px solid var(--background-divider);
+  border-radius: var(--radius-default);
+  background: var(--background-bg-default);
 }
 
 .example-section h3 {
   margin-top: 0;
-  margin-bottom: 1rem;
-  color: var(--n-text-color);
+  margin-bottom: var(--padding-padding-16);
+  color: var(--font-color-default);
 }
 
 .button-examples,
 .input-examples,
 .naive-examples {
   display: flex;
-  gap: 1rem;
+  gap: var(--padding-padding-16);
   flex-wrap: wrap;
   align-items: center;
 }

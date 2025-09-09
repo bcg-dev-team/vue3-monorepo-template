@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { ElDatePicker } from 'element-plus';
-import 'element-plus/dist/index.css';
-
 interface Props {
   /**
    * 선택된 날짜 (v-model)
@@ -42,7 +39,7 @@ const handleDateChange = (value: string | null) => {
 </script>
 
 <template>
-  <ElDatePicker
+  <el-date-picker
     :model-value="props.modelValue"
     type="date"
     :placeholder="props.placeholder"

@@ -41,7 +41,6 @@
 import PositionTableContent from '@/components/assets/marginDetails/PositionTableContent.vue';
 import CardLayoutHorizontal from '@/components/layout/fragments/CardLayoutHorizontal.vue';
 import OrderTableContent from '@/components/assets/marginDetails/OrderTableContent.vue';
-import ClearTableContnet from '@/components/assets/marginDetails/ClearTableContnet.vue';
 import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import AssetsComposition from '@/components/assets/AssetsComposition.vue';
@@ -58,11 +57,6 @@ const tabs = [
     key: 'position',
     label: '포지션',
     component: PositionTableContent,
-  },
-  {
-    key: 'clear',
-    label: '청산',
-    component: ClearTableContnet,
   },
   {
     key: 'order',

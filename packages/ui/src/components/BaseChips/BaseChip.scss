@@ -16,33 +16,33 @@
 // 컴포넌트별 토큰만 정의
 // Tailwind 클래스로 처리 가능한 스타일들은 Vue 파일에서 직접 사용
 .chip-grey {
-  background-color: var(--base-colors-common-light-gray-ea);
-  color: var(--base-colors-neutral-neutral550);
+  background-color: var(--table-chip-background);
+  color: var(--font-color-default-muted);
 }
 
 .chip-red {
-  background-color: var(--base-colors-red-red050);
-  color: var(--base-colors-red-red800);
+  background-color: var(--chips-status-red-bg);
+  color: var(--chips-status-red-text);
 }
 
 .chip-green {
-  background-color: var(--base-colors-green-green050);
-  color: var(--base-colors-green-green800);
+  background-color: var(--chips-status-done-bg);
+  color: var(--chips-status-done-text);
 }
 
 .chip-blue {
-  background-color: var(--base-colors-blue-blue050);
-  color: var(--base-colors-blue-blue800);
+  background-color: var(--chips-status-blue-bg);
+  color: var(--chips-status-blue-text);
 }
 
 .chip-yellow {
-  background-color: var(--base-colors-primary-primary050);
-  color: var(--base-colors-primary-primary-deep);
+  background-color: var(--chips-status-pending-bg);
+  color: var(--chips-status-pending-text);
 }
 
 .chip-purple {
-  background-color: var(--base-colors-purple-purple050);
-  color: var(--base-colors-purple-purple800);
+  background-color: var(--trade-cancel-background);
+  color: var(--trade-cancel-text);
 }
 
 // 크기별 스타일

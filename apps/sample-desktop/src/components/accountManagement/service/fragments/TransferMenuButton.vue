@@ -1,9 +1,6 @@
 <template>
   <div
-    :class="
-      borderColorClasses[props.color] +
-      ' p-padding-36 flex w-[320px] cursor-pointer flex-col items-center justify-center rounded-[10px] border'
-    "
+    class="p-padding-36 border-bg-bg-outline flex w-[320px] cursor-pointer flex-col items-center justify-center rounded-[10px] border"
     @click="emit('click')"
   >
     <div :class="colorClasses[props.color] + ' p-padding-16 rounded-[10px]'">
@@ -42,11 +39,5 @@ const colorClasses = computed(() => ({
   blue: 'bg-gradient-to-br-blue',
   green: 'bg-gradient-to-br-green',
   red: 'bg-gradient-to-br-red',
-}));
-
-const borderColorClasses = computed(() => ({
-  blue: 'border-blue-blue800-deep',
-  green: 'border-green-green800',
-  red: 'border-red-red800',
 }));
 </script>

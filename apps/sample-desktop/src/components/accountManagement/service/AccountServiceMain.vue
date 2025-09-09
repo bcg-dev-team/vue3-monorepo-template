@@ -1,5 +1,5 @@
 <template>
-  <MainCardContent class="px-padding-36 py-padding-64">
+  <MainCardContent class="px-padding-36 py-padding-64 border-bg-bg-outline border">
     <template #content>
       <div class="gap-size-64 flex flex-col justify-center">
         <div class="flex items-center justify-center">

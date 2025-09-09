@@ -1,6 +1,8 @@
 <template>
   <div class="gap-size-24 flex">
-    <MainCardContent class="p-padding-24 !bg-red-red050 border-red-red800 w-[424px]">
+    <MainCardContent
+      class="p-padding-24 w-[424px] border border-[var(--button-red-border)] !bg-[var(--button-red-background)]"
+    >
       <template #content>
         <div>
           <div>
@@ -19,7 +21,7 @@
         </div>
       </template>
     </MainCardContent>
-    <MainCardContent class="p-padding-24 w-[424px]">
+    <MainCardContent class="p-padding-24 border-bg-bg-outline w-[424px] border">
       <template #content>
         <div>
           <div>
@@ -29,83 +31,83 @@
             <BaseInput placeholder="" />
             <div class="gap-size-8 grid grid-cols-4">
               <BaseButton
-                class="text-default !bg-bg-bg-innerframe h-[44px] !text-black"
+                class="text-default !bg-bg-bg-innerframe !text-default h-[44px]"
                 label="100"
                 variant="contained"
                 size="md"
               />
               <BaseButton
-                class="text-default !bg-bg-bg-innerframe h-[44px] !text-black"
+                class="text-default !bg-bg-bg-innerframe !text-default h-[44px]"
                 label="500"
                 variant="contained"
                 size="md"
                 color="grey"
               />
               <BaseButton
-                class="text-default !bg-bg-bg-innerframe h-[44px] !text-black"
+                class="text-default !bg-bg-bg-innerframe !text-default h-[44px]"
                 label="1,000"
                 variant="contained"
                 size="md"
                 color="grey"
               />
               <BaseButton
-                class="text-default !bg-bg-bg-innerframe h-[44px] !text-black"
+                class="text-default !bg-bg-bg-innerframe !text-default h-[44px]"
                 label="1,500"
                 variant="contained"
                 size="md"
                 color="grey"
               />
               <BaseButton
-                class="text-default !bg-bg-bg-innerframe h-[44px] !text-black"
+                class="text-default !bg-bg-bg-innerframe !text-default h-[44px]"
                 label="2,000"
                 variant="contained"
                 size="md"
                 color="grey"
               />
               <BaseButton
-                class="text-default !bg-bg-bg-innerframe h-[44px] !text-black"
+                class="text-default !bg-bg-bg-innerframe !text-default h-[44px]"
                 label="5,000"
                 variant="contained"
                 size="md"
                 color="grey"
               />
               <BaseButton
-                class="text-default !bg-bg-bg-innerframe h-[44px] !text-black"
+                class="text-default !bg-bg-bg-innerframe !text-default h-[44px]"
                 label="10,000"
                 variant="contained"
                 size="md"
                 color="grey"
               />
               <BaseButton
-                class="text-default !bg-bg-bg-innerframe h-[44px] !text-black"
+                class="text-default !bg-bg-bg-innerframe !text-default h-[44px]"
                 label="15,000"
                 variant="contained"
                 size="md"
                 color="grey"
               />
               <BaseButton
-                class="text-default !bg-bg-bg-innerframe h-[44px] !text-black"
+                class="text-default !bg-bg-bg-innerframe !text-default h-[44px]"
                 label="25%"
                 variant="contained"
                 size="md"
                 color="grey"
               />
               <BaseButton
-                class="text-default !bg-bg-bg-innerframe h-[44px] !text-black"
+                class="text-default !bg-bg-bg-innerframe !text-default h-[44px]"
                 label="50%"
                 variant="contained"
                 size="md"
                 color="grey"
               />
               <BaseButton
-                class="text-default !bg-bg-bg-innerframe h-[44px] !text-black"
+                class="text-default !bg-bg-bg-innerframe !text-default h-[44px]"
                 label="75%"
                 variant="contained"
                 size="md"
                 color="grey"
               />
               <BaseButton
-                class="text-default !bg-bg-bg-innerframe h-[44px] !text-black"
+                class="text-default !bg-bg-bg-innerframe !text-default h-[44px]"
                 label="전액"
                 variant="contained"
                 size="md"
@@ -116,7 +118,9 @@
         </div>
       </template>
     </MainCardContent>
-    <MainCardContent class="p-padding-24 !bg-blue-blue050 border-blue-blue800-deep w-[424px]">
+    <MainCardContent
+      class="p-padding-24 w-[424px] border border-[var(--button-blue-border)] !bg-[var(--button-blue-background)]"
+    >
       <template #content>
         <div>
           <div>

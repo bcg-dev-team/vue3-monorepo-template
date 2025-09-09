@@ -1,5 +1,5 @@
 <template>
-  <MainCardContent class="p-padding-24">
+  <MainCardContent class="p-padding-24 border-bg-bg-outline border">
     <template #content>
       <div class="gap-size-12 flex flex-col">
         <div class="flex items-center justify-between">

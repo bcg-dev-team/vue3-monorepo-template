@@ -3,7 +3,7 @@
     <h2 class="text-font-14 font-semibold">가입 약관 동의</h2>
   </div>
   <div class="mt-6">
-    <div class="p-size-12 border-bg-outline flex items-center rounded-[10px] border">
+    <div class="p-size-12 border-bg-bg-outline flex items-center rounded-[10px] border">
       <BaseCheckbox v-model="isAllChecked" :indeterminate="isIndeterminate" @click="toggleAll">
         <span class="text-font-15 font-semibold">모든 약관에 동의합니다.</span>
       </BaseCheckbox>

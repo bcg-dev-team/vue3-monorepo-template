@@ -1,6 +1,6 @@
 <template>
   <div
-    class="gap-size-48 bg-neutral-neutral000 border-bg-outline m-auto flex w-[460px] flex-col rounded-md border px-[50px] pb-[60px] pt-[50px]"
+    class="gap-size-48 bg-neutral-neutral000 border-bg-bg-outline m-auto flex w-[460px] flex-col rounded-md border px-[50px] pb-[60px] pt-[50px]"
   >
     <div v-if="totalStep" class="flex items-center justify-between">
       <div class="cursor-pointer" @click="router.back()">

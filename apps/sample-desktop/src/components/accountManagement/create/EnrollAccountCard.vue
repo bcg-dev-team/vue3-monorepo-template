@@ -8,7 +8,7 @@
         <div class="mt-size-16">
           <form class="gap-size-16 flex flex-col">
             <LabelContent
-              class="pb-padding-16 border-bg-outline border-b"
+              class="pb-padding-16 border-bg-bg-outline border-b"
               label="계좌 번호"
               size="custom"
               :style="'text-font-14 text-default-muted'"
@@ -20,7 +20,7 @@
               </template>
             </LabelContent>
             <LabelContent
-              class="pb-padding-16 border-bg-outline border-b"
+              class="pb-padding-16 border-bg-bg-outline border-b"
               label="계좌별명"
               size="custom"
               :style="'text-font-14 text-default-muted'"

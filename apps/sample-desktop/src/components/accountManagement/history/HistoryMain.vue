@@ -1,6 +1,10 @@
 <template>
   <div class="gap-size-24 gap-size-16 flex">
-    <MainCardContent class="h-[689px] w-[300px] flex-shrink-0 p-6" title="검색 및 필터" size="sm">
+    <MainCardContent
+      class="border-bg-bg-outline h-[689px] w-[300px] flex-shrink-0 border p-6"
+      title="검색 및 필터"
+      size="sm"
+    >
       <template #content>
         <div class="gap-size-16 flex flex-col">
           <LabelContent label="선택 계좌" size="custom" class="text-font-13">
@@ -31,7 +35,11 @@
         </div>
       </template>
     </MainCardContent>
-    <MainCardContent class="w-full p-6" title="거래내역" size="sm"></MainCardContent>
+    <MainCardContent
+      class="border-bg-bg-outline w-full border p-6"
+      title="거래내역"
+      size="sm"
+    ></MainCardContent>
   </div>
 </template>
 <script setup lang="ts">

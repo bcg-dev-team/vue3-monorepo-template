@@ -7,7 +7,7 @@
     <AccountServiceResult :title="title.result" :result-list="resultList" />
     <div class="flex justify-center">
       <BaseButton
-        class="w-[240px]"
+        class="w-[240px] bg-[var(--trade-correct-background-solid)] text-[var(--button-red-solid-text)]"
         label="거래내역 보러가기"
         variant="contained"
         size="lg"

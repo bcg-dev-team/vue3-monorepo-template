@@ -7,7 +7,7 @@
       <div class="mt-size-8">
         <div class="grid grid-cols-2 border-t border-[var(--table-type2-body-border)]">
           <TableLabel title="제목">
-            <BaseChip class="mr-size-10" label="답변완료" variant="red" size="sm" />
+            <BaseChip class="mr-size-10" label="답변완료" variant="red" size="md" />
             출금신청이 잘 됐는지 문의드립니다!
           </TableLabel>
           <TableLabel title="작성일시">2025.05.25 09:15:46</TableLabel>

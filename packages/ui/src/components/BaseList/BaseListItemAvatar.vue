@@ -11,9 +11,7 @@
  * @props variant - 아바타 스타일 (circular, rounded, square)
  * @props icon - 직접 표시할 BaseIcon (src보다 우선순위 높음)
  * @props fallback - 이미지 로드 실패 시 표시할 텍스트 또는 아이콘
- * @props color - 아바타 색상 테마 (primary, red, blue, green, purple, custom)
- * @props backgroundColor - 커스텀 배경색 (color가 custom일 때 사용)
- * @props iconColor - 커스텀 아이콘 색상 (color가 custom일 때 사용)
+ * @props color - 아바타 색상 테마 (primary, red, blue, green, purple)
  * @emits error - 이미지 로드 실패 시 발생
  */
 import type { InnerIconProps } from '../../types/components';
@@ -34,11 +32,7 @@ interface Props {
   /** 이미지 로드 실패 시 표시할 텍스트 또는 아이콘 */
   fallback?: string | InnerIconProps;
   /** 아바타 색상 테마 */
-  color?: 'default' | 'primary' | 'red' | 'blue' | 'green' | 'purple' | 'custom';
-  /** 커스텀 배경색 (color가 custom일 때 사용) */
-  backgroundColor?: string;
-  /** 커스텀 아이콘 색상 (color가 custom일 때 사용) */
-  iconColor?: string;
+  color?: 'default' | 'primary' | 'red' | 'blue' | 'green' | 'purple';
 }
 
 interface Emits {
@@ -94,38 +88,6 @@ const avatarSize = computed(() => {
 });
 
 /**
- * 커스텀 스타일 계산
- */
-const customStyles = computed(() => {
-  if (props.color !== 'custom') return {};
-
-  const styles: Record<string, string> = {};
-
-  if (props.backgroundColor) {
-    styles['--custom-background-color'] = props.backgroundColor;
-  }
-
-  if (props.iconColor) {
-    styles['--custom-icon-color'] = props.iconColor;
-  }
-
-  return styles;
-});
-
-/**
- * 폴백 콘텐츠 렌더링
- */
-const fallbackContent = computed(() => {
-  if (!props.fallback) return null;
-
-  if (typeof props.fallback === 'string') {
-    return props.fallback;
-  }
-
-  return props.fallback;
-});
-
-/**
  * 이미지 에러 처리
  */
 const handleImageError = (event: Event) => {
@@ -142,12 +104,13 @@ const handleImageLoad = () => {
 </script>
 
 <template>
-  <div :class="avatarClasses" :style="[{ width: avatarSize, height: avatarSize }, customStyles]">
+  <div :class="avatarClasses" :style="[{ width: avatarSize, height: avatarSize }]">
     <!-- 직접 지정된 아이콘이 있는 경우 (최우선) -->
     <div v-if="icon" class="list-item-avatar__icon">
       <BaseIcon
         :name="icon.name"
         :size="icon.size || 'md'"
+        :color="icon.color || 'var(--input-icon-default)'"
         class="list-item-avatar__icon-content"
       />
     </div>

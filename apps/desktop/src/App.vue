@@ -29,25 +29,11 @@
             개발 가이드
           </router-link>
           <router-link
-            to="/components"
-            class="hover:bg-bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
-            :class="{ 'bg-primary-primary100 text-primary': $route.path === '/components' }"
-          >
-            컴포넌트
-          </router-link>
-          <router-link
             to="/api-examples"
             class="hover:bg-bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
             :class="{ 'bg-primary-primary100 text-primary': $route.path === '/api-examples' }"
           >
             API 예제
-          </router-link>
-          <router-link
-            to="/theme-test"
-            class="hover:bg-bg-surface-muted rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
-            :class="{ 'bg-primary-primary100 text-primary': $route.path === '/theme-test' }"
-          >
-            테마 테스트
           </router-link>
           <router-link
             to="/logger-test"

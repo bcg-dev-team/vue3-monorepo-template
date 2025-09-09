@@ -18,11 +18,6 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../views/DevelopmentView.vue'),
   },
   {
-    path: '/components',
-    name: 'Components',
-    component: () => import('../views/ComponentsView.vue'),
-  },
-  {
     path: '/api-examples',
     name: 'ApiExamples',
     component: () => import('../views/ApiExamplesView.vue'),
@@ -36,11 +31,6 @@ const routes: RouteRecordRaw[] = [
     path: '/tree-shaking-test',
     name: 'TreeShakingTest',
     component: () => import('../views/TreeShakingTest.vue'),
-  },
-  {
-    path: '/theme-test',
-    name: 'ThemeTest',
-    component: () => import('../views/ThemeTestView.vue'),
   },
   {
     path: '/logger-test',

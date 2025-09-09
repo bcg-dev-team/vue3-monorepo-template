@@ -8,6 +8,7 @@ coverage/
 dist/
 **/dist/
 packages/ui/components.d.ts
+packages/ui/auto-imports.d.ts
 
 # TypeScript 빌드 정보
 *.tsbuildinfo

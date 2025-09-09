@@ -1,8 +1,10 @@
 <template>
   <LabelContent label="보유 포지션" size="lg">
     <template #count>
-      <div class="px-size-4 bg-red-red050 flex items-center justify-center rounded-sm py-[2px]">
-        <span class="text-font-12 text-red font-medium">2</span>
+      <div
+        class="rounded-xs flex h-[18px] w-[15px] items-center justify-center bg-[var(--trade-long-background)]"
+      >
+        <span class="text-red text-[11px] font-medium">2</span>
       </div>
     </template>
     <template #content>

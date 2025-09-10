@@ -4,7 +4,8 @@
   피그마 디자인 토큰 기반으로 구현
 -->
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import BaseIcon from '../BaseIcon/BaseIcon.vue';
 
 /**
  * BaseInput - 모든 Input 타입의 공통 베이스 컴포넌트
@@ -12,11 +13,13 @@ import { computed } from 'vue';
  * @props modelValue - 입력값 (v-model)
  * @props placeholder - 플레이스홀더 텍스트
  * @props size - 크기 (sm, md)
+ * @props variant - 입력 타입 변형 (default, search, password)
  * @props disabled - 비활성화 여부
  * @props error - 에러 상태 여부
  * @props errorMessage - 에러 메시지
  * @props readonly - 읽기 전용 여부
- * @emits update:modelValue - 입력값 변경 시 발생
+ * @props onSearch - 검색 버튼 클릭 이벤트 (variant="search"일 때 사용)
+ * @emits update:modelValue - 값 변경 시 발생
  * @emits focus - 포커스 시 발생
  * @emits blur - 블러 시 발생
  * @slot prepend - 외부 좌측 커스텀 컨텐츠
@@ -39,6 +42,11 @@ interface Props {
    */
   size?: 'sm' | 'md';
   /**
+   * 입력 타입 변형
+   * @default 'default'
+   */
+  variant?: 'default' | 'search' | 'password';
+  /**
    * 비활성화 여부
    * @default false
    */
@@ -57,16 +65,22 @@ interface Props {
    * @default false
    */
   readonly?: boolean;
+  /**
+   * 검색 버튼 클릭 이벤트 (variant="search"일 때 사용)
+   */
+  onSearch?: () => void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
   placeholder: '',
   size: 'md',
+  variant: 'default',
   disabled: false,
   error: false,
   errorMessage: '',
   readonly: false,
+  onSearch: undefined,
 });
 
 const emit = defineEmits<{
@@ -75,95 +89,58 @@ const emit = defineEmits<{
   (e: 'blur', event: FocusEvent): void;
 }>();
 
-// 상태 계산
+// 내부 상태 관리
+const isPasswordVisible = ref(false);
+
+// Computed 속성들
 const isDisabled = computed(() => props.disabled);
 const isError = computed(() => props.error);
-const hasValue = computed(() => props.modelValue && props.modelValue.length > 0);
+const showVariantIcon = computed(() => props.variant === 'search' || props.variant === 'password');
 
-// 크기별 클래스
 const sizeClasses = computed(() => {
-  switch (props.size) {
-    case 'sm':
-      return 'px-[15px] py-[13px] text-[13px] leading-[16px]';
-    case 'md':
-      return 'px-[15px] py-3.5 text-[16px] leading-[20px]';
-    default:
-      return 'px-[15px] py-3.5 text-[16px] leading-[20px]';
-  }
+  return props.size === 'sm' ? 'px-[15px] py-[13px] text-[13px] leading-[16px]' : 'px-[15px] py-[13px] text-[16px] leading-[20px]';
 });
 
-// 상태별 클래스
-const stateClasses = computed(() => {
-  const classes = [
-    'relative w-full rounded-md transition-all duration-150 flex',
-    'bg-[var(--input-color-surface)] border border-solid',
-  ];
-
+const containerClasses = computed(() => {
+  const base = 'relative w-full rounded-md transition-all duration-150 flex bg-[var(--input-color-surface)] border border-solid';
+  
   if (isDisabled.value) {
-    classes.push(
-      'bg-input-bg-disabled border-input-border-disabled text-input-text-disable cursor-not-allowed'
-    );
-  } else if (isError.value) {
-    classes.push(
-      'border-input-border-error',
-      'focus-within:border-input-border-error focus-within:shadow-[0_0_0_1px_var(--input-color-border-error)]'
-    );
-  } else {
-    classes.push(
-      'border-input-border-static',
-      'focus-within:border-input-border-focus focus-within:shadow-[0_0_0_1px_var(--input-color-border-focus)]',
-      'hover:border-input-border-focus'
-    );
+    return `${base} bg-input-bg-disabled border-input-border-disabled text-input-text-disable cursor-not-allowed`;
   }
-
-  return classes.join(' ');
-});
-
-// prepend-inner 클래스
-const prependInnerClasses = computed(() => {
-  const classes = [
-    'flex items-center pl-[15px] text-input-text-static font-normal tracking-[-0.35px]',
-  ];
-
-  if (props.size === 'sm') {
-    classes.push('text-[13px] leading-[16px]');
-  } else {
-    classes.push('text-[16px] leading-[20px]');
+  
+  if (isError.value) {
+    return `${base} border-input-border-error focus-within:border-input-border-error focus-within:shadow-[0_0_0_1px_var(--input-color-border-error)]`;
   }
-
-  return classes.join(' ');
+  
+  return `${base} border-input-border-static focus-within:border-input-border-focus focus-within:shadow-[0_0_0_1px_var(--input-color-border-focus)] hover:border-input-border-focus`;
 });
 
-// append-inner 클래스
-const appendInnerClasses = computed(() => {
-  return 'flex items-center pr-[10px] gap-1';
-});
-
-// 입력 요소 클래스
 const inputClasses = computed(() => {
-  const classes = [
-    'w-full bg-transparent border-0 outline-none',
-    'tracking-[-0.35px]',
-    sizeClasses.value,
-  ];
-
-  // 플레이스홀더 스타일
-  if (isDisabled.value) {
-    classes.push(
-      'text-input-text-disable cursor-not-allowed',
-      'placeholder:text-input-text-disable'
-    );
-  } else {
-    classes.push(
-      'text-input-text-static',
-      'placeholder:text-input-text-placeholder placeholder:font-normal placeholder:tracking-[-0.35px]'
-    );
-  }
-
-  return classes.join(' ');
+  const base = `w-full bg-transparent border-0 outline-none tracking-[-0.35px] ${sizeClasses.value}`;
+  const padding = showVariantIcon.value ? 'pr-[45px]' : '';
+  
+  const textStyles = isDisabled.value
+    ? 'text-input-text-disable cursor-not-allowed placeholder:text-input-text-disable'
+    : 'text-input-text-static placeholder:text-input-text-placeholder placeholder:font-normal placeholder:tracking-[-0.35px]';
+  
+  // password variant일 때 텍스트 마스킹
+  const passwordMask = (props.variant === 'password' && !isPasswordVisible.value) 
+    ? '[-webkit-text-security:disc] [text-security:disc]' 
+    : '';
+  
+  return `${base} ${padding} ${textStyles} ${passwordMask}`;
 });
 
-// 이벤트 핸들러
+const prependInnerClasses = computed(() => {
+  const textSize = props.size === 'sm' ? 'text-[13px] leading-[16px]' : 'text-[16px] leading-[20px]';
+  return `flex items-center pl-[15px] text-input-text-static font-normal tracking-[-0.35px] ${textSize}`;
+});
+
+const appendInnerClasses = computed(() => {
+  return 'absolute right-0 top-0 h-full flex items-center pr-[15px] gap-1';
+});
+
+// 이벤트 핸들러들
 const handleInput = (event: Event) => {
   const target = event.target as HTMLInputElement;
   emit('update:modelValue', target.value);
@@ -176,11 +153,21 @@ const handleFocus = (event: FocusEvent) => {
 const handleBlur = (event: FocusEvent) => {
   emit('blur', event);
 };
+
+const handleSearchClick = () => {
+  if (props.onSearch) {
+    props.onSearch();
+  }
+};
+
+const handlePasswordToggle = () => {
+  isPasswordVisible.value = !isPasswordVisible.value;
+};
+
 </script>
 
 <template>
   <div class="flex w-full flex-col">
-    <!-- 메인 컨테이너 (input과 외부 슬롯들을 포함) -->
     <div class="flex w-full items-center gap-2">
       <!-- 외부 좌측 prepend -->
       <div v-if="$slots.prepend" class="flex-shrink-0">
@@ -188,26 +175,47 @@ const handleBlur = (event: FocusEvent) => {
       </div>
 
       <!-- 입력 컨테이너 -->
-      <div :class="stateClasses" class="flex-1">
+      <div :class="containerClasses" class="flex-1">
         <!-- 내부 좌측 prepend-inner -->
         <div v-if="$slots['prepend-inner']" :class="prependInnerClasses">
           <slot name="prepend-inner" />
         </div>
 
         <!-- 입력 필드 -->
-        <input
-          :value="modelValue"
-          :placeholder="placeholder"
-          :disabled="isDisabled"
-          :readonly="readonly"
-          :class="inputClasses"
-          @input="handleInput"
-          @focus="handleFocus"
-          @blur="handleBlur"
-        />
+        <div class="relative flex-1">
+          <input
+            :value="modelValue"
+            type="text"
+            :placeholder="placeholder"
+            :disabled="isDisabled"
+            :readonly="readonly"
+            :class="inputClasses"
+            @input="handleInput"
+            @focus="handleFocus"
+            @blur="handleBlur"
+          />
 
-        <!-- 내부 우측 append-inner -->
-        <div v-if="$slots['append-inner']" :class="appendInnerClasses">
+          <!-- Variant 아이콘들 -->
+          <div v-if="showVariantIcon" :class="appendInnerClasses">
+            <BaseIcon
+              v-if="variant === 'search'"
+              name="search"
+              :size="size === 'sm' ? 'sm' : 'md'"
+              class="text-input-text-static hover:text-input-text-hover cursor-pointer"
+              @click="handleSearchClick"
+            />
+            <BaseIcon
+              v-if="variant === 'password'"
+              :name="isPasswordVisible ? 'eye' : 'eye-close'"
+              :size="size === 'sm' ? 'sm' : 'md'"
+              class="text-input-text-static hover:text-input-text-hover cursor-pointer"
+              @click="handlePasswordToggle"
+            />
+          </div>
+        </div>
+
+        <!-- 내부 우측 append-inner (슬롯) -->
+        <div v-if="$slots['append-inner']" :class="appendInnerClasses.replace('gap-1', 'gap-1 z-10')">
           <slot name="append-inner" />
         </div>
       </div>
@@ -219,10 +227,7 @@ const handleBlur = (event: FocusEvent) => {
     </div>
 
     <!-- 에러 메시지 -->
-    <div
-      v-if="isError && errorMessage"
-      class="text-input-border-error mt-1 text-[12px] font-medium"
-    >
+    <div v-if="isError && errorMessage" class="text-input-border-error mt-1 text-[12px] font-medium">
       {{ errorMessage }}
     </div>
   </div>

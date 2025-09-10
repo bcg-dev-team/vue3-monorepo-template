@@ -133,7 +133,7 @@ const buttonClasses = computed(() => {
         </ListboxButton>
 
         <ListboxOptions
-          class="border-input-border-static absolute z-10 mt-1 max-h-60 min-w-full w-max overflow-auto rounded-md border bg-[var(--input-color-surface)] py-1 shadow-lg"
+          class="border-input-border-static absolute z-10 mt-1 max-h-60 w-max min-w-full overflow-auto rounded-md border bg-[var(--input-color-surface)] py-1 shadow-lg"
         >
           <ListboxOption
             v-for="option in options"
@@ -148,7 +148,7 @@ const buttonClasses = computed(() => {
                 option.disabled
                   ? 'text-input-text-disable cursor-not-allowed opacity-50'
                   : active
-                    ? 'text-input-text-static bg-[var(--input-color-surface)]'
+                    ? 'text-input-text-static bg-[var(--base-colors-blue-blue300)]'
                     : 'text-input-text-static',
                 selected && !option.disabled ? 'font-medium' : '',
               ]"

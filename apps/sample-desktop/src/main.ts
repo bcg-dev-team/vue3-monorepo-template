@@ -43,7 +43,8 @@ import { useTheme } from '@template/theme';
 
 const app = createApp(App);
 
-app.use(createPinia());
+const pinia = createPinia();
+app.use(pinia);
 app.use(router);
 
 // 앱 마운트 전에 테마 초기화

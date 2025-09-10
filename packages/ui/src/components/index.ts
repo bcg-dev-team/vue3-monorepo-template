@@ -23,6 +23,7 @@ export * from './BaseModal';
 export * from './BaseSkeleton';
 export * from './BaseStepper';
 export * from './BaseRadioGroup';
+export * from './BaseMenu';
 
 // 타입 export
 export * from '../types/components';

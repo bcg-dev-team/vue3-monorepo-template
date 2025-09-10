@@ -2,6 +2,7 @@
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue';
 import type { RadioOption } from '../../types/components';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
+import { computed } from 'vue';
 
 interface Props {
   /**
@@ -12,6 +13,11 @@ interface Props {
    * 라디오 그룹 라벨
    */
   label?: string;
+  /**
+   * 크기
+   * @default 'md'
+   */
+  size?: 'sm' | 'md';
   /**
    * 비활성화 여부
    */
@@ -26,9 +32,10 @@ interface Props {
   by?: string | ((a: any, b: any) => boolean);
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   options: () => [],
   label: '',
+  size: 'md',
   disabled: false,
   name: '',
 });
@@ -42,13 +49,18 @@ const model = defineModel<any>();
  * @param disabled - 비활성화 여부
  * @returns CSS 클래스 문자열
  */
+// 컨테이너 클래스
+const containerClasses = computed(() => {
+  return `bg-neutral-neutral050 flex gap-x-[10px] rounded-[6px] py-1 px-1`;
+});
+
 const getRadioOptionClasses = (
   checked: boolean,
   active: boolean = false,
   disabled: boolean = false
 ): string => {
-  const baseClasses =
-    'focus:outline-none focus:ring-0 flex items-center gap-x-2 px-3 py-1.5 text-[13px] leading-[16px] tracking-tight rounded-xs font-medium transition-colors duration-200';
+  const sizeClass = props.size === 'sm' ? 'h-[28px]' : 'h-[34px]';
+  const baseClasses = `focus:outline-none focus:ring-0 flex items-center justify-center gap-x-2 px-3 ${sizeClass} text-[13px] leading-[16px] tracking-tight rounded-xs font-medium transition-colors duration-200`;
 
   // 비활성화 상태
   if (disabled) {
@@ -90,7 +102,7 @@ const getRadioOptionClasses = (
       </RadioGroupLabel>
 
       <!-- 라디오 옵션들 -->
-      <div class="bg-neutral-neutral050 flex gap-x-[10px] rounded-[6px] p-1">
+      <div :class="containerClasses">
         <RadioGroupOption
           v-for="option in options"
           :key="option.value"

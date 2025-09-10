@@ -3,7 +3,6 @@
  */
 import BaseButton from '../BaseButton/BaseButton.vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
-import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import BaseMenu from './BaseMenu.vue';
 
 const meta: Meta<typeof BaseMenu> = {

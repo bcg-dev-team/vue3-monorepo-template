@@ -7,6 +7,9 @@ import type { CryptoCompareApiData } from '../../types/chart.js';
 import { logger } from '@template/utils';
 import { http, HttpResponse } from 'msw';
 
+// MSW HTTP 전용 로거 생성
+const mswHttpLogger = logger.createComponentLogger('MSW-HTTP');
+
 /**
  * resolution에 따른 시간 간격 계산
  * @param resolution - TradingView resolution 값
@@ -148,18 +151,18 @@ function getBasePrice(fsym: string, tsym: string): number {
   // 1. 정확한 심볼 매칭 (우선순위 1)
   const exactSymbol = `${fsym}${tsym}`;
   if (symbolBasePrices[exactSymbol]) {
-    logger.info(`[MSW] 정확한 심볼 매칭: ${exactSymbol} → ${symbolBasePrices[exactSymbol]}`);
+    mswHttpLogger.info(`정확한 심볼 매칭: ${exactSymbol} → ${symbolBasePrices[exactSymbol]}`);
     return symbolBasePrices[exactSymbol];
   }
 
   // 2. 부분 매칭 (우선순위 2) - 기존 호환성 유지
   if (symbolBasePrices[fsym]) {
-    logger.info(`[MSW] 부분 심볼 매칭: ${fsym} → ${symbolBasePrices[fsym]}`);
+    mswHttpLogger.info(`부분 심볼 매칭: ${fsym} → ${symbolBasePrices[fsym]}`);
     return symbolBasePrices[fsym];
   }
 
   // 3. 기본값 (우선순위 3)
-  logger.info(`[MSW] 기본값 사용: ${fsym}/${tsym} → 1000`);
+  mswHttpLogger.info(`기본값 사용: ${fsym}/${tsym} → 1000`);
   return 1000;
 }
 
@@ -196,7 +199,7 @@ export const chartHttpHandlers = [
     const limit = parseInt(url.searchParams.get('limit') || getDefaultLimit(resolution).toString());
     const toTs = url.searchParams.get('toTs');
 
-    logger.info('[MSW] HTTP history 요청:', { fsym, tsym, resolution, limit, toTs });
+    mswHttpLogger.info('HTTP history 요청', { fsym, tsym, resolution, limit, toTs });
 
     const basePrice = getBasePrice(fsym, tsym);
     const historyData = generateHistoryData(fsym, resolution, limit, basePrice);
@@ -223,8 +226,8 @@ export const chartHttpHandlers = [
       },
     };
 
-    logger.info(
-      `[MSW] ${fsym}/${tsym} ${resolution} 히스토리 데이터 ${filteredData.length}개 반환`
+    mswHttpLogger.info(
+      `${fsym}/${tsym} ${resolution} 히스토리 데이터 ${filteredData.length}개 반환`
     );
     return HttpResponse.json(response);
   }),

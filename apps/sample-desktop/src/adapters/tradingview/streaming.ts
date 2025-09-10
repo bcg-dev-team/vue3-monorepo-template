@@ -1,6 +1,9 @@
 import { parseFullSymbol, type ParsedSymbol } from './helpers';
 import { logger } from '@template/utils';
 
+// Streaming 전용 로거 생성
+const streamingLogger = logger.createComponentLogger('Streaming');
+
 /**
  * WebSocket 연결 상태 타입
  */
@@ -95,7 +98,7 @@ const subscriptions = new Map<string, Subscription>(); // key: subscriberUID, va
 
 // 이벤트 핸들러 함수들을 별도로 정의하여 제거 가능하게 만듦
 const handleOpen = () => {
-  logger.info('[MSW WebSocket] 연결됨');
+  streamingLogger.info('MSW WebSocket 연결됨');
   connectionState = 'connected';
   reconnectAttempts = 0;
   connectionStartTime = Date.now();
@@ -111,7 +114,7 @@ const handleOpen = () => {
 };
 
 const handleClose = (event: CloseEvent): void => {
-  logger.info('[MSW WebSocket] 연결 종료:', {
+  streamingLogger.info('MSW WebSocket 연결 종료', {
     code: event.code,
     reason: event.reason,
     wasClean: event.wasClean,
@@ -128,20 +131,20 @@ const handleClose = (event: CloseEvent): void => {
     connectionState = 'reconnecting';
     reconnectAttempts++;
     const delay = 1000 * Math.pow(2, reconnectAttempts); // 지수 백오프
-    logger.info(
-      `[MSW WebSocket] ${delay}ms 후 재연결 시도 (${reconnectAttempts}/${maxReconnectAttempts})`
+    streamingLogger.info(
+      `MSW WebSocket ${delay}ms 후 재연결 시도 (${reconnectAttempts}/${maxReconnectAttempts})`
     );
 
     reconnectTimer = setTimeout(() => {
       initializeSocket();
     }, delay);
   } else {
-    logger.error('[MSW WebSocket] 최대 재연결 시도 횟수 초과');
+    streamingLogger.error('MSW WebSocket 최대 재연결 시도 횟수 초과');
   }
 };
 
 const handleError = (error: Event): void => {
-  logger.error('[MSW WebSocket] 오류:', error);
+  streamingLogger.error('MSW WebSocket 오류', { error });
   connectionState = 'disconnected';
 
   // 에러 타입별 처리
@@ -153,7 +156,7 @@ const handleMessage = (event: MessageEvent): void => {
     const data: RealtimeData = JSON.parse(event.data);
     handleMSWMessage(data);
   } catch (error) {
-    logger.error('[MSW WebSocket] 메시지 파싱 오류:', error);
+    streamingLogger.error('MSW WebSocket 메시지 파싱 오류', { error });
   }
 };
 
@@ -180,12 +183,12 @@ function initializeSocket(): void {
     // 연결 타임아웃 설정 (10초)
     connectionTimeout = setTimeout(() => {
       if (connectionState === 'connecting') {
-        logger.error('[MSW WebSocket] 연결 타임아웃');
+        streamingLogger.error('MSW WebSocket 연결 타임아웃');
         socket?.close();
       }
     }, 10000);
   } catch (error) {
-    logger.error('[MSW WebSocket] 초기화 오류:', error);
+    streamingLogger.error('MSW WebSocket 초기화 오류', { error });
     connectionState = 'disconnected';
   }
 }
@@ -244,11 +247,13 @@ function analyzeDisconnectionReason(event: CloseEvent): void {
   };
 
   const reason = reasons[event.code] || '알 수 없는 이유';
-  logger.info(`[연결 끊김 분석] 코드: ${event.code}, 이유: ${reason}, 정상종료: ${event.wasClean}`);
+  streamingLogger.info(
+    `연결 끊김 분석: 코드 ${event.code}, 이유: ${reason}, 정상종료: ${event.wasClean}`
+  );
 
   // 비정상 종료 시 추가 로깅
   if (!event.wasClean) {
-    logger.warn(`[MSW WebSocket] 비정상 연결 종료: ${reason}`);
+    streamingLogger.warn(`MSW WebSocket 비정상 연결 종료: ${reason}`);
   }
 }
 
@@ -260,13 +265,13 @@ function handleConnectionError(error: Event): void {
   const errorMessage = (error as any).message || '알 수 없는 오류';
 
   if (errorMessage.includes('DNS')) {
-    logger.error('DNS 해석 실패 - 네트워크 연결 확인 필요');
+    streamingLogger.error('DNS 해석 실패 - 네트워크 연결 확인 필요');
   } else if (errorMessage.includes('SSL') || errorMessage.includes('TLS')) {
-    logger.error('SSL/TLS 핸드셰이크 실패 - 인증서 문제');
+    streamingLogger.error('SSL/TLS 핸드셰이크 실패 - 인증서 문제');
   } else if (errorMessage.includes('timeout')) {
-    logger.error('연결 시간 초과');
+    streamingLogger.error('연결 시간 초과');
   } else {
-    logger.error('연결 오류:', errorMessage);
+    streamingLogger.error('연결 오류', { errorMessage });
   }
 }
 
@@ -275,7 +280,7 @@ function handleConnectionError(error: Event): void {
  * @param data - 받은 실시간 데이터
  */
 function handleMSWMessage(data: RealtimeData): void {
-  // logger.info('[handleMSWMessage] 받은 데이터:', data);
+  // streamingLogger.info('handleMSWMessage 받은 데이터:', data);
 
   if (data.type === 'price_update') {
     // MSW 가격 업데이트를 TradingView Bar 형식으로 변환
@@ -289,15 +294,15 @@ function handleMSWMessage(data: RealtimeData): void {
       volume: data.volume || 1000,
     };
 
-    // logger.info('[handleMSWMessage] 변환된 realtimeBar:', realtimeBar);
-    // logger.info('[handleMSWMessage] 현재 구독 목록:', Array.from(subscriptions.entries()));
+    // streamingLogger.info('handleMSWMessage 변환된 realtimeBar:', realtimeBar);
+    // streamingLogger.info('handleMSWMessage 현재 구독 목록:', Array.from(subscriptions.entries()));
 
     // 해당 심볼의 모든 구독에 대해 Bar 업데이트
     updateBarsForSymbol(data.symbol, realtimeBar);
   } else if (data.type === 'subscription_success') {
-    logger.info('[MSW WebSocket] 구독 성공:', data);
+    streamingLogger.info('MSW WebSocket 구독 성공', { data });
   } else if (data.type === 'unsubscription_success') {
-    logger.info('[MSW WebSocket] 구독 해제 성공:', data);
+    streamingLogger.info('MSW WebSocket 구독 해제 성공', { data });
   }
 }
 
@@ -334,7 +339,7 @@ function updateBarsForSymbol(symbol: string, realtimeBar: Bar): void {
       try {
         subscription.callback(updatedBar);
       } catch (error) {
-        logger.error(`[MSW WebSocket] 구독 ${subscriberUID} 콜백 오류:`, error);
+        streamingLogger.error(`MSW WebSocket 구독 ${subscriberUID} 콜백 오류`, { error });
       }
     }
   });
@@ -346,8 +351,8 @@ function updateBarsForSymbol(symbol: string, realtimeBar: Bar): void {
     }
   });
 
-  logger.info(
-    `[updateBarsForSymbol] 완료: ${symbol} - ${matchedCount}개 구독, ${resolutionGroups.size}개 resolution`
+  streamingLogger.info(
+    `updateBarsForSymbol 완료: ${symbol} - ${matchedCount}개 구독, ${resolutionGroups.size}개 resolution`
   );
 }
 
@@ -373,7 +378,7 @@ function createOrUpdateBar(realtimeBar: Bar, lastBar: Bar | null, resolution: st
       volume: realtimeBar.volume,
     };
 
-    logger.info(`[${resolution}] 첫 번째 Bar 생성 (히스토리 없음)`, {
+    streamingLogger.info(`${resolution} 첫 번째 Bar 생성 (히스토리 없음)`, {
       time: new Date(currentBarStart * 1000).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
       price: realtimeBar.close,
     });
@@ -397,7 +402,7 @@ function createOrUpdateBar(realtimeBar: Bar, lastBar: Bar | null, resolution: st
       volume: realtimeBar.volume || 0,
     };
 
-    logger.info(`[${resolution}] 새로운 Bar 생성:`, {
+    streamingLogger.info(`${resolution} 새로운 Bar 생성`, {
       이전Bar: new Date(lastBarStart * 1000).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
       새Bar: new Date(currentBarStart * 1000).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
       시간차: `${(currentBarStart - lastBarStart) / 60}분`,
@@ -421,7 +426,7 @@ function createOrUpdateBar(realtimeBar: Bar, lastBar: Bar | null, resolution: st
     return updatedBar;
   } else {
     // 시간이 뒤처진 경우 (네트워크 지연 등): 기존 Bar 유지
-    logger.warn(`[${resolution}] 시간 역전 감지:`, {
+    streamingLogger.warn(`${resolution} 시간 역전 감지`, {
       현재시간: new Date(realtimeBar.time).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
       Bar시간: new Date(lastBar.time).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
       차이: `${(lastBar.time - realtimeBar.time) / 1000}초`,
@@ -527,7 +532,7 @@ function validateBarContinuity(bars: Bar[], resolution: string): boolean {
 
     if (timeDiff > 1000) {
       // 1초 오차 허용
-      logger.error(`[${resolution}] Bar 연속성 오류:`, {
+      streamingLogger.error(`${resolution} Bar 연속성 오류`, {
         prevBar: new Date(prevBar.time).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
         currentBar: new Date(currentBar.time).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
         expected: new Date(expectedTime).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
@@ -537,7 +542,7 @@ function validateBarContinuity(bars: Bar[], resolution: string): boolean {
     }
   }
 
-  logger.info(`[${resolution}] Bar 연속성 검증 통과: ${bars.length}개 Bar`);
+  streamingLogger.info(`${resolution} Bar 연속성 검증 통과: ${bars.length}개 Bar`);
   return true;
 }
 
@@ -561,7 +566,7 @@ function resubscribeAll(): void {
  * @param symbol - 구독할 심볼명
  */
 function sendSubscribeMessage(symbol: string): void {
-  logger.info('[sendSubscribeMessage] 호출:', { symbol, socketState: socket?.readyState });
+  streamingLogger.info('sendSubscribeMessage 호출', { symbol, socketState: socket?.readyState });
 
   if (socket && socket.readyState === WebSocket.OPEN) {
     const subscribeMessage = {
@@ -569,11 +574,11 @@ function sendSubscribeMessage(symbol: string): void {
       symbol: symbol,
     };
 
-    logger.info('[sendSubscribeMessage] 구독 요청:', subscribeMessage);
+    streamingLogger.info('sendSubscribeMessage 구독 요청', { subscribeMessage });
     socket.send(JSON.stringify(subscribeMessage));
-    logger.info('[sendSubscribeMessage] 메시지 전송 완료');
+    streamingLogger.info('sendSubscribeMessage 메시지 전송 완료');
   } else {
-    logger.error('[sendSubscribeMessage] WebSocket이 연결되지 않음:', {
+    streamingLogger.error('sendSubscribeMessage WebSocket이 연결되지 않음', {
       socket: !!socket,
       readyState: socket?.readyState,
       expectedState: WebSocket.OPEN,
@@ -586,7 +591,7 @@ function sendSubscribeMessage(symbol: string): void {
  * @param symbol - 구독 해제할 심볼명
  */
 function sendUnsubscribeMessage(symbol: string): void {
-  logger.info('[sendUnsubscribeMessage] 호출:', { symbol, socketState: socket?.readyState });
+  streamingLogger.info('sendUnsubscribeMessage 호출', { symbol, socketState: socket?.readyState });
 
   if (socket && socket.readyState === WebSocket.OPEN) {
     const unsubscribeMessage = {
@@ -594,10 +599,10 @@ function sendUnsubscribeMessage(symbol: string): void {
       symbol: symbol,
     };
 
-    logger.info('[sendUnsubscribeMessage] 구독 해제 요청:', unsubscribeMessage);
+    streamingLogger.info('sendUnsubscribeMessage 구독 해제 요청', { unsubscribeMessage });
     socket.send(JSON.stringify(unsubscribeMessage));
   } else {
-    logger.error('[sendUnsubscribeMessage] WebSocket이 연결되지 않음');
+    streamingLogger.error('sendUnsubscribeMessage WebSocket이 연결되지 않음');
   }
 }
 
@@ -650,7 +655,7 @@ export function subscribeOnStream(
 ): void {
   const symbolName = symbolInfo.full_name || symbolInfo.name || '';
 
-  logger.info('[subscribeOnStream] 호출:', {
+  streamingLogger.info('subscribeOnStream 호출', {
     symbolInfo: symbolName,
     resolution,
     subscriberUID,
@@ -659,7 +664,7 @@ export function subscribeOnStream(
   // 심볼 파싱 (MSW 버전)
   const parsedSymbol = parseFullSymbol(symbolName);
   if (!parsedSymbol) {
-    logger.error('[subscribeOnStream] 심볼 파싱 실패:', symbolName);
+    streamingLogger.error('subscribeOnStream 심볼 파싱 실패', { symbolName });
     return;
   }
 
@@ -691,9 +696,9 @@ export function subscribeOnStream(
   // WebSocket 구독 (심볼이 아직 구독되지 않은 경우에만)
   if (!symbolSubscribed) {
     sendSubscribeMessage(symbol);
-    logger.info('[subscribeOnStream] 새로운 심볼 구독:', symbol);
+    streamingLogger.info('subscribeOnStream 새로운 심볼 구독', { symbol });
   } else {
-    logger.info('[subscribeOnStream] 이미 구독된 심볼:', symbol);
+    streamingLogger.info('subscribeOnStream 이미 구독된 심볼', { symbol });
   }
 }
 
@@ -702,11 +707,11 @@ export function subscribeOnStream(
  * @param subscriberUID - 구독자 고유 ID
  */
 export function unsubscribeFromStream(subscriberUID: string): void {
-  logger.info('[unsubscribeFromStream] 호출:', subscriberUID);
+  streamingLogger.info('unsubscribeFromStream 호출', { subscriberUID });
 
   const subscription = subscriptions.get(subscriberUID);
   if (!subscription) {
-    logger.info('[unsubscribeFromStream] 구독을 찾을 수 없음:', subscriberUID);
+    streamingLogger.info('unsubscribeFromStream 구독을 찾을 수 없음', { subscriberUID });
     return;
   }
 
@@ -721,7 +726,7 @@ export function unsubscribeFromStream(subscriberUID: string): void {
   if (!symbolSubscribed) {
     // 심볼 구독 해제
     sendUnsubscribeMessage(subscription.symbol);
-    logger.info('[unsubscribeFromStream] 심볼 구독 해제:', subscription.symbol);
+    streamingLogger.info('unsubscribeFromStream 심볼 구독 해제', { symbol: subscription.symbol });
   }
 }
 
@@ -737,7 +742,7 @@ export function isConnected(): boolean {
  * WebSocket 수동 재연결
  */
 export function reconnect(): void {
-  logger.info('[수동 재연결] 시작');
+  streamingLogger.info('수동 재연결 시작');
   if (socket) {
     socket.close();
   }
@@ -749,7 +754,7 @@ export function reconnect(): void {
  * 완전한 정리 함수 (페이지 언로드 시 호출)
  */
 export function cleanup(): void {
-  logger.info('[완전 정리] 시작');
+  streamingLogger.info('정리 시작');
 
   // 소켓 정리
   cleanupSocket();
@@ -762,7 +767,7 @@ export function cleanup(): void {
   connectionStartTime = null;
   connectionState = 'disconnected';
 
-  logger.info('[완전 정리] 완료');
+  streamingLogger.info('정리 완료');
 }
 
 /**

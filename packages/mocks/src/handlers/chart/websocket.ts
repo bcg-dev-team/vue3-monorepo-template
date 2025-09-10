@@ -6,6 +6,9 @@
 import type { Bar } from '../../types/chart.js';
 import { logger } from '@template/utils';
 
+// MSW WebSocket 전용 로거 생성
+const mswWsLogger = logger.createComponentLogger('MSW-WebSocket');
+
 /**
  * 심볼별 실시간 가격 데이터 관리 클래스
  */
@@ -23,7 +26,7 @@ class MockWebSocketManager {
   };
 
   subscribe(symbol: string, callback: (data: any) => void): void {
-    logger.info('[MockWebSocket] 구독 시작:', symbol);
+    mswWsLogger.info('MockWebSocket 구독 시작', { symbol });
 
     if (!this.subscriptions.has(symbol)) {
       this.subscriptions.set(symbol, new Set());
@@ -40,7 +43,7 @@ class MockWebSocketManager {
   }
 
   unsubscribe(symbol: string, callback: (data: any) => void): void {
-    logger.info('[MockWebSocket] 구독 해제:', symbol);
+    mswWsLogger.info('MockWebSocket 구독 해제', { symbol });
 
     const callbacks = this.subscriptions.get(symbol);
     if (callbacks) {
@@ -81,7 +84,7 @@ class MockWebSocketManager {
     }, updateInterval);
 
     this.intervals.set(symbol, interval);
-    logger.info(`[MockWebSocket] ${symbol} 가격 업데이트 시작 (${updateInterval}ms 간격)`);
+    mswWsLogger.info(`${symbol} 가격 업데이트 시작 (${updateInterval}ms 간격)`);
   }
 
   private stopPriceUpdates(symbol: string): void {
@@ -89,7 +92,7 @@ class MockWebSocketManager {
     if (interval) {
       clearInterval(interval);
       this.intervals.delete(symbol);
-      logger.info(`[MockWebSocket] ${symbol} 가격 업데이트 중지`);
+      mswWsLogger.info(`${symbol} 가격 업데이트 중지`);
     }
   }
 
@@ -126,7 +129,7 @@ class MockWebSocketManager {
       try {
         callback(updateData);
       } catch (error) {
-        logger.error('[MockWebSocket] 콜백 오류:', error);
+        mswWsLogger.error('MockWebSocket 콜백 오류', { error });
       }
     });
   }
@@ -166,7 +169,7 @@ class MockWebSocketManager {
   }
 
   cleanup(): void {
-    logger.info('[MockWebSocket] 모든 구독 정리');
+    mswWsLogger.info('MockWebSocket 모든 구독 정리');
 
     this.intervals.forEach((interval) => {
       clearInterval(interval);
@@ -198,11 +201,11 @@ export class MockWebSocket extends EventTarget {
     super();
     this.url = url;
 
-    logger.info('[MockWebSocket] 연결 시작:', url);
+    mswWsLogger.info('MockWebSocket 연결 시작', { url });
 
     setTimeout(() => {
       this.readyState = MockWebSocket.OPEN;
-      logger.info('[MockWebSocket] 연결 완료');
+      mswWsLogger.info('MockWebSocket 연결 완료');
 
       const openEvent = new Event('open');
       this.dispatchEvent(openEvent);
@@ -220,21 +223,21 @@ export class MockWebSocket extends EventTarget {
 
   send(data: string | ArrayBufferLike | Blob | ArrayBufferView): void {
     if (this.readyState !== MockWebSocket.OPEN) {
-      logger.error('[MockWebSocket] 연결이 열려있지 않음');
+      mswWsLogger.error('MockWebSocket 연결이 열려있지 않음');
       return;
     }
 
     try {
       const message = typeof data === 'string' ? JSON.parse(data) : data;
-      logger.info('[MockWebSocket] 메시지 전송:', message);
+      mswWsLogger.info('MockWebSocket 메시지 전송', { message });
       this.handleMessage(message);
     } catch (error) {
-      logger.error('[MockWebSocket] 메시지 파싱 오류:', error);
+      mswWsLogger.error('MockWebSocket 메시지 파싱 오류', { error });
     }
   }
 
   close(code?: number, reason?: string): void {
-    logger.info('[MockWebSocket] 연결 종료:', { code, reason });
+    mswWsLogger.info('MockWebSocket 연결 종료', { code, reason });
 
     this.readyState = MockWebSocket.CLOSED;
 
@@ -257,7 +260,7 @@ export class MockWebSocket extends EventTarget {
   private handleMessage(message: any): void {
     if (message.type === 'subscribe') {
       const symbol = message.symbol;
-      logger.info('[MockWebSocket] 구독 요청 처리:', symbol);
+      mswWsLogger.info('MockWebSocket 구독 요청 처리', { symbol });
 
       this.messageCallback = (data: any) => {
         this.sendMessageToClient(data);
@@ -266,7 +269,7 @@ export class MockWebSocket extends EventTarget {
       mockWebSocketManager.subscribe(symbol, this.messageCallback);
     } else if (message.type === 'unsubscribe') {
       const symbol = message.symbol;
-      logger.info('[MockWebSocket] 구독 해제 요청 처리:', symbol);
+      mswWsLogger.info('MockWebSocket 구독 해제 요청 처리', { symbol });
 
       if (this.messageCallback) {
         mockWebSocketManager.unsubscribe(symbol, this.messageCallback);

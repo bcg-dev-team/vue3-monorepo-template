@@ -21,11 +21,14 @@ import { makeApiRequest, generateSymbol, parseFullSymbol } from './helpers.ts';
 // @ts-ignore - JavaScript 파일이므로 타입 체크 무시
 import { subscribeOnStream, unsubscribeFromStream } from './streaming';
 import { logger } from '@template/utils';
+
+// DataFeed 전용 로거 생성
+const datafeedLogger = logger.createComponentLogger('DataFeed');
 const lastBarsCache = new Map<string, TradingViewBar>();
 
 const datafeed: TradingViewDatafeed = {
   onReady: (callback: (config: TradingViewConfiguration) => void): void => {
-    logger.info('[onReady]: Method call');
+    datafeedLogger.info('onReady: Method call');
     setTimeout(() => callback(configurationData));
   },
 
@@ -35,7 +38,7 @@ const datafeed: TradingViewDatafeed = {
     symbolType: string,
     onResultReadyCallback: (symbols: TradingSymbol[]) => void
   ): Promise<void> => {
-    logger.info('[searchSymbols]: Method call');
+    datafeedLogger.info('searchSymbols: Method call');
     const symbols = await getAllSymbols();
     const newSymbols = symbols.filter((symbol) => {
       const isExchangeValid = exchange === '' || symbol.exchange === exchange;
@@ -53,11 +56,11 @@ const datafeed: TradingViewDatafeed = {
     onResolveErrorCallback: ErrorCallback,
     extension?: any
   ): Promise<void> => {
-    logger.info('[resolveSymbol]: Method call', symbolName);
+    datafeedLogger.info('resolveSymbol: Method call', { symbolName });
     const symbols = await getAllSymbols();
     const symbolItem = symbols.find(({ ticker }) => ticker === symbolName);
     if (!symbolItem) {
-      logger.info('[resolveSymbol]: Cannot resolve symbol', symbolName);
+      datafeedLogger.info('resolveSymbol: Cannot resolve symbol', { symbolName });
       onResolveErrorCallback('Cannot resolve symbol');
       return;
     }
@@ -81,9 +84,9 @@ const datafeed: TradingViewDatafeed = {
       data_status: 'streaming',
       format: 'price', // 가격 형식 명시
     };
-    logger.info('[resolveSymbol]: Symbol resolved', symbolName);
-    logger.info('[resolveSymbol]: symbolInfo:', symbolInfo);
-    logger.info('[resolveSymbol]: 가격 스케일 설정', {
+    datafeedLogger.info('resolveSymbol: Symbol resolved', { symbolName });
+    datafeedLogger.info('resolveSymbol: symbolInfo', { symbolInfo });
+    datafeedLogger.info('resolveSymbol: 가격 스케일 설정', {
       pricescale: symbolInfo.pricescale,
       minmov: symbolInfo.minmov,
     });
@@ -98,19 +101,19 @@ const datafeed: TradingViewDatafeed = {
     onErrorCallback: ErrorCallback
   ): Promise<void> => {
     const { from, to, firstDataRequest } = periodParams;
-    logger.info('[getBars]: Method call', {
+    datafeedLogger.info('getBars: Method call', {
       symbolInfo,
       resolution,
       from,
       to,
     });
-    logger.info('[getBars]: full_name:', symbolInfo.full_name);
-    logger.info('[getBars]: resolution:', resolution);
+    datafeedLogger.info('getBars: full_name', { full_name: symbolInfo.full_name });
+    datafeedLogger.info('getBars: resolution', { resolution });
     const parsedSymbol = parseFullSymbol(symbolInfo.full_name || symbolInfo.name);
-    logger.info('[getBars]: parsedSymbol:', parsedSymbol);
+    datafeedLogger.info('getBars: parsedSymbol', { parsedSymbol });
 
     if (!parsedSymbol) {
-      logger.error('[getBars]: 심볼 파싱 실패:', symbolInfo.full_name);
+      datafeedLogger.error('getBars: 심볼 파싱 실패', { full_name: symbolInfo.full_name });
       onErrorCallback(new Error('Invalid symbol format'));
       return;
     }
@@ -180,16 +183,16 @@ const datafeed: TradingViewDatafeed = {
         });
       }
 
-      logger.info(`[getBars]: returned ${bars.length} bar(s)`);
-      logger.info('[getBars]: 첫 번째 바 데이터:', bars[0]);
-      logger.info('[getBars]: 마지막 바 데이터:', bars[bars.length - 1]);
-      logger.info('[getBars]: 가격 범위:', {
+      datafeedLogger.info(`getBars: returned ${bars.length} bar(s)`);
+      datafeedLogger.info('getBars: 첫 번째 바 데이터', { firstBar: bars[0] });
+      datafeedLogger.info('getBars: 마지막 바 데이터', { lastBar: bars[bars.length - 1] });
+      datafeedLogger.info('getBars: 가격 범위', {
         min: Math.min(...bars.map((b) => b.low)),
         max: Math.max(...bars.map((b) => b.high)),
       });
       onHistoryCallback(bars, { noData: false });
     } catch (error) {
-      logger.info('[getBars]: Get error', error);
+      datafeedLogger.info('getBars: Get error', { error });
       onErrorCallback(error as Error);
     }
   },
@@ -201,9 +204,9 @@ const datafeed: TradingViewDatafeed = {
     subscriberUID: string,
     onResetCacheNeededCallback?: ResetCacheCallback
   ): void => {
-    logger.info('[subscribeBars]: Method call with subscriberUID:', subscriberUID);
-    logger.info('[subscribeBars]: symbolInfo:', symbolInfo);
-    logger.info('[subscribeBars]: resolution:', resolution);
+    datafeedLogger.info('subscribeBars: Method call with subscriberUID', { subscriberUID });
+    datafeedLogger.info('subscribeBars: symbolInfo', { symbolInfo });
+    datafeedLogger.info('subscribeBars: resolution', { resolution });
 
     // MSW WebSocket 스트림 구독 활성화
     const lastBar = lastBarsCache.get(symbolInfo.full_name || symbolInfo.name);
@@ -225,7 +228,7 @@ const datafeed: TradingViewDatafeed = {
   },
 
   unsubscribeBars: (subscriberUID: string): void => {
-    logger.info('[unsubscribeBars]: Method call with subscriberUID:', subscriberUID);
+    datafeedLogger.info('unsubscribeBars: Method call with subscriberUID', { subscriberUID });
 
     // MSW WebSocket 스트림 구독 해제 활성화
     unsubscribeFromStream(subscriberUID);

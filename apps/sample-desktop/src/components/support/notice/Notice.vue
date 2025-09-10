@@ -3,7 +3,7 @@
     <div class="min-w-[500px]">
       <div class="gap-size-4 flex items-center">
         <BaseInputSelect v-model="selectedAccount" :options="accountOptions" />
-        <BaseInput placeholder="검색어 입력 후 Enter" />
+        <BaseInput placeholder="검색어 입력 후 Enter" size="sm" />
       </div>
     </div>
     <SupportDetail

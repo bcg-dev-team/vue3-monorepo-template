@@ -3,8 +3,8 @@
     <div class="bg-bg-bg-innerframe py-padding-36 border-bg-bg-outline rounded-[10px] border">
       <div class="gap-size-10 flex flex-col">
         <div class="gap-size-8 flex items-center justify-center">
-          <BaseInputSelect v-model="selectedAccount" :options="accountOptions" />
-          <BaseInput class="w-[360px]" size="sm" placeholder="검색어를 입력하세요." />
+          <BaseInputSelect v-model="selectedAccount" :options="accountOptions" size="md" />
+          <BaseInput class="w-[360px]" size="md" placeholder="검색어를 입력하세요." />
         </div>
         <div class="gap-size-24 flex items-center justify-center">
           <div>

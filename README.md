@@ -132,6 +132,11 @@ pnpm build:all
 pnpm build:desktop
 pnpm build:mobile
 
+# Bundle Analyzer와 함께 빌드 (번들 크기 분석)
+pnpm build:analyze:desktop        # 데스크톱 앱 번들 분석
+pnpm build:analyze:mobile         # 모바일 앱 번들 분석
+pnpm build:analyze:sample-desktop # 샘플 데스크톱 앱 번들 분석
+
 # 네이티브 앱 빌드
 pnpm mobile:build:android    # Android APK/AAB 빌드
 pnpm mobile:build:ios        # iOS 빌드
@@ -150,6 +155,11 @@ pnpm dev:mobile           # 모바일 앱 개발 서버
 pnpm build:all            # 전체 빌드
 pnpm build:desktop        # 데스크톱 앱 빌드
 pnpm build:mobile         # 모바일 앱 빌드
+
+# Bundle Analyzer (번들 크기 분석)
+pnpm build:analyze:desktop        # 데스크톱 앱 번들 분석
+pnpm build:analyze:mobile         # 모바일 앱 번들 분석
+pnpm build:analyze:sample-desktop # 샘플 데스크톱 앱 번들 분석
 
 # 테스팅 (TBD)
 pnpm test                 # 전체 테스트 실행

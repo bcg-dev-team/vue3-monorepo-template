@@ -84,7 +84,7 @@ const hasValue = computed(() => props.modelValue && props.modelValue.length > 0)
 const sizeClasses = computed(() => {
   switch (props.size) {
     case 'sm':
-      return 'px-[15px] py-3 text-[13px] leading-[16px]';
+      return 'px-[15px] py-[13px] text-[13px] leading-[16px]';
     case 'md':
       return 'px-[15px] py-3.5 text-[16px] leading-[20px]';
     default:

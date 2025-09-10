@@ -95,8 +95,8 @@ const buttonClasses = computed(() => {
     'relative w-full min-w-0 rounded-md transition-all duration-150 bg-[var(--input-color-surface)] border border-solid flex items-center justify-between tracking-[-0.35px]';
   const size =
     props.size === 'sm'
-      ? 'px-[15px] py-3 text-[14px] leading-[16px]'
-      : 'px-[15px] py-3.5 text-[16px] leading-[20px]';
+      ? 'px-[15px] h-[42px] text-[14px] leading-[16px]'
+      : 'px-[15px] h-[48px] text-[16px] leading-[20px]';
 
   let state = '';
   if (props.disabled) {

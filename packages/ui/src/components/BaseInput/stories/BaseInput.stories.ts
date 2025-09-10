@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
+import { ref } from 'vue';
 import BaseIcon from '../../BaseIcon/BaseIcon.vue';
 import BaseInput from '../BaseInput.vue';
 
@@ -27,6 +28,11 @@ const meta: Meta<typeof BaseInput> = {
       control: 'select',
       options: ['sm', 'md'],
     },
+    variant: {
+      description: '입력 타입 변형',
+      control: 'select',
+      options: ['default', 'search', 'password'],
+    },
     disabled: {
       description: '비활성화 여부',
       control: 'boolean',
@@ -42,6 +48,10 @@ const meta: Meta<typeof BaseInput> = {
     readonly: {
       description: '읽기 전용 여부',
       control: 'boolean',
+    },
+    onSearch: {
+      description: '검색 버튼 클릭 이벤트 (variant="search"일 때 사용)',
+      control: false,
     },
   },
   tags: ['autodocs'],
@@ -449,6 +459,183 @@ export const WithAppend: Story = {
               </div>
             </template>
           </BaseInput>
+        </div>
+      </div>
+    `,
+  }),
+};
+
+// Search Variant
+export const SearchVariant: Story = {
+  render: () => ({
+    components: { BaseInput },
+    setup() {
+      const searchValue = ref('');
+      const handleSearch = () => {
+        alert(`검색어: ${searchValue.value}`);
+      };
+      
+      return { searchValue, handleSearch };
+    },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 16px; max-width: 400px;">
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Search Variant - MD 크기</h4>
+          <BaseInput 
+            v-model="searchValue"
+            variant="search"
+            placeholder="검색어를 입력하세요"
+            size="md"
+            :onSearch="handleSearch"
+          />
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Search Variant - SM 크기</h4>
+          <BaseInput 
+            v-model="searchValue"
+            variant="search"
+            placeholder="작은 검색창"
+            size="sm"
+            :onSearch="handleSearch"
+          />
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Search Variant - 비활성화</h4>
+          <BaseInput 
+            v-model="searchValue"
+            variant="search"
+            placeholder="비활성화된 검색"
+            size="md"
+            :disabled="true"
+            :onSearch="handleSearch"
+          />
+        </div>
+      </div>
+    `,
+  }),
+};
+
+// Password Variant
+export const PasswordVariant: Story = {
+  render: () => ({
+    components: { BaseInput },
+    setup() {
+      const password = ref('password123');
+      const confirmPassword = ref('');
+      
+      return { password, confirmPassword };
+    },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 16px; max-width: 400px;">
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Password Variant - MD 크기</h4>
+          <BaseInput 
+            v-model="password"
+            variant="password"
+            placeholder="비밀번호를 입력하세요"
+            size="md"
+          />
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Password Variant - SM 크기</h4>
+          <BaseInput 
+            v-model="confirmPassword"
+            variant="password"
+            placeholder="비밀번호 확인"
+            size="sm"
+          />
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Password Variant - 에러 상태</h4>
+          <BaseInput 
+            v-model="confirmPassword"
+            variant="password"
+            placeholder="비밀번호 확인"
+            size="md"
+            :error="true"
+            error-message="비밀번호가 일치하지 않습니다"
+          />
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Password Variant - 비활성화</h4>
+          <BaseInput 
+            v-model="password"
+            variant="password"
+            placeholder="비활성화된 비밀번호"
+            size="md"
+            :disabled="true"
+          />
+        </div>
+      </div>
+    `,
+  }),
+};
+
+// All Variants Comparison
+export const AllVariantsComparison: Story = {
+  render: () => ({
+    components: { BaseInput },
+    setup() {
+      const defaultValue = ref('기본 입력값');
+      const searchValue = ref('검색어 예시');
+      const passwordValue = ref('password123');
+      
+      const handleSearch = () => {
+        alert(`검색: ${searchValue.value}`);
+      };
+      
+      return { 
+        defaultValue, 
+        searchValue, 
+        passwordValue,
+        handleSearch 
+      };
+    },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 20px; max-width: 400px;">
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Default Variant</h4>
+          <BaseInput 
+            v-model="defaultValue"
+            variant="default"
+            placeholder="기본 입력 필드"
+            size="md"
+          />
+          <p style="margin-top: 4px; font-size: 12px; color: #666;">
+            입력값: {{ defaultValue || '없음' }}
+          </p>
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Search Variant</h4>
+          <BaseInput 
+            v-model="searchValue"
+            variant="search"
+            placeholder="검색어를 입력하세요"
+            size="md"
+            :onSearch="handleSearch"
+          />
+          <p style="margin-top: 4px; font-size: 12px; color: #666;">
+            검색어: {{ searchValue || '없음' }}
+          </p>
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Password Variant</h4>
+          <BaseInput 
+            v-model="passwordValue"
+            variant="password"
+            placeholder="비밀번호를 입력하세요"
+            size="md"
+          />
+          <p style="margin-top: 4px; font-size: 12px; color: #666;">
+            비밀번호 길이: {{ passwordValue ? passwordValue.length + '자' : '없음' }}
+          </p>
         </div>
       </div>
     `,

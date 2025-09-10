@@ -25,6 +25,8 @@ export * from './BaseSkeleton';
 export * from './BaseStepper';
 export * from './BaseRadioGroup';
 export * from './BaseList';
+export * from './BaseMenu';
+
 // 타입 export
 export * from '../types/components';
 export * from '../types/icons';

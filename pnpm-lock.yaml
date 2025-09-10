@@ -198,6 +198,10 @@ importers:
       '@template/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+    devDependencies:
+      rollup-plugin-visualizer:
+        specifier: ^6.0.3
+        version: 6.0.3(rollup@4.46.2)
 
   apps/mobile:
     dependencies:
@@ -216,6 +220,10 @@ importers:
       '@template/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+    devDependencies:
+      rollup-plugin-visualizer:
+        specifier: ^6.0.3
+        version: 6.0.3(rollup@4.46.2)
 
   apps/mobile-native:
     dependencies:

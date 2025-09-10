@@ -9,7 +9,7 @@
             <span class="text-font-16 font-semibold">출금계좌</span>
           </div>
           <div class="mt-size-12 gap-size-16 flex flex-col">
-            <BaseInput placeholder="input select 가 들어갈 예정이에요" />
+            <BaseInputSelect v-model="selectedAccount1" :options="accountOptions1" />
             <LabelContent label="계좌 비밀번호(6자리)" size="sm">
               <template #content>
                 <div class="mt-size-4">
@@ -127,7 +127,7 @@
             <span class="text-font-16 font-semibold">이체받을 계좌</span>
           </div>
           <div class="mt-size-12 gap-size-16 flex flex-col">
-            <BaseInput placeholder="input select 가 들어갈 예정이에요" />
+            <BaseInputSelect v-model="selectedAccount2" :options="accountOptions2" />
           </div>
         </div>
       </template>
@@ -136,6 +136,20 @@
 </template>
 <script setup lang="ts">
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
+import { BaseButton, BaseInput, BaseInputSelect } from '@template/ui';
 import LabelContent from '@/components/common/LabelContent.vue';
-import { BaseButton, BaseInput } from '@template/ui';
+import { ref } from 'vue';
+
+const selectedAccount1 = ref('');
+const accountOptions1 = [
+  { value: 'account1', label: '라이브계좌#1 110-81-345150' },
+  { value: 'account2', label: '라이브계좌#2 110-81-345151' },
+  { value: 'account3', label: '데모계좌#1 110-81-345152' },
+];
+const selectedAccount2 = ref('');
+const accountOptions2 = [
+  { value: 'account1', label: '라이브계좌#1 110-81-345150' },
+  { value: 'account2', label: '라이브계좌#2 110-81-345151' },
+  { value: 'account3', label: '데모계좌#1 110-81-345152' },
+];
 </script>

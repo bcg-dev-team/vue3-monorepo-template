@@ -3,14 +3,14 @@
     <div class="gap-size-36 flex">
       <LabelContent label="계좌번호" size="md">
         <template #content>
-          <BaseInput size="sm" placeholder="input select 들어올 예정" />
+          <BaseInputSelect v-model="selectedAccount" :options="accountOptions" />
         </template>
       </LabelContent>
       <LabelContent label="결제 일자" size="md">
         <template #content>
           <div class="gap-size-4 flex items-center">
             <div>
-              <BaseInput size="sm" placeholder="input select 들어올 예정" />
+              <BaseInputCalendar size="sm" />
             </div>
             <div>
               <BaseRadioGroup
@@ -33,9 +33,15 @@
   </div>
 </template>
 <script setup lang="ts">
-import { BaseInput, BaseButton, BaseRadioGroup } from '@template/ui';
+import { BaseInputSelect, BaseButton, BaseRadioGroup, BaseInputCalendar } from '@template/ui';
 import LabelContent from '@/components/common/LabelContent.vue';
 import { ref } from 'vue';
 
+const selectedAccount = ref('');
+const accountOptions = [
+  { value: 'account1', label: '라이브계좌#1 110-81-345150' },
+  { value: 'account2', label: '라이브계좌#2 110-81-345151' },
+  { value: 'account3', label: '데모계좌#1 110-81-345152' },
+];
 const selectedType = ref('today');
 </script>

@@ -30,7 +30,7 @@
       <LabelContent label="주문일자" size="md">
         <template #content>
           <div class="gap-size-4 flex items-center">
-            <BaseInput size="sm" placeholder="input select 들어올 예정" />
+            <BaseInputCalendar v-model="selectedCalendar" />
             <BaseRadioGroup
               v-model="selectedDate"
               size="md"
@@ -45,16 +45,17 @@
       </LabelContent>
     </div>
     <div>
-      <BaseButton variant="contained" label="조회하기" size="sm" />
+      <BaseButton variant="contained" label="조회하기" size="md" />
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { BaseInput, BaseButton, BaseRadioGroup } from '@template/ui';
+import { BaseInputCalendar, BaseButton, BaseRadioGroup } from '@template/ui';
 import LabelContent from '@/components/common/LabelContent.vue';
 import { ref } from 'vue';
 
 const selectedType = ref('all');
 const selectedPosition = ref('all');
 const selectedDate = ref('today');
+const selectedCalendar = ref('');
 </script>

@@ -11,7 +11,7 @@
       </div>
       <div class="border-t border-[var(--table-type2-body-border)]">
         <TableLabel title="카테고리">
-          <BaseInput class="w-[240px]" size="sm" placeholder="셀렉트 박스가 들어갈 예정이에요" />
+          <BaseInputSelect v-model="selectedAccount" :options="accountOptions" />
         </TableLabel>
       </div>
       <div class="border-t border-[var(--table-type2-body-border)]">
@@ -44,9 +44,23 @@
   </div>
 </template>
 <script setup lang="ts">
-import { BaseInput, BaseIcon, BaseFileUploadButton, BaseButton } from '@template/ui';
+import {
+  BaseInput,
+  BaseIcon,
+  BaseFileUploadButton,
+  BaseButton,
+  BaseInputSelect,
+} from '@template/ui';
 import TableLabel from '@/components/support/qna/common/TableLabel.vue';
 import Anchor from '@/components/common/Anchor.vue';
+import { ref } from 'vue';
+
+const selectedAccount = ref('');
+const accountOptions = [
+  { value: 'account1', label: '라이브계좌#1 110-81-345150' },
+  { value: 'account2', label: '라이브계좌#2 110-81-345151' },
+  { value: 'account3', label: '데모계좌#1 110-81-345152' },
+];
 
 const type = defineModel<null | 'register' | 'detail'>('type', { required: true });
 </script>

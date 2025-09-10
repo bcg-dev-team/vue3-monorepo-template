@@ -54,10 +54,10 @@ interface FinancialMetric {
 const { isDark, toggleTheme } = useTheme();
 
 const financialMetrics: FinancialMetric[] = [
-  { id: 'available-margin', label: '사용 가능 증거금', value: '$2,500.00' },
+  { id: 'total-assets', label: '자산총액', value: '$2,500.00' },
+  { id: 'deposit-balance', label: '예탁자산', value: '$0.00' },
+  { id: 'profit-loss', label: 'P/L', value: '$25,000.00' },
   { id: 'margin', label: '증거금', value: '$0.00' },
-  { id: 'deposit-balance', label: '평가 예탁잔고', value: '$25,000.00' },
-  { id: 'pl-total', label: 'P/L 합계', value: '$0.00' },
   { id: 'margin-rate', label: '증거금율', value: '0.00%' },
 ];
 

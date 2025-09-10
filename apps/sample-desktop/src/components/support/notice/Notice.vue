@@ -2,7 +2,7 @@
   <div class="gap-size-64 flex">
     <div class="min-w-[500px]">
       <div class="gap-size-4 flex items-center">
-        <BaseInput placeholder="여긴 '셀렉트 박스'가 들어갈 거에요" />
+        <BaseInputSelect v-model="selectedAccount" :options="accountOptions" />
         <BaseInput placeholder="검색어 입력 후 Enter" />
       </div>
     </div>
@@ -17,5 +17,13 @@
 
 <script setup lang="ts">
 import SupportDetail from '@/components/support/common/SupportDetail.vue';
-import { BaseInput } from '@template/ui';
+import { BaseInput, BaseInputSelect } from '@template/ui';
+import { ref } from 'vue';
+
+const selectedAccount = ref('전체');
+const accountOptions = [
+  { value: '전체', label: '전체' },
+  { value: 'account2', label: '라이브계좌#2 110-81-345151' },
+  { value: 'account3', label: '데모계좌#1 110-81-345152' },
+];
 </script>

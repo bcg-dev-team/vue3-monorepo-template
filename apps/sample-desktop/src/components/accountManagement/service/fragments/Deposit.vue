@@ -19,7 +19,7 @@
             <LabelContent label="대표 트레이딩 계좌번호" size="sm">
               <template #content>
                 <div class="mt-size-4">
-                  <BaseInput placeholder="input select 가 들어갈 예정이에요" />
+                  <BaseInputSelect v-model="selectedAccount" :options="accountOptions" />
                 </div>
               </template>
             </LabelContent>
@@ -171,7 +171,16 @@
   </div>
 </template>
 <script setup lang="ts">
+import { BaseButton, BaseInput, BaseIcon, BaseInputSelect } from '@template/ui';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import LabelContent from '@/components/common/LabelContent.vue';
-import { BaseButton, BaseInput, BaseIcon } from '@template/ui';
+import { ref } from 'vue';
+
+const selectedAccount = ref('');
+
+const accountOptions = [
+  { value: 'account1', label: '라이브계좌#1 110-81-345150' },
+  { value: 'account2', label: '라이브계좌#2 110-81-345151' },
+  { value: 'account3', label: '데모계좌#1 110-81-345152' },
+];
 </script>

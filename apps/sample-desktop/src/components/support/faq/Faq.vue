@@ -3,7 +3,7 @@
     <div class="bg-bg-bg-innerframe py-padding-36 border-bg-bg-outline rounded-[10px] border">
       <div class="gap-size-10 flex flex-col">
         <div class="gap-size-8 flex items-center justify-center">
-          <BaseInput class="w-[160px]" size="sm" placeholder="select box가 들어올 거에요" />
+          <BaseInputSelect v-model="selectedAccount" :options="accountOptions" />
           <BaseInput class="w-[360px]" size="sm" placeholder="검색어를 입력하세요." />
         </div>
         <div class="gap-size-24 flex items-center justify-center">
@@ -35,10 +35,17 @@
   </div>
 </template>
 <script setup lang="ts">
-import { BaseInput, BaseTable } from '@template/ui';
-
+import { BaseInput, BaseTable, BaseInputSelect } from '@template/ui';
+import { ref } from 'vue';
 const selectable = true;
 const sortable = true;
+
+const selectedAccount = ref('회원 정보');
+const accountOptions = [
+  { value: 'account1', label: '회원 정보' },
+  { value: 'account2', label: '라이브계좌#2 110-81-345151' },
+  { value: 'account3', label: '데모계좌#1 110-81-345152' },
+];
 
 const headers: TableHeader[] = [
   { key: 'no', title: '번호', width: '100px', align: 'center' },

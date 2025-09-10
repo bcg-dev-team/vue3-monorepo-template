@@ -23,5 +23,8 @@
     "@template/ui": "workspace:*",
     "@template/utils": "workspace:*"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "vite-plugin-checker": "^0.10.3",
+    "vue-tsc": "^3.0.6"
+  }
 }

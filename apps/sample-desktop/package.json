@@ -18,14 +18,16 @@
   },
   "dependencies": {
     "@template/api": "workspace:*",
+    "@template/mocks": "workspace:*",
     "@template/theme": "workspace:*",
     "@template/types": "workspace:*",
     "@template/ui": "workspace:*",
-    "@template/utils": "workspace:*",
-    "@template/mocks": "workspace:*"
+    "@template/utils": "workspace:*"
   },
   "devDependencies": {
-    "msw": "^2.10.5"
+    "msw": "^2.10.5",
+    "vite-plugin-checker": "^0.10.3",
+    "vue-tsc": "^3.0.6"
   },
   "msw": {
     "workerDirectory": [

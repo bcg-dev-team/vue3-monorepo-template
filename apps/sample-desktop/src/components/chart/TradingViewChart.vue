@@ -73,6 +73,9 @@ onMounted(() => {
   chartLogger.group('차트 초기화');
   chartLogger.info('컴포넌트 마운트됨', { symbol: props.symbol, interval: props.interval });
 
+  // 차트 마크업 테이블 숨기기
+  hideMarkupTable();
+
   function waitForTradingView(cb: () => void) {
     if (window.TradingView && window.TradingView.widget) {
       chartLogger.info('TradingView 라이브러리 로드 완료');
@@ -275,11 +278,14 @@ watch(
   }
 );
 
-// 차트 마크업 테이블 숨기기 (타입 안전하게 수정)
-const rightScale = document.querySelector('.chart-markup-table') as HTMLElement;
-if (rightScale) {
-  rightScale.style.display = 'none';
-}
+// 차트 마크업 테이블 숨기기 함수
+const hideMarkupTable = () => {
+  const rightScale = document.querySelector('.chart-markup-table') as HTMLElement;
+  if (rightScale) {
+    rightScale.style.display = 'none';
+    chartLogger.debug('차트 마크업 테이블 숨김 처리 완료');
+  }
+};
 
 // 차트 크기 조정을 위한 리사이즈 핸들러
 const handleResize = () => {
@@ -287,6 +293,7 @@ const handleResize = () => {
     const chart = tvWidget.value.chart();
     if (chart && typeof chart.resize === 'function') {
       chart.resize();
+      chartLogger.debug('차트 크기 조정 완료');
     }
   }
 };

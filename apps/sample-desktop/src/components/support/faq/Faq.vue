@@ -35,6 +35,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import type { TableHeader, TableRow } from '@template/ui';
 import { BaseInput, BaseTable } from '@template/ui';
 import { logger } from '@template/utils';
 
@@ -92,6 +93,8 @@ const handleSort = (key: string, direction: 'asc' | 'desc') => {
 };
 
 const handleRowSelect = () => {
-  type.value = 'detail';
+  // type.value = 'detail';
+  // TODO: 상세 페이지로 이동하는 로직 구현
+  logger.info('Row selected');
 };
 </script>

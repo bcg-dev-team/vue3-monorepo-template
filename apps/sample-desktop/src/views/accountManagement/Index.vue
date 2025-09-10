@@ -19,13 +19,14 @@ import AccountServiceMain from '@/components/accountManagement/service/AccountSe
 import CreateAccountMain from '@/components/accountManagement/create/CreateAccountMain.vue';
 import HistoryMain from '@/components/accountManagement/history/HistoryMain.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
+import type { TabItem } from '@template/ui';
 import { BaseTabs } from '@template/ui';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 
 const router = useRouter();
 const modelValue = ref('create');
-const tabs = [
+const tabs: TabItem[] = [
   {
     key: 'create',
     label: '계좌개설',

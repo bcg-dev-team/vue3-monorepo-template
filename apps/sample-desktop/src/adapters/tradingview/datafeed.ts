@@ -83,12 +83,10 @@ const datafeed: TradingViewDatafeed = {
     };
     logger.info('[resolveSymbol]: Symbol resolved', symbolName);
     logger.info('[resolveSymbol]: symbolInfo:', symbolInfo);
-    logger.info(
-      '[resolveSymbol]: 가격 스케일 설정 - pricescale:',
-      symbolInfo.pricescale,
-      'minmov:',
-      symbolInfo.minmov
-    );
+    logger.info('[resolveSymbol]: 가격 스케일 설정', {
+      pricescale: symbolInfo.pricescale,
+      minmov: symbolInfo.minmov,
+    });
     onSymbolResolvedCallback(symbolInfo);
   },
 
@@ -100,7 +98,12 @@ const datafeed: TradingViewDatafeed = {
     onErrorCallback: ErrorCallback
   ): Promise<void> => {
     const { from, to, firstDataRequest } = periodParams;
-    logger.info('[getBars]: Method call', symbolInfo, resolution, from, to);
+    logger.info('[getBars]: Method call', {
+      symbolInfo,
+      resolution,
+      from,
+      to,
+    });
     logger.info('[getBars]: full_name:', symbolInfo.full_name);
     logger.info('[getBars]: resolution:', resolution);
     const parsedSymbol = parseFullSymbol(symbolInfo.full_name || symbolInfo.name);

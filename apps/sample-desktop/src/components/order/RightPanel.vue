@@ -10,7 +10,7 @@
         >
           <span>{{ selectedAccountLabel }}</span>
           <div class="pointer-events-none">
-            <BaseIcon name="arrow-down" size="md" :class="{ 'rotate-180': isDropdownOpen }" />
+            <BaseIcon name="arrow-down" size="md" :class="isDropdownOpen ? 'rotate-180' : ''" />
           </div>
         </div>
 

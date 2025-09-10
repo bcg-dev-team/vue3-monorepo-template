@@ -1,11 +1,12 @@
 <template>
   <div class="theme-toggle">
     <BaseButton
-      :variant="themeStore.isDark ? 'outline' : 'primary'"
-      size="small"
+      :variant="themeStore.isDark ? 'outlined' : 'contained'"
+      :color="themeStore.isDark ? 'grey' : 'primary'"
+      size="sm"
       :label="themeStore.isDark ? '라이트' : '다크'"
       :left-icon="{
-        name: themeStore.isDark ? 'sun' : 'moon',
+        name: 'star',
         size: 'sm',
         color: 'current',
       }"

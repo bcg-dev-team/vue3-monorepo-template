@@ -373,11 +373,10 @@ function createOrUpdateBar(realtimeBar: Bar, lastBar: Bar | null, resolution: st
       volume: realtimeBar.volume,
     };
 
-    logger.info(
-      `[${resolution}] 첫 번째 Bar 생성 (히스토리 없음):`,
-      new Date(currentBarStart * 1000).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
-      `가격: ${realtimeBar.close}`
-    );
+    logger.info(`[${resolution}] 첫 번째 Bar 생성 (히스토리 없음)`, {
+      time: new Date(currentBarStart * 1000).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }),
+      price: realtimeBar.close,
+    });
     return newBar;
   }
 

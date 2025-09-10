@@ -62,9 +62,16 @@ const handleDateChange = (value: string | null) => {
     height: 42px;
     border-radius: 6px !important;
     border: 1px solid var(--input-color-border-static) !important;
+    background-color: var(--input-color-surface) !important;
+    box-shadow: none !important;
 
     &.is-focus {
       box-shadow: 0 0 0 1px var(--input-color-border-focus) inset !important;
+    }
+
+    &:hover {
+      box-shadow: none !important;
+      border: 1px solid var(--input-color-border-static) !important;
     }
 
     .el-input__prefix {
@@ -76,6 +83,7 @@ const handleDateChange = (value: string | null) => {
       padding-right: 40px;
       font-size: 16px;
       border: none !important;
+      color: var(--input-color-text-static) !important;
     }
 
     .el-input__suffix {
@@ -96,6 +104,14 @@ const handleDateChange = (value: string | null) => {
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
+
+        /* 테마 시스템과 연동한 아이콘 색상 설정 */
+        background-image: none;
+        background-color: var(--input-icon-default);
+        mask: url('../../assets/icons/calendar.svg') no-repeat center;
+        mask-size: contain;
+        -webkit-mask: url('../../assets/icons/calendar.svg') no-repeat center;
+        -webkit-mask-size: contain;
       }
     }
   }

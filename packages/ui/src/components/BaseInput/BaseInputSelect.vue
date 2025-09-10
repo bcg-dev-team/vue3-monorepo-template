@@ -92,7 +92,7 @@ const selectedOption = computed({
 // 버튼 클래스
 const buttonClasses = computed(() => {
   const base =
-    'relative w-full min-w-0 rounded-md transition-all duration-150 bg-white border border-solid flex items-center justify-between tracking-[-0.35px]';
+    'relative w-full min-w-0 rounded-md transition-all duration-150 bg-[var(--input-color-surface)] border border-solid flex items-center justify-between tracking-[-0.35px]';
   const size =
     props.size === 'sm'
       ? 'px-[15px] py-3 text-[14px] leading-[16px]'
@@ -133,7 +133,7 @@ const buttonClasses = computed(() => {
         </ListboxButton>
 
         <ListboxOptions
-          class="border-input-border-static absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white py-1 shadow-lg"
+          class="border-input-border-static absolute z-10 mt-1 max-h-60 min-w-full w-max overflow-auto rounded-md border bg-[var(--input-color-surface)] py-1 shadow-lg"
         >
           <ListboxOption
             v-for="option in options"
@@ -148,7 +148,7 @@ const buttonClasses = computed(() => {
                 option.disabled
                   ? 'text-input-text-disable cursor-not-allowed opacity-50'
                   : active
-                    ? 'bg-blue-50 text-blue-900'
+                    ? 'text-input-text-static bg-[var(--input-color-surface)]'
                     : 'text-input-text-static',
                 selected && !option.disabled ? 'font-medium' : '',
               ]"

@@ -96,7 +96,7 @@ const sizeClasses = computed(() => {
 const stateClasses = computed(() => {
   const classes = [
     'relative w-full rounded-md transition-all duration-150 flex',
-    'bg-white border border-solid',
+    'bg-[var(--input-color-surface)] border border-solid',
   ];
 
   if (isDisabled.value) {

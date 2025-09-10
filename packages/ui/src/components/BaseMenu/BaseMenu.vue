@@ -1,36 +1,40 @@
 <template>
-  <div class="fixed">
-    <Menu as="div" class="relative inline-block">
-      <div>
-        <MenuButton>
-          <slot name="trigger" />
-        </MenuButton>
-      </div>
-
-      <transition>
-        <MenuItems
-          class="base-menu__items absolute left-1/2 mt-2 flex !w-[160px] w-full -translate-x-1/2 flex-col overflow-hidden rounded-md bg-[var(--background-bg-default)]"
+  <Menu as="div" class="relative inline-block">
+    <div>
+      <MenuButton>
+        <slot name="trigger" />
+      </MenuButton>
+    </div>
+    <transition
+      enter-active-class="transition duration-100 ease-out"
+      enter-from-class="transform scale-95 opacity-0"
+      enter-to-class="transform scale-100 opacity-100"
+      leave-active-class="transition duration-75 ease-in"
+      leave-from-class="transform scale-100 opacity-100"
+      leave-to-class="transform scale-95 opacity-0"
+    >
+      <MenuItems
+        class="z-dropdown base-menu__items absolute left-1/2 mt-2 flex !w-[160px] w-full -translate-x-1/2 flex-col overflow-hidden rounded-md bg-[var(--background-bg-default)]"
+      >
+        <MenuItem
+          class="base-menu__item"
+          v-for="item in props.items"
+          :key="item.label"
+          @click="handleItemClick(item)"
         >
-          <MenuItem
-            class="base-menu__item"
-            v-for="item in props.items"
-            :key="item.label"
-            @click="handleItemClick(item)"
-          >
-            <div class="base-menu__item-content">
-              <BaseIcon
-                v-if="props.showIcons && item.icon"
-                :name="item.icon"
-                size="sm"
-                color="var(--font-color-default)"
-              />
-              <span class="base-menu__item-text">{{ item.label }}</span>
-            </div>
-          </MenuItem>
-        </MenuItems>
-      </transition>
-    </Menu>
-  </div>
+          <div class="base-menu__item-content">
+            <BaseIcon
+              v-if="props.showIcons && item.icon"
+              :name="item.icon"
+              size="sm"
+              color="var(--font-color-default)"
+            />
+            <span class="base-menu__item-text">{{ item.label }}</span>
+          </div>
+        </MenuItem>
+      </MenuItems>
+    </transition>
+  </Menu>
 </template>
 
 <!-- BaseMenu - 드롭다운 메뉴 컴포넌트 -->

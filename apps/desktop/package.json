@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
+    "build:analyze": "ANALYZE=true vite build",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path ../../.gitignore",
@@ -23,5 +24,7 @@
     "@template/ui": "workspace:*",
     "@template/utils": "workspace:*"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "rollup-plugin-visualizer": "^6.0.3"
+  }
 }

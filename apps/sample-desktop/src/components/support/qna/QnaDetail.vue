@@ -26,7 +26,7 @@
         </div>
         <div class="border-b border-t border-[var(--table-type2-body-border)]">
           <TableLabel title="첨부파일">
-            <Anchor @click="() => console.log('첨부파일 클릭!')">
+            <Anchor @click="() => logger.info('첨부파일 클릭!')">
               20250601_Screenshot_14.00.01.jpg
             </Anchor>
           </TableLabel>
@@ -52,7 +52,7 @@
         </div>
         <div class="border-b border-t border-[var(--table-type2-body-border)]">
           <TableLabel title="첨부파일">
-            <Anchor @click="() => console.log('첨부파일 클릭!')"> </Anchor>
+            <Anchor @click="() => logger.info('첨부파일 클릭!')"> </Anchor>
           </TableLabel>
         </div>
       </div>
@@ -66,6 +66,7 @@
 import TableLabel from '@/components/support/qna/common/TableLabel.vue';
 import Anchor from '@/components/common/Anchor.vue';
 import { BaseButton, BaseChip } from '@template/ui';
+import { logger } from '@template/utils';
 
 const type = defineModel<null | 'register' | 'detail'>('type', { required: true });
 </script>

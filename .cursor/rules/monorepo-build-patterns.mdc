@@ -175,8 +175,8 @@ import type { User } from '@template/types';
 const user: User = { ... };
 
 // 실제 코드 필요 (함수 호출, 컴포넌트 등록 등)
-import { formatDate } from '@template/utils';
-console.log(formatDate(new Date()));
+import { formatDate, logger } from '@template/utils';
+logger.info(formatDate(new Date()));
 
 // 둘 다 필요
 import { BaseButton, type BaseButtonProps } from '@template/ui';

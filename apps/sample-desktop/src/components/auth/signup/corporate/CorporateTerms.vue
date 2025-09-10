@@ -19,7 +19,7 @@
             class="gap-size-2 flex items-center"
             @click.stop="
               () => {
-                console.log('상세보기');
+                logger.info('상세보기');
               }
             "
           >
@@ -38,7 +38,7 @@
             class="gap-size-2 flex items-center"
             @click.stop="
               () => {
-                console.log('상세보기');
+                logger.info('상세보기');
               }
             "
           >
@@ -57,7 +57,7 @@
             class="gap-size-2 flex items-center"
             @click.stop="
               () => {
-                console.log('상세보기');
+                logger.info('상세보기');
               }
             "
           >
@@ -82,6 +82,7 @@
 </template>
 <script lang="ts" setup>
 import { BaseIcon, BaseButton, BaseCheckbox } from '@template/ui';
+import { logger } from '@template/utils';
 import { reactive, computed } from 'vue';
 import { useRouter } from 'vue-router';
 

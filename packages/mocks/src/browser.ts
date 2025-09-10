@@ -6,6 +6,7 @@
 import { MockWebSocket, mockWebSocketManager } from './handlers/chart/websocket.js';
 import { chartHttpHandlers } from './handlers/chart/http.js';
 import { setupWorker } from 'msw/browser';
+import { logger } from '@template/utils';
 
 /**
  * MSW 워커 인스턴스 생성
@@ -18,12 +19,12 @@ export const worker = setupWorker(...chartHttpHandlers);
  */
 function startWebSocketMocking(): void {
   if (typeof window !== 'undefined' && (import.meta as any).env.DEV) {
-    console.log('[WebSocket Mocking] 시작');
+    logger.info('[WebSocket Mocking] 시작');
 
     (window as any).OriginalWebSocket = window.WebSocket;
     (window as any).WebSocket = MockWebSocket;
 
-    console.log('🔧 WebSocket이 모킹되었습니다.');
+    logger.info('🔧 WebSocket이 모킹되었습니다.');
   }
 }
 
@@ -32,14 +33,14 @@ function startWebSocketMocking(): void {
  */
 function stopWebSocketMocking(): void {
   if (typeof window !== 'undefined' && (window as any).OriginalWebSocket) {
-    console.log('[WebSocket Mocking] 중지');
+    logger.info('[WebSocket Mocking] 중지');
 
     window.WebSocket = (window as any).OriginalWebSocket;
     delete (window as any).OriginalWebSocket;
 
     mockWebSocketManager.cleanup();
 
-    console.log('🔧 WebSocket 모킹이 중지되었습니다.');
+    logger.info('🔧 WebSocket 모킹이 중지되었습니다.');
   }
 }
 
@@ -54,14 +55,14 @@ export const startMocking = async (): Promise<void> => {
       await worker.start({
         onUnhandledRequest: 'warn', // 처리되지 않은 요청에 대해 경고 표시
       });
-      console.log('🔧 MSW HTTP 모킹이 활성화되었습니다.');
+      logger.info('🔧 MSW HTTP 모킹이 활성화되었습니다.');
 
       // WebSocket 모킹 시작
       startWebSocketMocking();
 
-      console.log('✅ 모든 모킹 시스템이 활성화되었습니다.');
+      logger.info('✅ 모든 모킹 시스템이 활성화되었습니다.');
     } catch (error) {
-      console.error('모킹 시작 중 오류 발생:', error);
+      logger.error('모킹 시작 중 오류 발생:', error);
     }
   }
 };
@@ -78,8 +79,8 @@ export const stopMocking = async (): Promise<void> => {
     // HTTP 모킹 중지 (MSW Service Worker)
     worker.stop();
 
-    console.log('✅ 모든 모킹 시스템이 비활성화되었습니다.');
+    logger.info('✅ 모든 모킹 시스템이 비활성화되었습니다.');
   } catch (error) {
-    console.error('모킹 중지 중 오류 발생:', error);
+    logger.error('모킹 중지 중 오류 발생:', error);
   }
 };

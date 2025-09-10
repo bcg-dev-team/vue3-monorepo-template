@@ -11,6 +11,7 @@ import {
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import React, { useState, useRef } from 'react';
 import { WebView } from 'react-native-webview';
+import { logger } from '@template/utils';
 
 export default function App() {
   const webViewRef = useRef<WebView>(null);
@@ -57,7 +58,7 @@ export default function App() {
   const handleMessage = (event: any) => {
     try {
       const data = JSON.parse(event.nativeEvent.data);
-      console.log('WebView message:', data);
+      logger.info('WebView message:', data);
 
       // Vue 앱에서 보낸 메시지 처리
       if (data.type === 'navigate') {
@@ -65,7 +66,7 @@ export default function App() {
         Alert.alert('Navigation', `Navigate to: ${data.route}`);
       }
     } catch (error) {
-      console.log('WebView message (raw):', event.nativeEvent.data);
+      logger.info('WebView message (raw):', event.nativeEvent.data);
     }
   };
 
@@ -79,7 +80,7 @@ export default function App() {
 
     // Vue 앱이 로드된 후 초기화
     document.addEventListener('DOMContentLoaded', function() {
-      console.log('Vue app loaded in WebView');
+      logger.info('Vue app loaded in WebView');
       
       // Vue 앱에 React Native 환경임을 알림
       window.ReactNative.postMessage({
@@ -161,7 +162,7 @@ export default function App() {
         // 에러 처리
         onError={(syntheticEvent) => {
           const { nativeEvent } = syntheticEvent;
-          console.warn('WebView error:', nativeEvent);
+          logger.warn('WebView error:', nativeEvent);
           Alert.alert(
             '로딩 오류',
             '앱을 로드하는 중 오류가 발생했습니다. 개발 서버가 실행 중인지 확인해주세요.',

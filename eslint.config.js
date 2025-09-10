@@ -107,7 +107,7 @@ export default typescriptEslint.config({
   },
   rules: {
     'no-debugger': 'error',
-    'no-console': 'off', // console 사용을 경고로 설정
+    'no-console': 'error', // console 사용을 에러로 설정
     'no-unused-vars': [
       'warn',
       {

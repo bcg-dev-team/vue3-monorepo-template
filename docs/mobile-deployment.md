@@ -152,7 +152,7 @@ const checkForUpdates = async () => {
       await Updates.reloadAsync();
     }
   } catch (error) {
-    console.log('업데이트 확인 실패:', error);
+    logger.info('업데이트 확인 실패:', error);
   }
 };
 ```

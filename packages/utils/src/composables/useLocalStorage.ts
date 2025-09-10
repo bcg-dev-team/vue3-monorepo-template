@@ -1,4 +1,5 @@
 import { ref, watch, readonly, Ref } from 'vue';
+import logger from '../logger';
 
 /**
  * 로컬 스토리지 관리를 위한 composable
@@ -31,7 +32,7 @@ export function useLocalStorage<T>(
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : defaultValue;
     } catch (error) {
-      console.warn(`Error reading localStorage key "${key}":`, error);
+      logger.warn(`Error reading localStorage key "${key}":`, error);
       return defaultValue;
     }
   };
@@ -46,7 +47,7 @@ export function useLocalStorage<T>(
     try {
       window.localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
-      console.warn(`Error writing localStorage key "${key}":`, error);
+      logger.warn(`Error writing localStorage key "${key}":`, error);
     }
   };
 
@@ -59,7 +60,7 @@ export function useLocalStorage<T>(
     try {
       window.localStorage.removeItem(key);
     } catch (error) {
-      console.warn(`Error removing localStorage key "${key}":`, error);
+      logger.warn(`Error removing localStorage key "${key}":`, error);
     }
   };
 
@@ -72,7 +73,7 @@ export function useLocalStorage<T>(
     try {
       return window.localStorage.getItem(key) !== null;
     } catch (error) {
-      console.warn(`Error checking localStorage key "${key}":`, error);
+      logger.warn(`Error checking localStorage key "${key}":`, error);
       return false;
     }
   };

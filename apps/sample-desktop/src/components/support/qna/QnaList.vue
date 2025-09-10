@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import type { TableHeader, TableRow } from '@template/ui';
 import { BaseButton, BaseTable } from '@template/ui';
+import { logger } from '@template/utils';
 
 const type = defineModel<null | 'register' | 'detail'>('type', { required: true });
 
@@ -54,7 +55,7 @@ const selectable = true;
 const sortable = true;
 
 const handleSort = (key: string, direction: 'asc' | 'desc') => {
-  console.log(`Sorting by ${key} in ${direction} direction`);
+  logger.info(`Sorting by ${key} in ${direction} direction`);
 };
 
 const handleRowSelect = () => {

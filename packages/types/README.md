@@ -148,7 +148,7 @@ const testUser = {
   updatedAt: new Date()
 }
 
-console.log(isUser(testUser)) // true
+logger.info(isUser(testUser)) // true
 ```
 
 ## 📋 유틸리티 타입

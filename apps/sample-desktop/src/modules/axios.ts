@@ -1,6 +1,7 @@
 import LocalStorageService from '@/service/localStorage/local-storage.service';
 import LocalStorageKey from '@/service/localStorage/local-storage-key';
 import { createAxiosInstance, AxiosError } from '@template/api';
+import { logger } from '@template/utils';
 import router from '@/router';
 
 const tokenResolver = () => LocalStorageService.getItem(LocalStorageKey.ACCESS_TOKEN) || undefined;
@@ -12,7 +13,7 @@ const errorHandler = async (error: AxiosError) => {
       case 400:
         // Bad Request 처리
         alert('잘못된 요청입니다.');
-        console.error('잘못된 요청입니다.');
+        logger.error('잘못된 요청입니다.', error);
         break;
       case 401:
         // Unauthorized 처리 (로그인 페이지로 리다이렉트 등)
@@ -30,11 +31,11 @@ const errorHandler = async (error: AxiosError) => {
                 return api.request(error.config);
               }
             } else {
-              console.error('토큰 갱신 실패:', error);
+              logger.error('토큰 갱신 실패:', error);
               await router.push('/login');
             }
           } catch (error) {
-            console.error('토큰 갱신 요청 실패:', error);
+            logger.error('토큰 갱신 요청 실패:', error);
             await router.push('/login');
           }
         }
@@ -53,16 +54,16 @@ const errorHandler = async (error: AxiosError) => {
         break;
       default:
         alert('알 수 없는 에러가 발생했습니다.');
-        console.error('기타 에러:', error.response.data);
+        logger.error('기타 에러:', error.response.data);
     }
   } else if (error.request) {
     // 요청이 전송되었지만 응답을 받지 못한 경우 (네트워크 문제 등)
     alert('서버로부터 응답을 받지 못했습니다.');
-    console.error('서버로부터 응답을 받지 못했습니다.');
+    logger.error('서버로부터 응답을 받지 못했습니다.', error);
   } else {
     // 요청 설정 중 에러가 발생한 경우
     alert('요청 설정 중 오류가 발생했습니다.');
-    console.error('요청 설정 중 오류가 발생했습니다.', error.message);
+    logger.error('요청 설정 중 오류가 발생했습니다.', error);
   }
   return Promise.reject(error); // 에러를 다시 reject하여 호출한 곳에서 처리할 수 있도록 함
 };

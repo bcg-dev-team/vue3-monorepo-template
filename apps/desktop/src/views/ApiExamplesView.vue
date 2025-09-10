@@ -112,7 +112,7 @@ const apiClient = new ApiClient({
 </template>
 
 <script setup lang="ts">
-import { ref, h } from 'vue';
+import { h } from 'vue';
 
 /**
  * API 예제 페이지 컴포넌트
@@ -316,7 +316,7 @@ const errorExamples = [
   const data = await apiClient.get('/users');
 } catch (error) {
   if (error.code === 'NETWORK_ERROR') {
-    console.error('네트워크 연결을 확인하세요');
+    logger.error('네트워크 연결을 확인하세요');
   }
 }`,
   },
@@ -327,9 +327,9 @@ const errorExamples = [
   const user = await apiClient.get('/users/999');
 } catch (error) {
   if (error.status === 404) {
-    console.error('사용자를 찾을 수 없습니다');
+    logger.error('사용자를 찾을 수 없습니다');
   } else if (error.status === 500) {
-    console.error('서버 내부 오류가 발생했습니다');
+    logger.error('서버 내부 오류가 발생했습니다');
   }
 }`,
   },
@@ -340,7 +340,7 @@ const errorExamples = [
   const data = await apiClient.get('/slow-endpoint');
 } catch (error) {
   if (error.code === 'TIMEOUT') {
-    console.error('요청 시간이 초과되었습니다');
+    logger.error('요청 시간이 초과되었습니다');
   }
 }`,
   },
@@ -359,7 +359,7 @@ const interceptors = [
     }
     
     // 요청 로깅
-    console.log('요청:', config.method?.toUpperCase(), config.url);
+    logger.info('요청:', config.method?.toUpperCase(), config.url);
     
     return config;
   },
@@ -374,7 +374,7 @@ const interceptors = [
     code: `apiClient.interceptors.response.use(
   (response) => {
     // 응답 로깅
-    console.log('응답:', response.status, response.data);
+    logger.info('응답:', response.status, response.data);
     
     // 토큰 갱신
     const newToken = response.headers['x-new-token'];

@@ -8,7 +8,6 @@
 
 import { existsSync, rmSync, readdirSync } from 'fs';
 import { execSync } from 'child_process';
-import { fileURLToPath } from 'url';
 import { join } from 'path';
 
 // 빌드 순서 정의 (의존성 순서)
@@ -57,7 +56,13 @@ const DEPENDENCY_GRAPH = {
     'packages/theme',
     'packages/mocks',
   ],
-  'apps/mobile-native': ['packages/types', 'packages/utils', 'packages/api', 'packages/theme', 'packages/mocks'],
+  'apps/mobile-native': [
+    'packages/types',
+    'packages/utils',
+    'packages/api',
+    'packages/theme',
+    'packages/mocks',
+  ],
 } as const;
 
 // 타입 정의

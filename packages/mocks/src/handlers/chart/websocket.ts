@@ -4,6 +4,7 @@
  */
 
 import type { Bar } from '../../types/chart.js';
+import { logger } from '@template/utils';
 
 /**
  * 심볼별 실시간 가격 데이터 관리 클래스
@@ -22,7 +23,7 @@ class MockWebSocketManager {
   };
 
   subscribe(symbol: string, callback: (data: any) => void): void {
-    console.log('[MockWebSocket] 구독 시작:', symbol);
+    logger.info('[MockWebSocket] 구독 시작:', symbol);
 
     if (!this.subscriptions.has(symbol)) {
       this.subscriptions.set(symbol, new Set());
@@ -39,7 +40,7 @@ class MockWebSocketManager {
   }
 
   unsubscribe(symbol: string, callback: (data: any) => void): void {
-    console.log('[MockWebSocket] 구독 해제:', symbol);
+    logger.info('[MockWebSocket] 구독 해제:', symbol);
 
     const callbacks = this.subscriptions.get(symbol);
     if (callbacks) {
@@ -80,7 +81,7 @@ class MockWebSocketManager {
     }, updateInterval);
 
     this.intervals.set(symbol, interval);
-    console.log(`[MockWebSocket] ${symbol} 가격 업데이트 시작 (${updateInterval}ms 간격)`);
+    logger.info(`[MockWebSocket] ${symbol} 가격 업데이트 시작 (${updateInterval}ms 간격)`);
   }
 
   private stopPriceUpdates(symbol: string): void {
@@ -88,7 +89,7 @@ class MockWebSocketManager {
     if (interval) {
       clearInterval(interval);
       this.intervals.delete(symbol);
-      console.log(`[MockWebSocket] ${symbol} 가격 업데이트 중지`);
+      logger.info(`[MockWebSocket] ${symbol} 가격 업데이트 중지`);
     }
   }
 
@@ -125,7 +126,7 @@ class MockWebSocketManager {
       try {
         callback(updateData);
       } catch (error) {
-        console.error('[MockWebSocket] 콜백 오류:', error);
+        logger.error('[MockWebSocket] 콜백 오류:', error);
       }
     });
   }
@@ -165,7 +166,7 @@ class MockWebSocketManager {
   }
 
   cleanup(): void {
-    console.log('[MockWebSocket] 모든 구독 정리');
+    logger.info('[MockWebSocket] 모든 구독 정리');
 
     this.intervals.forEach((interval) => {
       clearInterval(interval);
@@ -197,11 +198,11 @@ export class MockWebSocket extends EventTarget {
     super();
     this.url = url;
 
-    console.log('[MockWebSocket] 연결 시작:', url);
+    logger.info('[MockWebSocket] 연결 시작:', url);
 
     setTimeout(() => {
       this.readyState = MockWebSocket.OPEN;
-      console.log('[MockWebSocket] 연결 완료');
+      logger.info('[MockWebSocket] 연결 완료');
 
       const openEvent = new Event('open');
       this.dispatchEvent(openEvent);
@@ -219,21 +220,21 @@ export class MockWebSocket extends EventTarget {
 
   send(data: string | ArrayBufferLike | Blob | ArrayBufferView): void {
     if (this.readyState !== MockWebSocket.OPEN) {
-      console.error('[MockWebSocket] 연결이 열려있지 않음');
+      logger.error('[MockWebSocket] 연결이 열려있지 않음');
       return;
     }
 
     try {
       const message = typeof data === 'string' ? JSON.parse(data) : data;
-      console.log('[MockWebSocket] 메시지 전송:', message);
+      logger.info('[MockWebSocket] 메시지 전송:', message);
       this.handleMessage(message);
     } catch (error) {
-      console.error('[MockWebSocket] 메시지 파싱 오류:', error);
+      logger.error('[MockWebSocket] 메시지 파싱 오류:', error);
     }
   }
 
   close(code?: number, reason?: string): void {
-    console.log('[MockWebSocket] 연결 종료:', { code, reason });
+    logger.info('[MockWebSocket] 연결 종료:', { code, reason });
 
     this.readyState = MockWebSocket.CLOSED;
 
@@ -256,7 +257,7 @@ export class MockWebSocket extends EventTarget {
   private handleMessage(message: any): void {
     if (message.type === 'subscribe') {
       const symbol = message.symbol;
-      console.log('[MockWebSocket] 구독 요청 처리:', symbol);
+      logger.info('[MockWebSocket] 구독 요청 처리:', symbol);
 
       this.messageCallback = (data: any) => {
         this.sendMessageToClient(data);
@@ -265,7 +266,7 @@ export class MockWebSocket extends EventTarget {
       mockWebSocketManager.subscribe(symbol, this.messageCallback);
     } else if (message.type === 'unsubscribe') {
       const symbol = message.symbol;
-      console.log('[MockWebSocket] 구독 해제 요청 처리:', symbol);
+      logger.info('[MockWebSocket] 구독 해제 요청 처리:', symbol);
 
       if (this.messageCallback) {
         mockWebSocketManager.unsubscribe(symbol, this.messageCallback);

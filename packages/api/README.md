@@ -31,13 +31,13 @@ const errorHandler = async (error: AxiosError) => {
         window.location.href = '/login'
         break
       case 403:
-        console.error('접근 권한이 없습니다.')
+        logger.error('접근 권한이 없습니다.')
         break
       case 500:
-        console.error('서버 오류가 발생했습니다.')
+        logger.error('서버 오류가 발생했습니다.')
         break
       default:
-        console.error('API 오류:', error.message)
+        logger.error('API 오류:', error.message)
     }
   }
 }
@@ -140,7 +140,7 @@ const fetchUsers = async () => {
     const response = await userService.getUsers({ page: 1, limit: 10 })
     users.value = response.data
   } catch (error) {
-    console.error('사용자 목록 조회 실패:', error)
+    logger.error('사용자 목록 조회 실패:', error)
   } finally {
     loading.value = false
   }
@@ -222,28 +222,28 @@ const errorHandler = async (error: AxiosError) => {
     
     switch (status) {
       case 400:
-        console.error('잘못된 요청:', data)
+        logger.error('잘못된 요청:', data)
         break
       case 401:
         // 토큰 만료 시 갱신 시도
         await refreshToken()
         break
       case 403:
-        console.error('접근 권한 없음')
+        logger.error('접근 권한 없음')
         break
       case 404:
-        console.error('리소스를 찾을 수 없음')
+        logger.error('리소스를 찾을 수 없음')
         break
       case 500:
-        console.error('서버 오류')
+        logger.error('서버 오류')
         break
       default:
-        console.error('알 수 없는 오류:', status)
+        logger.error('알 수 없는 오류:', status)
     }
   } else if (error.request) {
-    console.error('네트워크 오류')
+    logger.error('네트워크 오류')
   } else {
-    console.error('요청 설정 오류:', error.message)
+    logger.error('요청 설정 오류:', error.message)
   }
 }
 ```

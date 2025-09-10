@@ -126,7 +126,7 @@
 
 <script setup lang="ts">
 import { useTheme, useBreakpoint, useModal, useForm } from '@template/ui';
-import { useLocalStorage, useDebounce } from '@template/utils';
+import { useLocalStorage, useDebounce, logger } from '@template/utils';
 import { ref } from 'vue';
 
 // 테마 관리
@@ -186,13 +186,13 @@ const handleSearchInput = (event: Event) => {
   const target = event.target as HTMLInputElement;
   searchInput.value = target.value;
   debounce(target.value, (value) => {
-    console.log('디바운스된 검색어:', value);
+    logger.info('디바운스된 검색어:', value);
   });
 };
 
 // 폼 제출 핸들러
 const onFormSubmit = async (values: FormData) => {
-  console.log('폼 제출:', values);
+  logger.info('폼 제출:', values);
   // 실제 API 호출 로직
   await new Promise((resolve) => setTimeout(resolve, 1000));
   alert('폼이 성공적으로 제출되었습니다!');

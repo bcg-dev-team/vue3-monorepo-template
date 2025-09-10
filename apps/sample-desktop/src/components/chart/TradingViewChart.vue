@@ -7,6 +7,10 @@
 
 import Datafeed from '@/adapters/tradingview/datafeed.js';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
+import { logger } from '@template/utils';
+
+// 컴포넌트별 로거 생성
+const chartLogger = logger.createComponentLogger('TradingViewChart');
 
 interface Props {
   symbol?: string;
@@ -32,11 +36,11 @@ const currentSubscriberUID = ref<string | null>(null);
 watch(
   () => props.symbol,
   (newSymbol, oldSymbol) => {
-    console.log('[TradingView] 심볼 변경 감지:', { oldSymbol, newSymbol });
+    chartLogger.info('심볼 변경 감지', { oldSymbol, newSymbol });
 
     // 이전 심볼의 구독 즉시 해제
     if (oldSymbol) {
-      console.log('[TradingView] 이전 심볼 구독 해제:', oldSymbol);
+      chartLogger.info('이전 심볼 구독 해제', { symbol: oldSymbol });
       // streaming.js의 심볼별 구독 해제 함수 호출
       if ((window as any).unsubscribeSymbol) {
         (window as any).unsubscribeSymbol(oldSymbol);
@@ -57,7 +61,7 @@ watch(
       if (chart && typeof chart.timeScale === 'function') {
         const timeScale = chart.timeScale();
         if (timeScale) {
-          console.log('[TradingView] 간격 변경 감지:', newInterval);
+          chartLogger.info('간격 변경 감지', { interval: newInterval });
           timeScale.refresh();
         }
       }
@@ -66,15 +70,23 @@ watch(
 );
 
 onMounted(() => {
+  chartLogger.group('차트 초기화');
+  chartLogger.info('컴포넌트 마운트됨', { symbol: props.symbol, interval: props.interval });
+
   function waitForTradingView(cb: () => void) {
     if (window.TradingView && window.TradingView.widget) {
+      chartLogger.info('TradingView 라이브러리 로드 완료');
       cb();
     } else {
+      chartLogger.debug('TradingView 라이브러리 로딩 대기 중...');
       setTimeout(() => waitForTradingView(cb), 100);
     }
   }
 
   waitForTradingView(() => {
+    chartLogger.info('차트 위젯 생성 시작');
+    chartLogger.time('차트 초기화');
+
     // TradingView 차트 설정
     tvWidget.value = new window.TradingView.widget({
       symbol: props.symbol,
@@ -161,7 +173,9 @@ onMounted(() => {
 
     // 차트 로드 완료 후 가격 스케일 설정 확인
     tvWidget.value.onChartReady(() => {
-      console.log('[TradingView] 차트 로드 완료 - 심볼:', props.symbol);
+      chartLogger.info('차트 로드 완료', { symbol: props.symbol });
+      chartLogger.timeEnd('차트 초기화');
+      chartLogger.groupEnd();
 
       // chart-ready 이벤트 발생
       emit('chart-ready');
@@ -181,37 +195,37 @@ onMounted(() => {
               const priceScale = firstPane.getRightPriceScale();
 
               if (priceScale) {
-                console.log('[TradingView] 가격 스케일 설정 적용');
+                chartLogger.info('가격 스케일 설정 적용');
                 priceScale.setAutoScale(true);
                 priceScale.setVisible(true);
               } else {
-                console.warn('[TradingView] 가격 스케일을 찾을 수 없습니다.');
+                chartLogger.warn('가격 스케일을 찾을 수 없습니다');
               }
             } else {
-              console.warn('[TradingView] getRightPriceScale 메서드를 사용할 수 없습니다.');
+              chartLogger.warn('getRightPriceScale 메서드를 사용할 수 없습니다');
             }
           } else {
-            console.warn('[TradingView] 차트 패널을 찾을 수 없습니다.');
+            chartLogger.warn('차트 패널을 찾을 수 없습니다');
           }
 
           // 심볼 정보 확인
           if (chart && typeof chart.symbolExt === 'function') {
             const symbolInfo = chart.symbolExt();
-            console.log('[TradingView] 현재 심볼 정보:', symbolInfo);
+            chartLogger.info('현재 심볼 정보', symbolInfo);
           }
 
           // 시간 축 설정 강제 적용
           if (chart && typeof chart.timeScale === 'function') {
             const timeScale = chart.timeScale();
             if (timeScale) {
-              console.log('[TradingView] 시간 축 설정 적용');
+              chartLogger.info('시간 축 설정 적용');
               timeScale.setVisible(true);
               timeScale.setTimeVisible(true);
               timeScale.setSecondsVisible(false);
 
               // 현재 간격에 따른 시간 표시 형식 설정
               const currentInterval = props.interval;
-              console.log('[TradingView] 현재 간격:', currentInterval);
+              chartLogger.info('현재 간격', { interval: currentInterval });
 
               // 시간 축 새로고침
               timeScale.refresh();
@@ -220,11 +234,11 @@ onMounted(() => {
 
           // 차트 스타일 강제 새로고침
           if (chart && typeof chart.refresh === 'function') {
-            console.log('[TradingView] 차트 새로고침 실행');
+            chartLogger.info('차트 새로고침 실행');
             chart.refresh();
           }
         } catch (error) {
-          console.error('[TradingView] 차트 설정 중 오류 발생:', error);
+          chartLogger.error('차트 설정 중 오류 발생', error);
         }
       }, 1000); // 1초 대기
     });
@@ -237,10 +251,10 @@ watch(
   (newSymbol) => {
     if (tvWidget.value && tvWidget.value.chart && typeof tvWidget.value.setSymbol === 'function') {
       try {
-        console.log('[TradingView] 심볼 변경:', newSymbol);
+        chartLogger.info('심볼 변경', { symbol: newSymbol });
         tvWidget.value.setSymbol(newSymbol, props.interval);
       } catch (error) {
-        console.error('[TradingView] 심볼 변경 중 오류 발생:', error);
+        chartLogger.error('심볼 변경 중 오류 발생', error);
       }
     }
   }
@@ -252,10 +266,10 @@ watch(
   (newInterval) => {
     if (tvWidget.value && tvWidget.value.chart && typeof tvWidget.value.setSymbol === 'function') {
       try {
-        console.log('[TradingView] 인터벌 변경:', newInterval);
+        chartLogger.info('인터벌 변경', { interval: newInterval });
         tvWidget.value.setSymbol(props.symbol, newInterval);
       } catch (error) {
-        console.error('[TradingView] 인터벌 변경 중 오류 발생:', error);
+        chartLogger.error('인터벌 변경 중 오류 발생', error);
       }
     }
   }
@@ -282,7 +296,14 @@ window.addEventListener('resize', handleResize);
 
 // 컴포넌트 언마운트 시 이벤트 리스너 정리
 onUnmounted(() => {
+  chartLogger.info('컴포넌트 언마운트됨', { symbol: currentSymbol.value });
   window.removeEventListener('resize', handleResize);
+
+  // 차트 정리
+  if (tvWidget.value) {
+    chartLogger.info('차트 위젯 정리');
+    tvWidget.value.remove();
+  }
 });
 </script>
 

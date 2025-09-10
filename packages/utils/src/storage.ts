@@ -1,3 +1,5 @@
+import logger from './logger';
+
 /**
  * 로컬 스토리지에 데이터 저장
  */
@@ -6,7 +8,7 @@ export function setLocalStorage<T>(key: string, value: T): void {
     const serializedValue = JSON.stringify(value);
     localStorage.setItem(key, serializedValue);
   } catch (error) {
-    console.error('Failed to save to localStorage:', error);
+    logger.error('Failed to save to localStorage:', error);
   }
 }
 
@@ -19,7 +21,7 @@ export function getLocalStorage<T>(key: string, defaultValue?: T): T | null {
     if (item === null) return defaultValue || null;
     return JSON.parse(item);
   } catch (error) {
-    console.error('Failed to read from localStorage:', error);
+    logger.error('Failed to read from localStorage:', error);
     return defaultValue || null;
   }
 }
@@ -31,7 +33,7 @@ export function removeLocalStorage(key: string): void {
   try {
     localStorage.removeItem(key);
   } catch (error) {
-    console.error('Failed to remove from localStorage:', error);
+    logger.error('Failed to remove from localStorage:', error);
   }
 }
 
@@ -42,7 +44,7 @@ export function clearLocalStorage(): void {
   try {
     localStorage.clear();
   } catch (error) {
-    console.error('Failed to clear localStorage:', error);
+    logger.error('Failed to clear localStorage:', error);
   }
 }
 
@@ -54,7 +56,7 @@ export function setSessionStorage<T>(key: string, value: T): void {
     const serializedValue = JSON.stringify(value);
     sessionStorage.setItem(key, serializedValue);
   } catch (error) {
-    console.error('Failed to save to sessionStorage:', error);
+    logger.error('Failed to save to sessionStorage:', error);
   }
 }
 
@@ -67,7 +69,7 @@ export function getSessionStorage<T>(key: string, defaultValue?: T): T | null {
     if (item === null) return defaultValue || null;
     return JSON.parse(item);
   } catch (error) {
-    console.error('Failed to read from sessionStorage:', error);
+    logger.error('Failed to read from sessionStorage:', error);
     return defaultValue || null;
   }
 }
@@ -79,7 +81,7 @@ export function removeSessionStorage(key: string): void {
   try {
     sessionStorage.removeItem(key);
   } catch (error) {
-    console.error('Failed to remove from sessionStorage:', error);
+    logger.error('Failed to remove from sessionStorage:', error);
   }
 }
 
@@ -90,7 +92,7 @@ export function clearSessionStorage(): void {
   try {
     sessionStorage.clear();
   } catch (error) {
-    console.error('Failed to clear sessionStorage:', error);
+    logger.error('Failed to clear sessionStorage:', error);
   }
 }
 
@@ -155,7 +157,7 @@ export function getStorageUsage(): {
       }
     }
   } catch (error) {
-    console.error('Failed to calculate storage usage:', error);
+    logger.error('Failed to calculate storage usage:', error);
   }
 
   return {
@@ -173,7 +175,7 @@ export function getStorageKeys(storage: 'local' | 'session' = 'local'): string[]
     const targetStorage = storage === 'local' ? localStorage : sessionStorage;
     return Object.keys(targetStorage);
   } catch (error) {
-    console.error('Failed to get storage keys:', error);
+    logger.error('Failed to get storage keys:', error);
     return [];
   }
 }

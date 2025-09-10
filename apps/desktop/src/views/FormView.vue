@@ -100,6 +100,7 @@ import {
   loginValidationSchema,
   registerValidationSchema,
   userProfileValidationSchema,
+  logger,
 } from '@template/utils';
 import { BaseButton, BaseInput } from '@template/ui';
 import { Form } from 'vee-validate';
@@ -132,12 +133,12 @@ const profileForm = ref({
 const handleLoginSubmit = async (values: unknown) => {
   loading.value = true;
   try {
-    console.log('로그인 데이터:', values);
+    logger.info('로그인 데이터:', values);
     // 실제 로그인 로직 구현
     await new Promise((resolve) => setTimeout(resolve, 1000));
     alert('로그인 성공!');
   } catch (error) {
-    console.error('로그인 실패:', error);
+    logger.error('로그인 실패:', error);
     alert('로그인에 실패했습니다.');
   } finally {
     loading.value = false;
@@ -151,12 +152,12 @@ const handleLoginSubmit = async (values: unknown) => {
 const handleRegisterSubmit = async (values: unknown) => {
   loading.value = true;
   try {
-    console.log('회원가입 데이터:', values);
+    logger.info('회원가입 데이터:', values);
     // 실제 회원가입 로직 구현
     await new Promise((resolve) => setTimeout(resolve, 1000));
     alert('회원가입 성공!');
   } catch (error) {
-    console.error('회원가입 실패:', error);
+    logger.error('회원가입 실패:', error);
     alert('회원가입에 실패했습니다.');
   } finally {
     loading.value = false;
@@ -174,12 +175,12 @@ const handleProfileSubmit = async (values: unknown) => {
       ...(values as Record<string, unknown>),
       bio: profileForm.value.bio,
     };
-    console.log('프로필 데이터:', profileData);
+    logger.info('프로필 데이터:', profileData);
     // 실제 프로필 저장 로직 구현
     await new Promise((resolve) => setTimeout(resolve, 1000));
     alert('프로필 저장 성공!');
   } catch (error) {
-    console.error('프로필 저장 실패:', error);
+    logger.error('프로필 저장 실패:', error);
     alert('프로필 저장에 실패했습니다.');
   } finally {
     loading.value = false;

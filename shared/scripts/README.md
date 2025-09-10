@@ -33,12 +33,12 @@ const packages = [
 
 // 빌드 순서 검증
 const order = buildOrder(packages)
-console.log('빌드 순서:', order)
+logger.info('빌드 순서:', order)
 
 // 순환 의존성 검사
 const hasCircularDependency = checkCircularDependencies(packages)
 if (hasCircularDependency) {
-  console.error('순환 의존성이 발견되었습니다!')
+  logger.error('순환 의존성이 발견되었습니다!')
   process.exit(1)
 }
 ```
@@ -150,9 +150,9 @@ const main = async () => {
       output: 'docs/components',
       template: 'storybook'
     })
-    console.log('문서 생성 완료!')
+    logger.info('문서 생성 완료!')
   } catch (error) {
-    console.error('문서 생성 실패:', error)
+    logger.error('문서 생성 실패:', error)
     process.exit(1)
   }
 }
@@ -182,7 +182,7 @@ const main = async () => {
   try {
     // 스크립트 로직
   } catch (error) {
-    console.error('스크립트 실행 실패:', error)
+    logger.error('스크립트 실행 실패:', error)
     process.exit(1)
   }
 }
@@ -230,8 +230,8 @@ const { values } = parseArgs({
   }
 })
 
-console.log('입력 디렉토리:', values.input)
-console.log('출력 디렉토리:', values.output)
+logger.info('입력 디렉토리:', values.input)
+logger.info('출력 디렉토리:', values.output)
 ```
 
 ## 🔗 관련 파일

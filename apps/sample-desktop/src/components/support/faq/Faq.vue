@@ -36,6 +36,7 @@
 </template>
 <script setup lang="ts">
 import { BaseInput, BaseTable } from '@template/ui';
+import { logger } from '@template/utils';
 
 const selectable = true;
 const sortable = true;
@@ -87,7 +88,7 @@ const searchList = [
 ];
 
 const handleSort = (key: string, direction: 'asc' | 'desc') => {
-  console.log(`Sorting by ${key} in ${direction} direction`);
+  logger.info(`Sorting by ${key} in ${direction} direction`);
 };
 
 const handleRowSelect = () => {

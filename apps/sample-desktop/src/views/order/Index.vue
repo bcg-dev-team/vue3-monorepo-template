@@ -105,6 +105,7 @@ import TradingViewChart from '@/components/chart/TradingViewChart.vue';
 import { BaseTwoWaySplitPane, BaseTable } from '@template/ui';
 import RightPanel from '@/components/order/RightPanel.vue';
 import type { TableHeader, TableRow } from '@template/ui';
+import { logger } from '@template/utils';
 
 const orderTableHeaders: TableHeader[] = [
   { key: 'id', title: 'ID', width: '80px' },
@@ -147,11 +148,11 @@ const orderTableData: TableRow[] = [
 ];
 
 const handleRowSelect = (rowId: string | number, selected: boolean) => {
-  console.log('Selected row:', rowId, 'Selected:', selected);
+  logger.info('Selected row', { rowId, selected });
 };
 
 const handleSort = (key: string, direction: 'asc' | 'desc') => {
-  console.log('Sorted by:', key, 'Direction:', direction);
+  logger.info('Sorted by', { key, direction });
 };
 </script>
 

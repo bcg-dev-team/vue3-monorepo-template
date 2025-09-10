@@ -2,6 +2,8 @@
  * CSS 변수에서 디자인 토큰을 동적으로 읽어오는 유틸리티 함수들
  */
 
+import { logger } from '@template/utils';
+
 /**
  * CSS 변수 값을 가져오는 함수
  * @param variableName - CSS 변수명 (예: --base-colors-primary-primary800)
@@ -15,7 +17,7 @@ export function getCSSVariable(variableName: string): string {
     const value = computedStyle.getPropertyValue(variableName).trim();
     return value;
   } catch (error) {
-    console.error(`Error getting CSS variable ${variableName}:`, error);
+    logger.error(`Error getting CSS variable ${variableName}:`, error);
     return '';
   }
 }
@@ -322,7 +324,7 @@ function getCategoryTokens(prefix: string, groupName: string) {
       }
     }
   } catch (error) {
-    console.error(`Error in getCategoryTokens for ${groupName}:`, error);
+    logger.error(`Error in getCategoryTokens for ${groupName}:`, error);
   }
 
   return group;

@@ -154,12 +154,79 @@
             다중 컴포넌트 테스트
           </button>
           <button
+            @click="testComponentLifecycle"
+            class="rounded-default bg-orange-orange600 px-padding-16 py-padding-8 hover:bg-orange-orange700 text-white transition-colors"
+          >
+            생명주기 시뮬레이션
+          </button>
+          <button
+            @click="testComponentPerformance"
+            class="rounded-default bg-teal-teal600 px-padding-16 py-padding-8 hover:bg-teal-teal700 text-white transition-colors"
+          >
+            성능 측정 테스트
+          </button>
+          <button
+            @click="testComponentErrorHandling"
+            class="rounded-default bg-red-red600 px-padding-16 py-padding-8 hover:bg-red-red700 text-white transition-colors"
+          >
+            에러 처리 시뮬레이션
+          </button>
+          <button
             @click="clearConsole"
             class="rounded-default px-padding-16 py-padding-8 bg-neutral-600 text-white transition-colors hover:bg-neutral-700"
           >
             콘솔 지우기
           </button>
         </div>
+      </div>
+
+      <!-- BaseModal 사용 예제 -->
+      <div
+        class="mb-padding-16 rounded-default bg-bg-default p-padding-16 border border-neutral-200"
+      >
+        <h2 class="mb-padding-16 text-font-20 text-default font-semibold">
+          BaseModal 컴포넌트 로거 예제
+        </h2>
+        <div class="gap-padding-16 grid grid-cols-2 md:grid-cols-3">
+          <button
+            @click="openModal"
+            class="rounded-default bg-cyan-cyan600 px-padding-16 py-padding-8 hover:bg-cyan-cyan700 text-white transition-colors"
+          >
+            모달 열기 (로거 테스트)
+          </button>
+        </div>
+
+        <!-- BaseModal 컴포넌트 -->
+        <BaseModal
+          :is-open="isModalOpen"
+          title="컴포넌트 로거 테스트 모달"
+          description="BaseModal 사용 시 컴포넌트 로거가 어떻게 작동하는지 확인해보세요"
+          size="md"
+          variant="confirm"
+          :actions="[
+            { label: '취소', variant: 'secondary' },
+            { label: '확인', variant: 'primary' },
+          ]"
+          @action="handleModalAction"
+          @close="closeModal"
+        >
+          <div class="p-padding-16">
+            <p class="mb-padding-16 text-font-14 text-default">
+              이 모달을 열고 닫을 때, 그리고 액션 버튼을 클릭할 때 개발자 도구의 콘솔에서 컴포넌트
+              로거의 동작을 확인할 수 있습니다.
+            </p>
+            <div class="rounded-default p-padding-12 bg-gray-100">
+              <p class="text-font-12 mb-padding-8 text-gray-600">
+                <strong>확인할 로그:</strong>
+              </p>
+              <ul class="text-font-12 space-y-1 text-gray-600">
+                <li>• [BaseModalExample] 모달 열기 요청</li>
+                <li>• [BaseModalExample] 모달 액션 실행</li>
+                <li>• [BaseModalExample] 모달 닫기 요청</li>
+              </ul>
+            </div>
+          </div>
+        </BaseModal>
       </div>
 
       <!-- 도움말 및 데모 -->
@@ -199,6 +266,7 @@
 
 <script setup lang="ts">
 import { logger, getEnvironmentInfo } from '@template/utils';
+import { BaseModal } from '@template/ui';
 import { ref, onMounted } from 'vue';
 
 // 환경 정보
@@ -314,6 +382,91 @@ const testMultipleComponents = () => {
 
   userLogger.warn('사용자 세션 만료 예정');
   apiLogger.error('API 요청 실패', new Error('Network error'));
+};
+
+// 컴포넌트 생명주기 시뮬레이션
+const testComponentLifecycle = () => {
+  componentLogger.group('컴포넌트 생명주기 시뮬레이션');
+
+  componentLogger.info('컴포넌트 생성', { component: 'LoggerTestView' });
+  componentLogger.info('Props 수신', { symbol: 'ETH/EUR', interval: '1' });
+  componentLogger.info('상태 초기화');
+  componentLogger.info('이벤트 리스너 등록');
+
+  // 가상의 데이터 로딩 시뮬레이션
+  componentLogger.time('데이터 로딩');
+  setTimeout(() => {
+    componentLogger.timeEnd('데이터 로딩');
+    componentLogger.info('데이터 로딩 완료', { items: 150 });
+  }, 100);
+
+  componentLogger.groupEnd();
+};
+
+// 컴포넌트 성능 측정
+const testComponentPerformance = () => {
+  componentLogger.time('컴포넌트 성능 테스트');
+
+  // 가상의 무거운 작업 시뮬레이션
+  let count = 0;
+  const interval = setInterval(() => {
+    count++;
+    componentLogger.debug('작업 진행 중', { progress: count });
+
+    if (count >= 10) {
+      clearInterval(interval);
+      componentLogger.timeEnd('컴포넌트 성능 테스트');
+      componentLogger.info('성능 테스트 완료', {
+        duration: '1000ms',
+        operations: count,
+      });
+    }
+  }, 100);
+};
+
+// 컴포넌트 에러 처리 시뮬레이션
+const testComponentErrorHandling = () => {
+  componentLogger.group('컴포넌트 에러 처리 시뮬레이션');
+
+  try {
+    componentLogger.info('API 호출 시작');
+
+    // 가상의 API 호출 실패 시뮬레이션
+    throw new Error('API 서버 연결 실패');
+  } catch (error) {
+    componentLogger.error('API 호출 실패', error);
+    componentLogger.warn('재시도 로직 실행', { retryCount: 1, maxRetries: 3 });
+  }
+
+  componentLogger.groupEnd();
+};
+
+// BaseModal 사용 예제 (앱 레벨에서 컴포넌트 로거 적용)
+const isModalOpen = ref(false);
+const modalLogger = logger.createComponentLogger('BaseModalExample');
+
+const openModal = () => {
+  modalLogger.info('모달 열기 요청');
+  isModalOpen.value = true;
+};
+
+const closeModal = () => {
+  modalLogger.info('모달 닫기 요청');
+  isModalOpen.value = false;
+};
+
+const handleModalAction = (action: any, index: number) => {
+  modalLogger.info('모달 액션 실행', {
+    action: action.label,
+    index,
+    variant: action.variant,
+  });
+
+  if (action.label === '확인') {
+    modalLogger.info('확인 액션 처리 완료');
+  }
+
+  closeModal();
 };
 
 const clearConsole = () => {

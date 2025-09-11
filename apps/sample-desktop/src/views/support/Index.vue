@@ -26,8 +26,10 @@ import { BaseTabs } from '@template/ui';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 
+type Tab = 'notice' | 'event' | 'qna' | 'faq' | 'guide';
+
 const router = useRouter();
-const selectedTab = ref('notice');
+const selectedTab = ref<Tab>((router.currentRoute.value.params.supportTab as Tab) || 'notice');
 
 const tabs = [
   {

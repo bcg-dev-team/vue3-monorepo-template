@@ -23,8 +23,13 @@ import { BaseTabs } from '@template/ui';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 
+type Tab = 'create' | 'service' | 'history';
+
 const router = useRouter();
-const modelValue = ref('create');
+const modelValue = ref<Tab>(
+  (router.currentRoute.value.params.accountManagementTab as Tab) || 'create'
+);
+
 const tabs = [
   {
     key: 'create',

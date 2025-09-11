@@ -39,8 +39,10 @@ import { BaseTabs } from '@template/ui';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 
+type Tab = 'order' | 'clear' | 'history';
+
 const router = useRouter();
-const modelValue = ref('order');
+const modelValue = ref<Tab>((router.currentRoute.value.params.transactionTab as Tab) || 'order');
 
 const tabs = [
   {

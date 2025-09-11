@@ -89,10 +89,19 @@ const emit = defineEmits<{
 const isPasswordVisible = ref(false);
 const internalValue = ref(props.modelValue || '');
 
-// Computed 속성들
-const isDisabled = computed(() => props.disabled);
-const isError = computed(() => props.error);
 const showVariantIcon = computed(() => props.variant === 'search' || props.variant === 'password');
+
+// Input type 결정
+const inputType = computed(() => {
+  if (props.variant === 'password' && !isPasswordVisible.value) return 'password';
+  if (props.variant === 'tel') return 'tel';
+  if (props.variant === 'number') return 'number';
+  return 'text';
+});
+
+// BaseIcon 공통 클래스
+const iconClasses =
+  'text-input-text-static hover:text-input-text-hover cursor-pointer select-none rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1';
 
 const sizeClasses = computed(() => {
   return props.size === 'sm'
@@ -104,11 +113,11 @@ const containerClasses = computed(() => {
   const base =
     'relative w-full rounded-md transition-all duration-150 flex bg-[var(--input-color-surface)] border border-solid';
 
-  if (isDisabled.value) {
+  if (props.disabled) {
     return `${base} bg-input-bg-disabled border-input-border-disabled text-input-text-disable cursor-not-allowed`;
   }
 
-  if (isError.value) {
+  if (props.error) {
     return `${base} border-input-border-error focus-within:border-input-border-error focus-within:shadow-[0_0_0_1px_var(--input-color-border-error)]`;
   }
 
@@ -119,7 +128,7 @@ const inputClasses = computed(() => {
   const base = `w-full bg-transparent border-0 outline-none tracking-[-0.35px] ${sizeClasses.value}`;
   const padding = showVariantIcon.value ? 'pr-[45px]' : '';
 
-  const textStyles = isDisabled.value
+  const textStyles = props.disabled
     ? 'text-input-text-disable cursor-not-allowed placeholder:text-input-text-disable'
     : 'text-input-text-static placeholder:text-input-text-placeholder placeholder:font-normal placeholder:tracking-[-0.35px]';
 
@@ -136,17 +145,17 @@ const appendInnerClasses = computed(() => {
   return 'absolute right-0 top-0 h-full flex items-center pr-[15px] gap-1';
 });
 
-// 이벤트 핸들러들
+// Input 입력 이벤트 핸들러
 const handleInput = (event: Event) => {
   const target = event.target as HTMLInputElement;
-  internalValue.value = target.value;
-  emit('update:modelValue', target.value);
-};
+  let value = target.value;
 
-const handleTelInput = (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  const value = target.value.replace(/[^0-9]/g, '');
-  target.value = value;
+  // tel variant인 경우 숫자만 허용
+  if (props.variant === 'tel') {
+    value = value.replace(/[^0-9]/g, '');
+    target.value = value;
+  }
+
   internalValue.value = value;
   emit('update:modelValue', value);
 };
@@ -189,55 +198,11 @@ watch(
 
         <!-- 입력 필드 -->
         <div class="relative flex-1">
-          <!-- default,search variant -->
           <input
-            v-show="variant === 'default' || variant === 'search' || isPasswordVisible"
             :value="internalValue"
-            type="text"
+            :type="inputType"
             :placeholder="placeholder"
-            :disabled="isDisabled"
-            :readonly="readonly"
-            :class="inputClasses"
-            @input="handleInput"
-            @focus="emit('focus', $event)"
-            @blur="emit('blur', $event)"
-          />
-
-          <!-- tel variant -->
-          <input
-            v-show="variant === 'tel'"
-            :value="internalValue"
-            type="tel"
-            :placeholder="placeholder"
-            :disabled="isDisabled"
-            :readonly="readonly"
-            :class="inputClasses"
-            @input="handleTelInput"
-            @focus="emit('focus', $event)"
-            @blur="emit('blur', $event)"
-          />
-
-          <!-- number variant -->
-          <input
-            v-show="variant === 'number'"
-            :value="internalValue"
-            type="number"
-            :placeholder="placeholder"
-            :disabled="isDisabled"
-            :readonly="readonly"
-            :class="inputClasses"
-            @input="handleInput"
-            @focus="emit('focus', $event)"
-            @blur="emit('blur', $event)"
-          />
-
-          <!-- password variant -->
-          <input
-            v-show="variant === 'password' && !isPasswordVisible"
-            :value="internalValue"
-            type="password"
-            :placeholder="placeholder"
-            :disabled="isDisabled"
+            :disabled="props.disabled"
             :readonly="readonly"
             :class="inputClasses"
             @input="handleInput"
@@ -251,7 +216,7 @@ watch(
               v-if="variant === 'search'"
               name="search"
               :size="size === 'sm' ? 'sm' : 'md'"
-              class="text-input-text-static hover:text-input-text-hover cursor-pointer select-none rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
+              :class="iconClasses"
               tabindex="0"
               role="button"
               aria-label="검색 실행"
@@ -263,7 +228,7 @@ watch(
               v-if="variant === 'password'"
               :name="isPasswordVisible ? 'eye' : 'eye-close'"
               :size="size === 'sm' ? 'sm' : 'md'"
-              class="text-input-text-static hover:text-input-text-hover cursor-pointer select-none rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
+              :class="iconClasses"
               tabindex="0"
               role="button"
               :aria-label="isPasswordVisible ? '비밀번호 숨기기' : '비밀번호 표시'"
@@ -274,7 +239,7 @@ watch(
           </div>
         </div>
 
-        <!-- 내부 우측 append-inner (슬롯) -->
+        <!-- 내부 우측 append-inner -->
         <div
           v-if="$slots['append-inner']"
           :class="appendInnerClasses.replace('gap-1', 'z-10 gap-1')"
@@ -291,7 +256,7 @@ watch(
 
     <!-- 에러 메시지 -->
     <div
-      v-if="isError && errorMessage"
+      v-if="props.error && errorMessage"
       class="text-input-border-error mt-1 text-[12px] font-medium"
     >
       {{ errorMessage }}

@@ -151,34 +151,16 @@ const handleTelInput = (event: Event) => {
   emit('update:modelValue', value);
 };
 
-const handleFocus = (event: FocusEvent) => {
-  emit('focus', event);
-};
-
-const handleBlur = (event: FocusEvent) => {
-  emit('blur', event);
-};
-
-const handleSearchClick = (event: MouseEvent) => {
-  if (props.variant === 'search') {
-    emit('onSearch', event);
-  }
-};
-
-const handlePasswordToggle = (event: MouseEvent) => {
-  isPasswordVisible.value = !isPasswordVisible.value;
-};
-
 // 키보드 접근성 이벤트 핸들러
 const handleSearchKeydown = (event: KeyboardEvent) => {
   if (event.key === 'Enter' || event.key === ' ') {
-    handleSearchClick(event as any);
+    emit('onSearch', event as any);
   }
 };
 
 const handlePasswordKeydown = (event: KeyboardEvent) => {
   if (event.key === 'Enter' || event.key === ' ') {
-    handlePasswordToggle(event as any);
+    isPasswordVisible.value = !isPasswordVisible.value;
   }
 };
 
@@ -217,8 +199,8 @@ watch(
             :readonly="readonly"
             :class="inputClasses"
             @input="handleInput"
-            @focus="handleFocus"
-            @blur="handleBlur"
+            @focus="emit('focus', $event)"
+            @blur="emit('blur', $event)"
           />
 
           <!-- tel variant -->
@@ -231,8 +213,8 @@ watch(
             :readonly="readonly"
             :class="inputClasses"
             @input="handleTelInput"
-            @focus="handleFocus"
-            @blur="handleBlur"
+            @focus="emit('focus', $event)"
+            @blur="emit('blur', $event)"
           />
 
           <!-- number variant -->
@@ -245,8 +227,8 @@ watch(
             :readonly="readonly"
             :class="inputClasses"
             @input="handleInput"
-            @focus="handleFocus"
-            @blur="handleBlur"
+            @focus="emit('focus', $event)"
+            @blur="emit('blur', $event)"
           />
 
           <!-- password variant -->
@@ -259,8 +241,8 @@ watch(
             :readonly="readonly"
             :class="inputClasses"
             @input="handleInput"
-            @focus="handleFocus"
-            @blur="handleBlur"
+            @focus="emit('focus', $event)"
+            @blur="emit('blur', $event)"
           />
 
           <!-- Variant 아이콘 -->
@@ -273,7 +255,7 @@ watch(
               tabindex="0"
               role="button"
               aria-label="검색 실행"
-              @click.stop="handleSearchClick"
+              @click.stop="emit('onSearch', $event)"
               @keydown.stop="handleSearchKeydown"
               @mousedown.prevent
             />
@@ -285,7 +267,7 @@ watch(
               tabindex="0"
               role="button"
               :aria-label="isPasswordVisible ? '비밀번호 숨기기' : '비밀번호 표시'"
-              @click.stop="handlePasswordToggle"
+              @click.stop="isPasswordVisible = !isPasswordVisible"
               @keydown.stop="handlePasswordKeydown"
               @mousedown.prevent
             />

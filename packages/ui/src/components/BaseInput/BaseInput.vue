@@ -13,15 +13,15 @@ import { computed, ref, watch } from 'vue';
  * @props modelValue - 입력값 (v-model)
  * @props placeholder - 플레이스홀더 텍스트
  * @props size - 크기 (sm, md)
- * @props variant - 입력 타입 변형 (default, search, password)
+ * @props variant - 입력 타입 변형 (default, search, password, tel, number)
  * @props disabled - 비활성화 여부
  * @props error - 에러 상태 여부
  * @props errorMessage - 에러 메시지
  * @props readonly - 읽기 전용 여부
- * @props onSearch - 검색 버튼 클릭 이벤트 (variant="search"일 때 사용)
  * @emits update:modelValue - 값 변경 시 발생
  * @emits focus - 포커스 시 발생
  * @emits blur - 블러 시 발생
+ * @emits onSearch - 검색 버튼 클릭 이벤트 (variant="search"일 때 사용)
  * @slot prepend - 외부 좌측 커스텀 컨텐츠
  * @slot prepend-inner - 내부 좌측 커스텀 컨텐츠
  * @slot append-inner - 내부 우측 커스텀 컨텐츠
@@ -45,7 +45,7 @@ interface Props {
    * 입력 타입 변형
    * @default 'default'
    */
-  variant?: 'default' | 'search' | 'password';
+  variant?: 'default' | 'search' | 'password' | 'tel' | 'number';
   /**
    * 비활성화 여부
    * @default false
@@ -65,10 +65,6 @@ interface Props {
    * @default false
    */
   readonly?: boolean;
-  /**
-   * 검색 버튼 클릭 이벤트 (variant="search"일 때 사용)
-   */
-  onSearch?: () => void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -80,13 +76,13 @@ const props = withDefaults(defineProps<Props>(), {
   error: false,
   errorMessage: '',
   readonly: false,
-  onSearch: undefined,
 });
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void;
   (e: 'focus', event: FocusEvent): void;
   (e: 'blur', event: FocusEvent): void;
+  (e: 'onSearch', event: MouseEvent): void;
 }>();
 
 // 내부 상태 관리
@@ -156,32 +152,24 @@ const handleBlur = (event: FocusEvent) => {
 };
 
 const handleSearchClick = (event: MouseEvent) => {
-  event.preventDefault();
-  event.stopPropagation();
-  if (props.onSearch) {
-    props.onSearch();
+  if (props.variant === 'search') {
+    emit('onSearch', event);
   }
 };
 
 const handlePasswordToggle = (event: MouseEvent) => {
-  event.preventDefault();
-  event.stopPropagation();
   isPasswordVisible.value = !isPasswordVisible.value;
 };
 
 // 키보드 접근성 이벤트 핸들러
 const handleSearchKeydown = (event: KeyboardEvent) => {
   if (event.key === 'Enter' || event.key === ' ') {
-    event.preventDefault();
-    event.stopPropagation();
     handleSearchClick(event as any);
   }
 };
 
 const handlePasswordKeydown = (event: KeyboardEvent) => {
   if (event.key === 'Enter' || event.key === ' ') {
-    event.preventDefault();
-    event.stopPropagation();
     handlePasswordToggle(event as any);
   }
 };
@@ -211,8 +199,9 @@ watch(
 
         <!-- 입력 필드 -->
         <div class="relative flex-1">
+          <!-- default,search variant -->
           <input
-            v-show="variant !== 'password' || isPasswordVisible"
+            v-show="variant === 'default' || variant === 'search' || isPasswordVisible"
             :value="internalValue"
             type="text"
             :placeholder="placeholder"
@@ -224,6 +213,35 @@ watch(
             @blur="handleBlur"
           />
 
+          <!-- tel variant -->
+          <input
+            v-show="variant === 'tel'"
+            :value="internalValue"
+            type="tel"
+            :placeholder="placeholder"
+            :disabled="isDisabled"
+            :readonly="readonly"
+            :class="inputClasses"
+            @input="handleInput"
+            @focus="handleFocus"
+            @blur="handleBlur"
+          />
+
+          <!-- number variant -->
+          <input
+            v-show="variant === 'number'"
+            :value="internalValue"
+            type="number"
+            :placeholder="placeholder"
+            :disabled="isDisabled"
+            :readonly="readonly"
+            :class="inputClasses"
+            @input="handleInput"
+            @focus="handleFocus"
+            @blur="handleBlur"
+          />
+
+          <!-- password variant -->
           <input
             v-show="variant === 'password' && !isPasswordVisible"
             :value="internalValue"
@@ -247,8 +265,8 @@ watch(
               tabindex="0"
               role="button"
               aria-label="검색 실행"
-              @click="handleSearchClick"
-              @keydown="handleSearchKeydown"
+              @click.stop="handleSearchClick"
+              @keydown.stop="handleSearchKeydown"
               @mousedown.prevent
             />
             <BaseIcon
@@ -259,8 +277,8 @@ watch(
               tabindex="0"
               role="button"
               :aria-label="isPasswordVisible ? '비밀번호 숨기기' : '비밀번호 표시'"
-              @click="handlePasswordToggle"
-              @keydown="handlePasswordKeydown"
+              @click.stop="handlePasswordToggle"
+              @keydown.stop="handlePasswordKeydown"
               @mousedown.prevent
             />
           </div>
@@ -290,3 +308,18 @@ watch(
     </div>
   </div>
 </template>
+
+<style scoped>
+/* BaseInput type=number일 경우 우측 스핀버튼 제거 style */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+</style>

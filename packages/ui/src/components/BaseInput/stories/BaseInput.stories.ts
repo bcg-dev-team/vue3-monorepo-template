@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import { ref } from 'vue';
 import BaseIcon from '../../BaseIcon/BaseIcon.vue';
 import BaseInput from '../BaseInput.vue';
+import { ref } from 'vue';
 
 const meta: Meta<typeof BaseInput> = {
   title: 'Inputs/Input',
@@ -31,7 +31,7 @@ const meta: Meta<typeof BaseInput> = {
     variant: {
       description: '입력 타입 변형',
       control: 'select',
-      options: ['default', 'search', 'password'],
+      options: ['default', 'search', 'password', 'tel', 'number'],
     },
     disabled: {
       description: '비활성화 여부',
@@ -474,7 +474,7 @@ export const SearchVariant: Story = {
       const handleSearch = () => {
         alert(`검색어: ${searchValue.value}`);
       };
-      
+
       return { searchValue, handleSearch };
     },
     template: `
@@ -524,7 +524,7 @@ export const PasswordVariant: Story = {
     setup() {
       const password = ref('password123');
       const confirmPassword = ref('');
-      
+
       return { password, confirmPassword };
     },
     template: `
@@ -576,6 +576,124 @@ export const PasswordVariant: Story = {
   }),
 };
 
+// Tel Variant
+export const TelVariant: Story = {
+  render: () => ({
+    components: { BaseInput },
+    setup() {
+      const phoneNumber = ref('010-1234-5678');
+      const homeNumber = ref('');
+
+      return { phoneNumber, homeNumber };
+    },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 16px; max-width: 400px;">
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Tel Variant - MD 크기</h4>
+          <BaseInput 
+            v-model="phoneNumber"
+            variant="tel"
+            placeholder="전화번호를 입력하세요"
+            size="md"
+          />
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Tel Variant - SM 크기</h4>
+          <BaseInput 
+            v-model="homeNumber"
+            variant="tel"
+            placeholder="집전화번호"
+            size="sm"
+          />
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Tel Variant - 에러 상태</h4>
+          <BaseInput 
+            v-model="phoneNumber"
+            variant="tel"
+            placeholder="올바른 전화번호를 입력하세요"
+            size="md"
+            :error="true"
+            error-message="올바른 전화번호 형식이 아닙니다"
+          />
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Tel Variant - 비활성화</h4>
+          <BaseInput 
+            v-model="phoneNumber"
+            variant="tel"
+            placeholder="비활성화된 전화번호"
+            size="md"
+            :disabled="true"
+          />
+        </div>
+      </div>
+    `,
+  }),
+};
+
+// Number Variant
+export const NumberVariant: Story = {
+  render: () => ({
+    components: { BaseInput },
+    setup() {
+      const age = ref('25');
+      const price = ref('');
+
+      return { age, price };
+    },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 16px; max-width: 400px;">
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Number Variant - MD 크기</h4>
+          <BaseInput 
+            v-model="age"
+            variant="number"
+            placeholder="나이를 입력하세요"
+            size="md"
+          />
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Number Variant - SM 크기</h4>
+          <BaseInput 
+            v-model="price"
+            variant="number"
+            placeholder="가격을 입력하세요"
+            size="sm"
+          />
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Number Variant - 에러 상태</h4>
+          <BaseInput 
+            v-model="age"
+            variant="number"
+            placeholder="올바른 숫자를 입력하세요"
+            size="md"
+            :error="true"
+            error-message="1 이상의 숫자를 입력하세요"
+          />
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Number Variant - 비활성화</h4>
+          <BaseInput 
+            v-model="age"
+            variant="number"
+            placeholder="비활성화된 숫자 입력"
+            size="md"
+            :disabled="true"
+          />
+        </div>
+      </div>
+    `,
+  }),
+};
+
 // All Variants Comparison
 export const AllVariantsComparison: Story = {
   render: () => ({
@@ -584,16 +702,20 @@ export const AllVariantsComparison: Story = {
       const defaultValue = ref('기본 입력값');
       const searchValue = ref('검색어 예시');
       const passwordValue = ref('password123');
-      
+      const telValue = ref('010-1234-5678');
+      const numberValue = ref('25');
+
       const handleSearch = () => {
         alert(`검색: ${searchValue.value}`);
       };
-      
-      return { 
-        defaultValue, 
-        searchValue, 
+
+      return {
+        defaultValue,
+        searchValue,
         passwordValue,
-        handleSearch 
+        telValue,
+        numberValue,
+        handleSearch,
       };
     },
     template: `
@@ -635,6 +757,32 @@ export const AllVariantsComparison: Story = {
           />
           <p style="margin-top: 4px; font-size: 12px; color: #666;">
             비밀번호 길이: {{ passwordValue ? passwordValue.length + '자' : '없음' }}
+          </p>
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Tel Variant</h4>
+          <BaseInput 
+            v-model="telValue"
+            variant="tel"
+            placeholder="전화번호를 입력하세요"
+            size="md"
+          />
+          <p style="margin-top: 4px; font-size: 12px; color: #666;">
+            전화번호: {{ telValue || '없음' }}
+          </p>
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Number Variant</h4>
+          <BaseInput 
+            v-model="numberValue"
+            variant="number"
+            placeholder="숫자를 입력하세요"
+            size="md"
+          />
+          <p style="margin-top: 4px; font-size: 12px; color: #666;">
+            숫자: {{ numberValue || '없음' }}
           </p>
         </div>
       </div>

@@ -143,6 +143,14 @@ const handleInput = (event: Event) => {
   emit('update:modelValue', target.value);
 };
 
+const handleTelInput = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const value = target.value.replace(/[^0-9]/g, '');
+  target.value = value;
+  internalValue.value = value;
+  emit('update:modelValue', value);
+};
+
 const handleFocus = (event: FocusEvent) => {
   emit('focus', event);
 };
@@ -222,7 +230,7 @@ watch(
             :disabled="isDisabled"
             :readonly="readonly"
             :class="inputClasses"
-            @input="handleInput"
+            @input="handleTelInput"
             @focus="handleFocus"
             @blur="handleBlur"
           />

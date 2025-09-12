@@ -205,6 +205,7 @@ watch(
             :disabled="props.disabled"
             :readonly="readonly"
             :class="inputClasses"
+            @keydown.stop="handleSearchKeydown"
             @input="handleInput"
             @focus="emit('focus', $event)"
             @blur="emit('blur', $event)"

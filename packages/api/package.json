@@ -29,7 +29,7 @@
   "dependencies": {
     "@template/types": "workspace:*",
     "@template/utils": "workspace:*",
-    "axios": "^1.11.0"
+    "axios": "^1.12.0"
   },
   "peerDependencies": {
     "vitest": "^1.6.1"

@@ -25,6 +25,8 @@ import {
   ClientSideRowModelModule,
   ColumnAutoSizeModule,
   ClientSideRowModelApiModule,
+  PaginationModule,
+  EventApiModule,
   ValidationModule,
   themeQuartz,
   themeBalham,
@@ -46,6 +48,8 @@ ModuleRegistry.registerModules([
   HighlightChangesModule,
   ColumnAutoSizeModule,
   ClientSideRowModelApiModule,
+  PaginationModule,
+  EventApiModule,
   // agAnimateShowChangeCellRenderer는 내장 렌더러로 별도 모듈 불필요
 ]);
 
@@ -76,6 +80,12 @@ interface Props {
   filterable?: boolean;
   /** 페이지네이션 사용 여부 (기본값: false) */
   pagination?: boolean;
+  /** 페이지당 행 수 (기본값: 100) */
+  paginationPageSize?: number;
+  /** 페이지 크기 선택 옵션 (기본값: [25, 50, 100, 200]) */
+  paginationPageSizeSelector?: number[];
+  /** 페이지네이션 패널 숨김 여부 (기본값: false) */
+  suppressPaginationPanel?: boolean;
   /** 컬럼 리사이징 가능 여부 (기본값: true) */
   resizable?: boolean;
   /** 테마 선택 (기본값: 'quartz') */
@@ -100,6 +110,9 @@ const props = withDefaults(defineProps<Props>(), {
   sortable: true,
   filterable: false,
   pagination: false,
+  paginationPageSize: 100,
+  paginationPageSizeSelector: () => [25, 50, 100, 200],
+  suppressPaginationPanel: false,
   resizable: true,
   theme: 'quartz',
 });
@@ -163,6 +176,9 @@ const gridOptions = computed(() => ({
   enableCellTextSelection: true,
   suppressRowClickSelection: true, // 행 선택 기능 비활성화
   pagination: props.pagination,
+  paginationPageSize: props.paginationPageSize,
+  paginationPageSizeSelector: props.paginationPageSizeSelector,
+  suppressPaginationPanel: props.suppressPaginationPanel,
   domLayout: 'normal',
   suppressHorizontalScroll: false,
 

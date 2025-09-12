@@ -50,7 +50,19 @@ watch(
     if (tvWidget.value && typeof tvWidget.value.setSymbol === 'function') {
       try {
         console.log('[TradingView] 차트 심볼 변경 실행:', newSymbol);
+        // setSymbol 호출 시 히스토리 데이터도 함께 로드되도록 함
         tvWidget.value.setSymbol(newSymbol, props.interval);
+
+        // 차트 새로고침을 통해 히스토리 데이터 재로드 강제
+        setTimeout(() => {
+          if (tvWidget.value && tvWidget.value.chart) {
+            const chart = tvWidget.value.chart();
+            if (chart && typeof chart.refresh === 'function') {
+              console.log('[TradingView] 차트 새로고침으로 히스토리 데이터 재로드');
+              chart.refresh();
+            }
+          }
+        }, 500);
       } catch (error) {
         console.error('[TradingView] 차트 심볼 변경 중 오류 발생:', error);
       }
@@ -273,6 +285,17 @@ const changeChartSymbol = (symbol: string) => {
       console.log('[TradingView] 차트 심볼 변경:', symbol);
       tvWidget.value.setSymbol(symbol, props.interval);
       currentSymbol.value = symbol;
+
+      // 차트 새로고침을 통해 히스토리 데이터 재로드 강제
+      setTimeout(() => {
+        if (tvWidget.value && tvWidget.value.chart) {
+          const chart = tvWidget.value.chart();
+          if (chart && typeof chart.refresh === 'function') {
+            console.log('[TradingView] 차트 새로고침으로 히스토리 데이터 재로드');
+            chart.refresh();
+          }
+        }
+      }, 500);
     } catch (error) {
       console.error('[TradingView] 차트 심볼 변경 중 오류 발생:', error);
     }

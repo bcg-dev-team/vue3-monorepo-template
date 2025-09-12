@@ -8,6 +8,7 @@ import '@/assets/scss/index.scss';
 import setupLocatorUI from '@locator/runtime';
 
 // MSW 모킹 시작 (개발 환경)
+import { getDataSourceConfig } from './config/dataSource';
 import { startMocking } from '@template/mocks';
 
 if ((import.meta as any).env.DEV) {
@@ -15,8 +16,14 @@ if ((import.meta as any).env.DEV) {
     adapter: 'vue',
   });
 
-  // MSW 모킹 시작 (HTTP + WebSocket 통합)
-  startMocking();
+  // 데이터 소스 설정에 따라 MSW 시작 여부 결정
+  const config = getDataSourceConfig();
+  if (!config.useRealWebSocket) {
+    // Mock 데이터 사용 시에만 MSW 시작
+    startMocking();
+  } else {
+    console.log('[Main] 실제 웹소켓 사용 - MSW 비활성화');
+  }
 }
 
 // Theme 패키지 import (CSS 변수 포함)

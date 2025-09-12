@@ -1,5 +1,8 @@
 <template>
   <div class="order-page min-w-[1920px]">
+    <!-- 실시간 설정 패널 -->
+    <RealtimeConfigPanel />
+
     <!-- 좌측(20%) + 우측(80%) 분할 -->
     <BaseTwoWaySplitPane
       direction="horizontal"
@@ -10,7 +13,10 @@
       <!-- 좌측 패널: 종목 리스트 (15%) -->
       <template #first>
         <div class="order-list-panel">
-          <SymbolList :selected-symbol="selectedSymbol" @symbol-select="handleSymbolSelect" />
+          <SymbolList
+            :selected-symbol="selectedSymbol.selectedSymbol.value"
+            @symbol-select="handleSymbolSelect"
+          />
         </div>
       </template>
 
@@ -43,7 +49,7 @@
                     <div class="panel-content">
                       <TradingViewChart
                         ref="tradingViewChartRef"
-                        :symbol="selectedSymbol"
+                        :symbol="selectedSymbol.selectedSymbol.value"
                         :interval="'1'"
                       />
                     </div>
@@ -83,17 +89,7 @@
           <!-- 우측 패널: 주문 처리 (25%) -->
           <template #second>
             <div class="order-action-panel">
-              <RightPanel />
-              <!-- <div class="panel-header">
-                <h2 class="panel-title">⚡ 주문 패널</h2>
-                <p class="panel-subtitle">주문 상태 변경 및 액션 패널</p>
-              </div>
-              <div class="panel-content">
-                <div class="placeholder-content">
-                  <div class="placeholder-icon">⚡</div>
-                  <p>주문 처리 옵션이 여기에 표시됩니다</p>
-                </div>
-              </div> -->
+              <RightPanel :selected-symbol="selectedSymbol.selectedSymbol.value" />
             </div>
           </template>
         </BaseTwoWaySplitPane>
@@ -103,22 +99,38 @@
 </template>
 
 <script setup lang="ts">
+import { selectedSymbolInstance as selectedSymbol } from '@/composables/useSelectedSymbol';
+import RealtimeConfigPanel from '@/components/order/RealtimeConfigPanel.vue';
+import { useMockRealtimeData } from '@/composables/useMockRealtimeData';
 import TradingViewChart from '@/components/chart/TradingViewChart.vue';
 import type { GridOptions, ColDef, GridApi } from 'ag-grid-community';
 import { BaseTwoWaySplitPane, BaseDataGrid } from '@template/ui';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import SymbolList from '@/components/order/SymbolList.vue';
 import RightPanel from '@/components/order/RightPanel.vue';
 import type { TradingSymbol } from '@/types/tradingview';
-import { ref, onMounted, onUnmounted } from 'vue';
-import { getOrderData } from '@template/mocks';
+import { getAllSymbols } from '@template/mocks';
+import './Index.scss';
 
 // 상태 관리
-const selectedSymbol = ref('EURTRY');
 const tradingViewChartRef = ref<InstanceType<typeof TradingViewChart> | null>(null);
+
+// 선택된 심볼의 시장 데이터 사용
+const { marketData, addVisibleSymbols, unsubscribeAll } = selectedSymbol;
+
+// 실시간 시장 데이터 가져오기
+const {
+  marketData: realtimeMarketData,
+  isConnected,
+  connectionStatus,
+} = useMockRealtimeData({
+  symbols: getAllSymbols().map((symbol) => symbol.ticker),
+  autoConnect: true,
+});
 
 // 이벤트 핸들러
 const handleSymbolSelect = (symbol: TradingSymbol) => {
-  selectedSymbol.value = symbol.ticker;
+  selectedSymbol.setSelectedSymbol(symbol.ticker);
 
   if (
     tradingViewChartRef.value &&
@@ -128,17 +140,17 @@ const handleSymbolSelect = (symbol: TradingSymbol) => {
   }
 };
 
-// 테이블 데이터 타입 정의
-interface PositionData {
-  id: string; // 고유 ID 추가 (성능 최적화)
+// 테이블 데이터 타입 정의 (실시간 데이터 기반)
+interface DisplayPositionData {
+  id: string;
   itemCode: string;
   currency: string;
   positionType: 'LONG' | 'SHORT';
   purchaseDate: string;
   quantity: number;
   price: number;
-  currentPrice: number; // TODO: 실시간으로 변경되어야 하는 값
-  profitLoss: number; // TODO: 실시간으로 변경되어야 하는 값
+  currentPrice: number; // 실시간 데이터에서 가져옴
+  profitLoss: number; // 실시간 계산됨
 }
 
 // 컬럼 정의
@@ -231,8 +243,7 @@ const columnDefs = ref<ColDef[]>([
     },
     valueFormatter: (params: any) => {
       const value = params.value;
-      const sign = value > 0 ? '+' : '';
-      return `${sign}${value.toLocaleString()}`;
+      return value.toLocaleString();
     },
   },
   {
@@ -249,27 +260,153 @@ const columnDefs = ref<ColDef[]>([
 const defaultColDef = ref({});
 
 // 그리드 옵션
-const gridOptions = ref<GridOptions>({});
+const gridOptions = ref<GridOptions>({
+  suppressRowClickSelection: false, // deprecated 속성 제거
+  suppressMenuHide: true, // 유효하지 않은 속성 제거
+});
 
-// 테이블 데이터 (mocks에서 가져오기)
-const rowData = ref<PositionData[]>([]);
+// 시장 데이터를 기반으로 한 테이블 데이터 (포지션 대신 시장 데이터 표시)
+const rowData = computed<DisplayPositionData[]>(() => {
+  return marketData.value.slice(0, 10).map((market: any, index: number) => ({
+    id: `market_${index}`,
+    itemCode: market.symbol,
+    currency: market.symbol.substring(0, 3),
+    positionType: 'MARKET' as const,
+    purchaseDate: new Date().toISOString().split('T')[0],
+    quantity: 0,
+    price: market.price,
+    currentPrice: Math.round(market.price * 100) / 100,
+    profitLoss: Math.round(market.change * 100) / 100,
+  }));
+});
 
 // 그리드 API 참조
 const gridApi = ref<GridApi | null>(null);
 
 // 그리드 준비 완료 이벤트
 const onGridReady = (params: any) => {
+  console.log('🎬 onGridReady 호출됨!', params);
   gridApi.value = params.api;
+  console.log('🎬 gridApi.value 설정됨:', !!gridApi.value);
 
   // BaseDataGrid 컴포넌트에서 자동으로 sizeColumnsToFit을 처리하므로
   // 여기서는 추가 처리 불필요
+
+  // 🎯 AG Grid 가시성 감지 설정
+  console.log('🎯 setupGridVisibilityObserver 호출 시작');
+  setupGridVisibilityObserver();
+  console.log('🎯 setupGridVisibilityObserver 호출 완료');
 };
 
-// 정렬 변경 이벤트
+// 🎯 AG Grid 가시성 감지 설정
+const setupGridVisibilityObserver = () => {
+  console.log('🎯 setupGridVisibilityObserver 시작');
+  if (!gridApi.value) {
+    console.log('❌ gridApi.value가 없음');
+    return;
+  }
+
+  // AG Grid의 실제 화면에 보이는 행들 감지 (AG Grid 34 버전 호환)
+  const updateVisibleSymbols = () => {
+    console.log('🔄 updateVisibleSymbols 실행');
+    if (!gridApi.value) {
+      console.log('❌ updateVisibleSymbols: gridApi.value가 없음');
+      return;
+    }
+
+    try {
+      // 🎯 AG Grid 34 버전 최적화 방법: getRenderedNodes() 사용
+      const visibleNodes = gridApi.value.getRenderedNodes();
+      console.log(`📊 전체 렌더링된 노드 수: ${visibleNodes.length}`);
+
+      // 실제로 화면에 렌더링된 노드들만 필터링
+      const actualVisibleNodes = visibleNodes.filter((node: any) => {
+        // AG Grid v34에서는 rowVisible이 undefined일 수 있으므로 다른 조건 사용
+        const isValid = node.rowIndex !== null && node.data && node.rowIndex >= 0;
+        if (!isValid) {
+          console.log('🚫 필터링된 노드:', {
+            rowVisible: node.rowVisible,
+            rowIndex: node.rowIndex,
+            hasData: !!node.data,
+            itemCode: node.data?.itemCode,
+            isValid: isValid,
+          });
+        } else {
+          console.log('✅ 유효한 노드:', {
+            rowVisible: node.rowVisible,
+            rowIndex: node.rowIndex,
+            hasData: !!node.data,
+            itemCode: node.data?.itemCode,
+            isValid: isValid,
+          });
+        }
+        return isValid;
+      });
+      console.log(`✅ 유효한 노드 수: ${actualVisibleNodes.length}`);
+
+      // 화면에 보이는 종목들만 추출
+      const visibleSymbols = actualVisibleNodes.map((node) => node.data?.itemCode).filter(Boolean);
+      console.log(`🎯 추출된 종목들:`, visibleSymbols);
+
+      if (visibleSymbols.length > 0) {
+        addVisibleSymbols('AGGrid', visibleSymbols);
+        console.log(`✅ AG Grid 가시성 감지 완료: ${visibleSymbols.length}개 종목`, visibleSymbols);
+      } else {
+        console.log('⚠️ 보이는 종목이 없음');
+      }
+    } catch (error) {
+      console.error('❌ AG Grid 가시성 감지 오류:', error);
+
+      // 폴백: 시장 데이터의 종목들을 가져오기
+      const allSymbols = marketData.value.map((m: any) => m.symbol).filter(Boolean);
+      if (allSymbols.length > 0) {
+        addVisibleSymbols('AGGrid', allSymbols);
+        console.log(`🔄 AG Grid 폴백: ${allSymbols.length}개 종목`, allSymbols);
+      }
+    }
+  };
+
+  // 그리드 이벤트 리스너 등록 (AG Grid 34 호환) - 필수 이벤트만 등록
+  console.log('🎧 AG Grid 이벤트 리스너 등록');
+  gridApi.value.addEventListener('viewportChanged', () => {
+    console.log('👁️ viewportChanged 이벤트');
+    updateVisibleSymbols();
+  });
+  gridApi.value.addEventListener('firstDataRendered', () => {
+    console.log('🎬 firstDataRendered 이벤트');
+    updateVisibleSymbols();
+  });
+
+  // 초기 실행
+  console.log('⏰ 초기 실행 (100ms 후)');
+  setTimeout(updateVisibleSymbols, 100);
+};
+// 정렬 변경 이벤트 (AG Grid 34 호환)
 const onSortChanged = (event: any) => {
-  console.log('Sort changed:', event);
+  console.log('🔄 onSortChanged 이벤트:', event);
+  // 가시성 감지 업데이트
+  if (gridApi.value) {
+    console.log('⏰ 정렬 후 가시성 감지 업데이트 (100ms 후)');
+    setTimeout(() => {
+      if (gridApi.value) {
+        console.log('🔄 정렬 후 가시성 감지 실행');
+        const visibleNodes = gridApi.value.getRenderedNodes();
+        const actualVisibleNodes = visibleNodes.filter((node: any) => {
+          // AG Grid v34에서는 rowVisible이 undefined일 수 있으므로 다른 조건 사용
+          return node.rowIndex !== null && node.data && node.rowIndex >= 0;
+        });
+        const visibleSymbols = actualVisibleNodes
+          .map((node) => node.data?.itemCode)
+          .filter(Boolean);
+        console.log(`🎯 정렬 후 보이는 종목들:`, visibleSymbols);
+        if (visibleSymbols.length > 0) {
+          addVisibleSymbols('AGGrid', visibleSymbols);
+          console.log(`✅ 정렬 후 가시성 감지 완료: ${visibleSymbols.length}개 종목`);
+        }
+      }
+    }, 100);
+  }
 };
-
 // 행 선택 이벤트는 사용하지 않음 (selectable=false)
 
 // 청산 버튼 클릭 핸들러 (전역 함수로 등록)
@@ -284,375 +421,23 @@ const handleMarketSettle = (itemCode: string) => {
   // TODO: 시장가청산 로직 구현
 };
 
-// 데이터 로드 함수
-const loadOrderData = async () => {
-  try {
-    // mocks 패키지에서 주문 데이터 가져오기
-    // test data size: 10000
-    const orderData = getOrderData(10000, 0);
-
-    // PositionData 형태로 변환
-    rowData.value = orderData.map((order: any, index: number) => {
-      const itemCode = order.symbol;
-      const price = order.price;
-      const quantity = order.quantity;
-      const positionType = order.type === 'Buy' ? 'LONG' : 'SHORT';
-
-      // 초기 현재가는 주문가와 동일하게 설정
-      const currentPrice = price;
-
-      // 초기 손익은 0 (현재가 = 주문가)
-      const profitLoss = 0;
-
-      return {
-        id: `${itemCode}-${index}-${Date.now()}`, // 고유 ID 생성
-        itemCode,
-        currency: itemCode.substring(0, 3), // 심볼의 앞 3자리를 통화로 사용
-        positionType,
-        purchaseDate: order.time.split(' ')[0], // 날짜 부분만 추출
-        quantity,
-        price,
-        currentPrice,
-        profitLoss,
-      };
-    });
-
-    // 초기 현재가 설정
-    const symbols = [...new Set(rowData.value.map((item) => item.itemCode))];
-    symbols.forEach((symbol) => {
-      const firstOrder = rowData.value.find((item) => item.itemCode === symbol);
-      if (firstOrder) {
-        currentPrices.value[symbol] = firstOrder.price;
-      }
-    });
-  } catch (error) {
-    console.error('Failed to load order data:', error);
-  }
-};
-
-// 실시간 업데이트 타이머
-let realTimeInterval: NodeJS.Timeout | null = null;
-
-// 성능 최적화를 위한 업데이트 제어
-const isUpdating = ref(false);
+// 실시간 데이터 기반으로 테이블 데이터가 자동으로 업데이트됨
+// 별도의 데이터 로드 함수는 필요 없음
 
 // 전역 함수 등록 (버튼 클릭 이벤트 처리용)
 onMounted(() => {
-  loadOrderData();
   (window as any).handleSettle = handleSettle;
   (window as any).handleMarketSettle = handleMarketSettle;
-
-  // 실시간 시세 업데이트 시작 (100ms마다)
-  realTimeInterval = setInterval(updateRealTimeData, 100);
 });
-
-// 실시간 시세 시뮬레이션을 위한 심볼별 현재가 저장
-const currentPrices = ref<Record<string, number>>({});
-
-// 손익 계산 함수
-const calculateProfitLoss = (
-  orderPrice: number,
-  currentPrice: number,
-  quantity: number,
-  positionType: 'LONG' | 'SHORT'
-): number => {
-  if (positionType === 'LONG') {
-    // 롱 포지션: (현재가 - 주문가) * 수량
-    return (currentPrice - orderPrice) * quantity;
-  } else {
-    // 숏 포지션: (주문가 - 현재가) * 수량
-    return (orderPrice - currentPrice) * quantity;
-  }
-};
-
-// 실시간 시세 업데이트 함수
-const updateRealTimePrices = () => {
-  if (isUpdating.value) return; // 업데이트 중이면 스킵
-  isUpdating.value = true;
-
-  try {
-    // 기존 데이터의 심볼들을 추출
-    const symbols = [...new Set(rowData.value.map((item) => item.itemCode))];
-
-    // 심볼별로 가격 업데이트
-    symbols.forEach((symbol) => {
-      // 기존 가격이 없으면 주문가를 기준으로 설정
-      if (!currentPrices.value[symbol]) {
-        const firstOrder = rowData.value.find((item) => item.itemCode === symbol);
-        if (firstOrder) {
-          currentPrices.value[symbol] = firstOrder.price;
-        }
-      }
-
-      // ±1% 범위에서 랜덤 변동 시뮬레이션 (변동폭 축소)
-      const basePrice = currentPrices.value[symbol];
-      const variation = (Math.random() - 0.5) * 0.02; // -1% ~ +1%
-      const newPrice = basePrice * (1 + variation);
-
-      currentPrices.value[symbol] = Math.round(newPrice * 100000) / 100000; // 소수점 5자리
-    });
-
-    // AG Grid API를 사용한 효율적인 업데이트 (하이브리드 접근법)
-    if (gridApi.value) {
-      const updatedRowNodes: any[] = [];
-      const updatedItems: any[] = [];
-
-      // 방법 1: 보이는 행만 처리 시도 (가장 효율적)
-      try {
-        const displayedRowModel = (gridApi.value as any).getDisplayedRowModel();
-        if (displayedRowModel && displayedRowModel.getRows().length > 0) {
-          // 보이는 행들만 처리
-          displayedRowModel.getRows().forEach((rowNode: any) => {
-            if (rowNode.data) {
-              const item = rowNode.data;
-              const currentPrice = currentPrices.value[item.itemCode] || item.price;
-              const profitLoss = calculateProfitLoss(
-                item.price,
-                currentPrice,
-                item.quantity,
-                item.positionType
-              );
-
-              const roundedProfitLoss = Math.round(profitLoss * 100) / 100;
-
-              // 값이 변경된 경우만 업데이트
-              if (item.currentPrice !== currentPrice || item.profitLoss !== roundedProfitLoss) {
-                const updatedItem = {
-                  ...item,
-                  currentPrice,
-                  profitLoss: roundedProfitLoss,
-                };
-
-                // 로컬 데이터 업데이트 (ID 기반으로 찾기)
-                const index = rowData.value.findIndex((dataItem) => dataItem.id === item.id);
-                if (index !== -1) {
-                  rowData.value[index] = updatedItem;
-                }
-
-                updatedRowNodes.push(rowNode);
-                updatedItems.push(updatedItem);
-              }
-            }
-          });
-
-          // 셀 새로고침으로 효율적인 업데이트
-          if (updatedRowNodes.length > 0) {
-            gridApi.value.refreshCells({
-              rowNodes: updatedRowNodes,
-              columns: ['currentPrice', 'profitLoss'],
-              force: true,
-            });
-          }
-        } else {
-          throw new Error('No displayed rows');
-        }
-      } catch (error) {
-        // 방법 2: 전체 데이터 처리 (fallback)
-        console.log('Falling back to full data update');
-
-        rowData.value.forEach((item, index) => {
-          const currentPrice = currentPrices.value[item.itemCode] || item.price;
-          const profitLoss = calculateProfitLoss(
-            item.price,
-            currentPrice,
-            item.quantity,
-            item.positionType
-          );
-
-          const roundedProfitLoss = Math.round(profitLoss * 100) / 100;
-
-          if (item.currentPrice !== currentPrice || item.profitLoss !== roundedProfitLoss) {
-            const updatedItem = {
-              ...item,
-              currentPrice,
-              profitLoss: roundedProfitLoss,
-            };
-
-            rowData.value[index] = updatedItem;
-            updatedItems.push(updatedItem);
-          }
-        });
-
-        // 트랜잭션 업데이트
-        if (updatedItems.length > 0) {
-          gridApi.value.applyTransactionAsync({
-            update: updatedItems,
-          });
-        }
-      }
-    }
-  } finally {
-    isUpdating.value = false;
-  }
-};
-
-// 실시간 데이터 업데이트 함수
-const updateRealTimeData = () => {
-  updateRealTimePrices();
-  console.log('실시간 데이터 업데이트 완료');
-};
 
 // 컴포넌트 언마운트 시 정리
 onUnmounted(() => {
-  // 실시간 업데이트 타이머 정리
-  if (realTimeInterval) {
-    clearInterval(realTimeInterval);
-    realTimeInterval = null;
-  }
-
   // 전역 함수 제거
   delete (window as any).handleSettle;
   delete (window as any).handleMarketSettle;
+
+  // 모든 구독 해제
+  console.log('[Index] 컴포넌트 언마운트 - 모든 구독 해제');
+  unsubscribeAll();
 });
 </script>
-
-<style scoped>
-.order-page {
-  height: 100vh;
-  width: 100%;
-  background-color: #f8f9fa;
-}
-
-.order-list-panel,
-.order-detail-panel,
-.order-action-panel {
-  height: 100%;
-  background-color: #ffffff;
-  border: 1px solid #e9ecef;
-  display: flex;
-  flex-direction: column;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-.panel-header {
-  padding: 20px;
-  border-bottom: 1px solid #e9ecef;
-  background-color: #ffffff;
-}
-
-.panel-title {
-  margin: 0 0 8px 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: #212529;
-}
-
-.panel-subtitle {
-  margin: 0;
-  font-size: 14px;
-  color: #6c757d;
-}
-
-.panel-content {
-  flex: 1;
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.placeholder-content {
-  text-align: center;
-  color: #6c757d;
-  padding: 20px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.placeholder-icon {
-  font-size: 48px;
-  margin-bottom: 16px;
-}
-
-.placeholder-content p {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 500;
-}
-
-/* 좌측 패널 스타일 */
-.order-list-panel {
-  background-color: #f8f9fa;
-}
-
-/* 중앙 패널 스타일 */
-.order-detail-panel {
-  background-color: #ffffff;
-}
-
-.order-detail-panel .panel-content {
-  padding: 0;
-  display: block;
-}
-
-/* 차트 패널 스타일 */
-.chart-panel {
-  height: 100%;
-  background-color: #ffffff;
-  border: 1px solid #e9ecef;
-  display: flex;
-  flex-direction: column;
-}
-
-.chart-panel .panel-content {
-  padding: 0;
-  display: block;
-}
-
-/* 테이블 패널 스타일 */
-.table-panel {
-  height: 100%;
-  background-color: #ffffff;
-  border: 1px solid #e9ecef;
-  display: flex;
-  flex-direction: column;
-}
-
-.table-panel .panel-content {
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  min-height: 0;
-  flex: 1;
-}
-
-/* 우측 패널 스타일 */
-.order-action-panel {
-  background-color: #f8f9fa;
-}
-
-/* splitpanes 기본 스타일 오버라이드 */
-:deep(.splitpanes) {
-  height: 100%;
-}
-
-:deep(.splitpanes__pane) {
-  background: transparent !important;
-  border: none !important;
-}
-
-:deep(.splitpanes__splitter) {
-  background-color: #e9ecef !important;
-  border: none !important;
-  width: 2px !important;
-}
-
-:deep(.splitpanes__splitter:hover) {
-  background-color: #6c757d !important;
-}
-
-/* AG Grid 헤더 가운데 정렬 */
-:deep(.ag-header-cell-label) {
-  justify-content: center;
-  text-align: center;
-}
-
-:deep(.ag-header-cell-text) {
-  text-align: center;
-}
-
-/* AG Grid 기본 스타일 사용 */
-</style>

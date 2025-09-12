@@ -37,7 +37,13 @@
     >
       <div class="flex w-52 flex-col gap-1">
         <div class="text-base font-semibold leading-5 tracking-[-0.35px] text-[#131313]">
-          EURUSD
+          {{ currentSymbol }}
+        </div>
+        <div class="text-sm text-gray-600">
+          {{ currentPrice.toFixed(5) }}
+          <span :class="changePercent >= 0 ? 'text-green-600' : 'text-red-600'">
+            {{ changePercent >= 0 ? '+' : '' }}{{ changePercent.toFixed(2) }}%
+          </span>
         </div>
       </div>
     </div>
@@ -355,9 +361,29 @@
 
 <script setup lang="ts">
 import { BaseRadioGroup, BaseButton, BaseIcon, BaseCheckbox, BaseInputStepper } from '@template/ui';
+import { selectedSymbolInstance as selectedSymbol } from '@/composables/useSelectedSymbol';
+import { useMockRealtimeData } from '@/composables/useMockRealtimeData';
+import { reactive, ref, computed, watch } from 'vue';
+import { getAllSymbols } from '@template/mocks';
 import type { RadioOption } from '@template/ui';
-import { reactive, ref, computed } from 'vue';
 import OrderBook from './OrderBook.vue';
+
+interface Props {
+  selectedSymbol?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  selectedSymbol: 'EURUSD',
+});
+
+// 선택된 심볼의 시장 데이터 사용
+const { marketData, isConnected } = selectedSymbol;
+
+// 실시간 시장 데이터 가져오기 (계정 데이터는 사용하지 않음)
+const { marketData: realtimeMarketData } = useMockRealtimeData({
+  symbols: getAllSymbols().map((symbol) => symbol.ticker),
+  autoConnect: true,
+});
 
 const state = reactive({
   stopLoss: false,
@@ -371,9 +397,27 @@ const isSellActive = ref(false); // 매도 버튼 토글 상태
 const selectedAccount = ref('account1'); // 선택된 계좌
 const isDropdownOpen = ref(false); // 드롭다운 토글 상태
 
-// 매수/매도 가격 데이터
-const buyPrice = ref(1.171);
-const sellPrice = ref(1.17096);
+// 선택된 심볼의 실시간 가격 사용
+const buyPrice = computed(() => {
+  return selectedSymbol.buyPrice.value;
+});
+
+const sellPrice = computed(() => {
+  return selectedSymbol.sellPrice.value;
+});
+
+// 선택된 심볼 정보
+const currentSymbol = computed(() => {
+  return selectedSymbol.selectedSymbol.value;
+});
+
+const currentPrice = computed(() => {
+  return selectedSymbol.currentPrice.value;
+});
+
+const changePercent = computed(() => {
+  return selectedSymbol.changePercent.value;
+});
 
 // 주문 입력 데이터
 const quantity = ref(0);
@@ -414,14 +458,18 @@ const progressBarStyles = computed(() => {
   };
 });
 
-const accountOptions = [
-  { value: 'account1', label: '라이브계좌#1 110-81-345150' },
-  { value: 'account2', label: '라이브계좌#2 110-81-345151' },
-  { value: 'account3', label: '데모계좌#1 110-81-345152' },
-];
+// 실시간 계좌 정보 (목 데이터)
+const accountOptions = computed(() => {
+  return [
+    {
+      value: 'account1',
+      label: '라이브계좌#1 110-81-345150 (USD 100,000)',
+    },
+  ];
+});
 
 const selectedAccountLabel = computed(() => {
-  const option = accountOptions.find((opt) => opt.value === selectedAccount.value);
+  const option = accountOptions.value.find((opt) => opt.value === selectedAccount.value);
   return option?.label || '계좌를 선택하세요';
 });
 

@@ -1,3 +1,7 @@
-// 순수 유틸리티 composables들을 export
-export { useLocalStorage } from './useLocalStorage';
+/**
+ * Composables 통합 export
+ */
+
+// 유틸리티 composables
 export { useDebounce } from './useDebounce';
+export { useLocalStorage } from './useLocalStorage';

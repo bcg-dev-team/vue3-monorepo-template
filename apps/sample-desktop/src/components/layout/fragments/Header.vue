@@ -1,5 +1,5 @@
 <template>
-  <header class="fixed sticky left-0 right-0 top-0 z-[100] min-w-[1920px] bg-black">
+  <header class="z-sticky fixed sticky left-0 right-0 top-0 min-w-[1920px] bg-black">
     <div
       class="header-container flex w-screen min-w-[1400px] max-w-[1920px] items-center justify-between py-[10px] pl-3 pr-6"
     >

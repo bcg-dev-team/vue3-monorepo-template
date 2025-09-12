@@ -26,8 +26,8 @@ interface FooterLink {
 
 const footerLinks: FooterLink[] = [
   { id: 'company', text: '회사소개', href: '#' },
-  { id: 'notice', text: '공지사항', href: '#' },
-  { id: 'faq', text: '자주묻는질문', href: '#' },
+  { id: 'notice', text: '공지사항', href: '/support/notice' },
+  { id: 'faq', text: '자주묻는질문', href: '/support/faq' },
   { id: 'investment', text: '투자유의사항', href: '#' },
   { id: 'customer', text: '고객센터 1588-1588', href: '#' },
   { id: 'privacy', text: '개인정보처리방침', href: '#' },

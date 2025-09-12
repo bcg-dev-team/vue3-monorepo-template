@@ -1,8 +1,11 @@
 <template>
   <div class="gap-size-64 flex">
-    <div class="min-w-[500px]">
-      <div class="gap-size-4 flex items-center">
-        <BaseTabs variant="inner" :tabs="tabs" v-model="selectedTab" />
+    <div class="gap-size-16 flex min-w-[500px] flex-col">
+      <div class="gap-size-4 flex w-[180px] items-center">
+        <BaseRadioGroup v-model="selectedValue" :options="options" />
+      </div>
+      <div class="w-[500px]">
+        <EventList :list="selectedEventList" />
       </div>
     </div>
     <SupportDetail
@@ -16,23 +19,55 @@
 
 <script setup lang="ts">
 import SupportDetail from '@/components/support/common/SupportDetail.vue';
-import { BaseTabs } from '@template/ui';
-import { ref } from 'vue';
+import EventList from '@/components/support/event/EventList.vue';
+import EventTempImg from '@/assets/image/temp/event-temp.png';
+import { BaseRadioGroup } from '@template/ui';
+import { ref, computed } from 'vue';
 
-const selectedTab = ref('inProgress');
+const selectedValue = ref('inProgress');
 
-const tabs = [
+const options = [
   {
-    key: 'inProgress',
+    value: 'inProgress',
     label: '진행중',
   },
   {
-    key: 'end',
+    value: 'end',
     label: '종료',
   },
   {
-    key: 'all',
+    value: 'all',
     label: '전체',
   },
 ];
+
+const eventList = [
+  {
+    image: EventTempImg,
+    active: true,
+  },
+  {
+    image: EventTempImg,
+    active: false,
+  },
+
+  {
+    image: EventTempImg,
+    active: false,
+  },
+  {
+    image: EventTempImg,
+    active: true,
+  },
+];
+
+const selectedEventList = computed(() => {
+  if (selectedValue.value === 'inProgress') {
+    return eventList.filter((item) => item.active);
+  } else if (selectedValue.value === 'end') {
+    return eventList.filter((item) => !item.active);
+  } else {
+    return eventList;
+  }
+});
 </script>

@@ -251,14 +251,6 @@
     }
   }
 
-  // 선택된 상태
-  .list-item--selected & {
-    .list-item-text__primary {
-      color: var(--base-colors-primary-primary800);
-      font-weight: var(--font-weights-pretendard-gov-3);
-    }
-  }
-
   // 반응형 디자인
   @media (max-width: 768px) {
     &__primary {

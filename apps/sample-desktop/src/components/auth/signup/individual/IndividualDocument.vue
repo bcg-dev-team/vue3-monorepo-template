@@ -1,7 +1,11 @@
 <template>
   <div class="flex flex-col gap-[33px]">
     <FormField label="신분증 (주민증록증 또는 운전면허증)*">
-      <BaseFileUploadButton status="hover" />
+      <BaseFileUploadButton
+        status="hover"
+        @file-selected="handleFileSelected"
+        @remove="handleFileRemove"
+      />
     </FormField>
     <div>
       <div class="mt-size-12 gap-size-4 flex items-center">
@@ -31,14 +35,34 @@
 <script lang="ts" setup>
 import { BaseButton, BaseFileUploadButton, BaseCheckbox } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
+import { useSignupStore } from '@/stores/useSignupStore';
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 
+const signupStore = useSignupStore();
 const router = useRouter();
 
 const isChecked = ref<boolean>(false);
 
+const state = reactive({
+  idCard: null as File | null,
+  additionalIdDocument: null as File | null,
+});
+
+const handleFileSelected = (file: File) => {
+  state.idCard = file;
+  console.log(file);
+};
+
+const handleFileRemove = (file: File) => {
+  state.idCard = null;
+  console.log(file);
+};
+
 const handleSubmit = () => {
-  router.push({ name: 'sign-up-complete' });
+  if (state.idCard) {
+    signupStore.uploadIndividualDocument(state.idCard, state.additionalIdDocument);
+    router.push({ name: 'sign-up-complete' });
+  }
 };
 </script>

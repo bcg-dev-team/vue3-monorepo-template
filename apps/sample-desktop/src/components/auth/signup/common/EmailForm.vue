@@ -22,10 +22,11 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import FormField from '@/components/auth/common/FormField.vue';
 import { useSignupStore } from '@/stores/useSignupStore';
 import { BaseInput, BaseButton } from '@template/ui';
+import { userService } from '@/service/api';
 import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
 
@@ -51,9 +52,9 @@ const updateEmail = (value: string) => {
 };
 
 const handleClickNext = () => {
-  if (isEmailValid.value && email.value) {
-    updateEmail(email.value);
-    router.push({ query: { step: 3 } });
-  }
+  updateEmail(email.value);
+  // userService.requestEmailVerification(email.value);
+
+  router.push({ query: { step: 3 } });
 };
 </script>

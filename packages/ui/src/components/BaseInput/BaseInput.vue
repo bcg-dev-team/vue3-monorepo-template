@@ -4,6 +4,8 @@
   피그마 디자인 토큰 기반으로 구현
 -->
 <script setup lang="ts">
+import BaseProgressBar from '../BaseProgressBar/BaseProgressBar.vue';
+import { analyzePasswordStrength } from '@template/utils';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { computed, ref, watch } from 'vue';
 
@@ -13,7 +15,7 @@ import { computed, ref, watch } from 'vue';
  * @props modelValue - 입력값 (v-model)
  * @props placeholder - 플레이스홀더 텍스트
  * @props size - 크기 (sm, md)
- * @props variant - 입력 타입 변형 (default, search, password, tel, number)
+ * @props variant - 입력 타입 변형 (default, search, password, password-strength, tel, number)
  * @props disabled - 비활성화 여부
  * @props error - 에러 상태 여부
  * @props errorMessage - 에러 메시지
@@ -46,7 +48,7 @@ interface Props {
    * 입력 타입 변형
    * @default 'default'
    */
-  variant?: 'default' | 'search' | 'password' | 'tel' | 'number';
+  variant?: 'default' | 'search' | 'password' | 'password-strength' | 'tel' | 'number';
   /**
    * 비활성화 여부
    * @default false
@@ -70,6 +72,10 @@ interface Props {
    * 입력 가능한 최대 문자 수
    */
   maxLength?: number;
+  /**
+   * 비밀번호 강도 분석 시 사용할 사용자 입력 데이터 (password-strength variant용)
+   */
+  userInputs?: string[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -81,6 +87,7 @@ const props = withDefaults(defineProps<Props>(), {
   error: false,
   errorMessage: '',
   readonly: false,
+  userInputs: () => [],
 });
 
 const emit = defineEmits<{
@@ -94,11 +101,25 @@ const emit = defineEmits<{
 const isPasswordVisible = ref(false);
 const internalValue = ref(props.modelValue || '');
 
-const showVariantIcon = computed(() => props.variant === 'search' || props.variant === 'password');
+const passwordStrengthResult = computed(() => {
+  const result = analyzePasswordStrength(internalValue.value, props.userInputs);
+  return result.score;
+});
+
+const showVariantIcon = computed(
+  () =>
+    props.variant === 'search' ||
+    props.variant === 'password' ||
+    props.variant === 'password-strength'
+);
 
 // Input type 결정
 const inputType = computed(() => {
-  if (props.variant === 'password' && !isPasswordVisible.value) return 'password';
+  if (
+    (props.variant === 'password' || props.variant === 'password-strength') &&
+    !isPasswordVisible.value
+  )
+    return 'password';
   if (props.variant === 'tel') return 'tel';
   if (props.variant === 'number') return 'number';
   return 'text';
@@ -249,7 +270,7 @@ defineExpose({
               @mousedown.prevent
             />
             <BaseIcon
-              v-if="variant === 'password'"
+              v-if="variant === 'password' || variant === 'password-strength'"
               :name="isPasswordVisible ? 'eye' : 'eye-close'"
               :size="size === 'sm' ? 'sm' : 'md'"
               :class="iconClasses"
@@ -285,6 +306,15 @@ defineExpose({
     >
       {{ errorMessage }}
     </div>
+
+    <!-- 비밀번호 강도 진행바 -->
+    <BaseProgressBar
+      v-if="variant === 'password-strength' && internalValue.length > 0"
+      class="mt-1"
+      :strength-score="passwordStrengthResult"
+      variant="password-strength"
+      :show-label="true"
+    />
   </div>
 </template>
 

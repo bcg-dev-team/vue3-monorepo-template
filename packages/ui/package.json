@@ -44,6 +44,7 @@
   "dependencies": {
     "@template/theme": "workspace:*",
     "@template/types": "workspace:*",
+    "@template/utils": "workspace:*",
     "element-plus": "^2.11.1",
     "splitpanes": "^4.0.4"
   },

@@ -18,6 +18,7 @@ import { computed, ref, watch } from 'vue';
  * @props error - 에러 상태 여부
  * @props errorMessage - 에러 메시지
  * @props readonly - 읽기 전용 여부
+ * @props maxLength - 입력 가능한 최대 문자 수
  * @emits update:modelValue - 값 변경 시 발생
  * @emits focus - 포커스 시 발생
  * @emits blur - 블러 시 발생
@@ -65,6 +66,10 @@ interface Props {
    * @default false
    */
   readonly?: boolean;
+  /**
+   * 입력 가능한 최대 문자 수
+   */
+  maxLength?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -156,6 +161,12 @@ const handleInput = (event: Event) => {
     target.value = value;
   }
 
+  // maxLength 제한 (number type에서도 동작하도록)
+  if (props.maxLength && value.length > props.maxLength) {
+    value = value.slice(0, props.maxLength);
+    target.value = value;
+  }
+
   internalValue.value = value;
   emit('update:modelValue', value);
 };
@@ -179,6 +190,16 @@ watch(
     internalValue.value = newValue || '';
   }
 );
+
+// input 요소 참조
+const inputRef = ref<HTMLInputElement | null>(null);
+
+// 외부에서 포커스할 수 있도록 메서드 expose
+defineExpose({
+  focus: () => {
+    inputRef.value?.focus();
+  },
+});
 </script>
 
 <template>
@@ -199,11 +220,13 @@ watch(
         <!-- 입력 필드 -->
         <div class="relative flex-1">
           <input
+            ref="inputRef"
             :value="internalValue"
             :type="inputType"
             :placeholder="placeholder"
             :disabled="props.disabled"
             :readonly="readonly"
+            :maxlength="maxLength"
             :class="inputClasses"
             @keydown.stop="handleSearchKeydown"
             @input="handleInput"

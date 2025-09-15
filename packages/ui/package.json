@@ -44,6 +44,7 @@
   "dependencies": {
     "@template/theme": "workspace:*",
     "@template/types": "workspace:*",
+    "@template/utils": "workspace:*",
     "element-plus": "^2.11.1",
     "ag-grid-community": "^34.1.2",
     "ag-grid-vue3": "^34.1.2",

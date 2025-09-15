@@ -3,7 +3,7 @@
     <FormField label="비밀번호">
       <BaseInput
         v-model="state.password"
-        variant="password"
+        variant="password-strength"
         size="md"
         placeholder="영문+숫자, 8~16자리 이상"
         :maxLength="128"
@@ -11,13 +11,6 @@
         :errorMessage="
           state.password.length > 0 && !isPasswordValid ? '비밀번호 조건을 확인해주세요' : ''
         "
-      />
-      <BaseProgressBar
-        v-if="state.password.length > 0"
-        class="mt-1"
-        :strength-score="passwordStrengthResult"
-        variant="password-strength"
-        :show-label="true"
       />
     </FormField>
     <div
@@ -124,9 +117,8 @@
 </template>
 
 <script lang="ts" setup>
-import { BaseInput, BaseButton, BaseProgressBar, BaseIcon } from '@template/ui';
+import { BaseInput, BaseButton, BaseIcon } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
-import { analyzePasswordStrength } from '@template/utils';
 import { useSignupStore } from '@/stores/useSignupStore';
 import { reactive, computed } from 'vue';
 import { useRouter } from 'vue-router';
@@ -136,11 +128,6 @@ const signupStore = useSignupStore();
 const state = reactive({
   password: '',
   passwordCheck: '',
-});
-
-const passwordStrengthResult = computed(() => {
-  const result = analyzePasswordStrength(state.password);
-  return result.score;
 });
 
 // 비밀번호 유효성 검사 로직

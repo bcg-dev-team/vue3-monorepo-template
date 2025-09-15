@@ -392,6 +392,9 @@ importers:
       ag-grid-vue3:
         specifier: ^34.1.2
         version: 34.1.2(vue@3.5.18(typescript@5.8.3))
+      '@template/utils':
+        specifier: workspace:*
+        version: link:../utils
       element-plus:
         specifier: ^2.11.1
         version: 2.11.1(vue@3.5.18(typescript@5.8.3))

@@ -70,7 +70,6 @@ export interface IndividualMemberJoinRequest {
   detailAddress: string;
   detailAddressEn: string;
   zipCode: string;
-  birthAsLocalDate: string;
 
   // 파일 업로드
   idCard: File;

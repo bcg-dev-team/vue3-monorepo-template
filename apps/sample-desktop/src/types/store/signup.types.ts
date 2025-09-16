@@ -68,7 +68,8 @@ export interface IndividualSignUpInfo {
   addressEn: string;
   /** 상세주소(영문) */
   detailAddressEn: string;
-
+  /** 우편번호 */
+  zipCode: string;
   /** 신분증(주민등록증 또는 운전면허증) */
   idCard: File | null;
   /** 신분증 초본(영문) */

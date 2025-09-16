@@ -2,6 +2,9 @@
  * TradingView 관련 타입 정의
  */
 
+// 공통 타입 re-export
+export type { TradingSymbol } from '@template/types';
+
 // TradingView 차트 바 데이터
 export interface TradingViewBar {
   time: number;
@@ -33,14 +36,7 @@ export interface TradingViewSymbolInfo {
   full_name?: string;
 }
 
-// 거래 심볼
-export interface TradingSymbol {
-  symbol: string;
-  ticker: string;
-  description: string;
-  exchange: string;
-  type: string;
-}
+// 거래 심볼은 @template/types에서 import
 
 // 차트 기간 파라미터
 export interface ChartPeriodParams {
@@ -85,8 +81,8 @@ export interface TradingViewWidgetConfig {
   container: string;
   datafeed: any;
   library_path: string;
-  width: number;
-  height: number;
+  width: number | string;
+  height: number | string;
   locale: string;
   debug: boolean;
   enabled_features?: string[];

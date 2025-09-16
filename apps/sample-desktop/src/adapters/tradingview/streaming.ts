@@ -1,4 +1,5 @@
 import { parseFullSymbol, type ParsedSymbol } from './helpers';
+import { getDataSourceConfig } from '../../config/dataSource';
 
 /**
  * WebSocket 연결 상태 타입
@@ -160,6 +161,13 @@ const handleMessage = (event: MessageEvent): void => {
  * WebSocket 연결 초기화
  */
 function initializeSocket(): void {
+  // 데이터 소스 설정 확인
+  const config = getDataSourceConfig();
+  if (config.useWebSocket) {
+    console.log('[TradingView Streaming] 실제 웹소켓 사용 - MSW WebSocket 비활성화');
+    return;
+  }
+
   try {
     // 기존 연결이 있다면 정리
     cleanupSocket();
@@ -294,6 +302,11 @@ function handleMSWMessage(data: RealtimeData): void {
 
     // 해당 심볼의 모든 구독에 대해 Bar 업데이트
     updateBarsForSymbol(data.symbol, realtimeBar);
+
+    // useSelectedSymbol에 데이터 전달
+    if (typeof window !== 'undefined' && (window as any).updateMarketDataFromStream) {
+      (window as any).updateMarketDataFromStream(data.symbol, realtimeBar);
+    }
   } else if (data.type === 'subscription_success') {
     console.log('[MSW WebSocket] 구독 성공:', data);
   } else if (data.type === 'unsubscription_success') {

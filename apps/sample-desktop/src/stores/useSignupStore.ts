@@ -78,11 +78,9 @@ export const useSignupStore = defineStore('signup', () => {
     return {
       ...userInfo,
       ...corporateInfo,
-      zipCode: '',
-      representativeCount: 0, // TODO: 제거될 예정
-      representativeBirthAsLocalDate: '', // TODO: 제거될 예정
-      addressEn: '', // TODO: 제거될 예정
-      detailAddressEn: '', // TODO: 제거될 예정
+      zipCode: corporateInfo.zipCode,
+      addressEn: corporateInfo.addressEn,
+      detailAddressEn: corporateInfo.detailAddressEn,
 
       businessRegistration: corporateInfo.businessRegistration!,
       corporateRepresentative: corporateInfo.corporateRepresentative!,
@@ -186,6 +184,9 @@ export const useSignupStore = defineStore('signup', () => {
     corporateInfo.representativeBirth = value.representativeBirth;
     corporateInfo.address = value.address;
     corporateInfo.detailAddress = value.detailAddress;
+    corporateInfo.addressEn = value.addressEn;
+    corporateInfo.detailAddressEn = value.detailAddressEn;
+    corporateInfo.zipCode = value.zipCode;
   };
 
   /**
@@ -195,11 +196,11 @@ export const useSignupStore = defineStore('signup', () => {
    * @description 법인 회원가입 시 필요한 파일을 업데이트합니다.
    */
   const uploadCorpInfoDocument = (
-    businessCertificateDocument: File,
+    businessRegistration: File,
     corporateRepresentative: File,
     billPaymentCorporate: File
   ) => {
-    corporateInfo.businessRegistration = businessCertificateDocument;
+    corporateInfo.businessRegistration = businessRegistration;
     corporateInfo.corporateRepresentative = corporateRepresentative;
     corporateInfo.billPaymentCorporate = billPaymentCorporate;
   };
@@ -210,7 +211,13 @@ export const useSignupStore = defineStore('signup', () => {
    *
    * @description 법인 회원가입 시 필요한 법인대표 관련 파일을 업데이트합니다.
    */
-  const uploadCorpAdminDocument = (additionalCorporateRepresentativePassport: File[]) => {
+  const uploadCorpAdminDocument = (
+    shareholderRegister: File,
+    corporateRepresentativePassport: File,
+    additionalCorporateRepresentativePassport: File[]
+  ) => {
+    corporateInfo.shareholderRegister = shareholderRegister;
+    corporateInfo.corporateRepresentativePassport = corporateRepresentativePassport;
     corporateInfo.additionalCorporateRepresentativePassport =
       additionalCorporateRepresentativePassport;
   };

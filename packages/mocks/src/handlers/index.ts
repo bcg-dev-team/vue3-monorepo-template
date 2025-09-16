@@ -3,7 +3,7 @@
  * 모든 API 모킹 핸들러들을 여기서 중앙 관리합니다.
  */
 
-import { websocketHandlers } from './chart/websocket.js';
+import { websocketHandlers } from './chart/MockWebSocketHandler.js';
 import { chartHttpHandlers } from './chart/http.js';
 
 /**

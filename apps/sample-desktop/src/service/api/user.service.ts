@@ -157,8 +157,6 @@ export class UserService {
       representativeFirstName: corporateMember.representativeFirstName,
       representativeLastName: corporateMember.representativeLastName,
       representativeBirth: corporateMember.representativeBirth,
-      representativeCount: corporateMember.representativeCount,
-      representativeBirthAsLocalDate: corporateMember.representativeBirthAsLocalDate,
     };
 
     formData.append('corporateMember', JSON.stringify(corporateMemberData));

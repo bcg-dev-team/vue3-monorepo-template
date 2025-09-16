@@ -94,7 +94,12 @@ export interface CorporateSignUpInfo {
   address: string;
   /** 법인주소 상세 */
   detailAddress: string;
-
+  /** 법인주소(영문) */
+  addressEn: string;
+  /** 법인주소 상세(영문) */
+  detailAddressEn: string;
+  /** 우편번호 */
+  zipCode: string;
   /** 사업자등록증명원 */
   businessRegistration: File | null;
   /** 법인대표 초본(영문) */

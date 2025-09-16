@@ -45,6 +45,9 @@ export const useSignupStore = defineStore('signup', () => {
     representativeBirth: '', //법인대표 생년월일
     address: '', //법인주소
     detailAddress: '', //법인주소 상세
+    addressEn: '', //법인주소(영문)
+    detailAddressEn: '', //법인주소 상세(영문)
+    zipCode: '', //우편번호
 
     businessRegistration: null, //사업자등록증명원
     corporateRepresentative: null, //법인대표 초본(영문)

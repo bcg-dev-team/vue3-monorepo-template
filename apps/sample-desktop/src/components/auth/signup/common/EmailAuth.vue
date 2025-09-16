@@ -29,18 +29,28 @@
   </div>
 
   <div class="gap-size-12 mt-[33px] flex items-center">
-    <BaseButton size="lg" label="인증 메일 재전송" variant="outlined" color="primary" full-width />
+    <BaseButton
+      size="lg"
+      label="인증 메일 재전송"
+      variant="outlined"
+      color="primary"
+      full-width
+      @click="userService.requestEmailVerification(signupStore.userInfo.email)"
+    />
     <BaseButton
       size="lg"
       label="다음"
       variant="contained"
       color="primary"
       full-width
-      @click="router.push({ query: { step: 4 } })"
+      @click="handleClickNext"
     />
   </div>
   <div class="mt-size-16 flex items-center justify-center">
-    <span class="text-font-14 text-default-muted cursor-pointer font-medium underline">
+    <span
+      class="text-font-14 text-default-muted cursor-pointer font-medium underline"
+      @click="router.push({ query: { step: 2 } })"
+    >
       다른 이메일주소로 변경하기
     </span>
   </div>
@@ -49,8 +59,12 @@
 <script lang="ts" setup>
 import { BaseInput, BaseButton, BaseIcon } from '@template/ui';
 import Countdown from '@/components/common/Countdown.vue';
+import { useSignupStore } from '@/stores/useSignupStore';
+import { userService } from '@/service/api';
 import { useRouter } from 'vue-router';
 import { ref, nextTick } from 'vue';
+
+const signupStore = useSignupStore();
 
 const maxLength = ref(1);
 const router = useRouter();
@@ -109,5 +123,22 @@ const handlePaste = async (startIndex: number, event: ClipboardEvent) => {
 const handleCountdownFinished = () => {
   console.log('인증시간이 만료되었습니다!');
   // TODO: 인증시간 만료 처리 로직
+};
+
+const handleClickNext = async () => {
+  try {
+    // 진행을 위한 임시 주석처리
+    // const res = await userService.verifyEmailCode(
+    //   signupStore.userInfo.email,
+    //   inputValues.value.join('')
+    // );
+
+    // if (res.status === 200) {
+    // router.push({ query: { step: 4 } });
+    // }
+    router.push({ query: { step: 4 } });
+  } catch (error) {
+    console.error('이메일 인증 실패:', error);
+  }
 };
 </script>

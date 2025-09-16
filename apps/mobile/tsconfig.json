@@ -4,7 +4,7 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "jsx": "preserve",
-    "noEmit": true,
+    "noEmit": false,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
@@ -18,13 +18,8 @@
   ],
   "exclude": [
     "dist",
-    "node_modules"
-  ],
-  "references": [
-    { "path": "../../packages/types" },
-    { "path": "../../packages/utils" },
-    { "path": "../../packages/api" },
-    { "path": "../../packages/mocks" },
-    { "path": "../../packages/ui" }
+    "node_modules",
+    "**/*.test.ts",
+    "**/*.spec.ts"
   ]
 } 

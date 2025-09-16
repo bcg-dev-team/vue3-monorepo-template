@@ -171,6 +171,14 @@ const appendInnerClasses = computed(() => {
   return 'absolute right-0 top-0 h-full flex items-center pr-[15px] gap-1';
 });
 
+// 키 입력 방지 핸들러
+const handleKeydown = (event: KeyboardEvent) => {
+  // 스페이스바 입력 방지
+  if (event.key === ' ') {
+    event.preventDefault();
+  }
+};
+
 // Input 입력 이벤트 핸들러
 const handleInput = (event: Event) => {
   const target = event.target as HTMLInputElement;
@@ -251,6 +259,7 @@ defineExpose({
             :class="inputClasses"
             @keydown.stop="handleSearchKeydown"
             @input="handleInput"
+            @keydown="handleKeydown"
             @focus="emit('focus', $event)"
             @blur="emit('blur', $event)"
           />

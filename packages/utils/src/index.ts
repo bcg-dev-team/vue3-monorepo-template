@@ -6,6 +6,8 @@ export * from './validation';
 export * from './storage';
 export * from './crypto';
 export * from './passwordStrength';
+export * from './color';
+export * from './symbol';
 
 // Composable 함수들을 export
 export * from './composables';

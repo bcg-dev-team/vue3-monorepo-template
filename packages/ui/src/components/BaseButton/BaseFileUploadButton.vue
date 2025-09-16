@@ -133,8 +133,9 @@ function removeFile(file: File) {
   const index = selectedFiles.value.findIndex((f) => f.name === file.name && f.size === file.size);
   if (index > -1) {
     selectedFiles.value.splice(index, 1);
+
     emit('remove', file);
-    emit('file-selected', selectedFiles.value);
+    emit('file-selected', []);
   }
 }
 </script>

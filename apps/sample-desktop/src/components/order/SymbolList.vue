@@ -23,12 +23,13 @@
     </div>
 
     <!-- 종목 리스트 (탭 패널 외부에 위치) -->
-    <div class="symbol-list-container">
+    <div ref="symbolListRef" class="symbol-list-container">
       <div
         v-for="symbol in filteredSymbols"
         :key="symbol.ticker"
+        :data-ticker="symbol.ticker"
         class="symbol-item"
-        :class="{ selected: selectedSymbol === symbol.ticker }"
+        :class="{ selected: currentSelectedSymbol === symbol.ticker }"
         @click="selectSymbol(symbol)"
       >
         <div class="symbol-content">
@@ -41,9 +42,9 @@
           </div>
           <div class="symbol-values">
             <div class="price-info">
-              <div class="price">{{ getSymbolPrice(symbol.ticker) }}</div>
+              <div class="price">{{ getPrice(symbol.ticker) }}</div>
               <div class="change" :class="getChangeClass(symbol.ticker)">
-                {{ getSymbolChange(symbol.ticker) }}%
+                {{ getChange(symbol.ticker) }}%
               </div>
             </div>
             <div class="favorite-icon" @click.stop="toggleFavorite(symbol.ticker)">
@@ -66,34 +67,42 @@
 </template>
 
 <script setup lang="ts">
+import {
+  getProfitLossClass,
+  getSymbolPrice,
+  getSymbolChangeFromBase,
+  getChangeFromBaseClass,
+} from '@template/utils';
+import { useSymbolVisibility } from '@/composables/useSymbolVisibility';
 import { BaseTabs, BaseInput, BaseIcon } from '@template/ui';
-import type { TradingSymbol } from '@/types/tradingview';
-import { ref, computed, onMounted, markRaw } from 'vue';
-import type { SymbolPrice } from '@template/mocks';
+import { useSymbolData } from '@/composables/useSymbolData';
+import type { TradingSymbol } from '@template/types';
+import { onMounted, onUnmounted } from 'vue';
 import type { TabItem } from '@template/ui';
-
-interface Props {
-  selectedSymbol?: string;
-}
 
 interface Emits {
   (e: 'symbol-select', symbol: TradingSymbol): void;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  selectedSymbol: 'EURTRY',
-});
-
 const emit = defineEmits<Emits>();
 
-// 상태 관리
-const activeTab = ref('all');
-const searchQuery = ref('');
-const symbols = ref<TradingSymbol[]>([]);
-const symbolPrices = ref<Map<string, SymbolPrice>>(new Map());
-const favorites = ref<Set<string>>(new Set());
+// 심볼 데이터 관리
+const {
+  activeTab,
+  searchQuery,
+  currentSelectedSymbol,
+  marketData,
+  filteredSymbols,
+  selectSymbol: selectSymbolData,
+  toggleFavorite,
+  isFavorite,
+  handleSearch,
+  loadSymbols,
+  addVisibleSymbols,
+  unsubscribeAll,
+} = useSymbolData();
 
-// BaseTabs용 탭 데이터 (빈 컴포넌트로 설정)
+// BaseTabs용 탭 데이터
 const tabs: TabItem[] = [
   {
     key: 'all',
@@ -109,137 +118,32 @@ const tabs: TabItem[] = [
   },
 ];
 
-// 계산된 속성
-const filteredSymbols = computed(() => {
-  let filtered = symbols.value;
-
-  // 탭별 필터링
-  if (activeTab.value === 'favorite') {
-    filtered = filtered.filter((symbol) => favorites.value.has(symbol.ticker));
-  } else if (activeTab.value === 'holding') {
-    // FIXME: 보유 종목 데이터 연동 필요
-    // 현재는 암호화폐만 보유 종목으로 표시
-    filtered = filtered.filter((symbol) => symbol.type === 'crypto');
-  }
-
-  // 검색 필터링
-  if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase();
-    filtered = filtered.filter(
-      (symbol) =>
-        symbol.ticker.toLowerCase().includes(query) ||
-        symbol.description.toLowerCase().includes(query)
-    );
-  }
-
-  return filtered;
-});
+// 가시성 관리
+const { symbolListRef } = useSymbolVisibility(addVisibleSymbols, filteredSymbols);
 
 // 메서드
-const handleSearch = () => {
-  // 검색 로직은 computed에서 처리됨
-};
-
 const selectSymbol = (symbol: TradingSymbol) => {
+  selectSymbolData(symbol);
   emit('symbol-select', symbol);
 };
 
-const toggleFavorite = (ticker: string) => {
-  if (favorites.value.has(ticker)) {
-    favorites.value.delete(ticker);
-  } else {
-    favorites.value.add(ticker);
-  }
-};
+// 가격 및 증감률 계산 함수들 (utils 함수 사용)
+const getPrice = (ticker: string) => getSymbolPrice(ticker, marketData.value);
+const getChange = (ticker: string) => getSymbolChangeFromBase(ticker, marketData.value);
+const getChangeClass = (ticker: string) =>
+  getChangeFromBaseClass(ticker, marketData.value, getProfitLossClass);
 
-const isFavorite = (ticker: string) => {
-  return favorites.value.has(ticker);
-};
-
-const getSymbolPrice = (ticker: string): string => {
-  const priceData = symbolPrices.value.get(ticker);
-  if (!priceData) return '0.00';
-
-  // 가격 포맷팅 (소수점 자릿수 조정)
-  if (priceData.price < 1) {
-    return priceData.price.toFixed(4);
-  } else if (priceData.price < 100) {
-    return priceData.price.toFixed(2);
-  } else {
-    return priceData.price.toFixed(0);
-  }
-};
-
-const getSymbolChange = (ticker: string): string => {
-  const priceData = symbolPrices.value.get(ticker);
-  if (!priceData) return '0.00';
-
-  const change = priceData.changePercent;
-  return change > 0 ? `+${change.toFixed(2)}` : change.toFixed(2);
-};
-
-const getChangeClass = (ticker: string): string => {
-  const priceData = symbolPrices.value.get(ticker);
-  if (!priceData) return 'neutral';
-
-  return priceData.changePercent > 0
-    ? 'positive'
-    : priceData.changePercent < 0
-      ? 'negative'
-      : 'neutral';
-};
-
-// 데이터 로드
-const loadSymbols = async () => {
-  try {
-    // mocks 패키지에서 심볼 목록과 가격 데이터 가져오기
-    const { getAllSymbols, getAllSymbolPrices } = await import('@template/mocks');
-    symbols.value = getAllSymbols();
-
-    // 가격 데이터 로드
-    const prices = getAllSymbolPrices();
-    const priceMap = new Map<string, SymbolPrice>();
-    prices.forEach((price: SymbolPrice) => {
-      priceMap.set(price.ticker, price);
-    });
-    symbolPrices.value = priceMap;
-  } catch (error) {
-    console.error('Failed to load symbols:', error);
-    // 에러 발생 시 기본 데이터 사용
-    symbols.value = [
-      {
-        symbol: 'EURTRY',
-        ticker: 'EURTRY',
-        description: 'Euro / Turkish Lira',
-        exchange: 'Forex',
-        type: 'forex',
-      },
-      {
-        symbol: 'USDSEK',
-        ticker: 'USDSEK',
-        description: 'US Dollar / Swedish Krona',
-        exchange: 'Forex',
-        type: 'forex',
-      },
-      {
-        symbol: 'SUI30',
-        ticker: 'SUI30',
-        description: 'Swiss Market Index',
-        exchange: 'Index',
-        type: 'index',
-      },
-      {
-        symbol: 'AUDJPY',
-        ticker: 'AUDJPY',
-        description: 'Australian Dollar / Japanese Yen',
-        exchange: 'Forex',
-        type: 'forex',
-      },
-    ];
-  }
-};
-
+// 컴포넌트 마운트 시 데이터 로드
 onMounted(() => {
   loadSymbols();
 });
+
+// 컴포넌트 언마운트 시 정리
+onUnmounted(() => {
+  unsubscribeAll();
+});
 </script>
+
+<style scoped lang="scss">
+@use './SymbolList.scss';
+</style>

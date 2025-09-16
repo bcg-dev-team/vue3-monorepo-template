@@ -96,8 +96,6 @@ export interface CorporateMemberJoinRequest {
   representativeFirstName: string;
   representativeLastName: string;
   representativeBirth: string;
-  representativeCount: number;
-  representativeBirthAsLocalDate: string;
 
   // 파일 업로드 (모두 필수)
   businessRegistration: File;

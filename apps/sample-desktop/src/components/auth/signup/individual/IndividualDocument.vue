@@ -77,8 +77,6 @@ const handleAdditionalFileRemove = (file: File) => {
 
 const handleSubmit = async () => {
   signupStore.uploadIndividualDocument(idCard.value!, additionalIdDocument.value);
-  console.log(signupStore.getIndividualSignupInfo);
-
   router.push({ name: 'sign-up-complete' });
 
   // TODO: 회원가입 api 주석 해제

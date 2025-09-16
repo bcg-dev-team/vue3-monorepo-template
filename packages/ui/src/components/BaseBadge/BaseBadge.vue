@@ -16,12 +16,12 @@ import './BaseBadge.scss';
 /**
  * 배지 색상 타입
  */
-export type BadgeColor = 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
+export type BadgeColor = 'grey' | 'red' | 'green' | 'blue' | 'yellow' | 'purple';
 
 /**
  * 배지 스타일 타입
  */
-export type BadgeVariant = 'dot' | 'standard';
+export type BadgeVariant = 'dot' | 'standard' | 'square';
 
 /**
  * 배지 겹침 타입
@@ -89,7 +89,7 @@ const props = withDefaults(defineProps<Props>(), {
   value: '',
   max: 99,
   variant: 'standard',
-  color: 'primary',
+  color: 'red',
   showZero: false,
   hidden: false,
   overlap: 'overlap',
@@ -115,17 +115,28 @@ const displayValue = computed(() => {
   return props.value;
 });
 
+// square 변형에 대한 강제 배치 규칙 적용
+const effectiveOverlap = computed<BadgeOverlap>(() => {
+  return props.variant === 'square' ? 'no-overlap' : props.overlap;
+});
+
+const effectiveAnchor = computed<BadgeAnchorOrigin>(() => {
+  return props.variant === 'square'
+    ? { vertical: 'middle', horizontal: 'right' }
+    : props.anchorOrigin!;
+});
+
 // 배지 클래스 계산
 const badgeClasses = computed(() => {
   const classes = [
     'base-badge',
     `base-badge--${props.variant}`,
     `base-badge--${props.color}`,
-    `base-badge--${props.overlap}`,
+    `base-badge--${effectiveOverlap.value}`,
   ];
 
   // 위치 클래스 추가 (overlap과 no-overlap 모두)
-  classes.push(`base-badge--${props.anchorOrigin.vertical}-${props.anchorOrigin.horizontal}`);
+  classes.push(`base-badge--${effectiveAnchor.value.vertical}-${effectiveAnchor.value.horizontal}`);
 
   return classes;
 });

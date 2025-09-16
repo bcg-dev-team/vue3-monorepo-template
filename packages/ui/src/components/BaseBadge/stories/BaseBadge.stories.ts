@@ -40,9 +40,9 @@ const meta: Meta<typeof BaseBadge> = {
     variant: {
       description: '배지 스타일',
       control: { type: 'select' },
-      options: ['dot', 'standard'],
+      options: ['dot', 'standard', 'square'],
       table: {
-        type: { summary: 'dot | standard' },
+        type: { summary: 'dot | standard | square' },
         defaultValue: { summary: 'standard' },
         category: 'Props',
       },
@@ -50,10 +50,10 @@ const meta: Meta<typeof BaseBadge> = {
     color: {
       description: '배지 색상',
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'success', 'warning', 'error', 'info'],
+      options: ['grey', 'red', 'green', 'blue', 'yellow', 'purple'],
       table: {
-        type: { summary: 'primary | secondary | success | warning | error | info' },
-        defaultValue: { summary: 'primary' },
+        type: { summary: 'grey | red | green | blue | yellow | purple' },
+        defaultValue: { summary: 'blue' },
         category: 'Props',
       },
     },
@@ -101,7 +101,7 @@ const meta: Meta<typeof BaseBadge> = {
     value: 4,
     max: 99,
     variant: 'standard',
-    color: 'primary',
+    color: 'blue',
     showZero: false,
     hidden: false,
     overlap: 'overlap',
@@ -118,7 +118,7 @@ export const Playground: Story = {
     value: 4,
     max: 99,
     variant: 'standard',
-    color: 'primary',
+    color: 'blue',
     showZero: false,
     hidden: false,
     overlap: 'overlap',
@@ -165,22 +165,22 @@ export const Colors: Story = {
     },
     template: `
       <div class="flex gap-10 items-center">
-        <BaseBadge :value="4" color="primary">
+        <BaseBadge :value="4" color="blue">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
-        <BaseBadge :value="4" color="secondary">
+        <BaseBadge :value="4" color="grey">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
-        <BaseBadge :value="4" color="success">
+        <BaseBadge :value="4" color="green">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
-        <BaseBadge :value="4" color="warning">
+        <BaseBadge :value="4" color="yellow">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
-        <BaseBadge :value="4" color="error">
+        <BaseBadge :value="4" color="red">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
-        <BaseBadge :value="4" color="info">
+        <BaseBadge :value="4" color="purple">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
       </div>
@@ -197,10 +197,10 @@ export const MaxValue: Story = {
     },
     template: `
       <div class="flex gap-10 items-center">
-        <BaseBadge :value="100" color="secondary">
+        <BaseBadge :value="100" color="grey">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
-        <BaseBadge :value="1000" :max="999" color="secondary">
+        <BaseBadge :value="1000" :max="999" color="grey">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
       </div>
@@ -225,7 +225,7 @@ export const BadgeVisibility: Story = {
           <label class="flex items-center gap-2">
             <span class="text-sm">Show Badge</span>
           </label>
-          <BaseBadge :value="10" :hidden="!showBadge" color="secondary">
+          <BaseBadge :value="10" :hidden="!showBadge" color="grey">
             <BaseIcon name="notification" size="md" />
           </BaseBadge>
           <BaseSwitch v-model="showBadge" />
@@ -234,7 +234,7 @@ export const BadgeVisibility: Story = {
           <label class="flex items-center gap-2">
             <span class="text-sm">Show Zero</span>
           </label>
-          <BaseBadge :value="0" :show-zero="showZero" color="secondary">
+          <BaseBadge :value="0" :show-zero="showZero" color="grey">
             <BaseIcon name="notification" size="md" />
           </BaseBadge>
           <BaseSwitch v-model="showZero" />
@@ -243,7 +243,7 @@ export const BadgeVisibility: Story = {
           <label class="flex items-center gap-2">
             <span class="text-sm">Show Zero</span>
           </label>
-          <BaseBadge :value="count" :show-zero="showZero" color="secondary">
+          <BaseBadge :value="count" :show-zero="showZero" color="grey">
             <BaseIcon name="notification" size="md" />
           </BaseBadge>
           <div class="flex gap-2">
@@ -266,19 +266,19 @@ export const DotBadge: Story = {
     },
     template: `
       <div class="flex gap-10 items-center">
-        <BaseBadge variant="dot" color="secondary" >
+        <BaseBadge variant="dot" color="grey" >
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
-        <BaseBadge variant="dot" color="primary" >
+        <BaseBadge variant="dot" color="blue" >
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
-        <BaseBadge variant="dot" color="success">
+        <BaseBadge variant="dot" color="green">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
-        <BaseBadge variant="dot" color="warning">
+        <BaseBadge variant="dot" color="yellow">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
-        <BaseBadge variant="dot" color="error">
+        <BaseBadge variant="dot" color="red">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
       </div>
@@ -304,10 +304,10 @@ export const BadgeOverlap: Story = {
               <span class="text-sm">Overlap</span>
             </div>
           </div>          <div class="flex gap-10">
-            <BaseBadge :value="4" color="secondary" :overlap="overlap?'overlap':'no-overlap'">
+            <BaseBadge :value="4" color="red" :overlap="overlap?'overlap':'no-overlap'">
               <BaseIcon name="notification" size="md" />
             </BaseBadge>
-            <BaseBadge variant="dot" color="secondary" :overlap="overlap?'overlap':'no-overlap'">
+            <BaseBadge variant="dot" color="red" :overlap="overlap?'overlap':'no-overlap'">
               <BaseIcon name="notification" size="md" />
             </BaseBadge>
           </div>
@@ -366,7 +366,7 @@ export const BadgeAlignment: Story = {
           <div class="relative">
             <BaseBadge
               :value="112"
-              color="secondary"
+              color="red"
               :anchor-origin="{ vertical, horizontal }"
             >
               <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
@@ -380,93 +380,21 @@ export const BadgeAlignment: Story = {
   }),
 };
 
-// 인터랙티브 포지셔닝 예시
-export const InteractivePositioning: Story = {
+// Square 배지 (항상 middle-right no-overlap)
+export const SquareBadge: Story = {
   render: (args) => ({
-    components: { BaseBadge, BaseIcon, BaseRadioGroup },
+    components: { BaseBadge, BaseIcon },
     setup() {
-      const overlap = ref<'overlap' | 'no-overlap'>('overlap');
-      const vertical = ref<'top' | 'middle' | 'bottom'>('top');
-      const horizontal = ref<'left' | 'right'>('right');
-
-      const overlapOptions = [
-        { value: 'overlap', label: 'Overlap (겹쳐서)' },
-        { value: 'no-overlap', label: 'No-Overlap (영역 밖)' },
-      ];
-
-      const verticalOptions = [
-        { value: 'top', label: 'Top' },
-        { value: 'middle', label: 'Middle' },
-        { value: 'bottom', label: 'Bottom' },
-      ];
-
-      const horizontalOptions = [
-        { value: 'left', label: 'Left' },
-        { value: 'right', label: 'Right' },
-      ];
-
-      return {
-        args,
-        overlap,
-        vertical,
-        horizontal,
-        overlapOptions,
-        verticalOptions,
-        horizontalOptions,
-      };
+      return { args };
     },
     template: `
-      <div class="space-y-6">
-        <!-- 컨트롤 패널 -->
-        <div class="p-4 bg-gray-50 rounded-lg space-y-4">
-          <h3 class="text-lg font-semibold mb-4">배지 설정</h3>
-          
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium mb-2">Overlap</label>
-              <BaseRadioGroup
-                v-model="overlap"
-                :options="overlapOptions"
-                size="sm"
-              />
-            </div>
-            
-            <div>
-              <label class="block text-sm font-medium mb-2">Vertical Position</label>
-              <BaseRadioGroup
-                v-model="vertical"
-                :options="verticalOptions"
-                size="sm"
-              />
-            </div>
-            
-            <div>
-              <label class="block text-sm font-medium mb-2">Horizontal Position</label>
-              <BaseRadioGroup
-                v-model="horizontal"
-                :options="horizontalOptions"
-                size="sm"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- 배지 미리보기 -->
-        <div class="flex justify-center items-center min-h-[200px]">
-          <div class="relative">
-            <BaseBadge
-              :value="4"
-              variant="standard"
-              :overlap="overlap"
-              :anchor-origin="{ vertical, horizontal }"
-              color="primary"
-            >
-              <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 font-medium">
-                컨텐츠
-              </div>
-            </BaseBadge>
-          </div>
-        </div>
+      <div class="flex gap-10 items-center">
+        <BaseBadge :value="2" variant="square" color="grey">
+          <span class="text-lg">잔고</span>
+        </BaseBadge>
+        <BaseBadge :value="12" variant="square" color="red">
+          <span class="text-lg">알림</span>
+        </BaseBadge>
       </div>
     `,
   }),

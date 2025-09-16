@@ -106,6 +106,7 @@
     "typescript": "^5.3.3",
     "typescript-eslint": "^8.35.1",
     "vite": "^5.4.19",
+    "vite-plugin-checker": "^0.10.3",
     "vite-plugin-dts": "^4.5.4",
     "vite-plugin-inspect": "^11.3.0",
     "vite-plugin-vue-inspector": "^5.3.2",

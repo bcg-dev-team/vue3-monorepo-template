@@ -56,6 +56,14 @@
       color="primary"
       full-width
       @click="handleSubmit"
+      :disabled="
+        !state.lastNameEn ||
+        !state.firstNameEn ||
+        !state.address ||
+        !state.detailAddress ||
+        !state.addressEn ||
+        !state.detailAddressEn
+      "
     />
   </div>
 </template>
@@ -96,8 +104,7 @@ const state = reactive({
   detailAddress: '',
   addressEn: '',
   detailAddressEn: '',
-  postNo: '',
-  postNoEn: '',
+  zipCode: '',
 });
 
 // 다음 우편번호 API 스크립트 로드
@@ -117,7 +124,7 @@ const openDaumPostcode = (type: 'korean' | 'english') => {
     oncomplete: (data: any) => {
       state.address = data.address;
       state.addressEn = data.addressEnglish;
-      state.postNo = data.zonecode;
+      state.zipCode = data.zonecode;
     },
     onclose: () => {
       // 새 창이 닫힐 때의 처리 (필요시)
@@ -135,6 +142,7 @@ const handleSubmit = () => {
     detailAddress: state.detailAddress,
     addressEn: state.addressEn,
     detailAddressEn: state.detailAddressEn,
+    zipCode: state.zipCode,
     idCard: null,
     additionalIdDocument: null,
   });

@@ -10,28 +10,54 @@
       <BaseInput size="md" disabled />
     </FormField>
     <FormField label="법인명">
-      <BaseInput size="md" placeholder="법인명 체크 사용하는지?" />
+      <BaseInput size="md" placeholder="법인명을 입력하세요" v-model="state.companyName" />
     </FormField>
     <FormField label="법인등록번호">
-      <BaseInput size="md" placeholder="숫자만 입력하세요" />
+      <BaseInput
+        size="md"
+        variant="number"
+        placeholder="숫자만 입력하세요"
+        v-model="state.businessNumber"
+      />
     </FormField>
     <div class="gap-size-8 flex items-center">
       <FormField label="법인대표 이름(영문)">
-        <BaseInput size="md" placeholder="예) GILDONG" />
+        <BaseInput size="md" placeholder="예) GILDONG" v-model="state.representativeFirstName" />
       </FormField>
       <FormField label="법인대표 성(영문)">
-        <BaseInput size="md" placeholder="예) HONG" />
+        <BaseInput size="md" placeholder="예) HONG" v-model="state.representativeLastName" />
       </FormField>
     </div>
     <FormField label="법인대표 생년월일">
       <div class="gap-size-8 flex flex-col">
-        <BaseInput size="md" placeholder="YYYY-MM-DD" />
+        <BaseInputCalendar v-model="state.representativeBirth" size="md" />
       </div>
     </FormField>
     <FormField label="법인주소">
       <div class="gap-size-8 flex flex-col">
-        <BaseInput size="md" placeholder="주소 검색" />
-        <BaseInput size="md" placeholder="상세주소" />
+        <BaseInput
+          size="md"
+          placeholder="주소 검색"
+          v-model="state.address"
+          variant="search"
+          @onSearch="openDaumPostcode"
+          @click="openDaumPostcode"
+          readonly
+        />
+        <BaseInput size="md" placeholder="상세주소" v-model="state.detailAddress" />
+      </div>
+    </FormField>
+    <FormField label="법인주소(영문)">
+      <div class="gap-size-8 flex flex-col">
+        <BaseInput
+          size="md"
+          placeholder="주소 검색"
+          v-model="state.addressEn"
+          @click="openDaumPostcode"
+          variant="search"
+          disabled
+        />
+        <BaseInput size="md" placeholder="상세주소(영문)" v-model="state.detailAddressEn" />
       </div>
     </FormField>
   </div>
@@ -42,14 +68,90 @@
       variant="contained"
       color="primary"
       full-width
-      @click="router.push({ query: { step: 6 } })"
+      @click="handleSubmit"
+      :disabled="
+        !state.companyName ||
+        !state.businessNumber ||
+        !state.representativeLastName ||
+        !state.representativeFirstName ||
+        !state.representativeBirth ||
+        !state.address ||
+        !state.detailAddress ||
+        !state.addressEn ||
+        !state.detailAddressEn
+      "
     />
   </div>
 </template>
 <script lang="ts" setup>
+import { BaseButton, BaseInput, BaseInputCalendar } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
-import { BaseButton, BaseInput } from '@template/ui';
+import { useSignupStore } from '@/stores/useSignupStore';
+import { reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const signupStore = useSignupStore();
+
+const state = reactive({
+  companyName: '',
+  businessNumber: '',
+  representativeLastName: '',
+  representativeFirstName: '',
+  representativeBirth: '',
+  address: '',
+  detailAddress: '',
+  addressEn: '',
+  detailAddressEn: '',
+  zipCode: '',
+});
+
+// 다음 우편번호 API 스크립트 로드
+onMounted(() => {
+  const script = document.createElement('script');
+  script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+  document.head.appendChild(script);
+});
+
+// 주소 검색 열기 (새 창 방식)
+const openDaumPostcode = () => {
+  if (!window.daum?.Postcode) return;
+
+  new window.daum.Postcode({
+    oncomplete: (data: any) => {
+      state.address = data.address;
+      state.addressEn = data.addressEnglish;
+      state.zipCode = data.zonecode;
+    },
+    onclose: () => {
+      // 새 창이 닫힐 때의 처리 (필요시)
+    },
+    width: '100%',
+    height: '100%',
+  }).open();
+};
+
+const handleSubmit = () => {
+  signupStore.updateCorporate({
+    companyName: state.companyName,
+    businessNumber: state.businessNumber,
+    representativeLastName: state.representativeLastName,
+    representativeFirstName: state.representativeFirstName,
+    representativeBirth: state.representativeBirth,
+    address: state.address,
+    detailAddress: state.detailAddress,
+    addressEn: state.addressEn,
+    detailAddressEn: state.detailAddressEn,
+    zipCode: state.zipCode,
+
+    // TODO: 이부분 타입 때문에 이렇게 해야하는데 리팩토링 고민해보기
+    businessRegistration: null,
+    corporateRepresentative: null,
+    billPaymentCorporate: null,
+    shareholderRegister: null,
+    corporateRepresentativePassport: null,
+    additionalCorporateRepresentativePassport: null,
+  });
+  router.push({ query: { step: 6 } });
+};
 </script>

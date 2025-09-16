@@ -19,14 +19,13 @@
     </div>
     <FormField label="거주지 주소(한글)">
       <div class="gap-size-8 flex flex-col">
-        <!-- [TODO] : type=search , @onSearch emit 받는거로 리팩토링 예정 -->
         <BaseInput
           size="md"
           placeholder="주소 검색"
           v-model="state.address"
           variant="search"
-          @onSearch="openDaumPostcode('korean')"
-          @click="openDaumPostcode('korean')"
+          @onSearch="openDaumPostcode"
+          @click="openDaumPostcode"
           readonly
         />
 
@@ -35,12 +34,11 @@
     </FormField>
     <FormField label="거주지 주소(영문)">
       <div class="gap-size-8 flex flex-col">
-        <!-- [TODO]: type=search , @onSearch emit 받는거로 리팩토링 예정 -->
         <BaseInput
           size="md"
           placeholder="주소 검색"
           v-model="state.addressEn"
-          @click="openDaumPostcode('english')"
+          @click="openDaumPostcode"
           variant="search"
           disabled
         />
@@ -71,7 +69,7 @@
 import FormField from '@/components/auth/common/FormField.vue';
 import { useSignupStore } from '@/stores/useSignupStore';
 import { BaseButton, BaseInput } from '@template/ui';
-import { reactive, ref, onMounted } from 'vue';
+import { reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 // 다음 우편번호 API 타입 정의
@@ -94,9 +92,6 @@ declare global {
 const signupStore = useSignupStore();
 const router = useRouter();
 
-// 주소 검색 관련 상태
-const currentAddressType = ref<'korean' | 'english'>('korean');
-
 const state = reactive({
   lastNameEn: '',
   firstNameEn: '',
@@ -115,10 +110,8 @@ onMounted(() => {
 });
 
 // 주소 검색 열기 (새 창 방식)
-const openDaumPostcode = (type: 'korean' | 'english') => {
+const openDaumPostcode = () => {
   if (!window.daum?.Postcode) return;
-
-  currentAddressType.value = type;
 
   new window.daum.Postcode({
     oncomplete: (data: any) => {

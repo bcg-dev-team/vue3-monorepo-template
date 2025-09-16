@@ -18,6 +18,13 @@ interface Props {
    * 비활성화할 날짜를 결정하는 함수
    */
   disabledDate?: (date: Date) => boolean;
+  /**
+   * 크기
+   * @default 'sm'
+   * sm: 42px
+   * md: 48px
+   */
+  size?: 'sm' | 'md';
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -25,6 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   placeholder: 'YYYY-MM-DD',
   disabled: false,
   disabledDate: undefined,
+  size: 'sm',
 });
 
 const emit = defineEmits<{
@@ -44,6 +52,7 @@ const handleDateChange = (value: string | null) => {
     type="date"
     :placeholder="props.placeholder"
     class="input-date"
+    :class="`el-input--${props.size}`"
     format="YYYY-MM-DD"
     value-format="YYYY-MM-DD"
     :disabled="props.disabled"
@@ -57,9 +66,13 @@ const handleDateChange = (value: string | null) => {
 <style>
 .el-date-editor.el-input.input-date {
   width: 100%;
-  height: 42px;
+  &.el-input--md {
+    height: 48px !important;
+  }
+  &.el-input--sm {
+    height: 42px !important;
+  }
   .el-input__wrapper {
-    height: 42px;
     border-radius: 6px !important;
     border: 1px solid var(--input-color-border-static) !important;
     background-color: var(--input-color-surface) !important;
@@ -79,7 +92,7 @@ const handleDateChange = (value: string | null) => {
     }
 
     .el-input__inner {
-      margin-left: 15px;
+      padding-left: 4px;
       padding-right: 40px;
       font-size: 16px;
       border: none !important;

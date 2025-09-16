@@ -5,7 +5,7 @@
 
 export { startMocking, stopMocking, worker } from './browser.js';
 export { chartHttpHandlers } from './handlers/chart/http.js';
-export { MockWebSocket, mockWebSocketManager } from './handlers/chart/websocket.js';
+export { MockWebSocket, mockWebSocketManager } from './handlers/chart/MockWebSocketHandler.js';
 export { handlers } from './handlers/index.js';
 
 // 데이터 export

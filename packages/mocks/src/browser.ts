@@ -3,7 +3,7 @@
  * 브라우저 환경에서 네트워크 요청을 가로채기 위한 Service Worker 설정
  */
 
-import { MockWebSocket, mockWebSocketManager } from './handlers/chart/websocket.js';
+import { MockWebSocket, mockWebSocketManager } from './handlers/chart/MockWebSocketHandler.js';
 import { chartHttpHandlers } from './handlers/chart/http.js';
 import { setupWorker } from 'msw/browser';
 

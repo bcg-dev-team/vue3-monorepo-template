@@ -18,6 +18,7 @@ export { default as BaseInputCalendar } from './BaseInput/BaseInputCalendar.vue'
 export { default as BaseDisclosure } from './BaseDisclosure/BaseDisclosure.vue';
 export { default as BaseDataGrid } from './BaseDataGrid/BaseDataGrid.vue';
 export { default as BaseAlert } from './BaseAlert/BaseAlert.vue';
+export { default as BaseBadge } from './BaseBadge/BaseBadge.vue';
 
 export * from './BasePagination';
 export * from './BaseTable';

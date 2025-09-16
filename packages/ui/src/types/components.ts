@@ -396,3 +396,26 @@ export interface CardSkeletonProps extends LoadingComponentProps {
     showActions?: boolean;
   };
 }
+
+// BaseBadge
+export type BadgeColor = 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
+export type BadgeVariant = 'dot' | 'standard';
+export type BadgeOverlap = 'overlap' | 'no-overlap';
+export type BadgeVertical = 'top' | 'middle' | 'bottom';
+export type BadgeHorizontal = 'left' | 'right';
+
+export interface BadgeAnchorOrigin {
+  vertical: BadgeVertical;
+  horizontal: BadgeHorizontal;
+}
+
+export interface BadgeProps {
+  value?: string | number;
+  max?: number;
+  variant?: BadgeVariant;
+  color?: BadgeColor;
+  showZero?: boolean;
+  hidden?: boolean;
+  overlap?: BadgeOverlap;
+  anchorOrigin?: BadgeAnchorOrigin;
+}

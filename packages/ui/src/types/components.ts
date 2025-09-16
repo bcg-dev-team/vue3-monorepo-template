@@ -398,8 +398,8 @@ export interface CardSkeletonProps extends LoadingComponentProps {
 }
 
 // BaseBadge
-export type BadgeColor = 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
-export type BadgeVariant = 'dot' | 'standard';
+export type BadgeColor = 'grey' | 'red' | 'green' | 'blue' | 'yellow' | 'purple';
+export type BadgeVariant = 'dot' | 'standard' | 'square';
 export type BadgeOverlap = 'overlap' | 'no-overlap';
 export type BadgeVertical = 'top' | 'middle' | 'bottom';
 export type BadgeHorizontal = 'left' | 'right';

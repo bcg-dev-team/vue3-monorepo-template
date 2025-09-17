@@ -19,7 +19,7 @@ import { markRaw } from 'vue';
  * 카테고리별로 콘텐츠를 구분하여 표시할 수 있습니다.
  */
 const meta: Meta<typeof BaseTabs> = {
-  title: 'Components/BaseTabs',
+  title: 'Tabs/BaseTabs',
   component: BaseTabs,
   parameters: {
     layout: 'centered',

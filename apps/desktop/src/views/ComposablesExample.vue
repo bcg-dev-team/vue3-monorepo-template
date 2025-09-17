@@ -6,17 +6,11 @@
     <section class="section">
       <h2>테마 관리 (useTheme)</h2>
       <div class="theme-controls">
-        <button @click="setTheme('light')" :class="{ active: currentTheme === 'light' }">
-          라이트 모드
-        </button>
-        <button @click="setTheme('dark')" :class="{ active: currentTheme === 'dark' }">
-          다크 모드
-        </button>
-        <button @click="setTheme('system')" :class="{ active: theme === 'system' }">
-          시스템 설정
-        </button>
+        <button @click="setTheme(false)" :class="{ active: !isDark }">라이트 모드</button>
+        <button @click="setTheme(true)" :class="{ active: isDark }">다크 모드</button>
+        <button @click="setSystemTheme" :class="{ active: false }">시스템 설정</button>
       </div>
-      <p>현재 테마: {{ currentTheme }} ({{ isDarkMode ? '다크' : '라이트' }})</p>
+      <p>현재 테마: {{ isDark ? '다크' : '라이트' }}</p>
     </section>
 
     <!-- 브레이크포인트 관리 -->
@@ -95,18 +89,17 @@
         </div>
       </form>
     </section>
-
     <!-- 로컬 스토리지 관리 -->
     <section class="section">
       <h2>로컬 스토리지 관리 (useLocalStorage)</h2>
       <div class="storage-controls">
         <input v-model="storageValue" placeholder="저장할 값" />
-        <button @click="updateStorage">저장</button>
+        <button @click="() => updateStorage(storageValue)">저장</button>
         <button @click="resetStorage">리셋</button>
         <button @click="removeStorage">삭제</button>
       </div>
       <p>저장된 값: {{ storageValue }}</p>
-      <p>존재 여부: {{ hasStorage ? '✅' : '❌' }}</p>
+      <p>존재 여부: {{ hasStorage() ? '✅' : '❌' }}</p>
     </section>
 
     <!-- 디바운스 예시 -->
@@ -130,7 +123,7 @@ import { useLocalStorage, useDebounce } from '@template/utils';
 import { ref } from 'vue';
 
 // 테마 관리
-const { theme, currentTheme, isDarkMode, setTheme } = useTheme();
+const { isDark, setTheme, setSystemTheme } = useTheme();
 
 // 브레이크포인트 관리
 const { width, height, currentBreakpoint, isAbove, isBelow, isBetween } = useBreakpoint();

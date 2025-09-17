@@ -1,7 +1,7 @@
 <template>
   <div class="gap-size-16 flex flex-col">
     <FormField label="이름(한글)">
-      <BaseInput size="md" disabled v />
+      <BaseInput size="md" disabled />
     </FormField>
     <FormField label="휴대폰번호">
       <BaseInput size="md" disabled />

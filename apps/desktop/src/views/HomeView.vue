@@ -26,7 +26,7 @@
     </div>
 
     <div class="actions">
-      <BaseButton variant="primary" @click="showWelcome = !showWelcome">
+      <BaseButton variant="contained" color="primary" @click="showWelcome = !showWelcome">
         {{ showWelcome ? '숨기기' : '환영 메시지 보기' }}
       </BaseButton>
     </div>

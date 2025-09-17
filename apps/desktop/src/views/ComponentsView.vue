@@ -240,25 +240,29 @@ const FourthTabContent = defineComponent({
   `,
 });
 
-// 새로운 탭 데이터 구조 (TabCategories 형식)
-const tabs = {
-  '첫 번째 탭': {
-    value: 'tab1',
+// BaseTabs 컴포넌트에 맞는 TabItem[] 배열 형식
+const tabs = [
+  {
+    key: 'tab1',
+    label: '첫 번째 탭',
     component: FirstTabContent,
   },
-  '두 번째 탭': {
-    value: 'tab2',
+  {
+    key: 'tab2',
+    label: '두 번째 탭',
     component: SecondTabContent,
   },
-  '세 번째 탭': {
-    value: 'tab3',
+  {
+    key: 'tab3',
+    label: '세 번째 탭',
     component: ThirdTabContent,
   },
-  '네 번째 탭': {
-    value: 'tab4',
+  {
+    key: 'tab4',
+    label: '네 번째 탭',
     component: FourthTabContent,
   },
-};
+];
 </script>
 
 <style scoped>

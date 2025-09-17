@@ -1,9 +1,9 @@
-import BaseButton from '../BaseButton/BaseButton.vue';
+import BaseButton from '../../BaseButton/BaseButton.vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
-import BaseModal from '../BaseModal/BaseModal.vue';
+import BaseModal from '../BaseModal.vue';
 
 const meta: Meta<typeof BaseModal> = {
-  title: 'Modal/Modal',
+  title: 'Modal/BaseModal',
   component: BaseModal,
   tags: ['autodocs'],
   parameters: {

@@ -21,9 +21,10 @@
     <div class="mt-4 flex items-center justify-center">
       <BaseButton
         label="정보 수정"
-        variant="primary"
-        size="regular"
-        :leftIcon="{ name: 'order', size: 'xl', color: 'current' }"
+        variant="outlined"
+        color="white"
+        size="lg"
+        :leftIcon="{ name: 'order', size: 'lg', color: 'current' }"
       />
     </div>
   </div>

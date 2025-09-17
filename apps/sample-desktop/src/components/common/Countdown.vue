@@ -1,7 +1,5 @@
 <template>
-  <span :class="countdownClasses">
-    남은 시간: {{ formatTime(remainingTime) }}
-  </span>
+  <span :class="countdownClasses"> 남은 시간: {{ formatTime(remainingTime) }} </span>
 </template>
 
 <script setup lang="ts">
@@ -9,7 +7,7 @@ import { ref, computed, onMounted, onUnmounted, readonly } from 'vue';
 
 /**
  * Countdown 컴포넌트 - 카운트다운 타이머
- * 
+ *
  * @props duration - 카운트다운 시간 (초 단위)
  * @props format - 시간 형식 ('mm:ss' | 'hh:mm:ss')
  * @props size - 텍스트 크기
@@ -85,13 +83,13 @@ const formatTime = (seconds: number): string => {
 // 타이머 시작
 const start = () => {
   if (isRunning.value || remainingTime.value <= 0) return;
-  
+
   isRunning.value = true;
   intervalId = setInterval(() => {
     if (remainingTime.value > 0) {
       remainingTime.value--;
       emit('tick', remainingTime.value);
-      
+
       // 완료 체크
       if (remainingTime.value === 0) {
         stop();
@@ -121,8 +119,8 @@ defineExpose({
   start,
   stop,
   reset,
-  remainingTime: readonly(remainingTime),
-  isRunning: readonly(isRunning),
+  remainingTime,
+  isRunning,
 });
 
 // 생명주기

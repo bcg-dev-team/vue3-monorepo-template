@@ -84,7 +84,7 @@ const tabListClasses = computed(() => {
             :is="tabItem.component"
             :selectedTabKey="defaultSelectedTabKey"
           />
-          <!-- <div v-else class="text-center text-gray-500">탭 컨텐츠가 없습니다.</div> -->
+          <div v-else class="text-center text-gray-500">탭 컨텐츠가 없습니다.</div>
         </TabPanel>
       </TabPanels>
     </TabGroup>

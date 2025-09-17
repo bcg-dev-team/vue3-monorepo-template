@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import BaseProgressBar from '../BaseProgressBar.vue';
 
 const meta: Meta<typeof BaseProgressBar> = {
-  title: 'Components/BaseProgressBar',
+  title: 'Progress Bar/BaseProgressBar',
   component: BaseProgressBar,
   parameters: {
     docs: {

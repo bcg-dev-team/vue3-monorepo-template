@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import BaseDisclosure from './BaseDisclosure.vue';
 
 const meta: Meta<typeof BaseDisclosure> = {
-  title: 'Components/BaseDisclosure',
+  title: 'Disclosure/BaseDisclosure',
   component: BaseDisclosure,
   parameters: {
     layout: 'centered',

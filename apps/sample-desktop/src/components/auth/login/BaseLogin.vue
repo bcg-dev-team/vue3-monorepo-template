@@ -2,6 +2,7 @@
   <div class="gap-size-16 mt-4 flex flex-col">
     <div class="bg-bg-bg-innerframe flex h-[46px] items-center justify-center">
       <!-- 실거래, 모의거래 RadioGroup -->
+      <!-- [FIXME]: BaseRadioGroup 컴포넌트로 대체될 영역-->
       <RadioGroup v-model="model" class="space-y-2">
         <div :class="containerClasses">
           <RadioGroupOption

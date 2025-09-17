@@ -111,7 +111,6 @@ export class UserService {
       detailAddress: individualMember.detailAddress,
       detailAddressEn: individualMember.detailAddressEn,
       zipCode: individualMember.zipCode,
-      birthAsLocalDate: individualMember.birthAsLocalDate,
     };
 
     formData.append('individualMember', JSON.stringify(individualMemberData));

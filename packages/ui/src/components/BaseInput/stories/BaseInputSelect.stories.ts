@@ -3,7 +3,7 @@ import BaseInputSelect from '../BaseInputSelect.vue';
 import { ref } from 'vue';
 
 const meta: Meta<typeof BaseInputSelect> = {
-  title: 'Inputs/Select',
+  title: 'Inputs/BaseInputSelect',
   component: BaseInputSelect,
   parameters: {
     docs: {

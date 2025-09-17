@@ -12,7 +12,7 @@ import BaseIcon from '../BaseIcon.vue';
  * Figma 링크: [Icon 컴포넌트](https://figma.com/design/...)
  */
 const meta: Meta<typeof BaseIcon> = {
-  title: 'Icons/Icons',
+  title: 'Icons/BaseIcon',
   component: BaseIcon,
   parameters: {
     docs: {

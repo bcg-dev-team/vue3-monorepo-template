@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import BaseSwitch from '../BaseSwitch.vue';
 
 const meta: Meta<typeof BaseSwitch> = {
-  title: 'Inputs/Switch',
+  title: 'Inputs/BaseSwitch',
   component: BaseSwitch,
   parameters: {
     docs: {

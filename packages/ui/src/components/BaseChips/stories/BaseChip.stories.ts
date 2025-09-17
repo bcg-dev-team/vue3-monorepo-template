@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import BaseChip from '../BaseChip.vue';
 
 const meta: Meta<typeof BaseChip> = {
-  title: 'Chips/Chip',
+  title: 'Chips/BaseChip',
   component: BaseChip,
   parameters: {
     docs: {

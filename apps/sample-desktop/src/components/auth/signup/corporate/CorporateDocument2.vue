@@ -125,7 +125,6 @@ const handleSubmit = () => {
     state.additionalCorporateRepresentativePassport
   );
 
-  console.log(signupStore.getCorporateSignupInfo);
-  // router.push({ name: 'sign-up-complete' });
+  router.push({ name: 'sign-up-complete' });
 };
 </script>

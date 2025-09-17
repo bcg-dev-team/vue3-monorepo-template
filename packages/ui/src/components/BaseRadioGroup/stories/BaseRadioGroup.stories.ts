@@ -1,5 +1,5 @@
-import BaseRadioGroup from '../components/BaseRadioGroup/BaseRadioGroup.vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
+import BaseRadioGroup from '../BaseRadioGroup.vue';
 import { ref, computed } from 'vue';
 
 const meta: Meta<typeof BaseRadioGroup> = {

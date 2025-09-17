@@ -67,6 +67,16 @@ const CenterDecorator = (storyFn: any, context: any) => {
 
 const preview: Preview = {
   parameters: {
+    options: {
+      storySort: {
+        method: 'alphabetical',
+        order: [
+          '*', // 기본적으로는 알파벳 순
+          'Icons', // Icons를 맨 아래로
+          'Foundations', // Foundations를 맨 아래로
+        ],
+      },
+    },
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {

@@ -3,7 +3,7 @@ import type { PasswordStrengthDisplay } from '@template/types';
 import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof BasePasswordStrength> = {
-  title: 'Components/BasePasswordStrength',
+  title: 'Password Strength/BasePasswordStrength',
   component: BasePasswordStrength,
   parameters: {
     docs: {

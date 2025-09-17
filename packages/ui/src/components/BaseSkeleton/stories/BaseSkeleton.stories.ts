@@ -10,7 +10,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import TextSkeletonDirect from '../TextSkeleton.vue';
 
 const meta: Meta<typeof BaseSkeleton> = {
-  title: 'Components/BaseSkeleton',
+  title: 'Skeleton/BaseSkeleton',
   component: BaseSkeleton,
   parameters: {
     layout: 'centered',

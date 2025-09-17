@@ -10,7 +10,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
  * Figma 링크: [Figma 컴포넌트 링크 추가 필요]
  */
 const meta: Meta<typeof BaseTwoWaySplitPane> = {
-  title: 'Layout/TwoWaySplitPane',
+  title: 'Layout/BaseTwoWaySplitPane',
   component: BaseTwoWaySplitPane,
   parameters: {
     docs: {

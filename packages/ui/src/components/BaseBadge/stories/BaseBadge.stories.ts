@@ -7,7 +7,7 @@ import BaseBadge from '../BaseBadge.vue';
 import { ref } from 'vue';
 
 const meta: Meta<typeof BaseBadge> = {
-  title: 'Components/BaseBadge',
+  title: 'Badge/BaseBadge',
   component: BaseBadge,
   tags: ['autodocs'],
   parameters: {

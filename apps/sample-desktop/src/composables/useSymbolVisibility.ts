@@ -29,10 +29,7 @@ export function useSymbolVisibility(
       const visibleArray = Array.from(visibleSymbols.value);
       if (visibleArray.length > 0) {
         addVisibleSymbols('SymbolList', visibleArray);
-        console.error(
-          `[SymbolList] 가시성 업데이트 (디바운스): ${visibleArray.length}개 종목`,
-          visibleArray
-        );
+        console.error(`[SymbolList] 가시성 업데이트: ${visibleArray.length}개 종목`, visibleArray);
       }
       debounceTimer = null;
     }, 300); // 300ms 디바운스
@@ -41,7 +38,7 @@ export function useSymbolVisibility(
   // Intersection Observer 설정
   const setupVisibilityObserver = () => {
     if (!symbolListRef.value) {
-      console.error('[SymbolList] symbolListRef가 없음 - Observer 설정 불가');
+      console.error('[SymbolList] symbolListRef 없음 - Observer 설정 불가');
       return;
     }
 
@@ -59,11 +56,11 @@ export function useSymbolVisibility(
             if (!ticker) return;
 
             if (entry.isIntersecting) {
+              // 종목 추가
               visibleSymbols.value.add(ticker);
-              console.error(`[SymbolList] 종목 보임: ${ticker}`);
             } else {
+              // 종목 제외
               visibleSymbols.value.delete(ticker);
-              console.error(`[SymbolList] 종목 숨김: ${ticker}`);
             }
           });
 

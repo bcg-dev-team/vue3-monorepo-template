@@ -17,6 +17,7 @@
       variant="contained"
       color="primary"
       full-width
+      :disabled="!isEmailValid || email === ''"
       @click="handleClickNext"
     />
   </div>

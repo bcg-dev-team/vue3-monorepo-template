@@ -43,6 +43,7 @@
       variant="contained"
       color="primary"
       full-width
+      :disabled="inputValues.some((value) => value === '')"
       @click="handleClickNext"
     />
   </div>

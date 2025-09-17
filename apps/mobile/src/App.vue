@@ -33,18 +33,31 @@
       <section class="native-features" v-if="isNativeApp">
         <h2>🔧 네이티브 기능 테스트</h2>
         <div class="feature-buttons">
-          <BaseButton @click="testNativeAlert" variant="primary" size="lg" class="feature-btn">
+          <BaseButton
+            @click="testNativeAlert"
+            variant="contained"
+            color="primary"
+            size="lg"
+            class="feature-btn"
+          >
             📢 네이티브 알림
           </BaseButton>
           <BaseButton
             @click="testNativeNavigation"
-            variant="secondary"
+            variant="outlined"
+            color="primary"
             size="lg"
             class="feature-btn"
           >
             🧭 네이티브 네비게이션
           </BaseButton>
-          <BaseButton @click="getDeviceInfo" variant="info" size="lg" class="feature-btn">
+          <BaseButton
+            @click="getDeviceInfo"
+            variant="contained"
+            color="blue"
+            size="lg"
+            class="feature-btn"
+          >
             📱 디바이스 정보
           </BaseButton>
         </div>
@@ -60,7 +73,7 @@
             <span class="log-content">{{ message.content }}</span>
           </div>
         </div>
-        <BaseButton @click="clearLog" variant="secondary" size="sm" class="clear-btn">
+        <BaseButton @click="clearLog" variant="outlined" color="grey" size="sm" class="clear-btn">
           로그 지우기
         </BaseButton>
       </section>

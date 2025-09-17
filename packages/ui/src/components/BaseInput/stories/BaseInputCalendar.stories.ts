@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import { ref } from 'vue';
 
 const meta: Meta<typeof BaseInputCalendar> = {
-  title: 'Inputs/Calendar',
+  title: 'Inputs/BaseInputCalendar',
   component: BaseInputCalendar,
   parameters: {
     docs: {

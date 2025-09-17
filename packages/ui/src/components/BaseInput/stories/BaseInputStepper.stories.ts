@@ -2,7 +2,7 @@ import BaseInputStepper from '../BaseInputStepper.vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof BaseInputStepper> = {
-  title: 'Inputs/Stepper',
+  title: 'Inputs/BaseInputStepper',
   component: BaseInputStepper,
   parameters: {
     docs: {
@@ -118,7 +118,6 @@ export const Disabled: Story = {
     step: 0.00001,
   },
 };
-
 
 // 큰 단위 스테퍼 (1씩 증가)
 export const LargeStep: Story = {

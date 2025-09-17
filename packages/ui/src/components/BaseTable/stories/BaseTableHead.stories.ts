@@ -4,7 +4,7 @@ import BaseTableHead from '../BaseTableHead.vue';
 import BaseTableBody from '../BaseTableBody.vue';
 
 const meta: Meta<typeof BaseTableHead> = {
-  title: 'Table/Head',
+  title: 'Table/BaseTableHead',
   component: BaseTableHead,
   parameters: {
     docs: {

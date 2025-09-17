@@ -4,7 +4,7 @@ import BaseInput from '../BaseInput.vue';
 import { ref } from 'vue';
 
 const meta: Meta<typeof BaseInput> = {
-  title: 'Inputs/Input',
+  title: 'Inputs/BaseInput',
   component: BaseInput,
   parameters: {
     docs: {

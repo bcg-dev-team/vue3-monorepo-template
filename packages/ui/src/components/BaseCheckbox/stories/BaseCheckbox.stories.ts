@@ -3,7 +3,7 @@ import BaseCheckbox from '../BaseCheckbox.vue';
 import { ref, computed } from 'vue';
 
 const meta: Meta<typeof BaseCheckbox> = {
-  title: 'Inputs/Checkbox',
+  title: 'Inputs/BaseCheckbox',
   component: BaseCheckbox,
   parameters: {
     docs: {

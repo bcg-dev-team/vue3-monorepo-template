@@ -49,10 +49,6 @@ const meta: Meta<typeof BaseInput> = {
       description: '읽기 전용 여부',
       control: 'boolean',
     },
-    onSearch: {
-      description: '검색 버튼 클릭 이벤트 (variant="search"일 때 사용)',
-      control: false,
-    },
   },
   tags: ['autodocs'],
 };
@@ -244,6 +240,14 @@ export const WithPrependInnerUnit: Story = {
 
 // Append-inner 아이콘과 클릭 이벤트
 export const WithAppendInnerIcon: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '입력 필드 내부에 아이콘을 추가할 수 있습니다. 각 아이콘을 클릭하면 해당 이벤트가 발생합니다.',
+      },
+    },
+  },
   render: () => ({
     components: { BaseInput, BaseIcon },
     setup() {
@@ -467,6 +471,14 @@ export const WithAppend: Story = {
 
 // Search Variant
 export const SearchVariant: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '검색 버튼을 클릭하면 onSearch 이벤트가 발생합니다. Enter 키를 누르거나 검색 아이콘을 클릭할 수 있습니다.',
+      },
+    },
+  },
   render: () => ({
     components: { BaseInput },
     setup() {
@@ -486,7 +498,7 @@ export const SearchVariant: Story = {
             variant="search"
             placeholder="검색어를 입력하세요"
             size="md"
-            :onSearch="handleSearch"
+            @onSearch="handleSearch"
           />
         </div>
         
@@ -497,7 +509,7 @@ export const SearchVariant: Story = {
             variant="search"
             placeholder="작은 검색창"
             size="sm"
-            :onSearch="handleSearch"
+            @onSearch="handleSearch"
           />
         </div>
         
@@ -509,7 +521,7 @@ export const SearchVariant: Story = {
             placeholder="비활성화된 검색"
             size="md"
             :disabled="true"
-            :onSearch="handleSearch"
+            @onSearch="handleSearch"
           />
         </div>
       </div>
@@ -519,6 +531,13 @@ export const SearchVariant: Story = {
 
 // Password Variant
 export const PasswordVariant: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '비밀번호 입력 필드입니다. 눈 아이콘을 클릭하면 비밀번호 표시/숨김이 토글됩니다.',
+      },
+    },
+  },
   render: () => ({
     components: { BaseInput },
     setup() {
@@ -740,7 +759,7 @@ export const AllVariantsComparison: Story = {
             variant="search"
             placeholder="검색어를 입력하세요"
             size="md"
-            :onSearch="handleSearch"
+            @onSearch="handleSearch"
           />
           <p style="margin-top: 4px; font-size: 12px; color: #666;">
             검색어: {{ searchValue || '없음' }}

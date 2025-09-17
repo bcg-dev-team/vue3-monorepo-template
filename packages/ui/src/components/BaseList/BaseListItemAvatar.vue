@@ -47,8 +47,6 @@ const props = withDefaults(defineProps<Props>(), {
   icon: undefined,
   fallback: undefined,
   color: 'default',
-  backgroundColor: undefined,
-  iconColor: undefined,
 });
 
 const emit = defineEmits<Emits>();

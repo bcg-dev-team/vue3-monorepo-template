@@ -4,6 +4,7 @@
   피그마 디자인 토큰 기반으로 구현
 -->
 <script setup lang="ts">
+import BaseProgressBar from '../BaseProgressBar/BaseProgressBar.vue';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { computed, ref, watch } from 'vue';
 
@@ -13,11 +14,12 @@ import { computed, ref, watch } from 'vue';
  * @props modelValue - 입력값 (v-model)
  * @props placeholder - 플레이스홀더 텍스트
  * @props size - 크기 (sm, md)
- * @props variant - 입력 타입 변형 (default, search, password, tel, number)
+ * @props variant - 입력 타입 변형 (default, search, password, password-strength, tel, number)
  * @props disabled - 비활성화 여부
  * @props error - 에러 상태 여부
  * @props errorMessage - 에러 메시지
  * @props readonly - 읽기 전용 여부
+ * @props maxLength - 입력 가능한 최대 문자 수
  * @emits update:modelValue - 값 변경 시 발생
  * @emits focus - 포커스 시 발생
  * @emits blur - 블러 시 발생
@@ -45,7 +47,7 @@ interface Props {
    * 입력 타입 변형
    * @default 'default'
    */
-  variant?: 'default' | 'search' | 'password' | 'tel' | 'number';
+  variant?: 'default' | 'search' | 'password' | 'password-strength' | 'tel' | 'number';
   /**
    * 비활성화 여부
    * @default false
@@ -65,6 +67,18 @@ interface Props {
    * @default false
    */
   readonly?: boolean;
+  /**
+   * 입력 가능한 최대 문자 수
+   */
+  maxLength?: number;
+  /**
+   * 비밀번호 강도 분석 시 사용할 사용자 입력 데이터 (password-strength variant용)
+   */
+  userInputs?: string[];
+  /**
+   * autocomplete 속성 (직접 지정 시 우선 적용)
+   */
+  autocomplete?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -76,6 +90,7 @@ const props = withDefaults(defineProps<Props>(), {
   error: false,
   errorMessage: '',
   readonly: false,
+  userInputs: () => [],
 });
 
 const emit = defineEmits<{
@@ -89,11 +104,22 @@ const emit = defineEmits<{
 const isPasswordVisible = ref(false);
 const internalValue = ref(props.modelValue || '');
 
-const showVariantIcon = computed(() => props.variant === 'search' || props.variant === 'password');
+const passwordStrengthResult = ref(0);
+
+const showVariantIcon = computed(
+  () =>
+    props.variant === 'search' ||
+    props.variant === 'password' ||
+    props.variant === 'password-strength'
+);
 
 // Input type 결정
 const inputType = computed(() => {
-  if (props.variant === 'password' && !isPasswordVisible.value) return 'password';
+  if (
+    (props.variant === 'password' || props.variant === 'password-strength') &&
+    !isPasswordVisible.value
+  )
+    return 'password';
   if (props.variant === 'tel') return 'tel';
   if (props.variant === 'number') return 'number';
   return 'text';
@@ -145,8 +171,33 @@ const appendInnerClasses = computed(() => {
   return 'absolute right-0 top-0 h-full flex items-center pr-[15px] gap-1';
 });
 
+// Autocomplete 값 결정 (props.autocomplete가 있으면 우선 사용)
+const autocompleteValue = computed(() => {
+  // 직접 지정된 autocomplete 값이 있으면 우선 사용
+  if (props.autocomplete !== undefined) {
+    return props.autocomplete;
+  }
+
+  // variant 기반 자동 설정
+  if (props.variant === 'password' || props.variant === 'password-strength') {
+    return 'new-password';
+  }
+  if (props.variant === 'search') {
+    return 'off';
+  }
+  return undefined;
+});
+
+// 키 입력 방지 핸들러
+const handleKeydown = (event: KeyboardEvent) => {
+  // 스페이스바 입력 방지
+  if (event.key === ' ') {
+    event.preventDefault();
+  }
+};
+
 // Input 입력 이벤트 핸들러
-const handleInput = (event: Event) => {
+const handleInput = async (event: Event) => {
   const target = event.target as HTMLInputElement;
   let value = target.value;
 
@@ -156,8 +207,25 @@ const handleInput = (event: Event) => {
     target.value = value;
   }
 
+  // maxLength 제한 (number type에서도 동작하도록)
+  if (props.maxLength && value.length > props.maxLength) {
+    value = value.slice(0, props.maxLength);
+    target.value = value;
+  }
+
   internalValue.value = value;
   emit('update:modelValue', value);
+
+  // password-strength variant일 때만 분석 실행
+  if (props.variant === 'password-strength') {
+    if (!value) {
+      passwordStrengthResult.value = 0;
+    } else {
+      const { analyzePasswordStrength } = await import('@template/utils');
+      const result = await analyzePasswordStrength(value, props.userInputs);
+      passwordStrengthResult.value = result.score;
+    }
+  }
 };
 
 // 키보드 접근성 이벤트 핸들러
@@ -179,6 +247,16 @@ watch(
     internalValue.value = newValue || '';
   }
 );
+
+// input 요소 참조
+const inputRef = ref<HTMLInputElement | null>(null);
+
+// 외부에서 포커스할 수 있도록 메서드 expose
+defineExpose({
+  focus: () => {
+    inputRef.value?.focus();
+  },
+});
 </script>
 
 <template>
@@ -199,14 +277,18 @@ watch(
         <!-- 입력 필드 -->
         <div class="relative flex-1">
           <input
+            ref="inputRef"
             :value="internalValue"
             :type="inputType"
             :placeholder="placeholder"
             :disabled="props.disabled"
             :readonly="readonly"
+            :maxlength="maxLength"
+            :autocomplete="autocompleteValue"
             :class="inputClasses"
             @keydown.stop="handleSearchKeydown"
             @input="handleInput"
+            @keydown="handleKeydown"
             @focus="emit('focus', $event)"
             @blur="emit('blur', $event)"
           />
@@ -226,7 +308,7 @@ watch(
               @mousedown.prevent
             />
             <BaseIcon
-              v-if="variant === 'password'"
+              v-if="variant === 'password' || variant === 'password-strength'"
               :name="isPasswordVisible ? 'eye' : 'eye-close'"
               :size="size === 'sm' ? 'sm' : 'md'"
               :class="iconClasses"
@@ -262,6 +344,15 @@ watch(
     >
       {{ errorMessage }}
     </div>
+
+    <!-- 비밀번호 강도 진행바 -->
+    <BaseProgressBar
+      v-if="variant === 'password-strength' && internalValue.length > 0"
+      class="mt-1"
+      :strength-score="passwordStrengthResult"
+      variant="password-strength"
+      :show-label="true"
+    />
   </div>
 </template>
 

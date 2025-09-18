@@ -11,22 +11,38 @@
     </FormField>
     <div class="gap-size-8 flex items-center">
       <FormField label="이름(영문)">
-        <BaseInput size="md" placeholder="예) GILDONG" />
+        <BaseInput size="md" placeholder="예) GILDONG" v-model="state.firstNameEn" />
       </FormField>
       <FormField label="성(영문)">
-        <BaseInput size="md" placeholder="예) HONG" />
+        <BaseInput size="md" placeholder="예) HONG" v-model="state.lastNameEn" />
       </FormField>
     </div>
     <FormField label="거주지 주소(한글)">
       <div class="gap-size-8 flex flex-col">
-        <BaseInput size="md" placeholder="주소 검색" />
-        <BaseInput size="md" placeholder="상세주소" />
+        <BaseInput
+          size="md"
+          placeholder="주소 검색"
+          v-model="state.address"
+          variant="search"
+          @onSearch="openDaumPostcode"
+          @click="openDaumPostcode"
+          readonly
+        />
+
+        <BaseInput size="md" placeholder="상세주소" v-model="state.detailAddress" />
       </div>
     </FormField>
     <FormField label="거주지 주소(영문)">
       <div class="gap-size-8 flex flex-col">
-        <BaseInput size="md" placeholder="주소 검색" />
-        <BaseInput size="md" placeholder="상세주소" />
+        <BaseInput
+          size="md"
+          placeholder="주소 검색"
+          v-model="state.addressEn"
+          @click="openDaumPostcode"
+          variant="search"
+          disabled
+        />
+        <BaseInput size="md" placeholder="상세주소" v-model="state.detailAddressEn" />
       </div>
     </FormField>
   </div>
@@ -37,14 +53,92 @@
       variant="contained"
       color="primary"
       full-width
-      @click="router.push({ query: { step: 6 } })"
+      @click="handleSubmit"
+      :disabled="
+        !state.lastNameEn ||
+        !state.firstNameEn ||
+        !state.address ||
+        !state.detailAddress ||
+        !state.addressEn ||
+        !state.detailAddressEn
+      "
     />
   </div>
 </template>
 <script lang="ts" setup>
 import FormField from '@/components/auth/common/FormField.vue';
+import { useSignupStore } from '@/stores/useSignupStore';
 import { BaseButton, BaseInput } from '@template/ui';
+import { reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
+// 다음 우편번호 API 타입 정의
+declare global {
+  interface Window {
+    daum: {
+      Postcode: new (options: {
+        oncomplete: (data: any) => void;
+        onclose: () => void;
+        width: string;
+        height: string;
+      }) => {
+        embed: (element: HTMLElement | null) => void;
+        open: () => void;
+      };
+    };
+  }
+}
+
+const signupStore = useSignupStore();
 const router = useRouter();
+
+const state = reactive({
+  lastNameEn: '',
+  firstNameEn: '',
+  address: '',
+  detailAddress: '',
+  addressEn: '',
+  detailAddressEn: '',
+  zipCode: '',
+});
+
+// 다음 우편번호 API 스크립트 로드
+onMounted(() => {
+  const script = document.createElement('script');
+  script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+  document.head.appendChild(script);
+});
+
+// 주소 검색 열기 (새 창 방식)
+const openDaumPostcode = () => {
+  if (!window.daum?.Postcode) return;
+
+  new window.daum.Postcode({
+    oncomplete: (data: any) => {
+      state.address = data.address;
+      state.addressEn = data.addressEnglish;
+      state.zipCode = data.zonecode;
+    },
+    onclose: () => {
+      // 새 창이 닫힐 때의 처리 (필요시)
+    },
+    width: '100%',
+    height: '100%',
+  }).open();
+};
+
+const handleSubmit = () => {
+  signupStore.updateIndividual({
+    lastNameEn: state.lastNameEn,
+    firstNameEn: state.firstNameEn,
+    address: state.address,
+    detailAddress: state.detailAddress,
+    addressEn: state.addressEn,
+    detailAddressEn: state.detailAddressEn,
+    zipCode: state.zipCode,
+    idCard: null,
+    additionalIdDocument: null,
+  });
+  router.push({ query: { step: 6 } });
+};
 </script>

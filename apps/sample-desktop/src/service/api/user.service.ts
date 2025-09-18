@@ -111,7 +111,6 @@ export class UserService {
       detailAddress: individualMember.detailAddress,
       detailAddressEn: individualMember.detailAddressEn,
       zipCode: individualMember.zipCode,
-      birthAsLocalDate: individualMember.birthAsLocalDate,
     };
 
     formData.append('individualMember', JSON.stringify(individualMemberData));
@@ -157,8 +156,6 @@ export class UserService {
       representativeFirstName: corporateMember.representativeFirstName,
       representativeLastName: corporateMember.representativeLastName,
       representativeBirth: corporateMember.representativeBirth,
-      representativeCount: corporateMember.representativeCount,
-      representativeBirthAsLocalDate: corporateMember.representativeBirthAsLocalDate,
     };
 
     formData.append('corporateMember', JSON.stringify(corporateMemberData));

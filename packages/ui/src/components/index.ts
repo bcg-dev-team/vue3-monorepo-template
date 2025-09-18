@@ -17,6 +17,7 @@ export { default as BaseDisclosure } from './BaseDisclosure/BaseDisclosure.vue';
 export { default as BaseDataGrid } from './BaseDataGrid/BaseDataGrid.vue';
 export { default as BaseAlert } from './BaseAlert/BaseAlert.vue';
 export { default as BaseBadge } from './BaseBadge/BaseBadge.vue';
+export { default as BaseBottomNavigation } from './BaseBottomNavigation/BaseBottomNavigation.vue';
 
 export * from './BasePagination';
 export * from './BaseTable';

@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import { ref } from 'vue';
 
 const meta: Meta<typeof BaseBottomNavigation> = {
-  title: 'Components/BaseBottomNavigation',
+  title: 'Bottom Navigation Bar/BaseBottomNavigation',
   component: BaseBottomNavigation,
   parameters: {
     layout: 'fullscreen',

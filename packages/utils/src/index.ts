@@ -9,5 +9,8 @@ export * from './passwordStrength';
 export * from './color';
 export * from './symbol';
 
+// Trading 관련 유틸리티
+export * from './trading/spread';
+
 // Composable 함수들을 export
 export * from './composables';

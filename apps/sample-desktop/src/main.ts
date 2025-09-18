@@ -56,4 +56,19 @@ app.use(router);
 const theme = useTheme();
 theme.updateHtmlClass();
 
-app.mount('#app');
+// Manager Factory 초기화
+import { initializeManagers } from './services/managers';
+
+async function initializeApp() {
+  try {
+    // Manager들 초기화
+    await initializeManagers();
+    console.log('[Main] Manager 초기화 완료');
+  } catch (error) {
+    console.error('[Main] Manager 초기화 실패:', error);
+  }
+
+  app.mount('#app');
+}
+
+initializeApp();

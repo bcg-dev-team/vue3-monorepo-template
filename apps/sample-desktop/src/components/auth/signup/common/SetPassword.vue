@@ -1,5 +1,5 @@
 <template>
-  <div class="gap-size-16 flex flex-col">
+  <form @submit.prevent name="set-password" class="gap-size-16 flex flex-col">
     <FormField label="비밀번호">
       <BaseInput
         v-model="state.password"
@@ -102,7 +102,7 @@
         비밀번호가 일치합니다
       </div>
     </FormField>
-  </div>
+  </form>
   <div class="gap-size-12 mt-[33px] flex items-center">
     <BaseButton
       size="lg"
@@ -117,8 +117,8 @@
 </template>
 
 <script lang="ts" setup>
-import { BaseInput, BaseButton, BaseIcon } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
+import { BaseInput, BaseButton, BaseIcon } from '@template/ui';
 import { useSignupStore } from '@/stores/useSignupStore';
 import { reactive, computed } from 'vue';
 import { useRouter } from 'vue-router';

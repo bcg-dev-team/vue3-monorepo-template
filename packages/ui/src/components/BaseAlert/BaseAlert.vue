@@ -41,11 +41,24 @@ interface Props {
    * 본문 설명 텍스트 (default slot로 대체 가능)
    */
   description?: string;
-  // autoClose만 남김
   /**
    * 자동 닫힘(ms)
    */
   autoClose?: number;
+  /**
+   * 텍스트 오버플로우 처리 방식
+   * - none: 처리하지 않음
+   * - ellipsis: ...으로 표시
+   * - clip: 영역에서 잘림
+   * - slide: 슬라이드 애니메이션
+   */
+  textOverflow?: 'none' | 'ellipsis' | 'clip' | 'slide';
+  /**
+   * 슬라이드 모드 (textOverflow가 'slide'일 때만 적용)
+   * - false: 끝까지 보여주면 다시 처음으로 (continuous)
+   * - true: 오른쪽으로 지나가서 왼쪽으로 나오는 한바퀴 도는 형태 (rotate)
+   */
+  rotate?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -54,6 +67,8 @@ const props = withDefaults(defineProps<Props>(), {
   showIcon: false,
   center: false,
   autoClose: 0,
+  textOverflow: 'none',
+  rotate: false,
 });
 
 const emit = defineEmits<{
@@ -165,9 +180,34 @@ const containerClasses = computed(() => {
 const iconColor = computed<string>(() => {
   // filled에서는 대비를 위해 흰색 아이콘, 나머지는 텍스트 색상 사용
   if (props.variant === 'filled') return 'var(--font-color-white)';
-  // text 클래스가 Tailwind 유틸로 되어 있어서 직접 색 값이 아니므로, 보더/텍스트 토큰과 일치하도록 currentColor 사용
-  // 외부 래퍼에서 텍스트 색이 이미 적용되므로 currentColor가 자연스럽게 적용됨
   return 'currentColor';
+});
+
+// 텍스트 오버플로우 처리
+const textOverflowClasses = computed(() => {
+  const base = ['text-sm', 'leading-5'];
+
+  switch (props.textOverflow) {
+    case 'ellipsis':
+      return [...base, 'truncate'];
+    case 'clip':
+      return [...base, 'overflow-hidden', 'whitespace-nowrap'];
+    case 'slide':
+      return [...base, 'overflow-hidden', 'whitespace-nowrap'];
+    default:
+      return base;
+  }
+});
+
+const isSliding = computed(() => {
+  return props.textOverflow === 'slide';
+});
+
+const slideAnimationClass = computed(() => {
+  if (!isSliding.value) return '';
+
+  const base = 'base-alert-slide';
+  return props.rotate ? `${base} ${base}--rotate` : base;
 });
 
 // showAfter/hideAfter 제거
@@ -223,8 +263,13 @@ function handleClose() {
         <div v-if="title || $slots.title" class="mb-0.5 font-semibold">
           <slot name="title">{{ title }}</slot>
         </div>
-        <div class="text-sm leading-5">
-          <slot>
+        <div :class="textOverflowClasses">
+          <span v-if="isSliding" :class="slideAnimationClass">
+            <slot>
+              {{ description }}
+            </slot>
+          </span>
+          <slot v-else>
             {{ description }}
           </slot>
         </div>

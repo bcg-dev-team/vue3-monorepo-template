@@ -367,7 +367,6 @@ const isAutoLiquidationOpen = ref(false); // 자동 청산 토글 상태
 const isBuyActive = ref(false); // 매수 버튼 토글 상태
 const isSellActive = ref(false); // 매도 버튼 토글 상태
 const selectedAccount = ref('account1'); // 선택된 계좌
-const isDropdownOpen = ref(false); // 드롭다운 토글 상태
 
 // 선택된 심볼의 실시간 가격 사용
 const buyPrice = computed(() => {
@@ -435,20 +434,18 @@ const accountOptions = computed(() => {
   return [
     {
       value: 'account1',
-      label: '라이브계좌#1 110-81-345150 (USD 100,000)',
+      label: '라이브계좌#1 110-81-345150',
+    },
+    {
+      value: 'account2',
+      label: '라이브계좌#2 110-81-345151',
+    },
+    {
+      value: 'account3',
+      label: '데모계좌#1 110-81-345152',
     },
   ];
 });
-
-const selectedAccountLabel = computed(() => {
-  const option = accountOptions.value.find((opt) => opt.value === selectedAccount.value);
-  return option?.label || '계좌를 선택하세요';
-});
-
-const selectAccount = (value: string) => {
-  selectedAccount.value = value;
-  isDropdownOpen.value = false;
-};
 
 const buyButtonClasses = computed(() => {
   const baseClasses = 'flex w-full flex-col items-center justify-center gap-1 rounded-md p-3 ';

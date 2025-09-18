@@ -315,7 +315,7 @@ const inputValue = computed(() => {
       @mousedown="handleIncrease"
       @click.prevent.stop
     >
-      <BaseIcon name="plus" :size="iconSize" style="pointer-events: none" />
+      <BaseIcon name="plus" :size="iconSize" />
     </div>
 
     <!-- 감소 버튼 -->
@@ -325,7 +325,7 @@ const inputValue = computed(() => {
       @mousedown="handleDecrease"
       @click.prevent.stop
     >
-      <BaseIcon name="minus" :size="iconSize" style="pointer-events: none" />
+      <BaseIcon name="minus" :size="iconSize" />
     </div>
   </div>
 </template>

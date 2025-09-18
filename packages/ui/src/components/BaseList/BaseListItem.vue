@@ -133,7 +133,7 @@ const handleKeyDown = (event: KeyboardEvent) => {
       class="list-item__secondary-action"
       @click.prevent="handleSecondaryActionClick"
     >
-      <BaseIcon :name="props.secondaryAction.name" size="md" class="icon" />
+      <BaseIcon :name="props.secondaryAction.name" size="md" />
     </div>
   </li>
 </template>

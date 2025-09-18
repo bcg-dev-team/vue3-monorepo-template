@@ -117,7 +117,7 @@ const getRadioOptionClasses = (
             type="button"
           >
             <!-- 아이콘이 있는 경우 -->
-            <BaseIcon v-if="option.icon" :name="option.icon" class="h-4 w-4" />
+            <BaseIcon v-if="option.icon" :name="option.icon" className="h-4 w-4" />
 
             <!-- 옵션 라벨 -->
             {{ option.label }}

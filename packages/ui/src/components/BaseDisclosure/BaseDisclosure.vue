@@ -103,8 +103,8 @@ const defaultPanelClasses = 'px-4 pb-2 pt-4 text-sm text-gray-500 w-full';
           class="absolute top-1/2 flex-shrink-0 -translate-y-1/2 transform"
           :style="arrowPositionStyle"
         >
-          <BaseIcon name="arrow-down" :class="open ? 'hidden' : 'block'" class="h-5 w-5" />
-          <BaseIcon name="arrow-up" :class="!open ? 'hidden' : 'block'" class="h-5 w-5" />
+          <BaseIcon name="arrow-down" :className="`h-5 w-5 ${open ? 'hidden' : 'block'}`" />
+          <BaseIcon name="arrow-up" :className="`h-5 w-5 ${!open ? 'hidden' : 'block'}`" />
         </div>
       </DisclosureButton>
 
@@ -117,8 +117,8 @@ const defaultPanelClasses = 'px-4 pb-2 pt-4 text-sm text-gray-500 w-full';
     <template v-else>
       <DisclosureButton :class="defaultButtonClasses" as="div">
         <span class="min-w-0 flex-1">{{ buttonText }}</span>
-        <BaseIcon name="arrow-down" :class="open ? 'hidden' : 'block'" class="h-5 w-5" />
-        <BaseIcon name="arrow-up" :class="!open ? 'hidden' : 'block'" class="h-5 w-5" />
+        <BaseIcon name="arrow-down" :className="`h-5 w-5 ${open ? 'hidden' : 'block'}`" />
+        <BaseIcon name="arrow-up" :className="`h-5 w-5 ${!open ? 'hidden' : 'block'}`" />
       </DisclosureButton>
 
       <DisclosurePanel :class="defaultPanelClasses" as="div">

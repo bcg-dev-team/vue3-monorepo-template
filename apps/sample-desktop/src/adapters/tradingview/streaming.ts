@@ -359,9 +359,9 @@ function updateBarsForSymbol(symbol: string, realtimeBar: Bar): void {
     }
   });
 
-  console.log(
-    `[updateBarsForSymbol] 완료: ${symbol} - ${matchedCount}개 구독, ${resolutionGroups.size}개 resolution`
-  );
+  // console.log(
+  //   `[updateBarsForSymbol] 완료: ${symbol} - ${matchedCount}개 구독, ${resolutionGroups.size}개 resolution`
+  // );
 }
 
 /**

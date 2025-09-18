@@ -35,13 +35,13 @@ class WebSocketManager {
       }
 
       this.isConnecting = true;
-      console.log('[RealWebSocket] 연결 시도:', this.url);
+      console.log('[WebSocket] 연결 시도:', this.url);
 
       try {
         this.ws = new WebSocket(this.url);
 
         this.ws.onopen = () => {
-          console.log('[RealWebSocket] 연결 성공');
+          console.log('[WebSocket] 연결 성공');
           this.isConnecting = false;
           this.reconnectAttempts = 0;
 
@@ -57,18 +57,18 @@ class WebSocketManager {
 
             // 하트비트 응답 처리
             if (data.type === 'pong') {
-              console.log('[RealWebSocket] 하트비트 응답 수신');
+              console.log('[WebSocket] 하트비트 응답 수신');
               return;
             }
 
             this.handleMessage(data);
           } catch (error) {
-            console.error('[RealWebSocket] 메시지 파싱 오류:', error);
+            console.error('[WebSocket] 메시지 파싱 오류:', error);
           }
         };
 
         this.ws.onclose = (event) => {
-          console.log('[RealWebSocket] 연결 종료:', event.code, event.reason);
+          console.log('[WebSocket] 연결 종료:', event.code, event.reason);
           this.isConnecting = false;
           this.ws = null;
 
@@ -83,12 +83,12 @@ class WebSocketManager {
           ) {
             this.scheduleReconnect();
           } else if (event.code === 1008) {
-            console.error('[RealWebSocket] 서버에서 연결을 거부했습니다. 서버 상태를 확인하세요.');
+            console.error('[WebSocket] 서버에서 연결을 거부했습니다. 서버 상태를 확인하세요.');
           }
         };
 
         this.ws.onerror = (error) => {
-          console.error('[RealWebSocket] 연결 오류:', error);
+          console.error('[WebSocket] 연결 오류:', error);
           this.isConnecting = false;
           reject(error);
         };
@@ -107,7 +107,7 @@ class WebSocketManager {
     const delay = this.reconnectDelay * Math.pow(2, this.reconnectAttempts - 1);
 
     console.log(
-      `[RealWebSocket] ${delay}ms 후 재연결 시도 (${this.reconnectAttempts}/${this.maxReconnectAttempts})`
+      `[WebSocket] ${delay}ms 후 재연결 시도 (${this.reconnectAttempts}/${this.maxReconnectAttempts})`
     );
 
     setTimeout(() => {
@@ -128,7 +128,7 @@ class WebSocketManager {
           try {
             callback(data);
           } catch (error) {
-            console.error('[RealWebSocket] 콜백 오류:', error);
+            console.error('[WebSocket] 콜백 오류:', error);
           }
         });
       }
@@ -140,7 +140,7 @@ class WebSocketManager {
    */
   subscribe(symbol: string, callback: (data: any) => void): string {
     const subscriptionId = `${symbol}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    console.log('[RealWebSocket] 구독 시작:', symbol, 'ID:', subscriptionId);
+    console.log('[WebSocket] 구독 시작:', symbol, 'ID:', subscriptionId);
 
     if (!this.subscriptions.has(symbol)) {
       this.subscriptions.set(symbol, new Set());
@@ -166,7 +166,7 @@ class WebSocketManager {
    * 구독 해제
    */
   unsubscribe(symbol: string, callback: (data: any) => void): void {
-    console.log('[RealWebSocket] 구독 해제:', symbol);
+    console.log('[WebSocket] 구독 해제:', symbol);
 
     const callbacks = this.subscriptions.get(symbol);
     if (callbacks) {
@@ -195,13 +195,13 @@ class WebSocketManager {
    * ID로 구독 해제
    */
   unsubscribeById(subscriptionId: string): void {
-    console.log('[RealWebSocket] ID로 구독 해제:', subscriptionId);
+    console.log('[WebSocket] ID로 구독 해제:', subscriptionId);
 
     for (const [symbol, callbacks] of this.subscriptions.entries()) {
       for (const callbackWithId of callbacks) {
         if (callbackWithId.id === subscriptionId) {
           callbacks.delete(callbackWithId);
-          console.log('[RealWebSocket] 구독 해제됨:', symbol, 'ID:', subscriptionId);
+          console.log('[WebSocket] 구독 해제됨:', symbol, 'ID:', subscriptionId);
 
           if (callbacks.size === 0) {
             this.subscriptions.delete(symbol);
@@ -228,7 +228,7 @@ class WebSocketManager {
             timestamp: Date.now(),
           })
         );
-        console.log('[RealWebSocket] 하트비트 전송');
+        console.log('[WebSocket] 하트비트 전송');
       }
     }, this.heartbeatInterval);
   }
@@ -255,9 +255,9 @@ class WebSocketManager {
       };
 
       this.ws.send(JSON.stringify(message));
-      console.log(`[RealWebSocket] 서버에 ${action} 요청 전송:`, symbol);
+      console.log(`[WebSocket] 서버에 ${action} 요청 전송:`, symbol);
     } else {
-      console.warn('[RealWebSocket] 웹소켓이 연결되지 않음');
+      console.warn('[WebSocket] 웹소켓이 연결되지 않음');
     }
   }
 
@@ -281,7 +281,7 @@ class WebSocketManager {
     }
     this.subscriptions.clear();
     this.reconnectAttempts = 0;
-    console.log('[RealWebSocket] 연결 종료');
+    console.log('[WebSocket] 연결 종료');
   }
 
   /**

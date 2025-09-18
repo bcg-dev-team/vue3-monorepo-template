@@ -49,7 +49,7 @@ export class UnifiedDataSourceManager {
 
     // 데이터 소스에 따라 구독
     if (this.config.useWebSocket) {
-      this.subscribeToRealWebSocket(symbol, subscriptionId);
+      this.subscribeToWebSocket(symbol, subscriptionId);
     } else {
       this.subscribeToMSW(symbol, subscriptionId);
     }
@@ -60,7 +60,7 @@ export class UnifiedDataSourceManager {
   /**
    * 실제 WebSocket 구독
    */
-  private subscribeToRealWebSocket(symbol: string, subscriptionId: string): void {
+  private subscribeToWebSocket(symbol: string, subscriptionId: string): void {
     webSocketManager.subscribe(symbol, (data: any) => {
       this.updateMarketData(symbol, data);
     });

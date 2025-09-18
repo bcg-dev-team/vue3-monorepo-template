@@ -81,8 +81,8 @@ export const USE_WEBSOCKET = true;
 ```
 [useSelectedSymbol] MSW 구독 시작: EURUSD (ID: ...)
 [useSelectedSymbol] 실제 웹소켓 구독 시작: EURUSD (ID: ...)
-[RealWebSocket] 연결 성공
-[RealWebSocket] 연결 오류: ...
+[WebSocket] 연결 성공
+[WebSocket] 연결 오류: ...
 ```
 
 ### 네트워크 탭 확인

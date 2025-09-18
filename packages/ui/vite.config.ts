@@ -40,12 +40,13 @@ export default defineConfig({
     target: 'esnext',
     minify: 'esbuild',
     rollupOptions: {
-      external: ['vue', '@template/types', '@template/theme'],
+      external: ['vue', '@template/types', '@template/theme', '@template/utils'],
       output: {
         globals: {
           vue: 'Vue',
           '@template/types': 'TemplateTypes',
           '@template/theme': 'TemplateTheme',
+          '@template/utils': 'TemplateUtils',
         },
         exports: 'named',
         preserveModules: true,

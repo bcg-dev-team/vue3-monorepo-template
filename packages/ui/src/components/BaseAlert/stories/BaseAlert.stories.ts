@@ -85,11 +85,29 @@ const meta: Meta<typeof BaseAlert> = {
       control: { type: 'boolean' },
       table: { category: 'Props' },
     },
-    // showAfter/hideAfter 제거됨
     autoClose: {
       description: '자동 닫힘(ms)',
       control: { type: 'number' },
       table: { category: 'Behavior' },
+    },
+    textOverflow: {
+      description: '텍스트 오버플로우 처리 방식',
+      control: { type: 'select' },
+      options: ['none', 'ellipsis', 'clip', 'slide'],
+      table: {
+        type: { summary: 'none | ellipsis | clip | slide' },
+        defaultValue: { summary: 'none' },
+        category: 'Text',
+      },
+    },
+    rotate: {
+      description: '슬라이드 모드 <br/> - ture: 회전 모드 <br/> - false: 회전 모드 off',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+        category: 'Text',
+      },
     },
   },
 };
@@ -259,4 +277,132 @@ export const DelayedAttributes: Story = {
       </div>
     `,
   }),
+};
+
+// 텍스트 오버플로우 처리 예제들
+export const TextOverflowEllipsis: Story = {
+  args: {
+    description:
+      '이것은 매우 긴 텍스트입니다. 이 텍스트는 컨테이너 너비를 넘어가므로 ellipsis(...)로 표시됩니다.',
+    textOverflow: 'ellipsis',
+    closable: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '긴 텍스트가 ellipsis(...)로 표시됩니다.',
+      },
+    },
+  },
+};
+
+export const TextOverflowClip: Story = {
+  args: {
+    description:
+      '이것은 매우 긴 텍스트입니다. 이 텍스트는 컨테이너 너비를 넘어가므로 영역에서 잘립니다.',
+    textOverflow: 'clip',
+    closable: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '긴 텍스트가 영역에서 잘립니다.',
+      },
+    },
+  },
+};
+
+export const TextOverflowSlideContinuous: Story = {
+  args: {
+    description:
+      '이것은 매우 긴 텍스트입니다. 이 텍스트는 컨테이너 너비를 넘어가므로 슬라이드 애니메이션이 적용됩니다. 끝까지 보여주면 다시 처음으로 돌아갑니다.',
+    textOverflow: 'slide',
+    rotate: false,
+    closable: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '긴 텍스트가 슬라이드 애니메이션으로 표시됩니다. 끝까지 나오면 다시 반대로 흐르다가 처음으로 돌아가면 다시 흐르게 됩니다.',
+      },
+    },
+  },
+};
+
+export const TextOverflowSlideRotate: Story = {
+  args: {
+    description:
+      '이것은 매우 긴 텍스트입니다. 이 텍스트는 컨테이너 너비를 넘어가므로 슬라이드 애니메이션이 적용됩니다. 오른쪽으로 지나가서 왼쪽으로 나오는 한바퀴 도는 형태입니다.',
+    textOverflow: 'slide',
+    rotate: true,
+    closable: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '긴 텍스트가 슬라이드 애니메이션으로 표시됩니다. 왼쪽으로 흐르다가 다 읽히면 오른쪽으로 문단 제일 앞쪽이 나오는 식입니다.',
+      },
+    },
+  },
+};
+
+export const TextOverflowComparison: Story = {
+  render: () => ({
+    components: { BaseAlert },
+    template: `
+      <div class="space-y-4">
+        <div>
+          <h3 class="text-sm font-medium mb-2">None (기본)</h3>
+          <BaseAlert
+            description="이것은 매우 긴 텍스트입니다. 이 텍스트는 컨테이너 너비를 넘어가지만 오버플로우 처리가 적용되지 않습니다."
+            text-overflow="none"
+            :closable="false"
+          />
+        </div>
+        <div>
+          <h3 class="text-sm font-medium mb-2">Ellipsis</h3>
+          <BaseAlert
+            description="이것은 매우 긴 텍스트입니다. 이 텍스트는 컨테이너 너비를 넘어가므로 ellipsis(...)로 표시됩니다."
+            text-overflow="ellipsis"
+            :closable="false"
+          />
+        </div>
+        <div>
+          <h3 class="text-sm font-medium mb-2">Clip</h3>
+          <BaseAlert
+            description="이것은 매우 긴 텍스트입니다. 이 텍스트는 컨테이너 너비를 넘어가므로 영역에서 잘립니다."
+            text-overflow="clip"
+            :closable="false"
+          />
+        </div>
+        <div>
+          <h3 class="text-sm font-medium mb-2">Slide (Continuous)</h3>
+          <BaseAlert
+            description="이것은 매우 긴 텍스트입니다. 이 텍스트는 컨테이너 너비를 넘어가므로 슬라이드 애니메이션이 적용됩니다. 끝까지 나오면 다시 반대로 흐르다가 처음으로 돌아가면 다시 흐르게 됩니다."
+            text-overflow="slide"
+            :rotate="false"
+            :closable="false"
+          />
+        </div>
+        <div>
+          <h3 class="text-sm font-medium mb-2">Slide (Rotate)</h3>
+          <BaseAlert
+            description="이것은 매우 긴 텍스트입니다. 이 텍스트는 컨테이너 너비를 넘어가므로 슬라이드 애니메이션이 적용됩니다. 왼쪽으로 흐르다가 다 읽히면 오른쪽으로 문단 제일 앞쪽이 나오는 식입니다."
+            text-overflow="slide"
+            :rotate="true"
+            :closable="false"
+          />
+        </div>
+      </div>
+    `,
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story: '다양한 텍스트 오버플로우 처리 방식을 비교할 수 있습니다.',
+      },
+    },
+  },
 };

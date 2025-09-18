@@ -22,13 +22,7 @@ export { parseFullSymbol } from './utils/symbols.js';
 export type { ParsedSymbol } from './utils/symbols.js';
 
 // 타입 export (MSW 전용 타입들만)
-export type {
-  CryptoCompareApiData,
-  WebSocketMessage,
-  ChartConfig,
-  Bar,
-  OrderData,
-} from './types/chart.js';
+export type { ChartApiData, WebSocketMessage, ChartConfig, Bar, OrderData } from './types/chart.js';
 export * from './types/orders.js';
 
 // 공통 타입들은 @template/types에서 import

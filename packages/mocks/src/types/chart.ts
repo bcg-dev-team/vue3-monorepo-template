@@ -5,8 +5,9 @@
 
 // TradingView 차트 바 데이터는 @template/types로 이동됨
 
-// API 응답 데이터 (CryptoCompare)
-export interface CryptoCompareApiData {
+// 차트 API 응답 데이터
+// CryptoCompare API 응답 형태 참고: https://www.rubydoc.info/gems/cryptocompare/Cryptocompare/HistoDay
+export interface ChartApiData {
   Response?: string;
   Message?: string;
   HasWarning?: boolean;

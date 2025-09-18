@@ -3,7 +3,7 @@
  * 통합된 /data/history 엔드포인트로 모든 시간대 데이터를 처리합니다.
  */
 
-import type { CryptoCompareApiData } from '../../types/chart.js';
+import type { ChartApiData } from '../../types/chart.js';
 import { http, HttpResponse } from 'msw';
 
 /**
@@ -97,7 +97,7 @@ function generateHistoryData(
   resolution: string,
   limit: number,
   basePrice: number = 50000
-): CryptoCompareApiData['Data'] {
+): ChartApiData['Data'] {
   const data = [];
   const now = Math.floor(Date.now() / 1000);
   const timeInterval = getTimeInterval(resolution);
@@ -292,7 +292,7 @@ export const chartHttpHandlers = [
       filteredData = historyData.filter((item) => item.time <= toTimestamp);
     }
 
-    const response: CryptoCompareApiData = {
+    const response: ChartApiData = {
       Response: 'Success',
       Message: '',
       HasWarning: false,

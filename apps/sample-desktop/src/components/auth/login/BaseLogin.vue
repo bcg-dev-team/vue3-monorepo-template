@@ -1,5 +1,5 @@
 <template>
-  <div class="gap-size-16 mt-4 flex flex-col">
+  <form @submit.prevent name="login" class="gap-size-16 mt-4 flex flex-col">
     <div class="bg-bg-bg-innerframe flex h-[46px] items-center justify-center">
       <!-- 실거래, 모의거래 RadioGroup -->
       <!-- [FIXME]: BaseRadioGroup 컴포넌트로 대체될 영역-->
@@ -35,7 +35,12 @@
       </RadioGroup>
     </div>
     <FormField label="이메일주소(ID)">
-      <BaseInput size="md" placeholder="example@email.com" v-model="email" />
+      <BaseInput
+        size="md"
+        placeholder="example@email.com"
+        v-model="email"
+        autocomplete="username"
+      />
     </FormField>
     <FormField label="비밀번호">
       <BaseInput
@@ -57,7 +62,7 @@
         <Anchor size="sm" to="reset-password">비밀번호 재설정</Anchor>
       </div>
     </div>
-  </div>
+  </form>
   <div class="mt-[33px]">
     <BaseButton
       size="lg"

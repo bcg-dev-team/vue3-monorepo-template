@@ -127,8 +127,7 @@ const buttonClasses = computed(() => {
             name="arrow-down"
             :size="size === 'sm' ? 'sm' : 'md'"
             :color="disabled ? 'disabled' : 'default'"
-            :class="{ 'rotate-180': open }"
-            class="ml-2 flex-shrink-0 transition-transform duration-200"
+            :className="`ml-2 flex-shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : ''}`"
           />
         </ListboxButton>
 

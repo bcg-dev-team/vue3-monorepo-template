@@ -344,7 +344,6 @@ const getSkeletonHeight = () => {
       :name="props.leftIcon.name"
       :size="getIconSize(props.size)"
       :color="getIconColor(props.leftIcon, props.color)"
-      class="icon"
     />
 
     <!-- 중앙 아이콘 -->
@@ -353,7 +352,6 @@ const getSkeletonHeight = () => {
       :name="props.centerIcon.name"
       :size="getIconSize(props.size)"
       :color="getIconColor(props.centerIcon, props.color)"
-      class="icon"
     />
 
     <!-- 텍스트 영역 (중앙 아이콘이 없을 때만) -->
@@ -372,7 +370,6 @@ const getSkeletonHeight = () => {
       :name="props.rightIcon.name"
       :size="getIconSize(props.size)"
       :color="getIconColor(props.rightIcon, props.color)"
-      class="icon"
     />
 
     <!-- 기본 슬롯 -->

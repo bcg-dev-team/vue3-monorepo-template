@@ -3,8 +3,8 @@
 </template>
 
 <script setup lang="ts">
-import { chartManager } from '@/utils/chart/ChartManager';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
+import { getChartManager } from '@/services/managers';
 
 interface Props {
   symbol?: string;
@@ -28,6 +28,7 @@ watch(
   (newSymbol) => {
     if (isChartReady.value) {
       console.log('[TradingView] Symbol changed:', newSymbol);
+      const chartManager = getChartManager();
       chartManager.changeSymbol(newSymbol);
     }
   }
@@ -36,6 +37,7 @@ watch(
 onMounted(async () => {
   try {
     // ChartManager를 사용하여 차트 초기화
+    const chartManager = getChartManager();
     await chartManager.initializeChart({
       symbol: props.symbol,
       interval: '1', // 고정값
@@ -56,6 +58,7 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
+  const chartManager = getChartManager();
   chartManager.destroy();
   isChartReady.value = false;
   console.log('[TradingView] Chart destroyed');
@@ -65,11 +68,13 @@ onUnmounted(() => {
 defineExpose({
   changeChartSymbol: (symbol: string) => {
     if (isChartReady.value) {
+      const chartManager = getChartManager();
       chartManager.changeSymbol(symbol);
     }
   },
   refreshChart: () => {
     if (isChartReady.value) {
+      const chartManager = getChartManager();
       chartManager.refreshChart();
     }
   },

@@ -3,7 +3,7 @@
  * Mock과 WebSocket을 명확히 분리하여 관리
  */
 
-import { getDataSourceConfig } from '../config/dataSource';
+import { getDataSourceConfig } from '../../../config/dataSource';
 import { webSocketManager } from './WebSocketManager';
 import type { SymbolData } from '@template/types';
 

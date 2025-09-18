@@ -3,7 +3,7 @@
  * WebSocket/MSW 통합 데이터 소스 관리 및 구독 처리
  */
 
-import { unifiedDataSourceManager } from '../services/UnifiedDataSourceManager';
+import { getDataSourceManager } from '../services/managers';
 import { ref, computed, readonly } from 'vue';
 
 export function useDataSourceManager() {
@@ -15,6 +15,7 @@ export function useDataSourceManager() {
   const initialize = async () => {
     try {
       connectionStatus.value = 'connecting';
+      const unifiedDataSourceManager = getDataSourceManager();
       await unifiedDataSourceManager.initialize();
       connectionStatus.value = 'connected';
       console.log('[useDataSourceManager] 통합 데이터 소스 초기화 완료');
@@ -26,6 +27,7 @@ export function useDataSourceManager() {
 
   // 심볼 구독
   const subscribeToSymbol = (symbol: string, callback: (data: any) => void): string => {
+    const unifiedDataSourceManager = getDataSourceManager();
     const subscriptionId = unifiedDataSourceManager.subscribe(symbol, callback);
     subscriptions.value.set(symbol, subscriptionId);
     console.log(`[useDataSourceManager] 데이터 소스 구독 시작: ${symbol} (ID: ${subscriptionId})`);
@@ -34,6 +36,7 @@ export function useDataSourceManager() {
 
   // 심볼 구독 해제
   const unsubscribeFromSymbol = (symbol: string): void => {
+    const unifiedDataSourceManager = getDataSourceManager();
     const subscriptionId = subscriptions.value.get(symbol);
     if (subscriptionId) {
       unifiedDataSourceManager.unsubscribe(subscriptionId);
@@ -46,6 +49,7 @@ export function useDataSourceManager() {
 
   // 모든 구독 해제
   const unsubscribeAll = (): void => {
+    const unifiedDataSourceManager = getDataSourceManager();
     subscriptions.value.forEach((subscriptionId, symbol) => {
       unifiedDataSourceManager.unsubscribe(subscriptionId);
     });
@@ -55,11 +59,15 @@ export function useDataSourceManager() {
 
   // 설정 업데이트
   const updateConfig = () => {
+    const unifiedDataSourceManager = getDataSourceManager();
     unifiedDataSourceManager.updateConfig();
   };
 
   // 연결 상태
-  const isConnected = computed(() => unifiedDataSourceManager.isConnected());
+  const isConnected = computed(() => {
+    const unifiedDataSourceManager = getDataSourceManager();
+    return unifiedDataSourceManager.isConnected();
+  });
 
   return {
     // 상태

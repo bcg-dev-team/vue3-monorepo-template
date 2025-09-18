@@ -4,7 +4,7 @@
  */
 
 import type { TradingViewWidgetConfig, TradingViewWidget } from '@/types/tradingview';
-import type { ChartConfig, ChartSymbolInfo } from './ChartConfig';
+import type { ChartConfig, ChartSymbolInfo } from '@template/types';
 import Datafeed from '@/adapters/tradingview/datafeed.js';
 
 export class ChartManager {

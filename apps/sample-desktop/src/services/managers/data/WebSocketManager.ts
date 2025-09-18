@@ -1,10 +1,10 @@
-import { getDataSourceConfig } from '../config/dataSource';
+import { getDataSourceConfig } from '../../../config/dataSource';
 
 /**
  * 웹소켓 연결을 관리하는 클래스
  * TODO: 백엔드 웹소켓 구현에 따라 리팩토링 필요
  */
-class WebSocketManager {
+export class WebSocketManager {
   private ws: WebSocket | null = null;
   private subscriptions = new Map<string, Set<{ id: string; callback: (data: any) => void }>>();
   private reconnectAttempts = 0;

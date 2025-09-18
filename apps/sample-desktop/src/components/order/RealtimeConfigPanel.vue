@@ -1,4 +1,4 @@
-<!-- 개발용 디버깅 패널 -->
+<!-- TODO: 주문 페이지 상단 개발용 디버깅 패널로, 추후 제거 필요 -->
 <template>
   <div class="dev-panel">
     <div class="dev-header" @click="togglePanel">

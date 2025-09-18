@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import BaseInputText from '../BaseInputText.vue';
 
 const meta: Meta<typeof BaseInputText> = {
-  title: 'Inputs/Text',
+  title: 'Inputs/BaseInputText',
   component: BaseInputText,
   parameters: {
     docs: {

@@ -10,7 +10,7 @@ type BaseStepperProps = {
 );
 
 const meta: Meta<BaseStepperProps> = {
-  title: 'Components/BaseStepper',
+  title: 'Stepper/BaseStepper',
   component: BaseStepper as any,
   parameters: {
     layout: 'centered',

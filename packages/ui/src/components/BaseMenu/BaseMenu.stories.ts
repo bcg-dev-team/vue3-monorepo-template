@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import BaseMenu from './BaseMenu.vue';
 
 const meta: Meta<typeof BaseMenu> = {
-  title: 'Components/BaseMenu',
+  title: 'Menu/BaseMenu',
   component: BaseMenu,
   tags: ['autodocs'],
   parameters: {

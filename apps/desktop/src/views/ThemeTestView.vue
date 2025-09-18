@@ -15,11 +15,11 @@
       <div class="example-section">
         <h3>버튼 컴포넌트</h3>
         <div class="button-examples">
-          <BaseButton variant="primary" label="Primary 버튼" />
-          <BaseButton variant="outline" label="Secondary 버튼" />
-          <BaseButton variant="blue" label="Blue 버튼" />
-          <BaseButton variant="red" label="Red 버튼" />
-          <BaseButton variant="pill" label="Pill 버튼" />
+          <BaseButton variant="contained" color="primary" label="Primary 버튼" />
+          <BaseButton variant="outlined" color="primary" label="Secondary 버튼" />
+          <BaseButton variant="contained" color="blue" label="Blue 버튼" />
+          <BaseButton variant="contained" color="red" label="Red 버튼" />
+          <BaseButton variant="contained" color="primary" pill label="Pill 버튼" />
         </div>
       </div>
 
@@ -34,11 +34,11 @@
       <div class="example-section">
         <h3>BaseButton 컴포넌트</h3>
         <div class="naive-examples">
-          <BaseButton variant="primary" label="Primary" />
-          <BaseButton variant="outline" label="Outline" />
-          <BaseButton variant="blue" label="Blue" />
-          <BaseButton variant="red" label="Red" />
-          <BaseButton variant="disabled" label="Disabled" />
+          <BaseButton variant="contained" color="primary" label="Primary" />
+          <BaseButton variant="outlined" color="primary" label="Outline" />
+          <BaseButton variant="contained" color="blue" label="Blue" />
+          <BaseButton variant="contained" color="red" label="Red" />
+          <BaseButton variant="contained" color="grey" disabled label="Disabled" />
         </div>
       </div>
     </div>

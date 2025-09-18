@@ -2,7 +2,7 @@ import BaseFileUploadButton from '../BaseFileUploadButton.vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta<typeof BaseFileUploadButton> = {
-  title: 'Buttons/FileUploadButton',
+  title: 'Buttons/BaseFileUploadButton',
   component: BaseFileUploadButton,
   tags: ['autodocs'],
   parameters: {

@@ -6,7 +6,7 @@ import BaseTableBody from '../BaseTableBody.vue';
 import BaseTableRow from '../BaseTableRow.vue';
 
 const meta: Meta<typeof BaseTableBody> = {
-  title: 'Table/Body',
+  title: 'Table/BaseTableBody',
   component: BaseTableBody,
   parameters: {
     docs: {

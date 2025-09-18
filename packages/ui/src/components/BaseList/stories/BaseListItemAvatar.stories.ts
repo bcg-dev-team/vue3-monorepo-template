@@ -86,24 +86,6 @@ BaseListItemAvatar는 리스트 아이템 내부에서 사용하는 아바타 �
         category: 'Props',
       },
     },
-    backgroundColor: {
-      description: '커스텀 배경색 (color가 custom일 때 사용)',
-      control: { type: 'text' },
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'undefined' },
-        category: 'Props',
-      },
-    },
-    iconColor: {
-      description: '커스텀 아이콘 색상 (color가 custom일 때 사용)',
-      control: { type: 'text' },
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'undefined' },
-        category: 'Props',
-      },
-    },
   },
   args: {
     src: undefined,
@@ -113,8 +95,6 @@ BaseListItemAvatar는 리스트 아이템 내부에서 사용하는 아바타 �
     icon: undefined,
     fallback: undefined,
     color: 'default',
-    backgroundColor: undefined,
-    iconColor: undefined,
   },
 };
 
@@ -270,54 +250,6 @@ export const ColorThemes: Story = {
             </template>
           </BaseListItem>
           <p style="margin: 12px 0 0 0; font-size: 12px; color: #666;">Purple</p>
-        </div>
-      </div>
-    `,
-  }),
-};
-
-// 커스텀 색상
-export const CustomColors: Story = {
-  args: {
-    color: 'custom',
-    backgroundColor: '#ff6b6b',
-    iconColor: '#ffffff',
-  },
-  render: (args) => ({
-    components: { BaseListItemAvatar, BaseListItem },
-    setup() {
-      return { args };
-    },
-    template: `
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; min-width: 500px; max-width: 600px; margin: 0 auto;">
-        <div style="text-align: center;">
-          <BaseListItem>
-            <template #content>
-              <BaseListItemAvatar 
-                v-bind="args" 
-                fallback="CC"
-                size="md"
-                variant="circular"
-              />
-            </template>
-          </BaseListItem>
-          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666;">Custom Red</p>
-        </div>
-        
-        <div style="text-align: center;">
-          <BaseListItem>
-            <template #content>
-              <BaseListItemAvatar 
-                color="custom"
-                backgroundColor="#4ecdc4"
-                iconColor="#ffffff"
-                fallback="CC"
-                size="md"
-                variant="circular"
-              />
-            </template>
-          </BaseListItem>
-          <p style="margin: 12px 0 0 0; font-size: 12px; color: #666;">Custom Teal</p>
         </div>
       </div>
     `,
@@ -631,9 +563,7 @@ export const InListItem: Story = {
                 :fallback="{ name: 'person', size: 'md' }"
                 size="md"
                 variant="square"
-                color="custom"
-                backgroundColor="#ff6b6b"
-                iconColor="#ffffff"
+                color="purple"
               />
               <span style="font-size: 16px; font-weight: 500;">Alice Brown</span>
             </div>
@@ -709,9 +639,7 @@ export const WithListItemText: Story = {
           <template #content>
               <BaseListItemAvatar 
                 fallback="AB"
-                color="custom"
-                backgroundColor="#ff6b6b"
-                iconColor="#ffffff"
+                color="purple"
                 variant="square"
               />
               <BaseListItemText 

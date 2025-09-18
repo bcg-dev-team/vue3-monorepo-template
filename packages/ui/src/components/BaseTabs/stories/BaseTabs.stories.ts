@@ -1,8 +1,6 @@
 import {
   BaseButton,
   BaseInput,
-  BaseInputText,
-  BaseInputPassword,
   BaseCheckbox,
   BaseChip,
   BaseProgressBar,
@@ -71,7 +69,7 @@ type Story = StoryObj<typeof meta>;
 
 // 프로필 정보 컴포넌트
 const ProfileInfoComponent = markRaw({
-  components: { BaseInput, BaseInputText, BaseButton, BaseIcon },
+  components: { BaseInput, BaseButton, BaseIcon },
   template: `
     <div class="space-y-4">
       <div class="flex items-center gap-3 mb-6">
@@ -105,7 +103,7 @@ const ProfileInfoComponent = markRaw({
 
 // 보안 설정 컴포넌트
 const SecuritySettingsComponent = markRaw({
-  components: { BaseInputPassword, BaseCheckbox, BaseButton, BaseProgressBar, BaseChip },
+  components: { BaseCheckbox, BaseButton, BaseProgressBar, BaseChip },
   template: `
     <div class="space-y-6">
       <div class="flex items-center gap-3 mb-6">
@@ -117,9 +115,6 @@ const SecuritySettingsComponent = markRaw({
       </div>
       
       <div class="space-y-4">
-        <BaseInputPassword label="현재 비밀번호" placeholder="현재 비밀번호를 입력하세요" />
-        <BaseInputPassword label="새 비밀번호" placeholder="새 비밀번호를 입력하세요" />
-        <BaseInputPassword label="새 비밀번호 확인" placeholder="새 비밀번호를 다시 입력하세요" />
         
         <div class="mt-4">
           <label class="text-sm font-medium mb-2 block">비밀번호 강도</label>

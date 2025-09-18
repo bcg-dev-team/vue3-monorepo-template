@@ -224,7 +224,7 @@ interface Props {
   name: IconName;           // 아이콘 이름
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | number; // 크기
   color?: string;           // 색상
-  class?: string;           // 추가 클래스
+  className?: string;           // 추가 클래스
 }
 ```
 

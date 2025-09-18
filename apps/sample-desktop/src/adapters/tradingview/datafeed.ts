@@ -1,5 +1,5 @@
-/* 
-datafeed api는 위젯 생성자에서 구현하고 datafeed 객체에 할당해야 하는 메서드 집합
+/*
+ * datafeed api는 위젯 생성자에서 구현하고 datafeed 객체에 할당해야 하는 메서드 집합
  */
 
 import type {
@@ -13,11 +13,9 @@ import type {
   ErrorCallback,
   RealtimeCallback,
   ResetCacheCallback,
-  CryptoCompareApiData,
 } from '@/types/tradingview';
 
 import { subscribeOnStream, unsubscribeFromStream } from './streaming';
-import { makeApiRequest, parseFullSymbol } from './helpers';
 const lastBarsCache = new Map<string, TradingViewBar>();
 
 const datafeed: TradingViewDatafeed = {
@@ -101,73 +99,11 @@ const datafeed: TradingViewDatafeed = {
     console.log('[getBars]: Method call', symbolInfo, resolution, from, to);
     console.log('[getBars]: full_name:', symbolInfo.full_name);
     console.log('[getBars]: resolution:', resolution);
-    const parsedSymbol = parseFullSymbol(symbolInfo.full_name || symbolInfo.name);
-    console.log('[getBars]: parsedSymbol:', parsedSymbol);
-
-    if (!parsedSymbol) {
-      console.error('[getBars]: 심볼 파싱 실패:', symbolInfo.full_name);
-      onErrorCallback(new Error('Invalid symbol format'));
-      return;
-    }
-
-    // 시간 간격별 데이터 요청 파라미터 조정
-    let dataLimit = 2000;
-    let timeMultiplier = 1;
-
-    // 시간 간격에 따른 데이터 요청 조정
-    if (resolution === '60' || resolution === '240') {
-      // 1시간, 4시간 간격의 경우 더 많은 데이터 요청
-      dataLimit = 5000;
-      timeMultiplier = 1;
-    } else if (resolution === '1D' || resolution === '1W' || resolution === '1M') {
-      // 일/주/월 간격의 경우
-      dataLimit = 1000;
-      timeMultiplier = 1;
-    } else {
-      // 분 단위 간격의 경우
-      dataLimit = 2000;
-      timeMultiplier = 1;
-    }
-
-    const urlParameters: Record<string, string | number> = {
-      e: symbolInfo.exchange,
-      fsym: parsedSymbol.fromSymbol,
-      tsym: parsedSymbol.toSymbol,
-      toTs: to,
-      limit: dataLimit,
-      resolution: resolution, // 해상도 정보 추가
-    };
-
-    const query = Object.keys(urlParameters)
-      .map((name) => `${name}=${encodeURIComponent(urlParameters[name])}`)
-      .join('&');
 
     try {
-      // 통합 API 엔드포인트 사용
-      const apiEndpoint = 'data/history';
-
-      const data: CryptoCompareApiData = await makeApiRequest(`${apiEndpoint}?${query}`);
-      if ((data.Response && data.Response === 'Error') || data.Data.length === 0) {
-        // "noData" should be set if there is no data in the requested period
-        onHistoryCallback([], { noData: true });
-        return;
-      }
-
-      let bars: TradingViewBar[] = [];
-      data.Data.forEach((bar) => {
-        if (bar.time >= from && bar.time < to) {
-          bars = [
-            ...bars,
-            {
-              time: bar.time * 1000,
-              low: bar.low,
-              high: bar.high,
-              open: bar.open,
-              close: bar.close,
-            },
-          ];
-        }
-      });
+      // mocks 패키지의 TradingView 히스토리 데이터 생성 함수 사용
+      const { generateTradingViewBars } = await import('@template/mocks');
+      const bars: TradingViewBar[] = generateTradingViewBars(symbolInfo.name, from, to, resolution);
 
       if (firstDataRequest && bars.length > 0) {
         lastBarsCache.set(symbolInfo.full_name || symbolInfo.name, {
@@ -287,9 +223,9 @@ function getSupportedResolutions(symbol: string): string[] {
   return configurationData.supported_resolutions;
 }
 
-// TODO: API 호출 방식으로 변경
-// Obtains all symbols for all exchanges supported by CryptoCompare API
-// MSW 환경에서 사용할 심볼 목록 (모킹된 데이터)
+/**
+ * MSW 환경에서 사용할 심볼 목록 가져오기
+ */
 export async function getAllSymbols(): Promise<TradingSymbol[]> {
   // mocks 패키지에서 실제 심볼 목록 가져오기
   const { getAllSymbols } = await import('@template/mocks');

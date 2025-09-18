@@ -76,6 +76,17 @@ export interface TradingSymbol {
   type: string;
 }
 
+// 심볼 가격 정보 타입
+export interface SymbolPrice {
+  ticker: string;
+  price: number;
+  change: number;
+  changePercent: number;
+  volume: number;
+  high24h: number;
+  low24h: number;
+}
+
 // 주문 데이터 타입
 export interface OrderData {
   id: number;

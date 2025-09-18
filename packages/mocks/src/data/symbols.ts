@@ -1,6 +1,5 @@
 /**
- * 거래 가능한 심볼 목록
- * 클라이언트에서 심볼 유효성 검증 및 표시에 사용됩니다.
+ * 거래 가능한 심볼 목록 및 기준 가격 데이터
  */
 
 import type { TradingSymbol } from '../types/chart.js';
@@ -140,53 +139,9 @@ export const SYMBOL_LIST: TradingSymbol[] = [
 });
 
 /**
- * 심볼 목록을 가져오는 함수
- * @returns 전체 심볼 목록
- */
-export function getAllSymbols(): TradingSymbol[] {
-  return [...SYMBOL_LIST];
-}
-
-/**
- * 특정 심볼을 검색하는 함수
- * @param query - 검색 쿼리
- * @returns 검색된 심볼 목록
- */
-export function searchSymbols(query: string): TradingSymbol[] {
-  const lowerQuery = query.toLowerCase();
-  return SYMBOL_LIST.filter(
-    (symbol) =>
-      symbol.ticker.toLowerCase().includes(lowerQuery) ||
-      symbol.description.toLowerCase().includes(lowerQuery)
-  );
-}
-
-/**
- * 심볼이 유효한지 확인하는 함수
- * @param ticker - 확인할 심볼 티커
- * @returns 유효한 심볼인지 여부
- */
-export function isValidSymbol(ticker: string): boolean {
-  return SYMBOL_LIST.some((symbol) => symbol.ticker === ticker);
-}
-
-/**
- * 심볼별 가격 정보 타입
- */
-export interface SymbolPrice {
-  ticker: string;
-  price: number;
-  change: number;
-  changePercent: number;
-  volume: number;
-  high24h: number;
-  low24h: number;
-}
-
-/**
  * 심볼별 기본 가격 설정 (실제 시장 가격 근사치)
  */
-const SYMBOL_BASE_PRICES: Record<string, number> = {
+export const SYMBOL_BASE_PRICES: Record<string, number> = {
   // 암호화폐
   BTCUSD: 50000,
   ETHUSD: 3000,
@@ -277,63 +232,3 @@ const SYMBOL_BASE_PRICES: Record<string, number> = {
   ESP35: 9500,
   SUI30: 12000,
 };
-
-/**
- * 심볼별 가격 정보를 생성하는 함수
- * @param ticker - 심볼 티커
- * @returns 가격 정보
- */
-export function generateSymbolPrice(ticker: string): SymbolPrice {
-  const basePrice = SYMBOL_BASE_PRICES[ticker] || 100;
-
-  // 가격 변동률 (-5% ~ +5%)
-  const changePercent = (Math.random() - 0.5) * 10;
-  const currentPrice = basePrice * (1 + changePercent / 100);
-  const change = currentPrice - basePrice;
-
-  // 24시간 고가/저가 (±2% 범위)
-  const high24h = currentPrice * (1 + Math.random() * 0.02);
-  const low24h = currentPrice * (1 - Math.random() * 0.02);
-
-  // 거래량 (심볼 타입에 따라 다름)
-  let baseVolume = 1000000;
-  const symbol = SYMBOL_LIST.find((s) => s.ticker === ticker);
-  if (symbol) {
-    if (symbol.type === 'crypto') baseVolume = 50000000;
-    else if (symbol.type === 'forex') baseVolume = 100000000;
-    else if (symbol.type === 'stock') baseVolume = 1000000;
-    else if (symbol.type === 'commodity') baseVolume = 5000000;
-  }
-
-  const volume = Math.floor(baseVolume * (0.5 + Math.random()));
-
-  return {
-    ticker,
-    price: Math.round(currentPrice * 100) / 100,
-    change: Math.round(change * 100) / 100,
-    changePercent: Math.round(changePercent * 100) / 100,
-    volume,
-    high24h: Math.round(high24h * 100) / 100,
-    low24h: Math.round(low24h * 100) / 100,
-  };
-}
-
-/**
- * 모든 심볼의 가격 정보를 가져오는 함수
- * @returns 모든 심볼의 가격 정보 배열
- */
-export function getAllSymbolPrices(): SymbolPrice[] {
-  return SYMBOL_LIST.map((symbol) => generateSymbolPrice(symbol.ticker));
-}
-
-/**
- * 특정 심볼의 가격 정보를 가져오는 함수
- * @param ticker - 심볼 티커
- * @returns 가격 정보 또는 null
- */
-export function getSymbolPrice(ticker: string): SymbolPrice | null {
-  if (!isValidSymbol(ticker)) {
-    return null;
-  }
-  return generateSymbolPrice(ticker);
-}

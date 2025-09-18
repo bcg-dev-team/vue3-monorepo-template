@@ -249,23 +249,7 @@ import type { User, PaginatedResponse } from '@template/types'
 
 ### **테스트 전략**
 
-```typescript
-// packages/utils/src/__tests__/passwordStrength.test.ts
-import { analyzePasswordStrength, getPasswordStrengthDisplay } from '../passwordStrength'
 
-describe('Password Strength Analysis', () => {
-  it('should analyze weak password correctly', () => {
-    const result = analyzePasswordStrength('password')
-    expect(result.score).toBe(0)
-  })
-  
-  it('should provide proper display data', () => {
-    const result = analyzePasswordStrength('StrongPass123!')
-    const display = getPasswordStrengthDisplay(result)
-    expect(display.label).toBe('강함')
-  })
-})
-```
 
 ## 🔗 관련 문서
 

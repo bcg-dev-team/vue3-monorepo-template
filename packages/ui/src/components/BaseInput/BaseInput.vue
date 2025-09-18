@@ -5,7 +5,6 @@
 -->
 <script setup lang="ts">
 import BaseProgressBar from '../BaseProgressBar/BaseProgressBar.vue';
-import { analyzePasswordStrength } from '@template/utils';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { computed, ref, watch } from 'vue';
 
@@ -76,6 +75,10 @@ interface Props {
    * 비밀번호 강도 분석 시 사용할 사용자 입력 데이터 (password-strength variant용)
    */
   userInputs?: string[];
+  /**
+   * autocomplete 속성 (직접 지정 시 우선 적용)
+   */
+  autocomplete?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -101,10 +104,7 @@ const emit = defineEmits<{
 const isPasswordVisible = ref(false);
 const internalValue = ref(props.modelValue || '');
 
-const passwordStrengthResult = computed(() => {
-  const result = analyzePasswordStrength(internalValue.value, props.userInputs);
-  return result.score;
-});
+const passwordStrengthResult = ref(0);
 
 const showVariantIcon = computed(
   () =>
@@ -171,6 +171,23 @@ const appendInnerClasses = computed(() => {
   return 'absolute right-0 top-0 h-full flex items-center pr-[15px] gap-1';
 });
 
+// Autocomplete 값 결정 (props.autocomplete가 있으면 우선 사용)
+const autocompleteValue = computed(() => {
+  // 직접 지정된 autocomplete 값이 있으면 우선 사용
+  if (props.autocomplete !== undefined) {
+    return props.autocomplete;
+  }
+
+  // variant 기반 자동 설정
+  if (props.variant === 'password' || props.variant === 'password-strength') {
+    return 'new-password';
+  }
+  if (props.variant === 'search') {
+    return 'off';
+  }
+  return undefined;
+});
+
 // 키 입력 방지 핸들러
 const handleKeydown = (event: KeyboardEvent) => {
   // 스페이스바 입력 방지
@@ -180,7 +197,7 @@ const handleKeydown = (event: KeyboardEvent) => {
 };
 
 // Input 입력 이벤트 핸들러
-const handleInput = (event: Event) => {
+const handleInput = async (event: Event) => {
   const target = event.target as HTMLInputElement;
   let value = target.value;
 
@@ -198,6 +215,17 @@ const handleInput = (event: Event) => {
 
   internalValue.value = value;
   emit('update:modelValue', value);
+
+  // password-strength variant일 때만 분석 실행
+  if (props.variant === 'password-strength') {
+    if (!value) {
+      passwordStrengthResult.value = 0;
+    } else {
+      const { analyzePasswordStrength } = await import('@template/utils');
+      const result = await analyzePasswordStrength(value, props.userInputs);
+      passwordStrengthResult.value = result.score;
+    }
+  }
 };
 
 // 키보드 접근성 이벤트 핸들러
@@ -256,6 +284,7 @@ defineExpose({
             :disabled="props.disabled"
             :readonly="readonly"
             :maxlength="maxLength"
+            :autocomplete="autocompleteValue"
             :class="inputClasses"
             @keydown.stop="handleSearchKeydown"
             @input="handleInput"

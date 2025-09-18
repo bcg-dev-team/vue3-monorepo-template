@@ -1,0 +1,13 @@
+/*
+  BaseAlert 전용 SCSS (Tailwind로 제어 불가한 부분이 생길 경우 확장)
+  현재는 기본 전환 애니메이션만 포함
+*/
+
+.base-alert-enter-active,
+.base-alert-leave-active {
+  transition: opacity 150ms ease;
+}
+.base-alert-enter-from,
+.base-alert-leave-to {
+  opacity: 0;
+}

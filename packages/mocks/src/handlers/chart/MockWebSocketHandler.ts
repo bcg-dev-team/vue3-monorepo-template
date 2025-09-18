@@ -307,9 +307,9 @@ class MockWebSocketManager {
     this.updateQueue.set(symbol, updateData);
 
     // 🎯 디버깅: 가격 업데이트 로그
-    console.log(
-      `[MockWebSocket] ${symbol} 가격 업데이트: ${updateData.price} (callbacks: ${callbacks?.size || 0})`
-    );
+    // console.log(
+    //   `[MockWebSocket] ${symbol} 가격 업데이트: ${updateData.price} (callbacks: ${callbacks?.size || 0})`
+    // );
   }
 
   // 🎯 배치 업데이트 타이머 시작
@@ -332,10 +332,10 @@ class MockWebSocketManager {
     const updates = Array.from(this.updateQueue.values());
     this.updateQueue.clear();
 
-    console.log(
-      `[MockWebSocket] 배치 업데이트 전송: ${updates.length}개 종목`,
-      updates.map((u) => u.symbol)
-    );
+    // console.log(
+    //   `[MockWebSocket] 배치 업데이트 전송: ${updates.length}개 종목`,
+    //   updates.map((u) => u.symbol)
+    // );
 
     // 🎯 useSelectedSymbol에 배치로 전달
     if (typeof window !== 'undefined' && (window as any).updateMarketDataFromStream) {

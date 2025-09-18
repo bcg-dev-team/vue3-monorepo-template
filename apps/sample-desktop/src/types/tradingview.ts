@@ -36,8 +36,6 @@ export interface TradingViewSymbolInfo {
   full_name?: string;
 }
 
-// 거래 심볼은 @template/types에서 import
-
 // 차트 기간 파라미터
 export interface ChartPeriodParams {
   from: number;

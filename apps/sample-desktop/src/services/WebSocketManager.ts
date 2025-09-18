@@ -2,6 +2,7 @@ import { getDataSourceConfig } from '../config/dataSource';
 
 /**
  * 웹소켓 연결을 관리하는 클래스
+ * TODO: 백엔드 웹소켓 구현에 따라 리팩토링 필요
  */
 class WebSocketManager {
   private ws: WebSocket | null = null;

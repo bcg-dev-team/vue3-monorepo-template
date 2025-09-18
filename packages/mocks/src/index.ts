@@ -12,15 +12,24 @@ export { handlers } from './handlers/index.js';
 export * from './data/symbols.js';
 export * from './data/orders.js';
 
+// 유틸리티 함수 export
+export * from './utils/symbols.js';
+export * from './utils/generators/prices.js';
+export * from './utils/generators/tradingview.js';
+
+// 심볼 파싱 함수 export
+export { parseFullSymbol } from './utils/symbols.js';
+export type { ParsedSymbol } from './utils/symbols.js';
+
 // 타입 export
 export type {
-  TradingViewBar,
   CryptoCompareApiData,
   WebSocketMessage,
   ChartConfig,
   Bar,
   TradingSymbol,
   OrderData,
+  SymbolPrice,
+  TradingViewBar,
 } from './types/chart.js';
 export * from './types/orders.js';
-export type { SymbolPrice } from './data/symbols.js';

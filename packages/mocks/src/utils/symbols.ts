@@ -1,46 +1,49 @@
 /**
- * CryptoCompare API 키
+ * 심볼 관련 유틸리티 함수들
+ * 심볼 검색, 유효성 검사, 기준 가격 조회 등
  */
-export const apiKey: string = '50b312c44d36f6e5c3a72a852eff07a7f717e7264282270229c84c51693755b5';
+
+import { SYMBOL_LIST, SYMBOL_BASE_PRICES } from '../data/symbols.js';
+import type { TradingSymbol } from '../types/chart.js';
 
 /**
- * CryptoCompare API 요청을 처리하는 함수
- * 이 함수는 CryptoCompare에서만 적용되며 사용된다. 직접 데이터 피드를 구현할 때는 필요하지 않을 수도 있음
- * @param path - API 경로
- * @returns API 응답 데이터
- * @throws {Error} API 요청 실패 시 에러
+ * 심볼 목록을 가져오는 함수
+ * @returns 전체 심볼 목록
  */
-export async function makeApiRequest(path: string): Promise<any> {
-  try {
-    const url = new URL(`https://min-api.cryptocompare.com/${path}`);
-    url.searchParams.append('api_key', apiKey);
-    const response = await fetch(url.toString());
-    return response.json();
-  } catch (error: any) {
-    throw new Error(`CryptoCompare request error: ${error.status}`);
-  }
+export function getAllSymbols(): TradingSymbol[] {
+  return [...SYMBOL_LIST];
 }
 
 /**
- * 심볼 정보 인터페이스
+ * 특정 심볼을 검색하는 함수
+ * @param query - 검색 쿼리
+ * @returns 검색된 심볼 목록
  */
-export interface SymbolInfo {
-  short: string;
+export function searchSymbols(query: string): TradingSymbol[] {
+  const lowerQuery = query.toLowerCase();
+  return SYMBOL_LIST.filter(
+    (symbol) =>
+      symbol.ticker.toLowerCase().includes(lowerQuery) ||
+      symbol.description.toLowerCase().includes(lowerQuery)
+  );
 }
 
 /**
- * 코인 쌍에서 심볼 ID를 생성하는 함수
- * 이 함수는 CryptoCompare에서만 적용되며 사용된다. 직접 데이터 피드를 구현할 때는 필요하지 않을 수도 있음
- * @param exchange - 거래소 이름
- * @param fromSymbol - 기준 코인
- * @param toSymbol - 대상 코인
- * @returns 심볼 정보 객체
+ * 심볼이 유효한지 확인하는 함수
+ * @param ticker - 확인할 심볼 티커
+ * @returns 유효한 심볼인지 여부
  */
-export function generateSymbol(exchange: string, fromSymbol: string, toSymbol: string): SymbolInfo {
-  const short = `${fromSymbol}/${toSymbol}`;
-  return {
-    short,
-  };
+export function isValidSymbol(ticker: string): boolean {
+  return SYMBOL_LIST.some((symbol) => symbol.ticker === ticker);
+}
+
+/**
+ * 심볼의 기준 가격만 가져오는 함수 (TradingView 차트용)
+ * @param ticker - 심볼 티커
+ * @returns 기준 가격
+ */
+export function getSymbolBasePrice(ticker: string): number {
+  return SYMBOL_BASE_PRICES[ticker] || 100;
 }
 
 /**

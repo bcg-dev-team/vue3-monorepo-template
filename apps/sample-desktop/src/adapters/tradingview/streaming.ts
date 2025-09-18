@@ -1,5 +1,5 @@
-import { parseFullSymbol, type ParsedSymbol } from './helpers';
 import { getDataSourceConfig } from '../../config/dataSource';
+import { parseFullSymbol } from '@template/mocks';
 
 /**
  * WebSocket 연결 상태 타입

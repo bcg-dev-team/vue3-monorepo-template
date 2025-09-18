@@ -1,25 +1,19 @@
 <template>
   <div class="symbol-list">
-    <!-- BaseTabs 컴포넌트 사용 -->
-    <BaseTabs
-      v-model="activeTab"
-      :tabs="tabs"
-      variant="underline"
-      size="md"
-      :underline="true"
-      :has-background="false"
-      aria-label="종목 목록 탭"
-      fullwidth
-    />
+    <!-- 종목 카테고리 -->
+    <div class="category-container">
+      <!-- FIXME: underline variant 구현 후 변경 필요 -->
+      <BaseRadioGroup
+        v-model="activeTab"
+        :options="categoryOptions"
+        name="symbol-category"
+        size="sm"
+      />
+    </div>
 
     <!-- 검색 입력창 (탭 외부에 위치) -->
     <div class="search-container">
-      <BaseInput
-        v-model="searchQuery"
-        placeholder="종목명, 종목코드 검색"
-        size="sm"
-        @update:model-value="handleSearch"
-      />
+      <BaseInput v-model="searchQuery" placeholder="종목명, 종목코드 검색" size="sm" />
     </div>
 
     <!-- 종목 리스트 (탭 패널 외부에 위치) -->
@@ -74,11 +68,11 @@ import {
   getChangeFromBaseClass,
 } from '@template/utils';
 import { useSymbolVisibility } from '@/composables/useSymbolVisibility';
-import { BaseTabs, BaseInput, BaseIcon } from '@template/ui';
+import { BaseRadioGroup, BaseInput, BaseIcon } from '@template/ui';
 import { useSymbolData } from '@/composables/useSymbolData';
 import type { TradingSymbol } from '@template/types';
+import type { RadioOption } from '@template/ui';
 import { onMounted, onUnmounted } from 'vue';
-import type { TabItem } from '@template/ui';
 
 interface Emits {
   (e: 'symbol-select', symbol: TradingSymbol): void;
@@ -96,24 +90,23 @@ const {
   selectSymbol: selectSymbolData,
   toggleFavorite,
   isFavorite,
-  handleSearch,
   loadSymbols,
   addVisibleSymbols,
   unsubscribeAll,
 } = useSymbolData();
 
-// BaseTabs용 탭 데이터
-const tabs: TabItem[] = [
+// BaseRadioGroup용 카테고리 옵션
+const categoryOptions: RadioOption[] = [
   {
-    key: 'all',
+    value: 'all',
     label: '전체',
   },
   {
-    key: 'favorite',
+    value: 'favorite',
     label: '관심',
   },
   {
-    key: 'holding',
+    value: 'holding',
     label: '보유',
   },
 ];

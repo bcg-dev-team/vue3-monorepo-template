@@ -16,7 +16,7 @@ interface Props {
   name: IconName;
   size?: IconSize | number;
   color?: string;
-  class?: string;
+  className?: string;
   isLoading?: boolean;
 }
 
@@ -66,8 +66,8 @@ const iconClasses = computed(() => {
     classes.push(typeClasses[iconType]);
   }
 
-  if (props.class) {
-    classes.push(props.class);
+  if (props.className) {
+    classes.push(props.className);
   }
 
   return classes.join(' ');

@@ -109,7 +109,7 @@ const handleImageLoad = () => {
         :name="icon.name"
         :size="icon.size || 'md'"
         :color="icon.color || 'var(--input-icon-default)'"
-        class="list-item-avatar__icon-content"
+        className="list-item-avatar__icon-content"
       />
     </div>
 
@@ -130,14 +130,14 @@ const handleImageLoad = () => {
         v-if="typeof fallback === 'object'"
         :name="fallback.name"
         :size="fallback.size || 'md'"
-        class="list-item-avatar__fallback-icon"
+        className="list-item-avatar__fallback-icon"
       />
       <!-- 텍스트 폴백 -->
       <span v-else-if="typeof fallback === 'string'" class="list-item-avatar__fallback-text">
         {{ fallback }}
       </span>
       <!-- 기본 폴백 (사용자 아이콘) -->
-      <BaseIcon v-else name="person" size="md" class="list-item-avatar__fallback-icon" />
+      <BaseIcon v-else name="person" size="md" className="list-item-avatar__fallback-icon" />
     </div>
   </div>
 </template>

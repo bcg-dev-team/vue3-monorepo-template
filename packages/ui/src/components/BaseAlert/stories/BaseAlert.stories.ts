@@ -9,14 +9,13 @@ const meta: Meta<typeof BaseAlert> = {
   parameters: {
     docs: {
       description: {
-        component:
-          '경고/안내 메시지를 표시하는 배너 컴포넌트입니다.\n\n- 참고: <a href="https://element-plus.org/en-US/component/alert" target="_blank" rel="noopener">Element Plus Alert</a>, <a href="https://mui.com/material-ui/react-alert/" target="_blank" rel="noopener">MUI Alert</a>',
+        component: '경고/안내 메시지를 표시하는 배너 컴포넌트입니다.',
       },
     },
   },
   args: {
     variant: 'subtle',
-    title: '알림 제목',
+    title: '',
     description: '추가 설명 텍스트입니다.',
     closable: true,
     showIcon: true,
@@ -107,10 +106,10 @@ export const Variant: Story = {
       return { args };
     },
     template: `
-      <div class="space-y-3">
-        <BaseAlert v-bind="{...args, variant: 'subtle'}" title="subtle" />
-        <BaseAlert v-bind="{...args, variant: 'filled'}" title="filled" />
-        <BaseAlert v-bind="{...args, variant: 'outlined'}" title="outlined" />
+      <div class="space-y-3 flex-1">
+        <BaseAlert v-bind="{...args, variant: 'subtle'}" title="subtle" :closable="false" />
+        <BaseAlert v-bind="{...args, variant: 'filled'}" title="filled" :closable="false" />
+        <BaseAlert v-bind="{...args, variant: 'outlined'}" title="outlined" :closable="false" />
       </div>
     `,
   }),
@@ -123,11 +122,11 @@ export const Severity: Story = {
       return { args };
     },
     template: `
-      <div class="space-y-3">
-        <BaseAlert v-bind="{...args, severity: 'success'}" title="success" />
-        <BaseAlert v-bind="{...args, severity: 'info'}" title="info" />
-        <BaseAlert v-bind="{...args, severity: 'warning'}" title="warning" />
-        <BaseAlert v-bind="{...args, severity: 'error'}" title="error" />
+      <div class="space-y-3 flex-1">
+        <BaseAlert v-bind="{...args, severity: 'success'}" title="success" :closable="false" />
+        <BaseAlert v-bind="{...args, severity: 'info'}" title="info" :closable="false" />
+        <BaseAlert v-bind="{...args, severity: 'warning'}" title="warning" :closable="false" />
+        <BaseAlert v-bind="{...args, severity: 'error'}" title="error" :closable="false" />
       </div>
     `,
   }),
@@ -140,12 +139,12 @@ export const Color: Story = {
       return { args };
     },
     template: `
-      <div class="space-y-3">
-        <BaseAlert v-bind="{...args, color: 'primary'}" title="primary" />
-        <BaseAlert v-bind="{...args, color: 'green'}" title="green" />
-        <BaseAlert v-bind="{...args, color: 'blue'}" title="blue" />
-        <BaseAlert v-bind="{...args, color: 'yellow'}" title="yellow" />
-        <BaseAlert v-bind="{...args, color: 'red'}" title="red" />
+      <div class="space-y-3 flex-1">
+        <BaseAlert v-bind="{...args, color: 'primary'}" title="primary" :closable="false" />
+        <BaseAlert v-bind="{...args, color: 'green'}" title="green" :closable="false" />
+        <BaseAlert v-bind="{...args, color: 'blue'}" title="blue" :closable="false" />
+        <BaseAlert v-bind="{...args, color: 'yellow'}" title="yellow" :closable="false" />
+        <BaseAlert v-bind="{...args, color: 'red'}" title="red" :closable="false" />
       </div>
     `,
   }),
@@ -158,9 +157,9 @@ export const TitleToggle: Story = {
       return { args };
     },
     template: `
-      <div class="space-y-3">
-        <BaseAlert v-bind="args" title="제목 있음" />
-        <BaseAlert v-bind="{...args, title: undefined}" />
+      <div class="space-y-3 flex-1">
+        <BaseAlert v-bind="args" title="제목 있음" :closable="false" />
+        <BaseAlert v-bind="{...args, title: undefined}" :closable="false" />
       </div>
     `,
   }),
@@ -184,7 +183,7 @@ export const Closable: Story = {
       },
     },
     template: `
-      <div class="space-y-4">
+      <div class="space-y-4 flex-1">
         <BaseAlert v-if="open" v-bind="{...args, closable: true}" @close="handleClose" />
         <BaseButton v-else label="다시 열기" size="sm" @click="handleOpen" />
       </div>
@@ -208,13 +207,21 @@ export const WithSlots: Story = {
       return { args };
     },
     template: `
-      <BaseAlert v-bind="args">
-        <template #title>슬롯 제목</template>
-        커스텀 <b>기본 슬롯</b> 콘텐츠입니다.
-        <template #icon>
-          <span class="inline-block h-3 w-3 rounded-sm bg-[var(--font-color-white)]" />
-        </template>
-      </BaseAlert>
+      <div class="space-y-4 flex-1">
+        <BaseAlert v-bind="args">
+          <template #title>슬롯 제목</template>
+          커스텀 <b>기본 슬롯</b> 콘텐츠입니다.
+          <template #icon>
+            <span class="inline-block h-3 w-3 rounded-sm bg-[var(--font-color-white)]" />
+          </template>
+        </BaseAlert>
+        <BaseAlert v-bind="args" color="red" closable>
+          <div class="text-font-12 font-regular">
+            <span>AUDUSD 포지션 손실 주의 (마진레벨: 45%) </span>
+            <span class="underline cursor-pointer"> 자세히</span>
+          </div>
+        </BaseAlert>
+      </div>
     `,
   }),
 };
@@ -246,7 +253,7 @@ export const DelayedAttributes: Story = {
       },
     },
     template: `
-      <div class="space-y-4">
+      <div class="space-y-4 flex-1">
         <BaseAlert v-if="open" v-bind="{...args, closable: true}" @close="handleClose" />
         <BaseButton v-else label="다시 열기" size="sm" @click="handleOpen" />
       </div>

@@ -2,7 +2,7 @@
  * 거래 가능한 심볼 목록 및 기준 가격 데이터
  */
 
-import type { TradingSymbol } from '../types/chart.js';
+import type { TradingSymbol } from '@template/types';
 
 /**
  * 전체 심볼 목록

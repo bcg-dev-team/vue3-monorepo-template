@@ -94,13 +94,12 @@ import { selectedSymbolInstance as selectedSymbol } from '@/composables/useSelec
 import RealtimeConfigPanel from '@/components/order/RealtimeConfigPanel.vue';
 import TradingViewChart from '@/components/chart/TradingViewChart.vue';
 import { predefinedStyles, getProfitLossStyle } from '@template/utils';
-import type { GridOptions, ColDef, GridApi } from 'ag-grid-community';
-import { ref, onMounted, onUnmounted, shallowRef, watch } from 'vue';
+import type { TradingSymbol, PositionType } from '@template/types';
 import { BaseTwoWaySplitPane, BaseDataGrid } from '@template/ui';
+import type { GridOptions, ColDef, GridApi } from '@template/ui';
+import { ref, onMounted, onUnmounted, shallowRef } from 'vue';
 import SymbolList from '@/components/order/SymbolList.vue';
 import RightPanel from '@/components/order/RightPanel.vue';
-import type { TradingSymbol } from '@template/types';
-import type { PositionType } from '@template/types';
 import { getOrderData } from '@template/mocks';
 import './Index.scss';
 
@@ -335,7 +334,9 @@ const updateVisibleSymbols = () => {
     console.log(`✅ 유효한 노드 수: ${actualVisibleNodes.length}`);
 
     // 화면에 보이는 종목들만 추출
-    const visibleSymbols = actualVisibleNodes.map((node) => node.data?.itemCode).filter(Boolean);
+    const visibleSymbols = actualVisibleNodes
+      .map((node: any) => node.data?.itemCode)
+      .filter(Boolean);
     console.log(`🎯 추출된 종목들:`, visibleSymbols);
 
     if (visibleSymbols.length > 0) {
@@ -436,18 +437,18 @@ const setupGridVisibilityObserver = () => {
   }
 
   // 그리드 이벤트 리스너 등록 (AG Grid 34 호환) - 필수 이벤트만 등록
-  console.log('🎧 AG Grid 이벤트 리스너 등록');
+  console.log('AG Grid 이벤트 리스너 등록');
   gridApi.value.addEventListener('viewportChanged', () => {
-    console.log('👁️ viewportChanged 이벤트 (디바운스 적용)');
+    console.log('viewportChanged 이벤트 - 디바운스 적용');
     debouncedUpdateVisibleSymbols();
   });
   gridApi.value.addEventListener('firstDataRendered', () => {
-    console.log('🎬 firstDataRendered 이벤트');
+    console.log('firstDataRendered 이벤트');
     updateVisibleSymbols();
   });
 
   // 초기 실행
-  console.log('⏰ 초기 실행 (100ms 후)');
+  console.log('초기 실행 - 100ms 후');
   setTimeout(updateVisibleSymbols, 100);
 };
 
@@ -464,20 +465,20 @@ const debouncedUpdateVisibleSymbols = () => {
 };
 // 정렬 변경 이벤트 (AG Grid 34 호환)
 const onSortChanged = (event: any) => {
-  console.log('🔄 onSortChanged 이벤트:', event);
+  console.log('onSortChanged 이벤트:', event);
   // 가시성 감지 업데이트
   if (gridApi.value) {
-    console.log('⏰ 정렬 후 가시성 감지 업데이트 (100ms 후)');
+    console.log('정렬 후 가시성 감지 업데이트 - 100ms 후');
     setTimeout(() => {
       if (gridApi.value) {
-        console.log('🔄 정렬 후 가시성 감지 실행');
+        console.log('정렬 후 가시성 감지 실행');
         const visibleNodes = gridApi.value.getRenderedNodes();
         const actualVisibleNodes = visibleNodes.filter((node: any) => {
           // AG Grid v34에서는 rowVisible이 undefined일 수 있으므로 다른 조건 사용
           return node.rowIndex !== null && node.data && node.rowIndex >= 0;
         });
         const visibleSymbols = actualVisibleNodes
-          .map((node) => node.data?.itemCode)
+          .map((node: any) => node.data?.itemCode)
           .filter(Boolean);
         console.log(`🎯 정렬 후 보이는 종목들:`, visibleSymbols);
         if (visibleSymbols.length > 0) {

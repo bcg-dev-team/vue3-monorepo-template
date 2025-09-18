@@ -4,7 +4,7 @@
  */
 
 import { SYMBOL_LIST, SYMBOL_BASE_PRICES } from '../../data/symbols.js';
-import type { SymbolPrice } from '../../types/chart.js';
+import type { SymbolPrice } from '@template/types';
 import { isValidSymbol } from '../symbols.js';
 
 /**

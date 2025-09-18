@@ -3,7 +3,7 @@
  * 히스토리컬 차트 데이터 생성 및 변동성 계산
  */
 
-import type { TradingViewBar } from '../../types/chart.js';
+import type { TradingViewBar } from '@template/types';
 import { SYMBOL_LIST } from '../../data/symbols.js';
 import { getSymbolBasePrice } from '../symbols.js';
 

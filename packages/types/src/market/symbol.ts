@@ -52,6 +52,31 @@ export interface SymbolData {
 // }
 
 /**
+ * 심볼 가격 정보 타입 (실시간 가격 데이터)
+ */
+export interface SymbolPrice {
+  ticker: string;
+  price: number;
+  change: number;
+  changePercent: number;
+  volume: number;
+  high24h: number;
+  low24h: number;
+}
+
+/**
+ * TradingView 차트 바 데이터 (OHLCV)
+ */
+export interface TradingViewBar {
+  time: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume?: number;
+}
+
+/**
  * 심볼 통계 정보
  */
 // export interface SymbolStats {

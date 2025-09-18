@@ -2,18 +2,9 @@
  * TradingView 관련 타입 정의
  */
 
-// 공통 타입 re-export
-export type { TradingSymbol } from '@template/types';
-
-// TradingView 차트 바 데이터
-export interface TradingViewBar {
-  time: number;
-  open: number;
-  high: number;
-  low: number;
-  close: number;
-  volume?: number;
-}
+// 공통 타입 import 및 re-export
+import type { TradingSymbol, TradingViewBar, SymbolPrice } from '@template/types';
+export type { TradingSymbol, TradingViewBar, SymbolPrice };
 
 // 심볼 정보
 export interface TradingViewSymbolInfo {

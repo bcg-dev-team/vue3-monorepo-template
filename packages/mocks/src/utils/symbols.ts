@@ -4,7 +4,7 @@
  */
 
 import { SYMBOL_LIST, SYMBOL_BASE_PRICES } from '../data/symbols.js';
-import type { TradingSymbol } from '../types/chart.js';
+import type { TradingSymbol } from '@template/types';
 
 /**
  * 심볼 목록을 가져오는 함수

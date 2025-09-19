@@ -3,16 +3,23 @@ import vue from '@vitejs/plugin-vue';
 import { resolve } from 'node:path';
 import { commonAlias, createCommonConfig } from '../../shared/config/vite.common';
 import { visualizer } from 'rollup-plugin-visualizer';
+import VueInspector from 'vite-plugin-vue-inspector';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
   const isAnalyze = process.env.ANALYZE === 'true';
   const commonConfig = createCommonConfig();
-
+  
   return {
     ...commonConfig,
     plugins: [
       vue(),
+      // Vue Inspector - 개발 모드에서만 활성화  
+      VueInspector({
+        toggleComboKey: 'alt',
+        enabled: mode === 'dev' || mode === 'development',
+        launchEditor: 'cursor'
+      }),
       // Bundle Analyzer - 분석 모드에서만 활성화
       ...(isAnalyze ? [
         visualizer({

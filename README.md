@@ -110,7 +110,13 @@ vue3-monorepo-template/
     pnpm install
     ```
 
-3. **개발 서버 실행**
+3. **Vue Inspector 설정 (선택사항)**
+    ```bash
+    # Cursor IDE와 Vue Inspector 연동을 위한 설정
+    ./shared/scripts/setup-vue-inspector.sh
+    ```
+
+4. **개발 서버 실행**
     ```bash
     # MODA 앱 개발 서버
     pnpm dev
@@ -122,7 +128,7 @@ vue3-monorepo-template/
     pnpm dev:mobile
     ```
 
-### 4. 빌드
+### 5. 빌드
 
 ```bash
 # 전체 빌드

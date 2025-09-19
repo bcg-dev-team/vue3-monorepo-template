@@ -37,11 +37,22 @@ export function useSelectedSymbol() {
     });
   };
 
-  // 초기화
-  dataSourceManager.initialize();
+  // dataSourceManager 초기화
+  const safeInitialize = async () => {
+    try {
+      await dataSourceManager.initialize();
+      updateChartSymbolSubscription(globalSelectedSymbol.value);
+    } catch (error) {
+      console.warn('⚠️ useSelectedSymbol 초기화 지연 - 재시도');
+      // 1초 후 재시도
+      setTimeout(() => {
+        safeInitialize();
+      }, 1000);
+    }
+  };
 
-  // 초기 선택된 심볼을 Chart 소스로 구독
-  updateChartSymbolSubscription(globalSelectedSymbol.value);
+  // 비동기 초기화
+  safeInitialize();
 
   // 선택된 심볼의 시장 데이터
   const selectedSymbolData = computed(() => {

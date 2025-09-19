@@ -11,16 +11,24 @@ export function useDataSourceManager() {
   const subscriptions = ref<Map<string, string>>(new Map()); // symbol -> subscriptionId
   const connectionStatus = ref<'disconnected' | 'connecting' | 'connected'>('disconnected');
 
-  // 통합 데이터 소스 초기화
+  // 데이터 소스 초기화
   const initialize = async () => {
     try {
       connectionStatus.value = 'connecting';
       const dataSourceManager = getDataSourceManager();
+
+      // 이미 초기화되어 있는지 확인
+      if (dataSourceManager.isConnected()) {
+        console.log('[useDataSourceManager] 이미 초기화됨 - 스킵');
+        connectionStatus.value = 'connected';
+        return;
+      }
+
       await dataSourceManager.initialize();
       connectionStatus.value = 'connected';
-      console.log('[useDataSourceManager] 통합 데이터 소스 초기화 완료');
+      console.log('[useDataSourceManager] 데이터 소스 초기화 완료');
     } catch (error) {
-      console.error('[useDataSourceManager] 통합 데이터 소스 초기화 실패:', error);
+      console.error('[useDataSourceManager] 데이터 소스 초기화 실패:', error);
       connectionStatus.value = 'disconnected';
     }
   };
@@ -72,8 +80,12 @@ export function useDataSourceManager() {
 
   // 연결 상태
   const isConnected = computed(() => {
-    const dataSourceManager = getDataSourceManager();
-    return dataSourceManager.isConnected();
+    try {
+      const dataSourceManager = getDataSourceManager();
+      return dataSourceManager.isConnected();
+    } catch (error) {
+      return false;
+    }
   });
 
   return {

@@ -95,7 +95,7 @@ export function useSymbolSubscriptionManager() {
   /**
    * 특정 소스의 가시성 종목 업데이트
    */
-  const updateVisibleSymbols = (
+  const updateVisibleSymbols = async (
     source: string,
     symbols: string[],
     callback: (symbol: string, data: any) => void
@@ -110,7 +110,7 @@ export function useSymbolSubscriptionManager() {
     });
 
     // WebSocket 구독 동기화
-    syncWebSocketSubscriptions();
+    await syncWebSocketSubscriptions();
 
     console.log(`✅ [${source}] 구독 업데이트 완료`, {
       sourceSymbols: symbols.length,
@@ -119,14 +119,14 @@ export function useSymbolSubscriptionManager() {
   };
 
   /**
-   * 특정 소스의 가시성 종목 추가 (하위 호환성)
+   * 특정 소스의 가시성 종목 추가
    */
-  const addVisibleSymbols = (
+  const addVisibleSymbols = async (
     source: string,
     symbols: string[],
     callback: (symbol: string, data: any) => void
   ) => {
-    updateVisibleSymbols(source, symbols, callback);
+    await updateVisibleSymbols(source, symbols, callback);
   };
 
   /**
@@ -156,7 +156,7 @@ export function useSymbolSubscriptionManager() {
 
     // 함수들
     updateVisibleSymbols,
-    addVisibleSymbols, // 하위 호환성
+    addVisibleSymbols, // 편의 함수
     unsubscribeAllSymbols,
   };
 }

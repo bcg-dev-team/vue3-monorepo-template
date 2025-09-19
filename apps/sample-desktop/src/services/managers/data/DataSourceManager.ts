@@ -7,8 +7,8 @@ import { getDataSourceConfig } from '../../../config/dataSource';
 import { webSocketManager } from './WebSocketManager';
 import type { SymbolData } from '@template/types';
 
-export class UnifiedDataSourceManager {
-  private static instance: UnifiedDataSourceManager;
+export class DataSourceManager {
+  private static instance: DataSourceManager;
   private config = getDataSourceConfig();
   private marketData = new Map<string, SymbolData>();
   private subscribers = new Map<string, Set<(data: SymbolData) => void>>();
@@ -16,11 +16,11 @@ export class UnifiedDataSourceManager {
 
   private constructor() {}
 
-  static getInstance(): UnifiedDataSourceManager {
-    if (!UnifiedDataSourceManager.instance) {
-      UnifiedDataSourceManager.instance = new UnifiedDataSourceManager();
+  static getInstance(): DataSourceManager {
+    if (!DataSourceManager.instance) {
+      DataSourceManager.instance = new DataSourceManager();
     }
-    return UnifiedDataSourceManager.instance;
+    return DataSourceManager.instance;
   }
 
   /**
@@ -28,10 +28,10 @@ export class UnifiedDataSourceManager {
    */
   async initialize(): Promise<void> {
     if (this.config.useWebSocket) {
-      console.log('[UnifiedDataSourceManager] 실제 WebSocket 사용');
+      console.log('[DataSourceManager] 실제 WebSocket 사용');
       await webSocketManager.connect();
     } else {
-      console.log('[UnifiedDataSourceManager] MSW Mock 데이터 사용');
+      console.log('[DataSourceManager] MSW Mock 데이터 사용');
       // MSW는 이미 main.ts에서 초기화됨
     }
   }
@@ -40,7 +40,7 @@ export class UnifiedDataSourceManager {
    * 일괄 구독
    */
   subscribeBulk(symbols: string[], callback: (symbol: string, data: SymbolData) => void): string[] {
-    console.log(`[UnifiedDataSourceManager] 일괄 구독 시작: ${symbols.length}개 종목`, symbols);
+    console.log(`[DataSourceManager] 일괄 구독 시작: ${symbols.length}개 종목`, symbols);
 
     const subscriptionIds: string[] = [];
 
@@ -63,7 +63,7 @@ export class UnifiedDataSourceManager {
       this.subscribeBulkToMSW(symbols);
     }
 
-    console.log(`[UnifiedDataSourceManager] 일괄 구독 완료: ${subscriptionIds.length}개 ID 생성`);
+    console.log(`[DataSourceManager] 일괄 구독 완료: ${subscriptionIds.length}개 ID 생성`);
     return subscriptionIds;
   }
 
@@ -71,7 +71,7 @@ export class UnifiedDataSourceManager {
    * 일괄 구독 해제
    */
   unsubscribeBulk(subscriptionIds: string[]): void {
-    console.log(`[UnifiedDataSourceManager] 일괄 구독 해제 시작: ${subscriptionIds.length}개 ID`);
+    console.log(`[DataSourceManager] 일괄 구독 해제 시작: ${subscriptionIds.length}개 ID`);
 
     const symbols = subscriptionIds.map((id) => id.split('_')[0]);
     const uniqueSymbols = Array.from(new Set(symbols));
@@ -91,7 +91,7 @@ export class UnifiedDataSourceManager {
       this.unsubscribeBulkFromMSW(uniqueSymbols);
     }
 
-    console.log(`[UnifiedDataSourceManager] 일괄 구독 해제 완료: ${uniqueSymbols.length}개 종목`);
+    console.log(`[DataSourceManager] 일괄 구독 해제 완료: ${uniqueSymbols.length}개 종목`);
   }
 
   /**
@@ -213,7 +213,7 @@ export class UnifiedDataSourceManager {
       (window as any).mockWebSocketManager.updateAllIntervals();
     }
 
-    console.log('[UnifiedDataSourceManager] 설정 업데이트 완료');
+    console.log('[DataSourceManager] 설정 업데이트 완료');
   }
 
   /**
@@ -229,4 +229,4 @@ export class UnifiedDataSourceManager {
 }
 
 // 전역 인스턴스
-export const unifiedDataSourceManager = UnifiedDataSourceManager.getInstance();
+export const dataSourceManager = DataSourceManager.getInstance();

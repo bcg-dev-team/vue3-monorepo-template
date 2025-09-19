@@ -15,8 +15,8 @@ export function useDataSourceManager() {
   const initialize = async () => {
     try {
       connectionStatus.value = 'connecting';
-      const unifiedDataSourceManager = getDataSourceManager();
-      await unifiedDataSourceManager.initialize();
+      const dataSourceManager = getDataSourceManager();
+      await dataSourceManager.initialize();
       connectionStatus.value = 'connected';
       console.log('[useDataSourceManager] 통합 데이터 소스 초기화 완료');
     } catch (error) {
@@ -39,8 +39,8 @@ export function useDataSourceManager() {
     symbols: string[],
     callback: (symbol: string, data: any) => void
   ): string[] => {
-    const unifiedDataSourceManager = getDataSourceManager();
-    const subscriptionIds = unifiedDataSourceManager.subscribeBulk(symbols, callback);
+    const dataSourceManager = getDataSourceManager();
+    const subscriptionIds = dataSourceManager.subscribeBulk(symbols, callback);
 
     // 구독 정보 저장
     symbols.forEach((symbol, index) => {
@@ -53,13 +53,13 @@ export function useDataSourceManager() {
 
   // 일괄 구독 해제
   const unsubscribeBulk = (symbols: string[]): void => {
-    const unifiedDataSourceManager = getDataSourceManager();
+    const dataSourceManager = getDataSourceManager();
     const subscriptionIds = symbols
       .map((symbol) => subscriptions.value.get(symbol))
       .filter(Boolean) as string[];
 
     if (subscriptionIds.length > 0) {
-      unifiedDataSourceManager.unsubscribeBulk(subscriptionIds);
+      dataSourceManager.unsubscribeBulk(subscriptionIds);
 
       // 구독 정보 삭제
       symbols.forEach((symbol) => {
@@ -72,8 +72,8 @@ export function useDataSourceManager() {
 
   // 연결 상태
   const isConnected = computed(() => {
-    const unifiedDataSourceManager = getDataSourceManager();
-    return unifiedDataSourceManager.isConnected();
+    const dataSourceManager = getDataSourceManager();
+    return dataSourceManager.isConnected();
   });
 
   return {

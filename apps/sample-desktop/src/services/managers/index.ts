@@ -7,7 +7,7 @@
 export type ManagerName = 'dataSource' | 'webSocket' | 'chart';
 
 export interface ManagerRegistry {
-  dataSource: import('./data/UnifiedDataSourceManager').UnifiedDataSourceManager;
+  dataSource: import('./data/DataSourceManager').DataSourceManager;
   webSocket: import('./data/WebSocketManager').WebSocketManager;
   chart: import('./ui/ChartManager').ChartManager;
 }
@@ -36,12 +36,12 @@ class ManagerFactory {
 
     try {
       // Lazy import로 순환 의존성 방지
-      const { UnifiedDataSourceManager } = await import('./data/UnifiedDataSourceManager');
+      const { DataSourceManager } = await import('./data/DataSourceManager');
       const { WebSocketManager } = await import('./data/WebSocketManager');
       const { ChartManager } = await import('./ui/ChartManager');
 
       // Manager 인스턴스 생성
-      this.managers.dataSource = UnifiedDataSourceManager.getInstance();
+      this.managers.dataSource = DataSourceManager.getInstance();
       this.managers.webSocket = new WebSocketManager();
       this.managers.chart = new ChartManager();
 

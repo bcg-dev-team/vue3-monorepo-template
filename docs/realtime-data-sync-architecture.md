@@ -46,11 +46,11 @@
      └────────────────────────────────────────────────────────┘
 ```
 
-## 1. 통합 데이터 소스 관리자 (UnifiedDataSourceManager)
+## 1. 통합 데이터 소스 관리자 (DataSourceManager)
 
 ### 핵심 구성요소
 
-- **`UnifiedDataSourceManager`**: WebSocket과 MSW를 통합 관리하는 싱글톤 클래스
+- **`DataSourceManager`**: WebSocket과 MSW를 통합 관리하는 싱글톤 클래스
 - **`WebSocketManager`**: 실제 WebSocket 연결 및 메시지 처리
 - **`MockWebSocketHandler`**: MSW 기반 모킹 WebSocket 관리
 - **`getDataSourceConfig`**: 환경별 데이터 소스 설정 관리
@@ -66,21 +66,21 @@
 ### 사용 예시
 
 ```typescript
-import { unifiedDataSourceManager } from '@/services/UnifiedDataSourceManager'
+import { dataSourceManager } from '@/services/DataSourceManager'
 
 // 데이터 소스 초기화
-await unifiedDataSourceManager.initialize()
+await dataSourceManager.initialize()
 
 // 심볼 구독
-const subscriptionId = unifiedDataSourceManager.subscribe('EURUSD', (data) => {
+const subscriptionId = dataSourceManager.subscribe('EURUSD', (data) => {
   console.log('실시간 데이터:', data)
 })
 
 // 구독 해제
-unifiedDataSourceManager.unsubscribe(subscriptionId)
+dataSourceManager.unsubscribe(subscriptionId)
 
 // 연결 상태 확인
-const isConnected = unifiedDataSourceManager.isConnected()
+const isConnected = dataSourceManager.isConnected()
 ```
 
 ## 2. Composables & State Management Layer
@@ -255,7 +255,7 @@ const datafeed: TradingViewDatafeed = {
 
 1. **데이터 소스 선택**: 환경 설정에 따라 WebSocket 또는 MSW 선택
 2. **실시간 데이터 수신**: 선택된 데이터 소스에서 실시간 데이터 수신
-3. **통합 데이터 소스 관리**: UnifiedDataSourceManager에서 데이터 통합 처리
+3. **통합 데이터 소스 관리**: DataSourceManager에서 데이터 통합 처리
 4. **Composable 업데이트**: useSelectedSymbol 등 composable에서 상태 업데이트
 5. **컴포넌트 반응형 업데이트**: Vue의 반응형 시스템을 통한 UI 업데이트
 
@@ -319,11 +319,11 @@ const datafeed: TradingViewDatafeed = {
 
 ### 1. 연결 상태 모니터링
 ```typescript
-import { unifiedDataSourceManager } from '@/services/UnifiedDataSourceManager'
+import { dataSourceManager } from '@/services/DataSourceManager'
 import { selectedSymbolInstance } from '@/composables/useSelectedSymbol'
 
 // 연결 상태 확인
-const isConnected = unifiedDataSourceManager.isConnected()
+const isConnected = dataSourceManager.isConnected()
 const connectionStatus = selectedSymbolInstance.connectionStatus.value
 
 console.log('데이터 소스 연결 상태:', isConnected)
@@ -373,7 +373,7 @@ if (typeof window !== 'undefined' && (window as any).mockWebSocketManager) {
 ## 9. 확장성 및 유지보수
 
 ### 1. 새로운 데이터 소스 추가
-- **UnifiedDataSourceManager 확장**: 새로운 데이터 소스 타입 추가
+- **DataSourceManager 확장**: 새로운 데이터 소스 타입 추가
 - **설정 기반 선택**: 환경 설정을 통한 데이터 소스 선택
 - **인터페이스 표준화**: 일관된 구독/해제 인터페이스 제공
 

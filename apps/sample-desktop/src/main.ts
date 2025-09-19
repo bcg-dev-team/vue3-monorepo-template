@@ -5,16 +5,10 @@ import App from './App.vue';
 
 import '@/assets/scss/index.scss';
 
-import setupLocatorUI from '@locator/runtime';
-
 // MSW 모킹 시작 (개발 환경)
 import { startMocking } from '@template/mocks';
 
 if ((import.meta as any).env.DEV) {
-  setupLocatorUI({
-    adapter: 'vue',
-  });
-
   // MSW 모킹 시작 (HTTP + WebSocket 통합)
   startMocking();
 }

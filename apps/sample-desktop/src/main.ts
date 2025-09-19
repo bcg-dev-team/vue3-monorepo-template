@@ -5,17 +5,11 @@ import App from './App.vue';
 
 import '@/assets/scss/index.scss';
 
-import setupLocatorUI from '@locator/runtime';
-
 // MSW 모킹 시작 (개발 환경)
 import { getDataSourceConfig } from './config/dataSource';
 import { startMocking } from '@template/mocks';
 
 if ((import.meta as any).env.DEV) {
-  setupLocatorUI({
-    adapter: 'vue',
-  });
-
   // 데이터 소스 설정에 따라 MSW 시작 여부 결정
   const config = getDataSourceConfig();
   if (!config.useWebSocket) {

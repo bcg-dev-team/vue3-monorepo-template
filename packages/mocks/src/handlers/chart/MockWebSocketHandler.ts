@@ -141,17 +141,22 @@ class MockWebSocketManager {
     return subscriptionId;
   }
 
-  unsubscribe(symbol: string, callback: (data: any) => void): void {
+  unsubscribe(symbol: string, callback?: (data: any) => void): void {
     console.log('[MockWebSocket] 구독 해제:', symbol);
 
     const callbacks = this.subscriptions.get(symbol);
     if (callbacks) {
-      // 콜백 객체를 찾아서 삭제
-      for (const callbackWithId of callbacks) {
-        if (callbackWithId.callback === callback) {
-          callbacks.delete(callbackWithId);
-          break;
+      if (callback) {
+        // 특정 콜백만 삭제
+        for (const callbackWithId of callbacks) {
+          if (callbackWithId.callback === callback) {
+            callbacks.delete(callbackWithId);
+            break;
+          }
         }
+      } else {
+        // 콜백이 없으면 모든 콜백 삭제
+        callbacks.clear();
       }
 
       if (callbacks.size === 0) {
@@ -160,11 +165,14 @@ class MockWebSocketManager {
       }
     }
 
-    callback({
-      type: 'unsubscription_success',
-      symbol,
-      timestamp: Date.now(),
-    });
+    // 콜백이 있을 때만 호출
+    if (callback) {
+      callback({
+        type: 'unsubscription_success',
+        symbol,
+        timestamp: Date.now(),
+      });
+    }
   }
 
   unsubscribeById(subscriptionId: string): void {

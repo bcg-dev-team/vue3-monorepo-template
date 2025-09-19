@@ -596,6 +596,39 @@ function sendSubscribeMessage(symbol: string): void {
 }
 
 /**
+ * 일괄 구독 메시지 전송
+ * @param symbols - 구독할 심볼 배열
+ */
+function sendBulkSubscribeMessage(symbols: string[]): void {
+  console.log('[sendBulkSubscribeMessage] 호출:', {
+    symbolCount: symbols.length,
+    symbols,
+    socketState: socket?.readyState,
+  });
+
+  if (symbols.length === 0) {
+    console.warn('[sendBulkSubscribeMessage] 구독할 심볼이 없음');
+    return;
+  }
+
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    const bulkSubscribeMessage = {
+      type: 'bulk_subscribe',
+      symbols: symbols,
+      timestamp: Date.now(),
+    };
+
+    console.log(`[sendBulkSubscribeMessage] 일괄 구독 요청: ${symbols.length}개 종목`, symbols);
+    socket.send(JSON.stringify(bulkSubscribeMessage));
+    console.log('[sendBulkSubscribeMessage] 일괄 메시지 전송 완료');
+  } else {
+    console.error('[sendBulkSubscribeMessage] WebSocket이 연결되지 않음 - 개별 구독으로 폴백');
+    // 폴백: 개별 구독
+    symbols.forEach((symbol) => sendSubscribeMessage(symbol));
+  }
+}
+
+/**
  * 구독 해제 메시지 전송
  * @param symbol - 구독 해제할 심볼명
  */
@@ -612,6 +645,42 @@ function sendUnsubscribeMessage(symbol: string): void {
     socket.send(JSON.stringify(unsubscribeMessage));
   } else {
     console.error('[sendUnsubscribeMessage] WebSocket이 연결되지 않음');
+  }
+}
+
+/**
+ * 일괄 구독 해제 메시지 전송
+ * @param symbols - 구독 해제할 심볼 배열
+ */
+function sendBulkUnsubscribeMessage(symbols: string[]): void {
+  console.log('[sendBulkUnsubscribeMessage] 호출:', {
+    symbolCount: symbols.length,
+    symbols,
+    socketState: socket?.readyState,
+  });
+
+  if (symbols.length === 0) {
+    console.warn('[sendBulkUnsubscribeMessage] 구독 해제할 심볼이 없음');
+    return;
+  }
+
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    const bulkUnsubscribeMessage = {
+      type: 'bulk_unsubscribe',
+      symbols: symbols,
+      timestamp: Date.now(),
+    };
+
+    console.log(
+      `[sendBulkUnsubscribeMessage] 일괄 구독 해제 요청: ${symbols.length}개 종목`,
+      symbols
+    );
+    socket.send(JSON.stringify(bulkUnsubscribeMessage));
+    console.log('[sendBulkUnsubscribeMessage] 일괄 해제 메시지 전송 완료');
+  } else {
+    console.error('[sendBulkUnsubscribeMessage] WebSocket이 연결되지 않음 - 개별 해제로 폴백');
+    // 폴백: 개별 구독 해제
+    symbols.forEach((symbol) => sendUnsubscribeMessage(symbol));
   }
 }
 
@@ -791,4 +860,20 @@ export function getConnectionState(): ConnectionStatus {
     maxReconnectAttempts: maxReconnectAttempts,
     connectionDuration: connectionStartTime ? Date.now() - connectionStartTime : 0,
   };
+}
+
+/**
+ * 일괄 구독 (외부 API)
+ * @param symbols - 구독할 심볼 배열
+ */
+export function bulkSubscribe(symbols: string[]): void {
+  sendBulkSubscribeMessage(symbols);
+}
+
+/**
+ * 일괄 구독 해제 (외부 API)
+ * @param symbols - 구독 해제할 심볼 배열
+ */
+export function bulkUnsubscribe(symbols: string[]): void {
+  sendBulkUnsubscribeMessage(symbols);
 }

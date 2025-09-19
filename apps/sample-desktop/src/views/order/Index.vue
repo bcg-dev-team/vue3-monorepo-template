@@ -295,65 +295,36 @@ const isUpdating = ref(false);
 // AG Grid 가시성 감지 디바운스 타이머
 let gridDebounceTimer: NodeJS.Timeout | null = null;
 
-// AG Grid의 실제 화면에 보이는 행들 감지 (AG Grid 34 버전 호환)
+// AG Grid의 실제 화면에 보이는 행들 감지 (AG Grid 34 버전 확정 방식)
 const updateVisibleSymbols = () => {
-  console.log('🔄 updateVisibleSymbols 실행');
   if (!gridApi.value) {
-    console.log('❌ updateVisibleSymbols: gridApi.value가 없음');
     return;
   }
 
-  try {
-    // 🎯 AG Grid 34 버전 최적화 방법: getRenderedNodes() 사용
-    const visibleNodes = gridApi.value.getRenderedNodes();
-    console.log(`📊 전체 렌더링된 노드 수: ${visibleNodes.length}`);
+  // AG Grid 34 호환
+  // getFirstDisplayedRowIndex, getLastDisplayedRowIndex, getDisplayedRowAtIndex 사용
+  const firstRenderedRow = gridApi.value.getFirstDisplayedRowIndex();
+  const lastRenderedRow = gridApi.value.getLastDisplayedRowIndex();
 
-    // 실제로 화면에 렌더링된 노드들만 필터링
-    const actualVisibleNodes = visibleNodes.filter((node: any) => {
-      // AG Grid v34에서는 rowVisible이 undefined일 수 있으므로 다른 조건 사용
-      const isValid = node.rowIndex !== null && node.data && node.rowIndex >= 0;
-      if (!isValid) {
-        console.log('🚫 필터링된 노드:', {
-          rowVisible: node.rowVisible,
-          rowIndex: node.rowIndex,
-          hasData: !!node.data,
-          itemCode: node.data?.itemCode,
-          isValid: isValid,
-        });
-      } else {
-        console.log('✅ 유효한 노드:', {
-          rowVisible: node.rowVisible,
-          rowIndex: node.rowIndex,
-          hasData: !!node.data,
-          itemCode: node.data?.itemCode,
-          isValid: isValid,
-        });
-      }
-      return isValid;
-    });
-    console.log(`✅ 유효한 노드 수: ${actualVisibleNodes.length}`);
+  // 유효한 범위인지 확인
+  if (firstRenderedRow === -1 || lastRenderedRow === -1 || firstRenderedRow > lastRenderedRow) {
+    return;
+  }
 
-    // 화면에 보이는 종목들만 추출
-    const visibleSymbols = actualVisibleNodes
-      .map((node: any) => node.data?.itemCode)
-      .filter(Boolean);
-    console.log(`🎯 추출된 종목들:`, visibleSymbols);
+  const visibleSymbols: string[] = [];
 
-    if (visibleSymbols.length > 0) {
-      addVisibleSymbols('AGGrid', visibleSymbols);
-      console.log(`✅ AG Grid 가시성 감지 완료: ${visibleSymbols.length}개 종목`, visibleSymbols);
-    } else {
-      console.log('⚠️ 보이는 종목이 없음');
+  // 실제 렌더링된 행들만 순회
+  for (let i = firstRenderedRow; i <= lastRenderedRow; i++) {
+    const rowNode = gridApi.value.getDisplayedRowAtIndex(i);
+    if (rowNode?.data?.itemCode) {
+      visibleSymbols.push(rowNode.data.itemCode);
     }
-  } catch (error) {
-    console.error('❌ AG Grid 가시성 감지 오류:', error);
+  }
 
-    // 폴백: 시장 데이터의 종목들을 가져오기
-    const allSymbols = marketData.value.map((m: any) => m.symbol).filter(Boolean);
-    if (allSymbols.length > 0) {
-      addVisibleSymbols('AGGrid', allSymbols);
-      console.log(`🔄 AG Grid 폴백: ${allSymbols.length}개 종목`, allSymbols);
-    }
+  // 중복 제거 후 구독 업데이트
+  const uniqueVisibleSymbols = [...new Set(visibleSymbols)];
+  if (uniqueVisibleSymbols.length > 0) {
+    addVisibleSymbols('AGGrid', uniqueVisibleSymbols);
   }
 };
 
@@ -415,79 +386,35 @@ const gridApi = ref<GridApi | null>(null);
 
 // 그리드 준비 완료 이벤트
 const onGridReady = (params: any) => {
-  console.log('🎬 onGridReady 호출됨!', params);
   gridApi.value = params.api;
-  console.log('🎬 gridApi.value 설정됨:', !!gridApi.value);
-
-  // BaseDataGrid 컴포넌트에서 자동으로 sizeColumnsToFit을 처리하므로
-  // 여기서는 추가 처리 불필요
-
-  // 🎯 AG Grid 가시성 감지 설정
-  console.log('🎯 setupGridVisibilityObserver 호출 시작');
   setupGridVisibilityObserver();
-  console.log('🎯 setupGridVisibilityObserver 호출 완료');
 };
 
-// 🎯 AG Grid 가시성 감지 설정
+// AG Grid 가시성 감지 설정
 const setupGridVisibilityObserver = () => {
-  console.log('🎯 setupGridVisibilityObserver 시작');
   if (!gridApi.value) {
-    console.log('❌ gridApi.value가 없음');
     return;
   }
 
-  // 그리드 이벤트 리스너 등록 (AG Grid 34 호환) - 필수 이벤트만 등록
-  console.log('AG Grid 이벤트 리스너 등록');
-  gridApi.value.addEventListener('viewportChanged', () => {
-    console.log('viewportChanged 이벤트 - 디바운스 적용');
-    debouncedUpdateVisibleSymbols();
-  });
-  gridApi.value.addEventListener('firstDataRendered', () => {
-    console.log('firstDataRendered 이벤트');
-    updateVisibleSymbols();
-  });
+  // AG Grid 이벤트 리스너 등록
+  gridApi.value.addEventListener('viewportChanged', debouncedUpdateVisibleSymbols);
+  gridApi.value.addEventListener('firstDataRendered', updateVisibleSymbols);
 
   // 초기 실행
-  console.log('초기 실행 - 100ms 후');
   setTimeout(updateVisibleSymbols, 100);
 };
 
-// AG Grid 가시성 감지 디바운스 함수 (스크롤이 멈춘 후 300ms 후에 실행)
+// AG Grid 가시성 감지 디바운스 함수
 const debouncedUpdateVisibleSymbols = () => {
   if (gridDebounceTimer) {
     clearTimeout(gridDebounceTimer);
   }
-
-  gridDebounceTimer = setTimeout(() => {
-    updateVisibleSymbols();
-    gridDebounceTimer = null;
-  }, 300); // 300ms 디바운스
+  gridDebounceTimer = setTimeout(updateVisibleSymbols, 300);
 };
-// 정렬 변경 이벤트 (AG Grid 34 호환)
-const onSortChanged = (event: any) => {
-  console.log('onSortChanged 이벤트:', event);
-  // 가시성 감지 업데이트
-  if (gridApi.value) {
-    console.log('정렬 후 가시성 감지 업데이트 - 100ms 후');
-    setTimeout(() => {
-      if (gridApi.value) {
-        console.log('정렬 후 가시성 감지 실행');
-        const visibleNodes = gridApi.value.getRenderedNodes();
-        const actualVisibleNodes = visibleNodes.filter((node: any) => {
-          // AG Grid v34에서는 rowVisible이 undefined일 수 있으므로 다른 조건 사용
-          return node.rowIndex !== null && node.data && node.rowIndex >= 0;
-        });
-        const visibleSymbols = actualVisibleNodes
-          .map((node: any) => node.data?.itemCode)
-          .filter(Boolean);
-        console.log(`🎯 정렬 후 보이는 종목들:`, visibleSymbols);
-        if (visibleSymbols.length > 0) {
-          addVisibleSymbols('AGGrid', visibleSymbols);
-          console.log(`✅ 정렬 후 가시성 감지 완료: ${visibleSymbols.length}개 종목`);
-        }
-      }
-    }, 100);
-  }
+// 정렬 변경 이벤트
+const onSortChanged = () => {
+  // 정렬 후 가시성 업데이트 (렌더링 완료 대기)
+  setTimeout(updateVisibleSymbols, 100);
 };
 // 행 선택 이벤트는 사용하지 않음 (selectable=false)
 

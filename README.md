@@ -112,8 +112,14 @@ vue3-monorepo-template/
 
 3. **Vue Inspector 설정 (선택사항)**
     ```bash
-    # Cursor IDE와 Vue Inspector 연동을 위한 설정
+    # macOS/Linux
     ./shared/scripts/setup-vue-inspector.sh
+    
+    # Windows (Git Bash/WSL)
+    ./shared/scripts/setup-vue-inspector.sh
+    
+    # Windows (Command Prompt)
+    shared\scripts\setup-vue-inspector.bat
     ```
 
 4. **개발 서버 실행**

@@ -25,42 +25,49 @@ export function useDataSourceManager() {
     }
   };
 
-  // 심볼 구독
-  const subscribeToSymbol = (symbol: string, callback: (data: any) => void): string => {
-    const unifiedDataSourceManager = getDataSourceManager();
-    const subscriptionId = unifiedDataSourceManager.subscribe(symbol, callback);
-    subscriptions.value.set(symbol, subscriptionId);
-    console.log(`[useDataSourceManager] 데이터 소스 구독 시작: ${symbol} (ID: ${subscriptionId})`);
-    return subscriptionId;
-  };
-
-  // 심볼 구독 해제
-  const unsubscribeFromSymbol = (symbol: string): void => {
-    const unifiedDataSourceManager = getDataSourceManager();
-    const subscriptionId = subscriptions.value.get(symbol);
-    if (subscriptionId) {
-      unifiedDataSourceManager.unsubscribe(subscriptionId);
-      console.log(
-        `[useDataSourceManager] 데이터 소스 구독 해제: ${symbol} (ID: ${subscriptionId})`
-      );
-      subscriptions.value.delete(symbol);
+  // 모든 구독 해제 (일괄 처리)
+  const unsubscribeAll = (): void => {
+    const symbols = Array.from(subscriptions.value.keys());
+    if (symbols.length > 0) {
+      unsubscribeBulk(symbols);
+      console.log(`[useDataSourceManager] 모든 구독 해제: ${symbols.length}개 종목`);
     }
   };
 
-  // 모든 구독 해제
-  const unsubscribeAll = (): void => {
+  // 일괄 구독
+  const subscribeBulk = (
+    symbols: string[],
+    callback: (symbol: string, data: any) => void
+  ): string[] => {
     const unifiedDataSourceManager = getDataSourceManager();
-    subscriptions.value.forEach((subscriptionId, symbol) => {
-      unifiedDataSourceManager.unsubscribe(subscriptionId);
+    const subscriptionIds = unifiedDataSourceManager.subscribeBulk(symbols, callback);
+
+    // 구독 정보 저장
+    symbols.forEach((symbol, index) => {
+      subscriptions.value.set(symbol, subscriptionIds[index]);
     });
-    subscriptions.value.clear();
-    console.log(`[useDataSourceManager] 모든 구독 해제`);
+
+    console.log(`[useDataSourceManager] 일괄 구독 완료: ${symbols.length}개 종목`, symbols);
+    return subscriptionIds;
   };
 
-  // 설정 업데이트
-  const updateConfig = () => {
+  // 일괄 구독 해제
+  const unsubscribeBulk = (symbols: string[]): void => {
     const unifiedDataSourceManager = getDataSourceManager();
-    unifiedDataSourceManager.updateConfig();
+    const subscriptionIds = symbols
+      .map((symbol) => subscriptions.value.get(symbol))
+      .filter(Boolean) as string[];
+
+    if (subscriptionIds.length > 0) {
+      unifiedDataSourceManager.unsubscribeBulk(subscriptionIds);
+
+      // 구독 정보 삭제
+      symbols.forEach((symbol) => {
+        subscriptions.value.delete(symbol);
+      });
+
+      console.log(`[useDataSourceManager] 일괄 구독 해제 완료: ${symbols.length}개 종목`, symbols);
+    }
   };
 
   // 연결 상태
@@ -77,9 +84,8 @@ export function useDataSourceManager() {
 
     // 함수들
     initialize,
-    subscribeToSymbol,
-    unsubscribeFromSymbol,
     unsubscribeAll,
-    updateConfig,
+    subscribeBulk,
+    unsubscribeBulk,
   };
 }

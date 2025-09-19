@@ -18,7 +18,6 @@ export function useSymbolData() {
     selectedSymbol: currentSelectedSymbol,
     marketData,
     addVisibleSymbols,
-    removeVisibleSymbols,
     unsubscribeAll,
   } = selectedSymbol;
 
@@ -72,7 +71,6 @@ export function useSymbolData() {
     isFavorite,
     loadSymbols,
     addVisibleSymbols,
-    removeVisibleSymbols,
     unsubscribeAll,
   };
 }

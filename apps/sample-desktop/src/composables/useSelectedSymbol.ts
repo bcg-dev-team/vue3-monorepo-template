@@ -24,26 +24,24 @@ export function useSelectedSymbol() {
   // 선택된 심볼 가져오기
   const getSelectedSymbol = () => globalSelectedSymbol.value;
 
-  // 심볼 변경
-  const setSelectedSymbol = (symbol: string) => {
-    const oldSymbol = globalSelectedSymbol.value;
-    globalSelectedSymbol.value = symbol;
-
-    // 변경 이벤트 알림
-    if (oldSymbol !== symbol) {
-      symbolChangeListeners.forEach((listener) => listener(symbol));
-      console.log(`🔄 선택된 심볼 변경: ${oldSymbol} → ${symbol}`);
-    }
-  };
-
   // 심볼 변경 리스너 등록
   const onSymbolChange = (listener: (symbol: string) => void) => {
     symbolChangeListeners.add(listener);
     return () => symbolChangeListeners.delete(listener);
   };
 
+  // 현재 선택된 심볼을 Chart 소스로 구독 관리
+  const updateChartSymbolSubscription = (symbol: string) => {
+    subscriptionManager.updateVisibleSymbols('Chart', [symbol], (symbol, data) => {
+      marketDataManager.updateMarketDataFromStream(symbol, data);
+    });
+  };
+
   // 초기화
   dataSourceManager.initialize();
+
+  // 초기 선택된 심볼을 Chart 소스로 구독
+  updateChartSymbolSubscription(globalSelectedSymbol.value);
 
   // 선택된 심볼의 시장 데이터
   const selectedSymbolData = computed(() => {
@@ -104,15 +102,26 @@ export function useSelectedSymbol() {
     return symbolInfo.value?.description || globalSelectedSymbol.value;
   });
 
+  // 심볼 변경 (구독과 함께 처리)
+  const setSelectedSymbol = (symbol: string) => {
+    const oldSymbol = globalSelectedSymbol.value;
+    globalSelectedSymbol.value = symbol;
+
+    // 차트 구독 업데이트
+    updateChartSymbolSubscription(symbol);
+
+    // 변경 이벤트 알림
+    if (oldSymbol !== symbol) {
+      symbolChangeListeners.forEach((listener) => listener(symbol));
+      console.log(`🔄 선택된 심볼 변경: ${oldSymbol} → ${symbol}`);
+    }
+  };
+
   // 가시성 관리는 subscriptionManager에 위임
   const addVisibleSymbols = (source: string, symbols: string[]) => {
     subscriptionManager.addVisibleSymbols(source, symbols, (symbol, data) => {
       marketDataManager.updateMarketDataFromStream(symbol, data);
     });
-  };
-
-  const removeVisibleSymbols = (source: string, symbols: string[]) => {
-    subscriptionManager.removeVisibleSymbols(source, symbols);
   };
 
   // 모든 구독 해제
@@ -148,7 +157,6 @@ export function useSelectedSymbol() {
     setSelectedSymbol,
     onSymbolChange,
     addVisibleSymbols,
-    removeVisibleSymbols,
     unsubscribeAll,
   };
 }

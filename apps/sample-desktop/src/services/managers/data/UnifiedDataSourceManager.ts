@@ -12,6 +12,7 @@ export class UnifiedDataSourceManager {
   private config = getDataSourceConfig();
   private marketData = new Map<string, SymbolData>();
   private subscribers = new Map<string, Set<(data: SymbolData) => void>>();
+  private webSocketSubscriptionIds = new Map<string, string>(); // symbol -> webSocketSubscriptionId
 
   private constructor() {}
 
@@ -36,67 +37,109 @@ export class UnifiedDataSourceManager {
   }
 
   /**
-   * 심볼 구독
+   * 일괄 구독
    */
-  subscribe(symbol: string, callback: (data: SymbolData) => void): string {
-    const subscriptionId = `${symbol}_${Date.now()}_${Math.random()}`;
+  subscribeBulk(symbols: string[], callback: (symbol: string, data: SymbolData) => void): string[] {
+    console.log(`[UnifiedDataSourceManager] 일괄 구독 시작: ${symbols.length}개 종목`, symbols);
 
-    // 구독자 등록
-    if (!this.subscribers.has(symbol)) {
-      this.subscribers.set(symbol, new Set());
-    }
-    this.subscribers.get(symbol)!.add(callback);
+    const subscriptionIds: string[] = [];
 
-    // 데이터 소스에 따라 구독
+    // 각 심볼에 대해 구독자 등록
+    symbols.forEach((symbol) => {
+      const subscriptionId = `${symbol}_${Date.now()}_${Math.random()}`;
+      subscriptionIds.push(subscriptionId);
+
+      // 구독자 등록
+      if (!this.subscribers.has(symbol)) {
+        this.subscribers.set(symbol, new Set());
+      }
+      this.subscribers.get(symbol)!.add((data) => callback(symbol, data));
+    });
+
+    // 데이터 소스에 따라 일괄 구독
     if (this.config.useWebSocket) {
-      this.subscribeToWebSocket(symbol, subscriptionId);
+      this.subscribeBulkToWebSocket(symbols);
     } else {
-      this.subscribeToMSW(symbol, subscriptionId);
+      this.subscribeBulkToMSW(symbols);
     }
 
-    return subscriptionId;
+    console.log(`[UnifiedDataSourceManager] 일괄 구독 완료: ${subscriptionIds.length}개 ID 생성`);
+    return subscriptionIds;
   }
 
   /**
-   * 실제 WebSocket 구독
+   * 일괄 구독 해제
    */
-  private subscribeToWebSocket(symbol: string, subscriptionId: string): void {
-    webSocketManager.subscribe(symbol, (data: any) => {
-      this.updateMarketData(symbol, data);
+  unsubscribeBulk(subscriptionIds: string[]): void {
+    console.log(`[UnifiedDataSourceManager] 일괄 구독 해제 시작: ${subscriptionIds.length}개 ID`);
+
+    const symbols = subscriptionIds.map((id) => id.split('_')[0]);
+    const uniqueSymbols = Array.from(new Set(symbols));
+
+    // 구독자 정리
+    uniqueSymbols.forEach((symbol) => {
+      const symbolSubscribers = this.subscribers.get(symbol);
+      if (symbolSubscribers) {
+        symbolSubscribers.clear();
+      }
+    });
+
+    // 데이터 소스에 따라 일괄 구독 해제
+    if (this.config.useWebSocket) {
+      this.unsubscribeBulkFromWebSocket(uniqueSymbols);
+    } else {
+      this.unsubscribeBulkFromMSW(uniqueSymbols);
+    }
+
+    console.log(`[UnifiedDataSourceManager] 일괄 구독 해제 완료: ${uniqueSymbols.length}개 종목`);
+  }
+
+  /**
+   * WebSocket 일괄 구독
+   */
+  private subscribeBulkToWebSocket(symbols: string[]): void {
+    symbols.forEach((symbol) => {
+      const webSocketSubscriptionId = webSocketManager.subscribe(symbol, (data: any) => {
+        this.updateMarketData(symbol, data);
+      });
+      this.webSocketSubscriptionIds.set(symbol, webSocketSubscriptionId);
     });
   }
 
   /**
-   * MSW 구독
+   * MSW 일괄 구독
    */
-  private subscribeToMSW(symbol: string, subscriptionId: string): void {
+  private subscribeBulkToMSW(symbols: string[]): void {
     if (typeof window !== 'undefined' && (window as any).mockWebSocketManager) {
-      (window as any).mockWebSocketManager.subscribe(symbol, (data: any) => {
-        this.updateMarketData(symbol, data);
+      symbols.forEach((symbol) => {
+        (window as any).mockWebSocketManager.subscribe(symbol, (data: any) => {
+          this.updateMarketData(symbol, data);
+        });
       });
     }
   }
 
   /**
-   * 구독 해제
+   * WebSocket 일괄 구독 해제
    */
-  unsubscribe(subscriptionId: string): void {
-    // subscriptionId에서 symbol 추출 (간단한 구현)
-    const symbol = subscriptionId.split('_')[0];
-    const symbolSubscribers = this.subscribers.get(symbol);
-
-    if (symbolSubscribers) {
-      // 모든 콜백 제거 (실제로는 subscriptionId로 특정 콜백만 제거해야 함)
-      symbolSubscribers.clear();
-    }
-
-    // 데이터 소스에 따라 구독 해제
-    if (this.config.useWebSocket) {
-      webSocketManager.unsubscribeById(subscriptionId);
-    } else {
-      if (typeof window !== 'undefined' && (window as any).mockWebSocketManager) {
-        (window as any).mockWebSocketManager.unsubscribeById(subscriptionId);
+  private unsubscribeBulkFromWebSocket(symbols: string[]): void {
+    symbols.forEach((symbol) => {
+      const webSocketSubscriptionId = this.webSocketSubscriptionIds.get(symbol);
+      if (webSocketSubscriptionId) {
+        webSocketManager.unsubscribeById(webSocketSubscriptionId);
+        this.webSocketSubscriptionIds.delete(symbol);
       }
+    });
+  }
+
+  /**
+   * MSW 일괄 구독 해제
+   */
+  private unsubscribeBulkFromMSW(symbols: string[]): void {
+    if (typeof window !== 'undefined' && (window as any).mockWebSocketManager) {
+      symbols.forEach((symbol) => {
+        (window as any).mockWebSocketManager.unsubscribe(symbol);
+      });
     }
   }
 

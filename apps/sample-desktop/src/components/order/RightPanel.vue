@@ -12,7 +12,13 @@
     >
       <div class="flex w-52 flex-col gap-1">
         <div class="text-base font-semibold leading-5 tracking-[-0.35px] text-[#131313]">
-          EURUSD
+          {{ currentSymbol }}
+        </div>
+        <div class="text-sm text-gray-600">
+          {{ currentPrice.toFixed(5) }}
+          <span :class="changePercent >= 0 ? 'text-green-600' : 'text-red-600'">
+            {{ changePercent >= 0 ? '+' : '' }}{{ changePercent.toFixed(2) }}%
+          </span>
         </div>
       </div>
     </div>
@@ -337,9 +343,19 @@ import {
   BaseInputStepper,
   BaseInputSelect,
 } from '@template/ui';
+import { selectedSymbolInstance as selectedSymbol } from '@/composables/useSelectedSymbol';
+
 import type { RadioOption } from '@template/ui';
 import { reactive, ref, computed } from 'vue';
 import OrderBook from './OrderBook.vue';
+
+interface Props {
+  selectedSymbol?: string;
+}
+
+withDefaults(defineProps<Props>(), {
+  selectedSymbol: 'EURUSD',
+});
 
 const state = reactive({
   stopLoss: false,
@@ -351,11 +367,28 @@ const isAutoLiquidationOpen = ref(false); // 자동 청산 토글 상태
 const isBuyActive = ref(false); // 매수 버튼 토글 상태
 const isSellActive = ref(false); // 매도 버튼 토글 상태
 const selectedAccount = ref('account1'); // 선택된 계좌
-const isDropdownOpen = ref(false); // 드롭다운 토글 상태
 
-// 매수/매도 가격 데이터
-const buyPrice = ref(1.171);
-const sellPrice = ref(1.17096);
+// 선택된 심볼의 실시간 가격 사용
+const buyPrice = computed(() => {
+  return selectedSymbol.buyPrice.value;
+});
+
+const sellPrice = computed(() => {
+  return selectedSymbol.sellPrice.value;
+});
+
+// 선택된 심볼 정보
+const currentSymbol = computed(() => {
+  return selectedSymbol.selectedSymbol.value;
+});
+
+const currentPrice = computed(() => {
+  return selectedSymbol.currentPrice.value;
+});
+
+const changePercent = computed(() => {
+  return selectedSymbol.changePercent.value;
+});
 
 // 주문 입력 데이터
 const quantity = ref(0);
@@ -396,21 +429,23 @@ const progressBarStyles = computed(() => {
   };
 });
 
-const accountOptions = [
-  { value: 'account1', label: '라이브계좌#1 110-81-345150' },
-  { value: 'account2', label: '라이브계좌#2 110-81-345151' },
-  { value: 'account3', label: '데모계좌#1 110-81-345152' },
-];
-
-const selectedAccountLabel = computed(() => {
-  const option = accountOptions.find((opt) => opt.value === selectedAccount.value);
-  return option?.label || '계좌를 선택하세요';
+// 실시간 계좌 정보 (목 데이터)
+const accountOptions = computed(() => {
+  return [
+    {
+      value: 'account1',
+      label: '라이브계좌#1 110-81-345150',
+    },
+    {
+      value: 'account2',
+      label: '라이브계좌#2 110-81-345151',
+    },
+    {
+      value: 'account3',
+      label: '데모계좌#1 110-81-345152',
+    },
+  ];
 });
-
-const selectAccount = (value: string) => {
-  selectedAccount.value = value;
-  isDropdownOpen.value = false;
-};
 
 const buyButtonClasses = computed(() => {
   const baseClasses = 'flex w-full flex-col items-center justify-center gap-1 rounded-md p-3 ';

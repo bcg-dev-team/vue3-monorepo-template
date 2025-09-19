@@ -1,5 +1,5 @@
-/* 
-datafeed api는 위젯 생성자에서 구현하고 datafeed 객체에 할당해야 하는 메서드 집합
+/*
+ * datafeed api는 위젯 생성자에서 구현하고 datafeed 객체에 할당해야 하는 메서드 집합
  */
 
 import type {
@@ -13,12 +13,8 @@ import type {
   ErrorCallback,
   RealtimeCallback,
   ResetCacheCallback,
-  CryptoCompareApiData,
 } from '@/types/tradingview';
 
-// @ts-ignore - JavaScript 파일이므로 타입 체크 무시
-import { makeApiRequest, generateSymbol, parseFullSymbol } from './helpers.ts';
-// @ts-ignore - JavaScript 파일이므로 타입 체크 무시
 import { subscribeOnStream, unsubscribeFromStream } from './streaming';
 const lastBarsCache = new Map<string, TradingViewBar>();
 
@@ -28,6 +24,7 @@ const datafeed: TradingViewDatafeed = {
     setTimeout(() => callback(configurationData));
   },
 
+  // TODO: Chart Widget 내장 검색 기능 불필요 시 내부 로직 제거
   searchSymbols: async (
     userInput: string,
     exchange: string,
@@ -102,73 +99,11 @@ const datafeed: TradingViewDatafeed = {
     console.log('[getBars]: Method call', symbolInfo, resolution, from, to);
     console.log('[getBars]: full_name:', symbolInfo.full_name);
     console.log('[getBars]: resolution:', resolution);
-    const parsedSymbol = parseFullSymbol(symbolInfo.full_name || symbolInfo.name);
-    console.log('[getBars]: parsedSymbol:', parsedSymbol);
-
-    if (!parsedSymbol) {
-      console.error('[getBars]: 심볼 파싱 실패:', symbolInfo.full_name);
-      onErrorCallback(new Error('Invalid symbol format'));
-      return;
-    }
-
-    // 시간 간격별 데이터 요청 파라미터 조정
-    let dataLimit = 2000;
-    let timeMultiplier = 1;
-
-    // 시간 간격에 따른 데이터 요청 조정
-    if (resolution === '60' || resolution === '240') {
-      // 1시간, 4시간 간격의 경우 더 많은 데이터 요청
-      dataLimit = 5000;
-      timeMultiplier = 1;
-    } else if (resolution === '1D' || resolution === '1W' || resolution === '1M') {
-      // 일/주/월 간격의 경우
-      dataLimit = 1000;
-      timeMultiplier = 1;
-    } else {
-      // 분 단위 간격의 경우
-      dataLimit = 2000;
-      timeMultiplier = 1;
-    }
-
-    const urlParameters: Record<string, string | number> = {
-      e: symbolInfo.exchange,
-      fsym: parsedSymbol.fromSymbol,
-      tsym: parsedSymbol.toSymbol,
-      toTs: to,
-      limit: dataLimit,
-      resolution: resolution, // 해상도 정보 추가
-    };
-
-    const query = Object.keys(urlParameters)
-      .map((name) => `${name}=${encodeURIComponent(urlParameters[name])}`)
-      .join('&');
 
     try {
-      // 통합 API 엔드포인트 사용
-      const apiEndpoint = 'data/history';
-
-      const data: CryptoCompareApiData = await makeApiRequest(`${apiEndpoint}?${query}`);
-      if ((data.Response && data.Response === 'Error') || data.Data.length === 0) {
-        // "noData" should be set if there is no data in the requested period
-        onHistoryCallback([], { noData: true });
-        return;
-      }
-
-      let bars: TradingViewBar[] = [];
-      data.Data.forEach((bar) => {
-        if (bar.time >= from && bar.time < to) {
-          bars = [
-            ...bars,
-            {
-              time: bar.time * 1000,
-              low: bar.low,
-              high: bar.high,
-              open: bar.open,
-              close: bar.close,
-            },
-          ];
-        }
-      });
+      // mocks 패키지의 TradingView 히스토리 데이터 생성 함수 사용
+      const { generateTradingViewBars } = await import('@template/mocks');
+      const bars: TradingViewBar[] = generateTradingViewBars(symbolInfo.name, from, to, resolution);
 
       if (firstDataRequest && bars.length > 0) {
         lastBarsCache.set(symbolInfo.full_name || symbolInfo.name, {
@@ -246,54 +181,55 @@ const configurationData: TradingViewConfiguration = {
   supports_marks: false,
   supports_timescale_marks: false,
   supports_time: true,
-  supports_search: true,
+  // chart widget 내장 검색 기능
+  supports_search: false,
   supports_group_request: false,
 };
 
 // 시간 간격 매핑 함수
+// TODO: 세부 정책 결정 시 수정
 function getSupportedResolutions(symbol: string): string[] {
-  // ETH/EUR에 대해서는 이미지 메시지와 일치하는 시간 간격 설정
-  if (symbol === 'ETH/EUR') {
+  // 암호화폐는 모든 시간 간격 지원
+  if (symbol.includes('BTC') || symbol.includes('ETH') || symbol.includes('XRP')) {
     return ['1', '5', '15', '30', '60', '240', '1D', '1W', '1M'];
   }
-  // 다른 심볼들은 기본 설정 사용
+
+  // 외환은 분 단위 제한
+  if (symbol.length === 6 && /^[A-Z]{6}$/.test(symbol)) {
+    return ['5', '15', '30', '60', '240', '1D', '1W', '1M'];
+  }
+
+  // 주식은 일 단위 이상
+  if (
+    symbol.includes('AAPL') ||
+    symbol.includes('US30') ||
+    symbol.includes('NAS100') ||
+    symbol.includes('JPN225')
+  ) {
+    return ['60', '240', '1D', '1W', '1M'];
+  }
+
+  // 상품은 일 단위 이상
+  if (
+    symbol.includes('Oil') ||
+    symbol.includes('Gold') ||
+    symbol.includes('XAU') ||
+    symbol.includes('XAG')
+  ) {
+    return ['60', '240', '1D', '1W', '1M'];
+  }
+
+  // 기본 설정 사용
   return configurationData.supported_resolutions;
 }
 
-// Obtains all symbols for all exchanges supported by CryptoCompare API
-// MSW 환경에서 사용할 심볼 목록 (모킹된 데이터)
-async function getAllSymbols(): Promise<TradingSymbol[]> {
-  // MSW 환경에서는 하드코딩된 심볼 목록 사용
-  return [
-    {
-      symbol: 'BTC/EUR',
-      ticker: 'BTC/EUR',
-      description: 'Bitcoin / Euro',
-      exchange: 'Bitfinex',
-      type: 'crypto',
-    },
-    {
-      symbol: 'BTC/USD',
-      ticker: 'BTC/USD',
-      description: 'Bitcoin / US Dollar',
-      exchange: 'Bitfinex',
-      type: 'crypto',
-    },
-    {
-      symbol: 'ETH/EUR',
-      ticker: 'ETH/EUR',
-      description: 'Ethereum / Euro',
-      exchange: 'Bitfinex',
-      type: 'crypto',
-    },
-    {
-      symbol: 'ETH/USD',
-      ticker: 'ETH/USD',
-      description: 'Ethereum / US Dollar',
-      exchange: 'Bitfinex',
-      type: 'crypto',
-    },
-  ];
+/**
+ * MSW 환경에서 사용할 심볼 목록 가져오기
+ */
+export async function getAllSymbols(): Promise<TradingSymbol[]> {
+  // mocks 패키지에서 실제 심볼 목록 가져오기
+  const { getAllSymbols } = await import('@template/mocks');
+  return getAllSymbols();
 }
 
 export default datafeed;

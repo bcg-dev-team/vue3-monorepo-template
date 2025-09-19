@@ -137,3 +137,8 @@ export interface ValidationError {
 export interface FormErrors {
   [key: string]: string;
 }
+
+/**
+ * 포지션 타입
+ */
+export type PositionType = 'LONG' | 'SHORT';

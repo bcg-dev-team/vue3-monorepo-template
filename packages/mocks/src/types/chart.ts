@@ -3,18 +3,11 @@
  * MSW 모킹에서 사용하는 차트 데이터 타입들
  */
 
-// TradingView 차트 바 데이터
-export interface TradingViewBar {
-  time: number;
-  open: number;
-  high: number;
-  low: number;
-  close: number;
-  volume?: number;
-}
+// TradingView 차트 바 데이터는 @template/types로 이동됨
 
-// API 응답 데이터 (CryptoCompare)
-export interface CryptoCompareApiData {
+// 차트 API 응답 데이터
+// CryptoCompare API 응답 형태 참고: https://www.rubydoc.info/gems/cryptocompare/Cryptocompare/HistoDay
+export interface ChartApiData {
   Response?: string;
   Message?: string;
   HasWarning?: boolean;
@@ -65,4 +58,19 @@ export interface Bar {
   low: number;
   close: number;
   volume: number;
+}
+
+// 거래 심볼 타입은 @template/types로 이동됨
+// 심볼 가격 정보 타입은 @template/types로 이동됨
+
+// 주문 데이터 타입
+export interface OrderData {
+  id: number;
+  symbol: string;
+  type: 'Buy' | 'Sell';
+  price: number;
+  quantity: number;
+  status: 'Open' | 'Closed' | 'Pending' | 'Cancelled';
+  time: string;
+  createdAt: number;
 }

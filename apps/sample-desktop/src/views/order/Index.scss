@@ -1,0 +1,148 @@
+.order-page {
+  height: 100vh;
+  width: 100%;
+  background-color: #f8f9fa;
+}
+
+.order-list-panel,
+.order-detail-panel,
+.order-action-panel {
+  height: 100%;
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.panel-header {
+  padding: 20px;
+  border-bottom: 1px solid #e9ecef;
+  background-color: #ffffff;
+}
+
+.panel-title {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #212529;
+}
+
+.panel-subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.panel-content {
+  flex: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.placeholder-content {
+  text-align: center;
+  color: #6c757d;
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.placeholder-content p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* 좌측 패널 스타일 */
+.order-list-panel {
+  background-color: #f8f9fa;
+}
+
+/* 중앙 패널 스타일 */
+.order-detail-panel {
+  background-color: #ffffff;
+}
+
+.order-detail-panel .panel-content {
+  padding: 0;
+  display: block;
+}
+
+/* 차트 패널 스타일 */
+.chart-panel {
+  height: 100%;
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-panel .panel-content {
+  padding: 0;
+  display: block;
+}
+
+/* 테이블 패널 스타일 */
+.table-panel {
+  height: 100%;
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  display: flex;
+  flex-direction: column;
+}
+
+.table-panel .panel-content {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+  flex: 1;
+}
+
+/* 우측 패널 스타일 */
+.order-action-panel {
+  background-color: #f8f9fa;
+}
+
+/* splitpanes 기본 스타일 오버라이드 */
+:deep(.splitpanes) {
+  height: 100%;
+}
+
+:deep(.splitpanes__pane) {
+  background: transparent !important;
+  border: none !important;
+}
+
+:deep(.splitpanes__splitter) {
+  background-color: #e9ecef !important;
+  border: none !important;
+  width: 2px !important;
+}
+
+:deep(.splitpanes__splitter:hover) {
+  background-color: #6c757d !important;
+}
+
+/* AG Grid 헤더 가운데 정렬 */
+:deep(.ag-header-cell-label) {
+  justify-content: center;
+  text-align: center;
+}
+
+:deep(.ag-header-cell-text) {
+  text-align: center;
+}
+
+/* AG Grid 기본 스타일 사용 */

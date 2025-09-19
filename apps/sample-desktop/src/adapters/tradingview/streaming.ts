@@ -1,4 +1,5 @@
-import { parseFullSymbol, type ParsedSymbol } from './helpers';
+import { getDataSourceConfig } from '../../config/dataSource';
+import { parseFullSymbol } from '@template/mocks';
 
 /**
  * WebSocket 연결 상태 타입
@@ -160,6 +161,13 @@ const handleMessage = (event: MessageEvent): void => {
  * WebSocket 연결 초기화
  */
 function initializeSocket(): void {
+  // 데이터 소스 설정 확인
+  const config = getDataSourceConfig();
+  if (config.useWebSocket) {
+    console.log('[TradingView Streaming] 실제 웹소켓 사용 - MSW WebSocket 비활성화');
+    return;
+  }
+
   try {
     // 기존 연결이 있다면 정리
     cleanupSocket();
@@ -167,6 +175,7 @@ function initializeSocket(): void {
     connectionState = 'connecting';
     connectionStartTime = Date.now();
 
+    // TODO: 실제 Websocket 연동
     // MSW로 모킹된 Binance WebSocket 연결
     socket = new WebSocket('wss://stream.binance.com/ws/combined');
 
@@ -293,6 +302,11 @@ function handleMSWMessage(data: RealtimeData): void {
 
     // 해당 심볼의 모든 구독에 대해 Bar 업데이트
     updateBarsForSymbol(data.symbol, realtimeBar);
+
+    // useSelectedSymbol에 데이터 전달
+    if (typeof window !== 'undefined' && (window as any).updateMarketDataFromStream) {
+      (window as any).updateMarketDataFromStream(data.symbol, realtimeBar);
+    }
   } else if (data.type === 'subscription_success') {
     console.log('[MSW WebSocket] 구독 성공:', data);
   } else if (data.type === 'unsubscription_success') {
@@ -345,9 +359,9 @@ function updateBarsForSymbol(symbol: string, realtimeBar: Bar): void {
     }
   });
 
-  console.log(
-    `[updateBarsForSymbol] 완료: ${symbol} - ${matchedCount}개 구독, ${resolutionGroups.size}개 resolution`
-  );
+  // console.log(
+  //   `[updateBarsForSymbol] 완료: ${symbol} - ${matchedCount}개 구독, ${resolutionGroups.size}개 resolution`
+  // );
 }
 
 /**
@@ -582,6 +596,39 @@ function sendSubscribeMessage(symbol: string): void {
 }
 
 /**
+ * 일괄 구독 메시지 전송
+ * @param symbols - 구독할 심볼 배열
+ */
+function sendBulkSubscribeMessage(symbols: string[]): void {
+  console.log('[sendBulkSubscribeMessage] 호출:', {
+    symbolCount: symbols.length,
+    symbols,
+    socketState: socket?.readyState,
+  });
+
+  if (symbols.length === 0) {
+    console.warn('[sendBulkSubscribeMessage] 구독할 심볼이 없음');
+    return;
+  }
+
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    const bulkSubscribeMessage = {
+      type: 'bulk_subscribe',
+      symbols: symbols,
+      timestamp: Date.now(),
+    };
+
+    console.log(`[sendBulkSubscribeMessage] 일괄 구독 요청: ${symbols.length}개 종목`, symbols);
+    socket.send(JSON.stringify(bulkSubscribeMessage));
+    console.log('[sendBulkSubscribeMessage] 일괄 메시지 전송 완료');
+  } else {
+    console.error('[sendBulkSubscribeMessage] WebSocket이 연결되지 않음 - 개별 구독으로 폴백');
+    // 폴백: 개별 구독
+    symbols.forEach((symbol) => sendSubscribeMessage(symbol));
+  }
+}
+
+/**
  * 구독 해제 메시지 전송
  * @param symbol - 구독 해제할 심볼명
  */
@@ -598,6 +645,42 @@ function sendUnsubscribeMessage(symbol: string): void {
     socket.send(JSON.stringify(unsubscribeMessage));
   } else {
     console.error('[sendUnsubscribeMessage] WebSocket이 연결되지 않음');
+  }
+}
+
+/**
+ * 일괄 구독 해제 메시지 전송
+ * @param symbols - 구독 해제할 심볼 배열
+ */
+function sendBulkUnsubscribeMessage(symbols: string[]): void {
+  console.log('[sendBulkUnsubscribeMessage] 호출:', {
+    symbolCount: symbols.length,
+    symbols,
+    socketState: socket?.readyState,
+  });
+
+  if (symbols.length === 0) {
+    console.warn('[sendBulkUnsubscribeMessage] 구독 해제할 심볼이 없음');
+    return;
+  }
+
+  if (socket && socket.readyState === WebSocket.OPEN) {
+    const bulkUnsubscribeMessage = {
+      type: 'bulk_unsubscribe',
+      symbols: symbols,
+      timestamp: Date.now(),
+    };
+
+    console.log(
+      `[sendBulkUnsubscribeMessage] 일괄 구독 해제 요청: ${symbols.length}개 종목`,
+      symbols
+    );
+    socket.send(JSON.stringify(bulkUnsubscribeMessage));
+    console.log('[sendBulkUnsubscribeMessage] 일괄 해제 메시지 전송 완료');
+  } else {
+    console.error('[sendBulkUnsubscribeMessage] WebSocket이 연결되지 않음 - 개별 해제로 폴백');
+    // 폴백: 개별 구독 해제
+    symbols.forEach((symbol) => sendUnsubscribeMessage(symbol));
   }
 }
 
@@ -777,4 +860,20 @@ export function getConnectionState(): ConnectionStatus {
     maxReconnectAttempts: maxReconnectAttempts,
     connectionDuration: connectionStartTime ? Date.now() - connectionStartTime : 0,
   };
+}
+
+/**
+ * 일괄 구독 (외부 API)
+ * @param symbols - 구독할 심볼 배열
+ */
+export function bulkSubscribe(symbols: string[]): void {
+  sendBulkSubscribeMessage(symbols);
+}
+
+/**
+ * 일괄 구독 해제 (외부 API)
+ * @param symbols - 구독 해제할 심볼 배열
+ */
+export function bulkUnsubscribe(symbols: string[]): void {
+  sendBulkUnsubscribeMessage(symbols);
 }

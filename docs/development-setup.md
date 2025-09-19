@@ -6,14 +6,17 @@
 
 ### 자동 설정 (권장)
 
-프로젝트 루트에서 설정 스크립트를 실행하세요:
+프로젝트 루트에서 OS에 맞는 설정 스크립트를 실행하세요:
 
 ```bash
-# Vue Inspector 자동 설정
+# macOS/Linux
 ./shared/scripts/setup-vue-inspector.sh
 
-# 또는
-bash shared/scripts/setup-vue-inspector.sh
+# Windows (Git Bash/WSL)
+./shared/scripts/setup-vue-inspector.sh
+
+# Windows (Command Prompt/PowerShell)
+shared\scripts\setup-vue-inspector.bat
 ```
 
 이 스크립트는 다음 작업을 수행합니다:

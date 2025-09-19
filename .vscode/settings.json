@@ -30,7 +30,8 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "files.associations": {
-    "*.css": "tailwindcss"
+    "*.css": "tailwindcss",
+    "*.scss": "tailwindcss"
   },
   "tailwindCSS.experimental.configFile": {
     "packages/ui/src/style.css": "packages/ui/src/**",

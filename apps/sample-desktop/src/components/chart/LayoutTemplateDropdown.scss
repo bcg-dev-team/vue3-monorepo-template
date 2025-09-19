@@ -1,0 +1,36 @@
+.layout-template-dropdown {
+  @apply w-full rounded-lg bg-white p-2 shadow-lg;
+}
+
+.dropdown-content {
+  @apply w-full;
+}
+
+.template-list {
+  @apply flex w-full flex-col;
+}
+
+.template-item {
+  @apply flex w-full cursor-pointer items-center justify-between px-4 py-3 transition-colors;
+  @apply border-b border-[#dadbdd] last:border-b-0;
+
+  &:hover {
+    @apply bg-[#f5f7f9];
+  }
+
+  &.active {
+    @apply bg-[#f5f7f9];
+  }
+}
+
+.template-icon {
+  @apply flex items-center justify-center;
+}
+
+.template-label {
+  @apply ml-2 flex-1 text-[14px] font-normal text-[#131313];
+}
+
+.template-info {
+  @apply flex items-center justify-center;
+}

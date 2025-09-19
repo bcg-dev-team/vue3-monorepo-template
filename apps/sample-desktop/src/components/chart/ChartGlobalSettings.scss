@@ -1,0 +1,103 @@
+.chart-global-settings {
+  @apply h-10 w-full border-b border-[#dadbdd] bg-white;
+}
+
+.settings-container {
+  @apply flex h-full items-center px-3 py-2;
+}
+
+.settings-group {
+  @apply flex items-center gap-4;
+}
+
+.setting-button {
+  @apply flex h-6 w-6 items-center justify-center rounded bg-[#eaecee] transition-colors hover:bg-[#dadbdd];
+
+  &.active {
+    @apply bg-[#0067ef] text-white;
+  }
+
+  // fill 아이콘을 stroke 스타일로 변경
+  :deep(svg) {
+    fill: none;
+    stroke: #333740;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+.divider {
+  @apply h-4 w-px bg-[#717375];
+}
+
+.timeframe-group {
+  @apply flex items-center gap-2;
+}
+
+.timeframe-button {
+  @apply h-6 w-6 rounded text-[10px] font-medium text-[#333740] transition-colors hover:bg-[#eaecee];
+
+  &.active {
+    @apply bg-[#eaecee] text-[#333740];
+  }
+}
+
+.indicator-group,
+.layout-group,
+.workspace-group,
+.settings-group {
+  @apply flex items-center gap-1;
+}
+
+.layout-dropdown-container {
+  @apply relative;
+}
+
+.layout-dropdown {
+  @apply absolute right-0 top-full z-50 mt-1 w-48;
+}
+
+.indicator-label,
+.layout-label,
+.workspace-label,
+.settings-label {
+  @apply whitespace-nowrap text-[11px] font-medium text-[#131313];
+}
+
+.indicator-button,
+.layout-button,
+.workspace-button,
+.setting-button {
+  @apply flex h-6 w-6 items-center justify-center rounded transition-colors hover:bg-[#eaecee];
+
+  &.active {
+    @apply bg-[#eaecee];
+  }
+
+  // fill 아이콘을 stroke 스타일로 변경
+  :deep(svg) {
+    fill: none;
+    stroke: #333740;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+.chart-tools {
+  @apply flex items-center gap-2;
+}
+
+.tool-button {
+  @apply flex h-6 w-6 items-center justify-center rounded transition-colors hover:bg-[#eaecee];
+
+  // fill 아이콘을 stroke 스타일로 변경
+  :deep(svg) {
+    fill: none;
+    stroke: #333740;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}

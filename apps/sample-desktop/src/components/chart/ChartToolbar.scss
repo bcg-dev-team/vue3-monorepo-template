@@ -1,0 +1,19 @@
+.chart-toolbar {
+  @apply flex h-full flex-col items-center gap-2 p-2;
+}
+
+.toolbar-section {
+  @apply flex flex-col gap-1;
+}
+
+.toolbar-button {
+  @apply flex h-6 w-6 items-center justify-center rounded bg-[#eaecee] transition-colors hover:bg-[#dadbdd];
+
+  &.active {
+    @apply bg-[#0067ef] text-white;
+  }
+}
+
+.toolbar-divider {
+  @apply my-1 h-px w-4 bg-[#dadbdd];
+}

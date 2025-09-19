@@ -1,0 +1,85 @@
+.indicator-dialog-overlay {
+  @apply fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50;
+}
+
+.indicator-dialog {
+  @apply w-full max-w-md rounded-lg bg-white p-2 shadow-lg;
+  @apply flex max-h-[80vh] flex-col;
+}
+
+.dialog-header {
+  @apply flex items-center justify-between p-1;
+}
+
+.dialog-title {
+  @apply text-base font-semibold tracking-[-0.35px] text-[#131313];
+}
+
+.close-button {
+  @apply flex h-6 w-6 items-center justify-center rounded transition-colors hover:bg-gray-100;
+}
+
+.search-container {
+  @apply p-1;
+}
+
+.search-input {
+  @apply relative flex items-center rounded-md border border-[#dadbdd] bg-white px-[15px] py-2;
+}
+
+.search-field {
+  @apply flex-1 text-[13px] tracking-[-0.35px] text-[#b4b6bb] placeholder:text-[#b4b6bb];
+  @apply outline-none;
+
+  &::placeholder {
+    @apply text-[#b4b6bb];
+  }
+}
+
+.indicator-content {
+  @apply flex flex-1 gap-1 overflow-hidden;
+}
+
+.indicator-list {
+  @apply flex-1 overflow-y-auto;
+}
+
+.indicator-category {
+  @apply mb-1;
+}
+
+.category-header {
+  @apply flex cursor-pointer items-center gap-2.5 rounded bg-[#eaecee] px-2 py-1 transition-colors;
+  @apply hover:bg-[#dadbdd];
+
+  &.expanded {
+    .arrow-icon {
+      @apply rotate-180;
+    }
+  }
+}
+
+.category-name {
+  @apply text-[13px] font-medium tracking-[-0.35px] text-[#131313];
+}
+
+.category-indicators {
+  @apply flex flex-col;
+}
+
+.indicator-item {
+  @apply flex cursor-pointer items-center gap-2.5 px-4 py-3 transition-colors;
+  @apply border-b border-[#dadbdd] last:border-b-0 hover:bg-[#f5f7f9];
+
+  &.selected {
+    @apply bg-[#f5f7f9];
+  }
+}
+
+.indicator-name {
+  @apply text-[13px] font-normal tracking-[-0.35px] text-[#131313];
+}
+
+.scrollbar {
+  @apply w-[5px] flex-shrink-0 rounded-full bg-[#dadbdd];
+}

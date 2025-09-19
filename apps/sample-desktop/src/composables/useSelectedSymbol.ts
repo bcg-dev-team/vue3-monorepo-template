@@ -214,7 +214,7 @@ export function useSelectedSymbol() {
         timestamp: streamData.time || Date.now(),
       };
 
-      console.log(`[useSelectedSymbol] ${symbol} 업데이트: ${currentData.price} → ${newPrice}`);
+      // console.log(`[useSelectedSymbol] ${symbol} 업데이트: ${currentData.price} → ${newPrice}`);
     } else {
       console.warn(`[useSelectedSymbol] ${symbol} 데이터를 찾을 수 없습니다!`);
     }

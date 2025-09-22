@@ -18,16 +18,25 @@
           </div>
         </div>
         <div class="account-list gap-size-36 flex items-start">
-          <template v-if="true">
+          <template v-if="accountList.length > 0">
             <BaseList gap="12px">
-              <BaseListItem clickable selected>
+              <BaseListItem
+                clickable
+                v-for="account in accountList"
+                :key="account.accountNo"
+                :selected="selectedAccount?.accountNo === account.accountNo"
+                @click="selectedAccount = account"
+              >
                 <template #content>
                   <BaseListItemAvatar
                     :icon="{ name: 'card', size: 'md', color: 'var(--input-icon-white)' }"
                     size="lg"
                     variant="rounded"
                   />
-                  <BaseListItemText primary="#1 전략99" secondary="110-81-345150" />
+                  <BaseListItemText
+                    :primary="account.accountAlias"
+                    :secondary="account.accountNo"
+                  />
 
                   <div class="gap-size-12 flex items-center">
                     <BaseChip class="!rounded-[3px]" label="사용중" variant="blue" size="sm" />
@@ -79,8 +88,8 @@
             <div class="w-full" v-if="showEnrollAccountCard">
               <EnrollAccountCard />
             </div>
-            <div class="w-full" v-if="showAccountInfoDetail">
-              <AccountInfoDetail />
+            <div class="w-full" v-if="selectedAccount">
+              <AccountInfoDetail :account="selectedAccount" />
             </div>
           </div>
         </div>
@@ -100,10 +109,49 @@ import {
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import EnrollAccountCard from './EnrollAccountCard.vue';
 import AccountInfoDetail from './AccountInfoDetail.vue';
-import { ref } from 'vue';
+import { useUserStore } from '@/stores/useUserStore';
+import { accountService } from '@/service/api';
+import { AccountInfo } from '@template/api';
+import { ref, onMounted } from 'vue';
+const userStore = useUserStore();
+
+const accountList = ref<AccountInfo[]>([
+  {
+    accountNo: '110-81-345150',
+    accountSequence: '1',
+    accountGrade: '1',
+    accountAlias: '전략99',
+    visible: 'Y',
+    visibleSequence: '1',
+  },
+  {
+    accountNo: '110-81-345151',
+    accountSequence: '2',
+    accountGrade: '2',
+    accountAlias: '전략88',
+    visible: 'Y',
+    visibleSequence: '2',
+  },
+  {
+    accountNo: '110-81-345152',
+    accountSequence: '3',
+    accountGrade: '3',
+    accountAlias: '전략77',
+    visible: 'N',
+    visibleSequence: '3',
+  },
+]);
+
+const selectedAccount = ref<AccountInfo | null>(null);
 
 const showEnrollAccountCard = ref(false);
 const showAccountInfoDetail = ref(true);
+
+onMounted(() => {
+  // accountService.getAccountInfo(userStore.user.email).then((res) => {
+  //   accountList.value = res.data.data.accountList;
+  // });
+});
 </script>
 
 <style scoped lang="scss">

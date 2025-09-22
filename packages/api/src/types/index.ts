@@ -5,3 +5,4 @@ export * from './axios';
 export * from './user.types';
 export * from './terms.types';
 export * from './trade.types';
+export * from './account.types';

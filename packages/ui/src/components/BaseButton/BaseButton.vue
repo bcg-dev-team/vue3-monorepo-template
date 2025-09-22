@@ -28,7 +28,7 @@ interface Props {
    * - contained: 채움(기본)
    * - outlined: 외곽선
    */
-  variant?: 'contained' | 'contained-grey' | 'outlined';
+  variant?: 'contained' | 'contained-grey' | 'outlined' | 'chip';
   /**
    * 버튼 컬러
    * - primary: 기본 노란색
@@ -143,6 +143,7 @@ const buttonClasses = computed(() => {
   }
   // customClass는 항상 마지막에 push (우선순위 보장)
   if (props.customClass) classes.push(props.customClass);
+  if (props.variant === 'chip') classes.push('!rounded-[3px] !px-2 !py-0.5 !h-5');
   return classes;
 });
 
@@ -356,9 +357,14 @@ const getSkeletonHeight = () => {
 
     <!-- 텍스트 영역 (중앙 아이콘이 없을 때만) -->
     <div v-if="showText" class="flex flex-col items-center justify-center">
-      <span :class="['font-medium', props.subLabel ? 'btn-main-label' : 'btn-label']">{{
-        props.label
-      }}</span>
+      <span
+        :class="[
+          'font-medium',
+          props.subLabel ? 'btn-main-label' : 'btn-label',
+          props.variant === 'chip' ? '!text-xs' : '',
+        ]"
+        >{{ props.label }}</span
+      >
       <span v-if="props.subLabel" class="btn-sub-text font-semibold">
         {{ props.subLabel }}
       </span>

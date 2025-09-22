@@ -14,6 +14,7 @@ import {
 import { generateThemeOverrides, getThemeFromSettings } from '@/utils/chart/ChartTheme';
 import type { TradingViewWidgetConfig, TradingViewWidget } from '@/types/tradingview';
 import type { ChartConfig, ChartSymbolInfo, ChartSettings } from '@template/types';
+import { generateChartManagerId } from '@/utils/chart/ChartUtils';
 
 import Datafeed from '@/adapters/tradingview/datafeed.js';
 
@@ -30,7 +31,7 @@ export class ChartManager {
 
   constructor() {
     // 각 인스턴스마다 고유 ID 생성
-    this.instanceId = `chart_${Math.random().toString(36).substr(2, 9)}`;
+    this.instanceId = generateChartManagerId();
     console.log(`[ChartManager] 새 인스턴스 생성: ${this.instanceId}`);
   }
 
@@ -740,6 +741,3 @@ export class ChartManager {
     console.log('[ChartManager] Chart destroyed');
   }
 }
-
-// 싱글톤 인스턴스
-export const chartManager = new ChartManager();

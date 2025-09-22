@@ -163,7 +163,7 @@ onMounted(() => {
     // 선택된 상태
     &.list-item--selected {
       background: none;
-      border: solid 2px var(--button-primary-border);
+      box-shadow: inset 0 0 0 2px var(--base-colors-primary-primary800);
     }
 
     // 비활성화

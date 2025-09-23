@@ -115,7 +115,7 @@ jobs:
                 '${{ job.status }}' === 'success' ?
                 {
                   title: 'Deploy URL',
-                  value: '<https://172.25.1.18:30355/applications/sample-desktop|${{ env.PROJECT_NAME }} ArgoCD>',
+                  value: '<https://172.25.1.18:30355/applications/moda-front-desktop|${{ env.PROJECT_NAME }} ArgoCD>',
                   short: true
                 }
                 :{

@@ -43,12 +43,10 @@ export interface AccountInfoResponse extends ApiSuccessResponse<AccountInfoRespo
  * 계좌 개설 요청 데이터
  */
 export interface AccountCreateRequest {
-  /** 이메일 주소 */
-  email: string;
   /** 계좌 비밀번호 */
   accountPassword: string;
-  /** 계좌 별칭 (선택사항) */
-  accountAlias?: string;
+  /** 계좌 별칭  */
+  accountAlias: string;
 }
 
 /**

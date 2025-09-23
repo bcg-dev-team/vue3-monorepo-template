@@ -33,26 +33,11 @@ export class AccountService {
   /**
    * 계좌 개설
    * 회원가입 후 계좌를 개설합니다. 기존 계좌의 존재여부와 상관없이 원장서버로 요청을 보냅니다.
-   * @param email - 이메일 주소
-   * @param accountPassword - 계좌 비밀번호
-   * @param accountAlias - 계좌 별칭 (선택사항)
+   * @param request - 계좌 개설 요청 데이터
    * @returns 계좌 개설 결과 (계좌번호, 계좌 시퀀스, 노출 순서 포함)
    */
-  createAccount(email: string, accountPassword: string, accountAlias?: string) {
-    const formData = new FormData();
-
-    formData.append('email', email);
-    formData.append('accountPassword', accountPassword);
-
-    if (accountAlias) {
-      formData.append('accountAlias', accountAlias);
-    }
-
-    return this.axios.post<AccountCreateResponse>('/accounts/create', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+  createAccount(request: AccountCreateRequest) {
+    return this.axios.post<AccountCreateResponse>('/accounts/create', request);
   }
 
   /**

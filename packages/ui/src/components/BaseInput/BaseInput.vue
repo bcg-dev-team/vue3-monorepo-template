@@ -104,7 +104,7 @@ const emit = defineEmits<{
 const isPasswordVisible = ref(false);
 const internalValue = ref(props.modelValue || '');
 
-const passwordStrengthResult = ref(0);
+const passwordStrengthResult = ref<0 | 1 | 2 | 3 | 4>(0);
 
 const showVariantIcon = computed(
   () =>
@@ -223,7 +223,7 @@ const handleInput = async (event: Event) => {
     } else {
       const { analyzePasswordStrength } = await import('@template/utils');
       const result = await analyzePasswordStrength(value, props.userInputs);
-      passwordStrengthResult.value = result.score;
+      passwordStrengthResult.value = Math.max(0, Math.min(4, result.score)) as 0 | 1 | 2 | 3 | 4;
     }
   }
 };

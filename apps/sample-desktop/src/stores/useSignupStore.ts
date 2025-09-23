@@ -5,7 +5,7 @@ import {
   UserInfo,
   UserInfoForPass,
 } from '@/types/store/signup.types';
-import { CorporateMemberJoinRequest, IndividualMemberJoinRequest } from '@/types/api/user.types';
+import { CorporateMemberJoinRequest, IndividualMemberJoinRequest } from '@template/api';
 import { reactive, computed } from 'vue';
 import { defineStore } from 'pinia';
 

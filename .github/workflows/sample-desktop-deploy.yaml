@@ -38,7 +38,7 @@ jobs:
 
           attachment="{\"title\": \"$PROJECT_NAME Deployment Start\",\"text\": \"${COMMIT_MESSAGES}\"}"
           payload="{\"attachments\": [${attachment}]}"
-          curl -X POST -H 'Content-type: application/json' --data "$payload" ${{ vars.STO_WEBHOOK_CHANNEL }}
+          curl -X POST -H 'Content-type: application/json' --data "$payload" ${{ vars.MODA_WEBHOOK_CHANNEL }}
 
       - name: Install pnpm
         run: npm install -g pnpm@9
@@ -118,5 +118,5 @@ jobs:
               }]
             }
         env:
-          SLACK_WEBHOOK_URL: ${{ vars.STO_WEBHOOK_CHANNEL }}
+          SLACK_WEBHOOK_URL: ${{ vars.MODA_WEBHOOK_CHANNEL }}
         if: always()

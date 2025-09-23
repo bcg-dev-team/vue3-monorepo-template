@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { getChartThemeInstance } from '@/composables/useChartTheme';
+import { getGlobalChartSettingsInstance } from '@/composables/useGlobalChartSettings';
 import { ChartManager } from '@/services/managers/ui/ChartManager';
 import { onMounted, onUnmounted, ref, watch, computed } from 'vue';
 import { generateContainerId } from '@/utils/chart/ChartUtils';
@@ -47,13 +47,13 @@ const isChartReady = ref<boolean>(false);
 // 각 차트마다 별도의 ChartManager 인스턴스 생성
 const chartManager = new ChartManager();
 
-// 글로벌 테마 인스턴스 가져오기
-const chartTheme = getChartThemeInstance();
+// 글로벌 차트 설정 인스턴스 가져오기
+const globalChartSettings = getGlobalChartSettingsInstance();
 
 // 매수/매도 버튼 표시 여부
 // FIXME: 기획 검토를 위한 임시 구현. 기획 결정 시 수정
 const showTradingButtons = computed(() => {
-  const globalSettings = chartTheme.getGlobalSettings();
+  const globalSettings = globalChartSettings.getGlobalChartSettings();
   // 차트 로딩 완료 후에 표시
   return isChartReady.value && globalSettings.trading.showBuySellButtons;
 });
@@ -99,10 +99,10 @@ watch(
 onMounted(async () => {
   try {
     // 글로벌 설정 가져오기
-    const globalSettings = chartTheme.getGlobalSettings();
+    const globalSettings = globalChartSettings.getGlobalChartSettings();
 
-    // ChartManager를 글로벌 테마에 등록
-    chartTheme.registerChartManager(chartManager);
+    // ChartManager를 글로벌 설정에 등록
+    globalChartSettings.registerChartManager(chartManager);
 
     // ChartManager를 사용하여 차트 초기화 (글로벌 설정 포함)
     await chartManager.initializeChart({
@@ -130,8 +130,8 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
-  // 글로벌 테마에서 차트 매니저 등록 해제
-  chartTheme.unregisterChartManager(chartManager);
+  // 글로벌 설정에서 차트 매니저 등록 해제
+  globalChartSettings.unregisterChartManager(chartManager);
 
   chartManager.destroy();
   isChartReady.value = false;

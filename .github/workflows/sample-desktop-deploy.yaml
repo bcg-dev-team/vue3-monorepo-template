@@ -3,11 +3,6 @@ name: Sample Desktop Deploy
 on:
   push:
     branches: ['release/sample-desktop']
-    paths:
-      - '*'
-      - 'apps/sample-desktop/**'
-      - 'packages/**'
-      - 'shared/**'
 
 env:
   PROJECT_NAME: MODA Desktop App

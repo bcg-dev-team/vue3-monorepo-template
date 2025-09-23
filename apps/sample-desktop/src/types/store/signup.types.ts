@@ -53,6 +53,16 @@ export interface UserInfo {
 }
 
 /**
+ * 휴대폰 본인인증 후 얻은 사용자 정보 인터페이스
+ */
+export interface UserInfoForPass {
+  ci: string;
+  name: string;
+  phoneNo: string;
+  birth: string;
+}
+
+/**
  * 개인 회원가입 정보 인터페이스
  */
 export interface IndividualSignUpInfo {

@@ -134,10 +134,9 @@ const handleClickNext = async () => {
     //   inputValues.value.join('')
     // );
 
-    // if (res.status === 200) {
-    // router.push({ query: { step: 4 } });
-    // }
+    // if (res.status === 'success') {
     router.push({ query: { step: 4 } });
+    // }
   } catch (error) {
     console.error('이메일 인증 실패:', error);
   }

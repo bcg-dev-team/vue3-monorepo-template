@@ -1,5 +1,5 @@
-import { TermsService } from './terms.service';
-import { UserService } from './user.service';
+import { TermsService } from '@template/api';
+import { UserService } from '@template/api';
 import api from '@/modules/axios';
 
 export const userService = new UserService(api);

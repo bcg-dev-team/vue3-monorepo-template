@@ -77,14 +77,16 @@ const handleAdditionalFileRemove = (file: File) => {
 
 const handleSubmit = async () => {
   signupStore.uploadIndividualDocument(idCard.value!, additionalIdDocument.value);
-  router.push({ name: 'sign-up-complete' });
+  console.log(signupStore.getIndividualSignupInfo);
 
   // TODO: 회원가입 api 주석 해제
-  // try {
-  //   const response = await userService.joinIndividualMember(signupStore.getIndividualSignupInfo);
-  //   router.push({ name: 'sign-up-complete' });
-  // } catch (error) {
-  //   console.error(error);
-  // }
+  try {
+    const response = await userService.joinIndividualMember(signupStore.getIndividualSignupInfo);
+    if (response.status === 'success') {
+      router.push({ name: 'sign-up-complete' });
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 </script>

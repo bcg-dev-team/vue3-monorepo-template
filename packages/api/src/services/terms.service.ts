@@ -1,13 +1,12 @@
-import { TermsListResponse, TermsDetailResponse, TermsType } from '@/types/api/terms.type';
-import { AxiosInstance } from '@template/api';
+import { TermsListResponse, TermsDetailResponse, TermsType } from '../types/terms.types';
+import { CustomAxiosInstance } from '../types';
 
 export class TermsService {
-  private axios: AxiosInstance;
+  private axios: CustomAxiosInstance;
 
-  constructor(axiosInstance: AxiosInstance) {
+  constructor(axiosInstance: CustomAxiosInstance) {
     this.axios = axiosInstance;
   }
-
   /**
    * 약관 목록 조회
    * 약관 목록을 조회합니다.

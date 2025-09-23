@@ -57,6 +57,7 @@ import { BaseButton, BaseFileUploadButton, BaseCheckbox, BaseIcon } from '@templ
 import FormField from '@/components/auth/common/FormField.vue';
 import { useSignupStore } from '@/stores/useSignupStore';
 import { ref, reactive, computed } from 'vue';
+import { userService } from '@/service/api';
 import { useRouter } from 'vue-router';
 
 const signupStore = useSignupStore();
@@ -118,13 +119,19 @@ const addNewUpload = () => {
   additionalUploads.value.push({ id: newId, file: null });
 };
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   signupStore.uploadCorpAdminDocument(
     state.shareholderRegister!,
     state.corporateRepresentativePassport!,
     state.additionalCorporateRepresentativePassport
   );
-
-  router.push({ name: 'sign-up-complete' });
+  try {
+    const response = await userService.joinCorporateMember(signupStore.getCorporateSignupInfo());
+    if (response.status === 'success') {
+      router.push({ name: 'sign-up-complete' });
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 </script>

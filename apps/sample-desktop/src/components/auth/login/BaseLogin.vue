@@ -85,8 +85,8 @@ import { BaseInput, BaseButton, BaseCheckbox } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
 import { RadioGroup, RadioGroupOption } from '@headlessui/vue';
 import Anchor from '@/components/common/Anchor.vue';
-import { MemberType } from '@/types/api/user.types';
 import { userService } from '@/service/api';
+import { MemberType } from '@template/api';
 import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
 const router = useRouter();
@@ -131,10 +131,11 @@ const isChecked = ref<boolean>(false);
 
 const handleLogin = async () => {
   try {
-    // TODO: API 임시 주석처리
-    // const response = await userService.login(props.selectedTabKey, email.value, password.value);
-    LocalStorageService.setItem(LocalStorageKey.ACCESS_TOKEN, 'Authorized Token');
-    router.push({ name: 'home' });
+    const response = await userService.webLogin(email.value, password.value);
+    if (response.status === 'success') {
+      LocalStorageService.setItem(LocalStorageKey.ACCESS_TOKEN, 'Authorized Token');
+      router.push({ name: 'home' });
+    }
   } catch (error) {
     console.error(error);
   }

@@ -3,6 +3,7 @@ import {
   CorporateSignUpInfo,
   IndividualSignUpInfo,
   UserInfo,
+  UserInfoForPass,
 } from '@/types/store/signup.types';
 import { CorporateMemberJoinRequest, IndividualMemberJoinRequest } from '@/types/api/user.types';
 import { reactive, computed } from 'vue';
@@ -113,7 +114,7 @@ export const useSignupStore = defineStore('signup', () => {
    *
    * @description 휴대폰인증(PASS) 후 얻은 사용자 정보를 업데이트합니다.
    */
-  const updateUserInfo = (value: UserInfo) => {
+  const updateUserInfo = (value: UserInfoForPass) => {
     userInfo.ci = value.ci;
     userInfo.name = value.name;
     userInfo.phoneNo = value.phoneNo;

@@ -1,13 +1,13 @@
 <template>
   <div class="gap-size-16 flex flex-col">
     <FormField label="이름(한글)">
-      <BaseInput size="md" disabled />
+      <BaseInput size="md" disabled v-model="signupStore.userInfo.name" />
     </FormField>
     <FormField label="휴대폰번호">
-      <BaseInput size="md" disabled />
+      <BaseInput size="md" disabled v-model="signupStore.userInfo.phoneNo" />
     </FormField>
     <FormField label="생년월일">
-      <BaseInput size="md" disabled />
+      <BaseInput size="md" disabled v-model="signupStore.userInfo.birth" />
     </FormField>
     <div class="gap-size-8 flex items-center">
       <FormField label="이름(영문)">
@@ -139,6 +139,9 @@ const handleSubmit = () => {
     idCard: null,
     additionalIdDocument: null,
   });
+  console.log(state.address);
+  console.log(state.addressEn);
+  console.log(state.zipCode);
   router.push({ query: { step: 6 } });
 };
 </script>

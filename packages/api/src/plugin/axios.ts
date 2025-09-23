@@ -1,12 +1,14 @@
 import axios, { AxiosInstance, AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import type { TokenResolver, ErrorHandler } from '../types';
+import type { TokenResolver, ErrorHandler, CustomAxiosInstance } from '../types';
 // 토큰, 라우터, 알람 등은 각 앱의 구현체에서 주입 또는 커스텀 가능하도록
 
 export function createAxiosInstance(
   tokenResolver?: TokenResolver,
-  errorHandler?: ErrorHandler
-): AxiosInstance {
+  errorHandler?: ErrorHandler,
+  baseURL?: string
+): CustomAxiosInstance {
   const instance = axios.create({
+    baseURL,
     timeout: 5000,
     headers: { 'Content-Type': 'application/json' },
   });
@@ -34,5 +36,5 @@ export function createAxiosInstance(
       return Promise.reject(error);
     }
   );
-  return instance;
+  return instance as CustomAxiosInstance;
 }

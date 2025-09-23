@@ -52,10 +52,15 @@ const updateEmail = (value: string) => {
   }
 };
 
-const handleClickNext = () => {
+const handleClickNext = async () => {
   updateEmail(email.value);
-  // userService.requestEmailVerification(email.value);
-
-  router.push({ query: { step: 3 } });
+  try {
+    const res = await userService.requestEmailVerification(email.value);
+    if (res.status === 'success') {
+      router.push({ query: { step: 3 } });
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 </script>

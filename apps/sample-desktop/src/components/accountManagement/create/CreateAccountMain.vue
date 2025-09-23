@@ -44,36 +44,6 @@
                   </div>
                 </template>
               </BaseListItem>
-              <BaseListItem clickable>
-                <template #content>
-                  <BaseListItemAvatar
-                    :icon="{ name: 'card', size: 'md', color: 'var(--input-icon-white)' }"
-                    size="lg"
-                    variant="rounded"
-                  />
-                  <BaseListItemText primary="#2 전략88" secondary="110-81-345150" />
-
-                  <div class="gap-size-12 flex items-center">
-                    <BaseChip class="!rounded-[3px]" label="활성" variant="green" size="sm" />
-                    <div><span class="text-font-18 font-semibold">$25,000.00</span></div>
-                  </div>
-                </template>
-              </BaseListItem>
-              <BaseListItem disabled clickable>
-                <template #content>
-                  <BaseListItemAvatar
-                    :icon="{ name: 'card', size: 'md', color: 'var(--input-icon-white)' }"
-                    size="lg"
-                    variant="rounded"
-                  />
-                  <BaseListItemText primary="#1 전략77" secondary="110-81-345150" />
-
-                  <div class="gap-size-12 flex items-center">
-                    <BaseChip class="!rounded-[3px]" label="비활성" variant="red" size="sm" />
-                    <div><span class="text-font-18 font-semibold">$0.00</span></div>
-                  </div>
-                </template>
-              </BaseListItem>
             </BaseList>
           </template>
           <template v-else>
@@ -86,7 +56,7 @@
           </template>
           <div class="gap-size-16 flex w-full flex-col">
             <div class="w-full" v-if="showEnrollAccountCard">
-              <EnrollAccountCard />
+              <EnrollAccountCard @createAccount="showEnrollAccountCard = false" />
             </div>
             <div class="w-full" v-if="selectedAccount">
               <AccountInfoDetail :account="selectedAccount" />
@@ -107,11 +77,11 @@ import {
   BaseChip,
 } from '@template/ui';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
+import { AccountInfo, AccountCreateRequest } from '@template/api';
 import EnrollAccountCard from './EnrollAccountCard.vue';
 import AccountInfoDetail from './AccountInfoDetail.vue';
 import { useUserStore } from '@/stores/useUserStore';
 import { accountService } from '@/service/api';
-import { AccountInfo } from '@template/api';
 import { ref, onMounted } from 'vue';
 const userStore = useUserStore();
 
@@ -147,10 +117,17 @@ const selectedAccount = ref<AccountInfo | null>(null);
 const showEnrollAccountCard = ref(false);
 const showAccountInfoDetail = ref(true);
 
+const getAccountInfo = async () => {
+  try {
+    const res = await accountService.getAccountInfo();
+    accountList.value = res.accountList;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 onMounted(() => {
-  // accountService.getAccountInfo(userStore.user.email).then((res) => {
-  //   accountList.value = res.data.data.accountList;
-  // });
+  getAccountInfo();
 });
 </script>
 

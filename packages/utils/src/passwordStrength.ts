@@ -1,5 +1,7 @@
 import type { ZxcvbnResult } from '@template/types';
 
+let zxcvbnModule: any = null;
+
 /**
  * zxcvbn을 사용하여 비밀번호 강도를 분석합니다.
  *
@@ -11,6 +13,10 @@ export async function analyzePasswordStrength(
   password: string,
   userInputs: string[] = []
 ): Promise<ZxcvbnResult> {
-  const { default: zxcvbn } = await import('zxcvbn');
-  return zxcvbn(password, userInputs);
+  if (!zxcvbnModule) {
+    const { default: zxcvbn } = await import('zxcvbn');
+    zxcvbnModule = zxcvbn;
+  }
+
+  return zxcvbnModule(password, userInputs);
 }

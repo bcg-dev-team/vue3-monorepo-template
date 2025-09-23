@@ -128,15 +128,14 @@ const handleCountdownFinished = () => {
 
 const handleClickNext = async () => {
   try {
-    // 진행을 위한 임시 주석처리
-    // const res = await userService.verifyEmailCode(
-    //   signupStore.userInfo.email,
-    //   inputValues.value.join('')
-    // );
+    const res = await userService.verifyEmailCode(
+      signupStore.userInfo.email,
+      inputValues.value.join('')
+    );
 
-    // if (res.status === 'success') {
-    router.push({ query: { step: 4 } });
-    // }
+    if (res.status === 'success') {
+      router.push({ query: { step: 4 } });
+    }
   } catch (error) {
     console.error('이메일 인증 실패:', error);
   }

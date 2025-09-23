@@ -40,13 +40,6 @@ jobs:
           payload="{\"attachments\": [${attachment}]}"
           curl -X POST -H 'Content-type: application/json' --data "$payload" ${{ vars.STO_WEBHOOK_CHANNEL }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
-          cache-dependency-path: pnpm-lock.yaml
-
       - name: Install pnpm
         run: npm install -g pnpm@9
 

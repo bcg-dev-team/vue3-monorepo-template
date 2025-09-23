@@ -1,0 +1,132 @@
+name: Sample Desktop Deploy
+
+on:
+  push:
+    branches: ['release/sample-desktop']
+    paths:
+      - 'apps/sample-desktop/**'
+      - 'packages/**'
+      - 'shared/**'
+
+env:
+  PROJECT_NAME: MODA Desktop App
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: >-
+      ${{ !contains(github.event.head_commit.message, '[ci skip]') &&
+      !contains(github.event.head_commit.message, '[skip ci]')
+      }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get Git tag name
+        id: commit
+        uses: pr-mpt/actions-commit-hash@v2
+
+      - name: Get commit messages and send webhook
+        run: |
+          COMMIT_MESSAGES=""
+          length=$(jq length <<< '${{ toJSON(github.event.commits) }}')
+
+          for (( i = 0; i < $length; i++ )); do
+            author=$(echo '${{ toJSON(github.event.commits) }}' | jq ".[$i].author.name")
+            commit=$(echo '${{ toJSON(github.event.commits) }}' | jq ".[$i].message")
+            author_without_quotes=$(sed 's/"//g' <<< "$author")
+            message_without_quotes=$(sed 's/"//g' <<< "$commit")
+            COMMIT_MESSAGES="${COMMIT_MESSAGES}\n• \`$author_without_quotes\` $message_without_quotes"
+          done
+
+          attachment="{\"title\": \"$PROJECT_NAME Deployment Start\",\"text\": \"${COMMIT_MESSAGES}\"}"
+          payload="{\"attachments\": [${attachment}]}"
+          curl -X POST -H 'Content-type: application/json' --data "$payload" ${{ vars.STO_WEBHOOK_CHANNEL }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm@9
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build all packages and sample-desktop app
+        run: pnpm build
+
+      - name: Set up Docker CLI
+        env:
+          DOCKER_CLI_APSI_ENV: 1
+        run: |
+          echo "{\"insecure-registries\": [\"${{ vars.REGISTRY_URL }}\"]}" > ~/docker-daemon.json
+          sudo cp ~/docker-daemon.json /etc/docker/daemon.json
+          sudo service docker restart
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ vars.REGISTRY_URL }}/moda/front-desktop:${{ steps.commit.outputs.short }} \
+            -f apps/sample-desktop/deploy/Dockerfile .
+
+      - name: Log in to Docker registry
+        run: docker login ${{ vars.REGISTRY_URL }} -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Push Docker image
+        run: docker push ${{ vars.REGISTRY_URL }}/moda/front-desktop:${{ steps.commit.outputs.short }}
+
+      - name: Checkout Target Repository
+        uses: actions/checkout@v4
+        with:
+          repository: bcg-dev-team/kubernetes_config
+          ref: helm
+          token: ${{ secrets.ORG_SECRET_TOKEN }}
+
+      - name: Update Image Version in HelmChart values.yaml
+        uses: fjogeleit/yaml-update-action@main
+        with:
+          valueFile: 'moda/front-desktop-chart/values.yaml'
+          propertyPath: image.tag
+          value: ${{ steps.commit.outputs.short }}
+          repository: bcg-dev-team/kubernetes_config
+          branch: helm
+          message: 'Update Sample Desktop Image Version to ${{ steps.commit.outputs.short }}'
+          token: ${{ secrets.ORG_SECRET_TOKEN }}
+
+      - name: Slack notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          fields: repo,commit,author,message
+          custom_payload: |
+            {
+              text: '${{ job.status }}' === 'success' ? ":white_check_mark: ${{ env.PROJECT_NAME }} Build And Push `${{ job.status }}`" : ":x: ${{ env.PROJECT_NAME }} Build And Push `${{ job.status }}`",
+              attachments: [{
+                "author_name": `${process.env.AS_AUTHOR}`,
+                color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
+                fields: [{
+                    title: 'Repository',
+                    value: `${process.env.AS_REPO}`,
+                    short: true
+                },
+                '${{ job.status }}' === 'success' ?
+                {
+                  title: 'Deploy URL',
+                  value: '<https://172.25.1.18:30355/applications/sample-desktop|${{ env.PROJECT_NAME }} ArgoCD>',
+                  short: true
+                }
+                :{
+                  title: 'Github Action URL',
+                  value: '<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ env.PROJECT_NAME }} Github Action>',
+                  short: true
+                }],
+                actions: [{
+                }]
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ vars.STO_WEBHOOK_CHANNEL }}
+        if: always()

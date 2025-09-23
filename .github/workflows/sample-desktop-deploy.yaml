@@ -4,6 +4,7 @@ on:
   push:
     branches: ['release/sample-desktop']
     paths:
+      - '*'
       - 'apps/sample-desktop/**'
       - 'packages/**'
       - 'shared/**'

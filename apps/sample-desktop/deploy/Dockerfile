@@ -2,7 +2,7 @@
 FROM nginx:alpine
 
 # Copy built files from sample-desktop (built by GitHub Actions)
-COPY apps/sample-desktop/dist /usr/share/nginx/html
+COPY apps/sample-desktop/dist /app/dist
 
 # Copy nginx configuration
 COPY apps/sample-desktop/deploy/nginx.conf /etc/nginx/conf.d/default.conf

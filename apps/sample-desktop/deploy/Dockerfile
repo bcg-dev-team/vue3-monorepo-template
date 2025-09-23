@@ -1,5 +1,5 @@
 # Simple nginx serving for pre-built assets
-FROM nginx:alpine
+FROM nginx:latest
 
 # Copy built files from sample-desktop (built by GitHub Actions)
 COPY apps/sample-desktop/dist /app/dist

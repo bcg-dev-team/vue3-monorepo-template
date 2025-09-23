@@ -126,7 +126,7 @@ const handleSubmit = async () => {
     state.additionalCorporateRepresentativePassport
   );
   try {
-    const response = await userService.joinCorporateMember(signupStore.getCorporateSignupInfo());
+    const response = await userService.joinCorporateMember(signupStore.getCorporateSignupInfo);
     if (response.status === 'success') {
       router.push({ name: 'sign-up-complete' });
     }

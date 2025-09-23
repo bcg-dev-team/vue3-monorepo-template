@@ -3,13 +3,13 @@ import { ApiSuccessResponse } from './api.types';
 
 export type MemberType = 'INDIVIDUAL' | 'CORPORATE';
 
+export type UseType = 'SIGN_UP' | 'RESET_PASSWORD' | 'FIND_ID';
 export interface MemberApprovalRequest {
   memberType: MemberType;
   approvedAdminUser: string;
 }
 
 export interface MemberLoginRequest {
-  memberType: MemberType;
   email: string;
   password: string;
 }
@@ -39,6 +39,7 @@ export interface LoginResponse
 
 export interface EmailVerificationRequest {
   email: string;
+  useType: UseType;
 }
 
 export interface EmailVerificationResponse extends ApiSuccessResponse<string> {}
@@ -46,6 +47,7 @@ export interface EmailVerificationResponse extends ApiSuccessResponse<string> {}
 export interface EmailVerificationCodeRequest {
   email: string;
   verificationCode: string;
+  useType: UseType;
 }
 
 export interface EmailVerificationCodeResponse extends ApiSuccessResponse<string> {}
@@ -109,3 +111,29 @@ export interface CorporateMemberJoinRequest {
 }
 
 export interface CorporateMemberJoinResponse extends ApiSuccessResponse<{ id: number }> {}
+
+// 아이디 찾기 관련 타입
+export interface FindIdRequest {
+  name: string;
+  phoneNo: string;
+}
+
+export interface FindIdResponse extends ApiSuccessResponse<{ email: string }> {}
+
+// SMS 인증 관련 타입
+export interface SmsVerificationRequest {
+  name: string;
+  phoneNo: string;
+  useType: UseType;
+}
+
+export interface SmsVerificationResponse extends ApiSuccessResponse<{}> {}
+
+export interface SmsVerificationCodeRequest {
+  name: string;
+  phoneNo: string;
+  verificationCode: string;
+  useType: UseType;
+}
+
+export interface SmsVerificationCodeResponse extends ApiSuccessResponse<{}> {}

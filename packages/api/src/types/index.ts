@@ -2,3 +2,5 @@
 export * from './axios';
 
 // TODO: API 전용 타입들 추가
+export * from './user.types';
+export * from './terms.types';

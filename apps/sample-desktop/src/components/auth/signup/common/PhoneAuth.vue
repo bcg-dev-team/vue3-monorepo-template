@@ -26,11 +26,12 @@
       color="primary"
       full-width
       :disabled="!status"
-      @click="router.push({ query: { step: 2 } })"
+      @click="handleClickNext"
     />
   </div>
 </template>
 <script lang="ts" setup>
+import { useSignupStore } from '@/stores/useSignupStore';
 import { BaseButton } from '@template/ui';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
@@ -38,4 +39,17 @@ import { ref } from 'vue';
 const router = useRouter();
 
 const status = ref<boolean>(false);
+const signupStore = useSignupStore();
+
+const mockUserInfo = {
+  ci: Date.now().toString(),
+  name: '홍길동',
+  phoneNo: '010-1234-5678',
+  birth: '1990-01-01',
+};
+
+const handleClickNext = () => {
+  signupStore.updateUserInfo(mockUserInfo);
+  router.push({ query: { step: 2 } });
+};
 </script>

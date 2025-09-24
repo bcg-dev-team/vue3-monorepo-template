@@ -80,9 +80,8 @@
                   <BaseInput
                     v-else
                     size="sm"
-                    type="text"
-                    placeholder="10자 이내 입력"
-                    :readonly="!inputState.updateAccountName"
+                    variant="number"
+                    placeholder="6자 이내 입력"
                     v-model="accountPassword"
                   />
                 </div>
@@ -96,7 +95,13 @@
             >
               <template #content>
                 <div class="mt-size-4 flex items-center justify-between">
-                  <BaseInput class="w-[140px]" size="sm" type="text" placeholder="6자리 입력" />
+                  <BaseInput
+                    class="w-[140px]"
+                    size="sm"
+                    variant="number"
+                    placeholder="6자리 입력"
+                    v-model="accountPasswordCheck"
+                  />
                 </div>
               </template>
             </LabelContent>
@@ -113,7 +118,7 @@
                 <div class="mt-size-4">
                   <div class="flex items-center justify-between">
                     <span class="text-font-16 font-medium">계좌 활성화</span>
-                    <div>토글이 들어올 영역</div>
+                    <BaseSwitch v-model="isAccountActive" size="md" />
                   </div>
                 </div>
               </template>
@@ -137,8 +142,8 @@
 </template>
 <script setup lang="ts">
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
+import { BaseButton, BaseInput, BaseSwitch } from '@template/ui';
 import LabelContent from '@/components/common/LabelContent.vue';
-import { BaseButton, BaseInput } from '@template/ui';
 import { accountService } from '@/service/api';
 import { computed, reactive, ref } from 'vue';
 import { AccountInfo } from '@template/api';
@@ -147,9 +152,22 @@ const props = defineProps<{
   account: AccountInfo;
 }>();
 
+const emit = defineEmits<{
+  (e: 'updateAccountActive', value: boolean): void;
+  (e: 'updateAccountName', value: string): void;
+}>();
+
 const accountAlias = ref('');
 const accountPassword = ref('');
 const accountPasswordCheck = ref('');
+
+const isAccountActive = computed({
+  get: () => props.account.visible === 'Y',
+  set: (value: boolean) => {
+    emit('updateAccountActive', value);
+    console.log('계좌 활성화 상태 변경:', value ? 'Y' : 'N');
+  },
+});
 
 const inputState = reactive({
   updateAccountName: false,
@@ -158,11 +176,7 @@ const inputState = reactive({
 
 const updateAccountInfo = () => {
   if (inputState.updateAccountName) {
-    // accountService.updateAccountInfo(
-    //   props.account.email,
-    //   props.account.accountNo,
-    //   accountAlias.value
-    // );
+    emit('updateAccountName', accountAlias.value);
   }
   inputState.updateAccountName = false;
   inputState.updateAccountPassword = false;

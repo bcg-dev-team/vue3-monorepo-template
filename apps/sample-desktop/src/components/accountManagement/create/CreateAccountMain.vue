@@ -123,7 +123,11 @@
               <EnrollAccountCard @createAccount="showEnrollAccountCard = false" />
             </div>
             <div class="w-full" v-if="selectedAccount">
-              <AccountInfoDetail :account="selectedAccount" />
+              <AccountInfoDetail
+                :account="selectedAccount"
+                @updateAccountName="updateAccountName"
+                @updateAccountActive="updateAccountActive"
+              />
             </div>
           </div>
         </div>
@@ -142,12 +146,12 @@ import {
   BaseIcon,
 } from '@template/ui';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
-import { AccountInfo, AccountCreateRequest } from '@template/api';
 import EnrollAccountCard from './EnrollAccountCard.vue';
 import AccountInfoDetail from './AccountInfoDetail.vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useUserStore } from '@/stores/useUserStore';
 import { accountService } from '@/service/api';
-import { ref, onMounted, computed } from 'vue';
+import { AccountInfo } from '@template/api';
 import draggable from 'vuedraggable';
 const userStore = useUserStore();
 
@@ -205,7 +209,6 @@ const accountList = ref<AccountInfo[]>([
 const selectedAccount = ref<AccountInfo | null>(null);
 
 const showEnrollAccountCard = ref(false);
-const showAccountInfoDetail = ref(true);
 const showAccountOrderChange = ref(false);
 const drag = ref(false);
 
@@ -278,16 +281,53 @@ const onDragEnd = async () => {
   }
 };
 
-const handleChangeAccountOrder = () => {
-  console.log('계좌 순서 변경');
-};
-
 const getAccountInfo = async () => {
   try {
     const res = await accountService.getAccountInfo();
     accountList.value = res.data.data.accountList;
   } catch (error) {
     console.error('계좌 정보 조회 실패:', error);
+  }
+};
+
+const updateAccountActive = async (isActive: boolean) => {
+  console.log('계좌 활성화 상태 변경:', isActive ? 'Y' : 'N');
+
+  if (selectedAccount.value) {
+    // selectedAccount의 visible 값 업데이트
+    selectedAccount.value.visible = isActive ? 'Y' : 'N';
+
+    // accountList에서 해당 계좌 찾아서 업데이트
+    const accountIndex = accountList.value.findIndex(
+      (acc) => acc.accountNo === selectedAccount.value.accountNo
+    );
+
+    if (accountIndex !== -1) {
+      accountList.value[accountIndex].visible = isActive ? 'Y' : 'N';
+      console.log('accountList 업데이트 완료:', accountList.value[accountIndex]);
+
+      // activeAccounts 즉시 업데이트
+      updateActiveAccounts();
+    }
+  }
+};
+
+const updateAccountName = (newAlias: string) => {
+  console.log('계좌 별명 변경:', newAlias);
+
+  if (selectedAccount.value) {
+    // selectedAccount의 accountAlias 값 업데이트
+    selectedAccount.value.accountAlias = newAlias;
+
+    // accountList에서 해당 계좌 찾아서 업데이트
+    const accountIndex = accountList.value.findIndex(
+      (acc) => acc.accountNo === selectedAccount.value.accountNo
+    );
+
+    if (accountIndex !== -1) {
+      accountList.value[accountIndex].accountAlias = newAlias;
+      console.log('accountList 업데이트 완료:', accountList.value[accountIndex]);
+    }
   }
 };
 

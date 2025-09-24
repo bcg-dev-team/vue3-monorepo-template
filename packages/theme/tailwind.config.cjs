@@ -21,6 +21,7 @@ module.exports = {
           primary100: 'var(--base-colors-primary-primary100)',
           primary050: 'var(--base-colors-primary-primary050)',
           'primary-deep': 'var(--base-colors-primary-primary-deep)',
+          primary900: 'var(--base-colors-primary-primary900)',
         },
         neutral: {
           neutral800: 'var(--base-colors-neutral-neutral800)',
@@ -74,10 +75,10 @@ module.exports = {
         },
         common: {
           'bg-surface-default': 'var(--base-colors-common-bg-surface-default)',
+          'bg-surface-dark': 'var(--base-colors-common-bg-surface-dark)',
           'light-gray-ca': 'var(--base-colors-common-light-gray-ca)',
           'light-gray-f5': 'var(--base-colors-common-light-gray-f5)',
           'light-gray-ea': 'var(--base-colors-common-light-gray-ea)',
-          'bg-surface-dark': 'var(--base-colors-common-bg-surface-dark)',
         },
         purple: {
           purple800: 'var(--base-colors-purple-purple800)',
@@ -100,6 +101,10 @@ module.exports = {
           'text-disable': 'var(--input-color-text-disable)',
           'text-static': 'var(--input-color-text-static)',
           'bg-disabled': 'var(--input-color-bg-disabled)',
+          'text-error': 'var(--input-color-text-error)',
+          'surface-dark': 'var(--input-color-surface-dark)',
+          'border-dark': 'var(--input-color-border-dark)',
+          'text-dark': 'var(--input-color-text-dark)',
         },
         'bg-bg-default': 'var(--background-bg-default)',
         'bg-bg-surface': 'var(--background-bg-surface)',
@@ -111,6 +116,8 @@ module.exports = {
         'bg-primary': 'var(--background-primary)',
         'bg-primary-light': 'var(--background-primary-light)',
         'bg-bg-surface-dark': 'var(--background-bg-surface-dark)',
+        'bg-bg-dom-ask': 'var(--background-bg-dom-ask)',
+        'bg-bg-dom-bid': 'var(--background-bg-dom-bid)',
       },
       textColor: {
         primary: 'var(--font-color-primary)',

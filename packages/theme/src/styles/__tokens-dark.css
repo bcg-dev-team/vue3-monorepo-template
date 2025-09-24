@@ -13,6 +13,7 @@
   --base-colors-primary-primary100: #2b2611;
   --base-colors-primary-primary050: #2b2611;
   --base-colors-primary-primary-deep: #ffda60;
+  --base-colors-primary-primary900: #ffb301;
   --base-colors-neutral-neutral800: #ffffff;
   --base-colors-neutral-neutral700: #ecedee;
   --base-colors-neutral-neutral600: #dadbdd;
@@ -112,8 +113,8 @@
   --base-size-size-88: 5.5rem;
   --base-colors-common-bg-surface-default: var(--base-colors-neutral-neutral150);
   --base-colors-common-light-gray-ca: var(--base-colors-neutral-neutral400);
-  --base-colors-common-light-gray-f5: var(--base-colors-neutral-neutral800);
-  --base-colors-common-light-gray-ea: var(--base-colors-neutral-neutral800);
+  --base-colors-common-light-gray-f5: var(--base-colors-neutral-neutral050);
+  --base-colors-common-light-gray-ea: var(--base-colors-neutral-neutral100);
   --button-disabled-background: var(--base-colors-neutral-neutral200);
   --button-disabled-text: var(--base-colors-neutral-neutral300);
   --button-disabled-border: var(--base-colors-neutral-neutral200);
@@ -124,6 +125,7 @@
   --button-primary-text: var(--base-colors-neutral-neutral000);
   --button-primary-border: var(--base-colors-primary-primary800);
   --button-primary-background-deep: var(--base-colors-primary-primary-deep);
+  --button-primary-background-hover: var(--base-colors-primary-primary900);
   --button-red-background: var(--base-colors-red-red100);
   --button-red-text: var(--base-colors-red-red700);
   --button-red-border: var(--base-colors-red-red700);
@@ -137,7 +139,7 @@
   --button-red-solid-border: var(--base-colors-red-red700);
   --button-red-solid-hover: var(--base-colors-red-red700);
   --button-blue-solid-background: var(--base-colors-blue-blue600);
-  --button-blue-solid-text: var(--base-colors-neutral-neutral000);
+  --button-blue-solid-text: var(--base-colors-neutral-neutral800);
   --button-blue-solid-border: var(--base-colors-blue-blue800-deep);
   --button-blue-solid-hover: var(--base-colors-blue-blue500);
   --button-tab-background: var(--base-colors-neutral-neutral050);
@@ -191,10 +193,14 @@
   --input-color-border-focus: var(--base-colors-primary-primary700);
   --input-color-border-error: var(--base-colors-red-red500);
   --input-color-border-disabled: var(--base-colors-neutral-neutral200);
-  --input-color-text-placeholder: var(--base-colors-neutral-neutral400);
+  --input-color-text-placeholder: var(--base-colors-neutral-neutral300);
   --input-color-text-disable: var(--base-colors-neutral-neutral300);
   --input-color-text-static: var(--base-colors-neutral-neutral700);
   --input-color-bg-disabled: var(--base-colors-neutral-neutral200);
+  --input-color-text-error: var(--base-colors-red-red800);
+  --input-color-surface-dark: var(--base-colors-neutral-neutral050);
+  --input-color-border-dark: var(--base-colors-neutral-neutral200);
+  --input-color-text-dark: var(--base-colors-neutral-neutral750);
   --input-check-radio-disable-border: var(--base-colors-neutral-neutral300);
   --input-check-radio-disable-bg: var(--base-colors-neutral-neutral200);
   --input-check-radio-active-bg: var(--base-colors-neutral-neutral200);
@@ -210,7 +216,7 @@
   --input-icon-success: var(--base-colors-green-green800);
   --input-icon-blue: var(--base-colors-blue-blue800);
   --background-bg-default: var(--base-colors-neutral-neutral150);
-  --background-bg-surface: var(--base-colors-neutral-neutral000);
+  --background-bg-surface: var(--base-colors-neutral-neutral050);
   --background-bg-outline: var(--base-colors-neutral-neutral200);
   --background-bg-surface-muted: var(--base-colors-neutral-neutral000);
   --background-divider: var(--base-colors-neutral-neutral200);
@@ -219,6 +225,8 @@
   --background-primary: var(--base-colors-primary-primary800);
   --background-primary-light: var(--base-colors-primary-primary100);
   --background-bg-surface-dark: var(--base-colors-neutral-neutral200);
+  --background-bg-dom-ask: var(--base-colors-red-red300);
+  --background-bg-dom-bid: var(--base-colors-blue-blue300);
   --trade-long-background: var(--base-colors-red-red300);
   --trade-long-text: var(--base-colors-red-red800);
   --trade-long-border: var(--base-colors-red-red500);
@@ -262,6 +270,10 @@
   --chips-status-done-text: var(--base-colors-green-green800);
   --chips-status-pending-bg: var(--base-colors-primary-primary200);
   --chips-status-pending-text: var(--base-colors-primary-primary800);
+  --chips-status-blue-text: var(--base-colors-blue-blue800);
+  --chips-status-blue-bg: var(--base-colors-blue-blue200);
+  --chips-status-red-bg: var(--base-colors-red-red200);
+  --chips-status-red-text: var(--base-colors-red-red800);
   --padding-padding-64: var(--base-size-size-64);
   --padding-padding-48: var(--base-size-size-48);
   --padding-padding-36: var(--base-size-size-36);
@@ -280,6 +292,8 @@
   --radius-pill: var(--base-size-size-round);
   --radius-default: var(--base-size-size-8);
   --radius-none: var(--base-size-size-0);
+  --chart-chart-bg-off: var(--base-colors-neutral-neutral200);
+  --chart-chart-bg-on: var(--base-colors-neutral-neutral000);
   --button-red-solid-text: var(--font-color-white);
 
   --z-index-base: 0;

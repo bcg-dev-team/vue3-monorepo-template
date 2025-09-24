@@ -1,61 +1,65 @@
 <template>
-  <div class="gap-size-8 p-padding-24 flex items-end">
-    <div class="gap-size-36 flex">
-      <LabelContent label="L/S" size="md">
-        <template #content>
-          <BaseRadioGroup
-            v-model="selectedType"
-            size="md"
-            :options="[
-              { value: 'all', label: '전체' },
-              { value: 'long', label: 'LONG' },
-              { value: 'short', label: 'SHORT' },
-            ]"
-          />
-        </template>
-      </LabelContent>
-      <LabelContent label="구분" size="md">
-        <template #content>
-          <BaseRadioGroup
-            v-model="selectedPosition"
-            size="md"
-            :options="[
-              { value: 'all', label: '전체' },
-              { value: 'buy', label: '매입' },
-              { value: 'clear', label: '청산' },
-            ]"
-          />
-        </template>
-      </LabelContent>
-      <LabelContent label="주문일자" size="md">
-        <template #content>
-          <div class="gap-size-4 flex items-center">
-            <BaseInputCalendar v-model="selectedCalendar" />
-            <BaseRadioGroup
-              v-model="selectedDate"
-              size="md"
-              :options="[
-                { value: 'today', label: '오늘' },
-                { value: 'weeks', label: '일주일' },
-                { value: 'months', label: '30일' },
-              ]"
-            />
-          </div>
-        </template>
-      </LabelContent>
+  <div class="gap-size-8 pt-padding-24 flex items-end">
+    <div class="gap-size-36 flex items-end">
+      <div>
+        <BaseRadioGroup
+          v-model="positionCd"
+          label="L / S"
+          size="md"
+          :options="[
+            { value: POSITION_CODE.total, label: '전체' },
+            { value: POSITION_CODE.long, label: 'LONG' },
+            { value: POSITION_CODE.short, label: 'SHORT' },
+          ]"
+        />
+      </div>
+      <div>
+        <BaseRadioGroup
+          v-model="orderCd"
+          label="구분"
+          size="md"
+          :options="[
+            { value: ORDER_CODE.total, label: '전체' },
+            { value: ORDER_CODE.buy, label: '매입' },
+            { value: ORDER_CODE.clear, label: '청산' },
+          ]"
+        />
+      </div>
+      <div>
+        <PeriodSelect title="주문일자" @period-change="handlePeriodChange" />
+      </div>
     </div>
-    <div>
-      <BaseButton variant="contained" label="조회하기" size="md" />
+    <div class="mb-[1px]">
+      <BaseButton variant="contained" label="조회하기" size="md" @click="search" />
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { BaseInputCalendar, BaseButton, BaseRadioGroup } from '@template/ui';
-import LabelContent from '@/components/common/LabelContent.vue';
+import { POSITION_CODE, ORDER_CODE } from '@/components/transaction/constants/searchBoxCod';
+import PeriodSelect from '@/components/transaction/common/PeriodSelect.vue';
+import { BaseButton, BaseRadioGroup } from '@template/ui';
 import { ref } from 'vue';
 
-const selectedType = ref('all');
-const selectedPosition = ref('all');
-const selectedDate = ref('today');
-const selectedCalendar = ref('');
+const positionCd = ref(POSITION_CODE.total);
+const orderCd = ref(ORDER_CODE.total);
+const orderStartDate = ref('');
+const orderEndDate = ref('');
+
+/**
+ * 기간 변경 이벤트 핸들러
+ * @param startDate - 시작 날짜
+ * @param endDate - 종료 날짜
+ * @param periodType - 선택된 기간 타입
+ */
+const handlePeriodChange = (startDate: string, endDate: string) => {
+  orderStartDate.value = startDate;
+  orderEndDate.value = endDate;
+};
+
+const search = () => {
+  console.log('orderCd', orderCd.value);
+  console.log('positionCd', positionCd.value);
+  console.log('orderStartDate', orderStartDate.value);
+  console.log('orderEndDate', orderEndDate.value);
+};
 </script>

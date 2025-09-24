@@ -85,8 +85,6 @@ const itemAriaAttributes = computed(() => {
  * 클릭 이벤트 처리
  */
 const handleClick = (event: MouseEvent) => {
-  if (props.disabled) return;
-
   if (props.clickable) {
     emit('click', event);
   }
@@ -106,8 +104,6 @@ const handleSecondaryActionClick = (event: MouseEvent) => {
  * 키보드 이벤트 처리
  */
 const handleKeyDown = (event: KeyboardEvent) => {
-  if (props.disabled) return;
-
   if (props.clickable && (event.key === 'Enter' || event.key === ' ')) {
     event.preventDefault();
     emit('click', event as unknown as MouseEvent);

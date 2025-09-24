@@ -42,6 +42,10 @@
         "primary-deep": {
           "value": "#de8100",
           "type": "color"
+        },
+        "primary900": {
+          "value": "#ffb301",
+          "type": "color"
         }
       },
       "Neutral": {
@@ -240,6 +244,18 @@
         "bg-surface-dark": {
           "value": "#19323f",
           "type": "color"
+        },
+        "light-gray-ca": {
+          "value": "#caccce",
+          "type": "color"
+        },
+        "light-gray-f5": {
+          "value": "#f5f7f9",
+          "type": "color"
+        },
+        "light-gray-ea": {
+          "value": "#eaecee",
+          "type": "color"
         }
       },
       "Purple": {
@@ -330,6 +346,10 @@
         "background-deep": {
           "value": "{Base-Colors.Primary.primary-deep}",
           "type": "color"
+        },
+        "background-hover": {
+          "value": "{Base-Colors.Primary.primary900}",
+          "type": "color"
         }
       },
       "Red": {
@@ -404,7 +424,7 @@
           "type": "color"
         },
         "hover": {
-          "value": "{Base-Colors.Blue.blue700}",
+          "value": "{Base-Colors.Blue.blue800}",
           "type": "color"
         }
       },
@@ -606,66 +626,66 @@
       },
       "lineHeights": {
         "0": {
-          "value": "3.5rem",
-          "type": "dimension"
+          "value": 56,
+          "type": "number"
         },
         "1": {
-          "value": "2.5rem",
-          "type": "dimension"
+          "value": 40,
+          "type": "number"
         },
         "2": {
-          "value": "1.875rem",
-          "type": "dimension"
+          "value": 30,
+          "type": "number"
         },
         "3": {
-          "value": "1.5rem",
-          "type": "dimension"
+          "value": 24,
+          "type": "number"
         },
         "4": {
-          "value": "1.375rem",
-          "type": "dimension"
+          "value": 22,
+          "type": "number"
         },
         "5": {
-          "value": "1.25rem",
-          "type": "dimension"
+          "value": 20,
+          "type": "number"
         },
         "6": {
-          "value": "1.125rem",
-          "type": "dimension"
+          "value": 18,
+          "type": "number"
         },
         "7": {
-          "value": "1rem",
-          "type": "dimension"
+          "value": 16,
+          "type": "number"
         },
         "8": {
-          "value": "0.875rem",
-          "type": "dimension"
+          "value": 14,
+          "type": "number"
         }
       },
       "letterSpacing": {
         "0": {
-          "value": "0rem",
-          "type": "dimension"
+          "value": 0,
+          "type": "number"
         },
         "1": {
-          "value": "-0.062rem",
-          "type": "dimension"
+          "value": -1,
+          "type": "number"
         },
         "2": {
-          "value": "-0.039rem",
-          "type": "dimension"
+          "value": -0.63,
+          "type": "number"
         },
         "3": {
-          "value": "-0.022rem",
-          "type": "dimension"
+          "value": -0.35,
+          "type": "number"
         },
         "4": {
-          "value": "-0.006rem",
-          "type": "dimension"
+          "value": -0.1,
+          "type": "number"
         },
         "5": {
-          "value": "0.006rem",
-          "type": "dimension"
+          "value": 0.1,
+          "type": "number"
         }
       }
     },
@@ -676,7 +696,7 @@
           "type": "color"
         },
         "border-static": {
-          "value": "{Base-Colors.Neutral.neutral400}",
+          "value": "{Base-Colors.Neutral.neutral250}",
           "type": "color"
         },
         "border-focus": {
@@ -692,7 +712,7 @@
           "type": "color"
         },
         "text-placeholder": {
-          "value": "{Base-Colors.Neutral.neutral500}",
+          "value": "{Base-Colors.Neutral.neutral400}",
           "type": "color"
         },
         "text-disable": {
@@ -704,7 +724,23 @@
           "type": "color"
         },
         "bg-disabled": {
-          "value": "{Base-Colors.Common.light-gray(F5)}",
+          "value": "{Base-Colors.Common.light-gray-f5}",
+          "type": "color"
+        },
+        "text-error": {
+          "value": "{Base-Colors.Red.red800}",
+          "type": "color"
+        },
+        "surface-dark": {
+          "value": "{Base-Colors.Neutral.neutral800}",
+          "type": "color"
+        },
+        "border-dark": {
+          "value": "{Base-Colors.Neutral.neutral700}",
+          "type": "color"
+        },
+        "text-dark": {
+          "value": "{Base-Colors.Neutral.neutral050}",
           "type": "color"
         }
       },
@@ -714,7 +750,7 @@
           "type": "color"
         },
         "disable-bg": {
-          "value": "{Base-Colors.Neutral.neutral300}",
+          "value": "{Base-Colors.Neutral.neutral200}",
           "type": "color"
         },
         "active-bg": {
@@ -775,7 +811,7 @@
         "type": "color"
       },
       "bg-surface": {
-        "value": "{Base-Colors.Common.light-gray(EA)}",
+        "value": "{Base-Colors.Common.light-gray-ea}",
         "type": "color"
       },
       "bg-outline": {
@@ -795,7 +831,7 @@
         "type": "color"
       },
       "bg-innerframe": {
-        "value": "{Base-Colors.Common.light-gray(F5)}",
+        "value": "{Base-Colors.Common.light-gray-f5}",
         "type": "color"
       },
       "primary": {
@@ -808,6 +844,14 @@
       },
       "bg-surface-dark": {
         "value": "{Base-Colors.Common.bg-surface-dark}",
+        "type": "color"
+      },
+      "bg-dom-ask": {
+        "value": "{Base-Colors.Red.red100}",
+        "type": "color"
+      },
+      "bg-dom-bid": {
+        "value": "{Base-Colors.Blue.blue100}",
         "type": "color"
       }
     },
@@ -918,7 +962,7 @@
           "type": "color"
         },
         "body-bg-row": {
-          "value": "{Base-Colors.Common.light-gray(F5)}",
+          "value": "{Base-Colors.Common.light-gray-f5}",
           "type": "color"
         }
       },
@@ -953,7 +997,7 @@
         "type": "color"
       },
       "bg-inner": {
-        "value": "{Base-Colors.Common.light-gray(F5)}",
+        "value": "{Base-Colors.Common.light-gray-f5}",
         "type": "color"
       },
       "Chip": {
@@ -969,7 +1013,7 @@
         "type": "color"
       },
       "inner-background": {
-        "value": "{Base-Colors.Common.light-gray(F5)}",
+        "value": "{Base-Colors.Common.light-gray-f5}",
         "type": "color"
       },
       "border": {
@@ -1007,6 +1051,22 @@
       "Status-pending-text": {
         "value": "{Base-Colors.Primary.primary-deep}",
         "type": "color"
+      },
+      "Status-blue-text": {
+        "value": "{Base-Colors.Blue.blue800-deep}",
+        "type": "color"
+      },
+      "Status-blue-bg": {
+        "value": "{Base-Colors.Blue.blue050}",
+        "type": "color"
+      },
+      "Status-red-bg": {
+        "value": "{Base-Colors.Red.red050}",
+        "type": "color"
+      },
+      "Status-red-text": {
+        "value": "{Base-Colors.Red.red800}",
+        "type": "color"
       }
     },
     "메뉴명_01": {
@@ -1031,100 +1091,100 @@
     },
     "Base-Size": {
       "size-14": {
-        "value": "0.875rem",
-        "type": "dimension"
+        "value": 14,
+        "type": "number"
       },
       "size-13": {
-        "value": "0.812rem",
-        "type": "dimension"
+        "value": 13,
+        "type": "number"
       },
       "size-10": {
-        "value": "0.625rem",
-        "type": "dimension"
+        "value": 10,
+        "type": "number"
       },
       "size-8": {
-        "value": "0.5rem",
-        "type": "dimension"
+        "value": 8,
+        "type": "number"
       },
       "size-16": {
-        "value": "1rem",
-        "type": "dimension"
+        "value": 16,
+        "type": "number"
       },
       "size-6": {
-        "value": "0.375rem",
-        "type": "dimension"
+        "value": 6,
+        "type": "number"
       },
       "size-300": {
-        "value": "18.75rem",
-        "type": "dimension"
+        "value": 300,
+        "type": "number"
       },
       "size-12": {
-        "value": "0.75rem",
-        "type": "dimension"
+        "value": 12,
+        "type": "number"
       },
       "size-64": {
-        "value": "4rem",
-        "type": "dimension"
+        "value": 64,
+        "type": "number"
       },
       "size-130": {
-        "value": "8.125rem",
-        "type": "dimension"
+        "value": 130,
+        "type": "number"
       },
       "size-200": {
-        "value": "12.5rem",
-        "type": "dimension"
+        "value": 200,
+        "type": "number"
       },
       "size-4": {
-        "value": "0.25rem",
-        "type": "dimension"
+        "value": 4,
+        "type": "number"
       },
       "size-140": {
-        "value": "8.75rem",
-        "type": "dimension"
+        "value": 140,
+        "type": "number"
       },
       "size-48": {
-        "value": "3rem",
-        "type": "dimension"
+        "value": 48,
+        "type": "number"
       },
       "size-18": {
-        "value": "1.125rem",
-        "type": "dimension"
+        "value": 18,
+        "type": "number"
       },
       "size-36": {
-        "value": "2.25rem",
-        "type": "dimension"
+        "value": 36,
+        "type": "number"
       },
       "size-24": {
-        "value": "1.5rem",
-        "type": "dimension"
+        "value": 24,
+        "type": "number"
       },
       "size-20": {
-        "value": "1.25rem",
-        "type": "dimension"
+        "value": 20,
+        "type": "number"
       },
       "size-round": {
-        "value": "62.438rem",
-        "type": "dimension"
+        "value": 999,
+        "type": "number"
       },
       "size-100": {
-        "value": "6.25rem",
-        "type": "dimension"
+        "value": 100,
+        "type": "number"
       },
       "size-0": {
-        "value": "0rem",
-        "type": "dimension"
+        "value": 0,
+        "type": "number"
       },
       "size-40": {
-        "value": "2.5rem",
-        "type": "dimension"
+        "value": 40,
+        "type": "number"
       },
       "size-50": {
-        "value": "3.125rem",
-        "type": "dimension"
+        "value": 50,
+        "type": "number"
       },
       "size-88": {
-        "value": "5.5rem",
-        "type": "dimension"
+        "value": 88,
+        "type": "number"
       }
     },
     "Padding": {
@@ -2273,6 +2333,744 @@
         "value": "0px",
         "type": "dimension"
       }
+    },
+    "Chart": {
+      "chart-bg-off": {
+        "value": "{Base-Colors.Neutral.neutral150}",
+        "type": "color"
+      },
+      "chart-bg-on": {
+        "value": "{Base-Colors.Neutral.neutral250}",
+        "type": "color"
+      }
+    },
+    "Heading": {
+      "H1-MainTitle": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-0}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.0}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "H2-SubTitle": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-0}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.1}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "H3-InnerTitle": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-1}",
+          "lineHeight": "{lineHeights.2}",
+          "fontSize": "{fontSize.2}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "H4-PopupTitle": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-0}",
+          "lineHeight": "{lineHeights.2}",
+          "fontSize": "{fontSize.3}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      }
+    },
+    "20px": {
+      "Regular": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-2}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.1}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Medium": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-1}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.1}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Semibold": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-0}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.1}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Bold": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-3}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.1}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      }
+    },
+    "18px": {
+      "Regular": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-2}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.2}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Medium": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-1}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.2}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Semibold": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-0}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.2}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Bold": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-3}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.2}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      }
+    },
+    "16px": {
+      "Regular": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-2}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.3}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Medium": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-1}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.3}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Semibold": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-0}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.3}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Bold": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-3}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.3}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      }
+    },
+    "15px": {
+      "Regular": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-2}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.16}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Medium": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-1}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.16}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Semibold": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-0}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.16}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Bold": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-3}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.16}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      }
+    },
+    "14px": {
+      "Regular": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-2}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.20}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Regular-board": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-2}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.20}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Medium": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-1}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.20}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Semibold": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-0}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.20}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Bold": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-3}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.20}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "LS0": {
+        "Regular": {
+          "value": {
+            "fontFamily": "{fontFamilies.pretendard-gov}",
+            "fontWeight": "{fontWeights.pretendard-gov-2}",
+            "lineHeight": "{undefined}",
+            "fontSize": "{fontSize.20}",
+            "letterSpacing": "{undefined}",
+            "paragraphSpacing": "{paragraphSpacing.0}",
+            "paragraphIndent": "{paragraphIndent.0}",
+            "textCase": "{textCase.none}",
+            "textDecoration": "{textDecoration.none}"
+          },
+          "type": "typography"
+        },
+        "Medium": {
+          "value": {
+            "fontFamily": "{fontFamilies.pretendard-gov}",
+            "fontWeight": "{fontWeights.pretendard-gov-1}",
+            "lineHeight": "{undefined}",
+            "fontSize": "{fontSize.20}",
+            "letterSpacing": "{undefined}",
+            "paragraphSpacing": "{paragraphSpacing.0}",
+            "paragraphIndent": "{paragraphIndent.0}",
+            "textCase": "{textCase.none}",
+            "textDecoration": "{textDecoration.none}"
+          },
+          "type": "typography"
+        },
+        "Semibold": {
+          "value": {
+            "fontFamily": "{fontFamilies.pretendard-gov}",
+            "fontWeight": "{fontWeights.pretendard-gov-0}",
+            "lineHeight": "{undefined}",
+            "fontSize": "{fontSize.20}",
+            "letterSpacing": "{undefined}",
+            "paragraphSpacing": "{paragraphSpacing.0}",
+            "paragraphIndent": "{paragraphIndent.0}",
+            "textCase": "{textCase.none}",
+            "textDecoration": "{textDecoration.none}"
+          },
+          "type": "typography"
+        },
+        "Bold": {
+          "value": {
+            "fontFamily": "{fontFamilies.pretendard-gov}",
+            "fontWeight": "{fontWeights.pretendard-gov-3}",
+            "lineHeight": "{undefined}",
+            "fontSize": "{fontSize.20}",
+            "letterSpacing": "{undefined}",
+            "paragraphSpacing": "{paragraphSpacing.0}",
+            "paragraphIndent": "{paragraphIndent.0}",
+            "textCase": "{textCase.none}",
+            "textDecoration": "{textDecoration.none}"
+          },
+          "type": "typography"
+        }
+      }
+    },
+    "13px": {
+      "Regular": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-2}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.29}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Regular-board": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-2}",
+          "lineHeight": "{lineHeights.12}",
+          "fontSize": "{fontSize.29}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Medium": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-1}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.29}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Semibold": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-0}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.29}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Bold": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-3}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.29}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      }
+    },
+    "12px": {
+      "Regular": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-2}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.34}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography",
+        "description": "Regular"
+      },
+      "Medium": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-1}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.34}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Semibole": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-0}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.34}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Bold": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-3}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.34}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "LS0": {
+        "Regular": {
+          "value": {
+            "fontFamily": "{fontFamilies.pretendard-gov}",
+            "fontWeight": "{fontWeights.pretendard-gov-2}",
+            "lineHeight": "{undefined}",
+            "fontSize": "{fontSize.34}",
+            "letterSpacing": "{undefined}",
+            "paragraphSpacing": "{paragraphSpacing.0}",
+            "paragraphIndent": "{paragraphIndent.0}",
+            "textCase": "{textCase.none}",
+            "textDecoration": "{textDecoration.none}"
+          },
+          "type": "typography",
+          "description": "Regular"
+        },
+        "Medium": {
+          "value": {
+            "fontFamily": "{fontFamilies.pretendard-gov}",
+            "fontWeight": "{fontWeights.pretendard-gov-1}",
+            "lineHeight": "{undefined}",
+            "fontSize": "{fontSize.34}",
+            "letterSpacing": "{undefined}",
+            "paragraphSpacing": "{paragraphSpacing.0}",
+            "paragraphIndent": "{paragraphIndent.0}",
+            "textCase": "{textCase.none}",
+            "textDecoration": "{textDecoration.none}"
+          },
+          "type": "typography"
+        },
+        "Semibole": {
+          "value": {
+            "fontFamily": "{fontFamilies.pretendard-gov}",
+            "fontWeight": "{fontWeights.pretendard-gov-0}",
+            "lineHeight": "{undefined}",
+            "fontSize": "{fontSize.34}",
+            "letterSpacing": "{undefined}",
+            "paragraphSpacing": "{paragraphSpacing.0}",
+            "paragraphIndent": "{paragraphIndent.0}",
+            "textCase": "{textCase.none}",
+            "textDecoration": "{textDecoration.none}"
+          },
+          "type": "typography"
+        },
+        "Bold": {
+          "value": {
+            "fontFamily": "{fontFamilies.pretendard-gov}",
+            "fontWeight": "{fontWeights.pretendard-gov-3}",
+            "lineHeight": "{undefined}",
+            "fontSize": "{fontSize.34}",
+            "letterSpacing": "{undefined}",
+            "paragraphSpacing": "{paragraphSpacing.0}",
+            "paragraphIndent": "{paragraphIndent.0}",
+            "textCase": "{textCase.none}",
+            "textDecoration": "{textDecoration.none}"
+          },
+          "type": "typography"
+        }
+      }
+    },
+    "11px": {
+      "Regular": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-2}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.42}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography",
+        "description": "Regular"
+      },
+      "Medium": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-1}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.42}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Semibole": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-0}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.42}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Bold": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-3}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.42}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      }
+    },
+    "10px": {
+      "Regular": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-2}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.46}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography",
+        "description": "Regular"
+      },
+      "Medium": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-1}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.46}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Semibole": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-0}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.46}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      },
+      "Bold": {
+        "value": {
+          "fontFamily": "{fontFamilies.pretendard-gov}",
+          "fontWeight": "{fontWeights.pretendard-gov-3}",
+          "lineHeight": "{undefined}",
+          "fontSize": "{fontSize.46}",
+          "letterSpacing": "{undefined}",
+          "paragraphSpacing": "{paragraphSpacing.0}",
+          "paragraphIndent": "{paragraphIndent.0}",
+          "textCase": "{textCase.none}",
+          "textDecoration": "{textDecoration.none}"
+        },
+        "type": "typography"
+      }
     }
   },
   "Theme/Dark": {
@@ -2316,6 +3114,10 @@
         },
         "primary-deep": {
           "value": "#ffda60",
+          "type": "color"
+        },
+        "primary900": {
+          "value": "#ffb301",
           "type": "color"
         }
       },
@@ -2515,6 +3317,18 @@
         "bg-surface-dark": {
           "value": "#19323f",
           "type": "color"
+        },
+        "light-gray-ca": {
+          "value": "{Base-Colors.Neutral.neutral400}",
+          "type": "color"
+        },
+        "light-gray-f5": {
+          "value": "{Base-Colors.Neutral.neutral050}",
+          "type": "color"
+        },
+        "light-gray-ea": {
+          "value": "{Base-Colors.Neutral.neutral100}",
+          "type": "color"
         }
       },
       "Purple": {
@@ -2605,6 +3419,10 @@
         "background-deep": {
           "value": "{Base-Colors.Primary.primary-deep}",
           "type": "color"
+        },
+        "background-hover": {
+          "value": "{Base-Colors.Primary.primary900}",
+          "type": "color"
         }
       },
       "Red": {
@@ -2671,7 +3489,7 @@
           "type": "color"
         },
         "text": {
-          "value": "{Base-Colors.Neutral.neutral000}",
+          "value": "{Base-Colors.Neutral.neutral800}",
           "type": "color"
         },
         "border": {
@@ -2881,66 +3699,66 @@
       },
       "lineHeights": {
         "0": {
-          "value": "3.5rem",
-          "type": "dimension"
+          "value": 56,
+          "type": "number"
         },
         "1": {
-          "value": "2.5rem",
-          "type": "dimension"
+          "value": 40,
+          "type": "number"
         },
         "2": {
-          "value": "1.875rem",
-          "type": "dimension"
+          "value": 30,
+          "type": "number"
         },
         "3": {
-          "value": "1.5rem",
-          "type": "dimension"
+          "value": 24,
+          "type": "number"
         },
         "4": {
-          "value": "1.375rem",
-          "type": "dimension"
+          "value": 22,
+          "type": "number"
         },
         "5": {
-          "value": "1.25rem",
-          "type": "dimension"
+          "value": 20,
+          "type": "number"
         },
         "6": {
-          "value": "1.125rem",
-          "type": "dimension"
+          "value": 18,
+          "type": "number"
         },
         "7": {
-          "value": "1rem",
-          "type": "dimension"
+          "value": 16,
+          "type": "number"
         },
         "8": {
-          "value": "0.875rem",
-          "type": "dimension"
+          "value": 14,
+          "type": "number"
         }
       },
       "letterSpacing": {
         "0": {
-          "value": "0rem",
-          "type": "dimension"
+          "value": 0,
+          "type": "number"
         },
         "1": {
-          "value": "-0.062rem",
-          "type": "dimension"
+          "value": -1,
+          "type": "number"
         },
         "2": {
-          "value": "-0.039rem",
-          "type": "dimension"
+          "value": -0.63,
+          "type": "number"
         },
         "3": {
-          "value": "-0.022rem",
-          "type": "dimension"
+          "value": -0.35,
+          "type": "number"
         },
         "4": {
-          "value": "-0.006rem",
-          "type": "dimension"
+          "value": -0.1,
+          "type": "number"
         },
         "5": {
-          "value": "0.006rem",
-          "type": "dimension"
+          "value": 0.1,
+          "type": "number"
         }
       }
     },
@@ -2967,7 +3785,7 @@
           "type": "color"
         },
         "text-placeholder": {
-          "value": "{Base-Colors.Neutral.neutral400}",
+          "value": "{Base-Colors.Neutral.neutral300}",
           "type": "color"
         },
         "text-disable": {
@@ -2980,6 +3798,22 @@
         },
         "bg-disabled": {
           "value": "{Base-Colors.Neutral.neutral200}",
+          "type": "color"
+        },
+        "text-error": {
+          "value": "{Base-Colors.Red.red800}",
+          "type": "color"
+        },
+        "surface-dark": {
+          "value": "{Base-Colors.Neutral.neutral050}",
+          "type": "color"
+        },
+        "border-dark": {
+          "value": "{Base-Colors.Neutral.neutral200}",
+          "type": "color"
+        },
+        "text-dark": {
+          "value": "{Base-Colors.Neutral.neutral750}",
           "type": "color"
         }
       },
@@ -3050,7 +3884,7 @@
         "type": "color"
       },
       "bg-surface": {
-        "value": "{Base-Colors.Neutral.neutral000}",
+        "value": "{Base-Colors.Neutral.neutral050}",
         "type": "color"
       },
       "bg-outline": {
@@ -3083,6 +3917,14 @@
       },
       "bg-surface-dark": {
         "value": "{Base-Colors.Neutral.neutral200}",
+        "type": "color"
+      },
+      "bg-dom-ask": {
+        "value": "{Base-Colors.Red.red300}",
+        "type": "color"
+      },
+      "bg-dom-bid": {
+        "value": "{Base-Colors.Blue.blue300}",
         "type": "color"
       }
     },
@@ -3282,6 +4124,22 @@
       "Status-pending-text": {
         "value": "{Base-Colors.Primary.primary800}",
         "type": "color"
+      },
+      "Status-blue-text": {
+        "value": "{Base-Colors.Blue.blue800}",
+        "type": "color"
+      },
+      "Status-blue-bg": {
+        "value": "{Base-Colors.Blue.blue200}",
+        "type": "color"
+      },
+      "Status-red-bg": {
+        "value": "{Base-Colors.Red.red200}",
+        "type": "color"
+      },
+      "Status-red-text": {
+        "value": "{Base-Colors.Red.red800}",
+        "type": "color"
       }
     },
     "메뉴명_01": {
@@ -3306,100 +4164,100 @@
     },
     "Base-Size": {
       "size-14": {
-        "value": "0.875rem",
-        "type": "dimension"
+        "value": 14,
+        "type": "number"
       },
       "size-13": {
-        "value": "0.812rem",
-        "type": "dimension"
+        "value": 13,
+        "type": "number"
       },
       "size-10": {
-        "value": "0.625rem",
-        "type": "dimension"
+        "value": 10,
+        "type": "number"
       },
       "size-8": {
-        "value": "0.5rem",
-        "type": "dimension"
+        "value": 8,
+        "type": "number"
       },
       "size-16": {
-        "value": "1rem",
-        "type": "dimension"
+        "value": 16,
+        "type": "number"
       },
       "size-6": {
-        "value": "0.375rem",
-        "type": "dimension"
+        "value": 6,
+        "type": "number"
       },
       "size-300": {
-        "value": "18.75rem",
-        "type": "dimension"
+        "value": 300,
+        "type": "number"
       },
       "size-12": {
-        "value": "0.75rem",
-        "type": "dimension"
+        "value": 12,
+        "type": "number"
       },
       "size-64": {
-        "value": "4rem",
-        "type": "dimension"
+        "value": 64,
+        "type": "number"
       },
       "size-130": {
-        "value": "8.125rem",
-        "type": "dimension"
+        "value": 130,
+        "type": "number"
       },
       "size-200": {
-        "value": "12.5rem",
-        "type": "dimension"
+        "value": 200,
+        "type": "number"
       },
       "size-4": {
-        "value": "0.25rem",
-        "type": "dimension"
+        "value": 4,
+        "type": "number"
       },
       "size-140": {
-        "value": "8.75rem",
-        "type": "dimension"
+        "value": 140,
+        "type": "number"
       },
       "size-48": {
-        "value": "3rem",
-        "type": "dimension"
+        "value": 48,
+        "type": "number"
       },
       "size-18": {
-        "value": "1.125rem",
-        "type": "dimension"
+        "value": 18,
+        "type": "number"
       },
       "size-36": {
-        "value": "2.25rem",
-        "type": "dimension"
+        "value": 36,
+        "type": "number"
       },
       "size-24": {
-        "value": "1.5rem",
-        "type": "dimension"
+        "value": 24,
+        "type": "number"
       },
       "size-20": {
-        "value": "1.25rem",
-        "type": "dimension"
+        "value": 20,
+        "type": "number"
       },
       "size-round": {
-        "value": "62.438rem",
-        "type": "dimension"
+        "value": 999,
+        "type": "number"
       },
       "size-100": {
-        "value": "6.25rem",
-        "type": "dimension"
+        "value": 100,
+        "type": "number"
       },
       "size-0": {
-        "value": "0rem",
-        "type": "dimension"
+        "value": 0,
+        "type": "number"
       },
       "size-40": {
-        "value": "2.5rem",
-        "type": "dimension"
+        "value": 40,
+        "type": "number"
       },
       "size-50": {
-        "value": "3.125rem",
-        "type": "dimension"
+        "value": 50,
+        "type": "number"
       },
       "size-88": {
-        "value": "5.5rem",
-        "type": "dimension"
+        "value": 88,
+        "type": "number"
       }
     },
     "Padding": {
@@ -3476,6 +4334,16 @@
       "none": {
         "value": "{Base-Size.size-0}",
         "type": "dimension"
+      }
+    },
+    "Chart": {
+      "chart-bg-off": {
+        "value": "{Base-Colors.Neutral.neutral200}",
+        "type": "color"
+      },
+      "chart-bg-on": {
+        "value": "{Base-Colors.Neutral.neutral000}",
+        "type": "color"
       }
     }
   },

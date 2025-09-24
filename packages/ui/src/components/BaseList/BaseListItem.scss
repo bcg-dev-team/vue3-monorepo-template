@@ -35,7 +35,6 @@
   // 비활성화
   &.list-item--disabled {
     opacity: 0.5;
-    cursor: not-allowed;
     color: var(--font-color-default-muted);
 
     &:hover {

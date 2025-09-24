@@ -19,15 +19,10 @@ export class AccountService {
   /**
    * 계좌 정보 조회
    * 회원의 계좌 정보를 조회합니다.
-   * @param email - 회원 이메일 주소
    * @returns 계좌 정보 목록
    */
-  getAccountInfo(email: string) {
-    const params: AccountInfoRequest = {
-      email,
-    };
-
-    return this.axios.get<AccountInfoResponse>('/accounts/info', { params });
+  getAccountInfo() {
+    return this.axios.get<AccountInfoResponse>('/accounts/info');
   }
 
   /**
@@ -43,21 +38,15 @@ export class AccountService {
   /**
    * 계좌 정보 변경
    * 계좌 정보(별칭, 표시여부, 표시순번)를 변경합니다.
-   * @param email - 이메일 주소
    * @param accountInfos - 변경할 계좌 정보 목록
    * @returns 계좌 정보 변경 결과
    */
-  updateAccountInfo(email: string, accountInfos: AccountUpdateInfo[]) {
-    const formData = new FormData();
+  updateAccountInfo(accountInfos: AccountUpdateInfo[]) {
+    const requestData = {
+      accountInfos,
+    };
 
-    formData.append('email', email);
-    formData.append('accountInfos', JSON.stringify(accountInfos));
-
-    return this.axios.put<AccountUpdateResponse>('/accounts/info', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    return this.axios.put<AccountUpdateResponse>('/accounts/info', requestData);
   }
 
   /**

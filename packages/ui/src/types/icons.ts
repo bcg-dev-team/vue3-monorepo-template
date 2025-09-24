@@ -13,6 +13,7 @@ export type IconName =
   | 'arrow-drawer'
   | 'arrow-right-thin'
   | 'arrow-updown'
+  | 'arrow-updown-solid'
   | 'arrow-forward-sm'
   | 'arrow-backward-sm'
 
@@ -39,6 +40,7 @@ export type IconName =
   | 'pause'
   | 'move'
   | 'withdraw'
+  | 'grap'
 
   // 네비게이션 아이콘
   | 'home'

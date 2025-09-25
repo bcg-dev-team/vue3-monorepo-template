@@ -124,7 +124,10 @@
           </div>
           <div class="gap-size-16 flex w-1/2 flex-col">
             <div class="w-full" v-if="showEnrollAccountCard">
-              <EnrollAccountCard @createAccount="showEnrollAccountCard = false" />
+              <EnrollAccountCard
+                @createAccount="showEnrollAccountCard = false"
+                @cancel="showEnrollAccountCard = false"
+              />
             </div>
             <div class="w-full" v-if="selectedAccount">
               <AccountInfoDetail

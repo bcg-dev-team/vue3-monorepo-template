@@ -50,9 +50,6 @@ const meta: Meta<typeof BaseBottomNavigation> = {
 export default meta;
 type Story = StoryObj<typeof BaseBottomNavigation>;
 
-/**
- * 기본 3개 아이템 네비게이션
- */
 export const Default: Story = {
   args: {
     items: [
@@ -87,47 +84,9 @@ export const Default: Story = {
 };
 
 /**
- * 4개 아이템 (라벨 표시)
+ * 라벨없이 아이콘만 표시
  */
-export const FourItemsWithLabels: Story = {
-  args: {
-    items: [
-      { value: 'home', label: '홈', icon: 'home', iconSize: 'md' },
-      { value: 'order', label: '주문', icon: 'order', iconSize: 'md' },
-      { value: 'trade', label: '거래', iconSize: 'md', icon: 'trade' },
-      { value: 'asset', label: '자산', icon: 'asset', iconSize: 'md' },
-    ],
-    value: 'order',
-    showLabels: true,
-    // fixed 제거
-  },
-  render: (args) => ({
-    components: { BaseBottomNavigation },
-    setup() {
-      const selectedValue = ref(args.value);
-      const handleChange = (value: string | number) => {
-        selectedValue.value = value;
-      };
-      return { ...args, value: selectedValue, handleChange };
-    },
-    template: `
-      <div style="height: 100vh; display: flex; align-items: center; justify-content: center;">
-        <div style="width: 300px; height: 500px; background: #f5f5f5; border: 1px solid #e5e7eb; border-radius: 0; overflow: hidden; display: flex; flex-direction: column;">
-          <div style="flex: 1; overflow: auto; background: white; padding: 12px;">
-            <h2>4개 아이템 (라벨 표시)</h2>
-            <p>현재 선택된 값: {{ value }}</p>
-          </div>
-          <BaseBottomNavigation :items="items" :value="value" :show-labels="showLabels" @change="handleChange" />
-        </div>
-      </div>
-    `,
-  }),
-};
-
-/**
- * 4개 아이템 (아이콘만)
- */
-export const FourItemsIconsOnly: Story = {
+export const ItemsIconsOnly: Story = {
   args: {
     items: [
       { value: 'home', label: '홈', icon: 'home', iconSize: 'md' },
@@ -153,45 +112,6 @@ export const FourItemsIconsOnly: Story = {
         <div style="width: 300px; height: 500px; background: #f5f5f5; border: 1px solid #e5e7eb; border-radius: 0; overflow: hidden; display: flex; flex-direction: column;">
           <div style="flex: 1; overflow: auto; background: white; padding: 12px;">
             <h2>4개 아이템 (아이콘만)</h2>
-            <p>현재 선택된 값: {{ value }}</p>
-          </div>
-          <BaseBottomNavigation :items="items" :value="value" :show-labels="showLabels" @change="handleChange" />
-        </div>
-      </div>
-    `,
-  }),
-};
-
-/**
- * 5개 아이템
- */
-export const FiveItems: Story = {
-  args: {
-    items: [
-      { value: 'home', label: '홈', icon: 'home', iconSize: 'md' },
-      { value: 'order', label: '주문', icon: 'order', iconSize: 'md' },
-      { value: 'trade', label: '거래', icon: 'trade', iconSize: 'md' },
-      { value: 'asset', label: '자산', icon: 'asset', iconSize: 'md' },
-      { value: 'account-balance', label: '계좌관리', icon: 'account-balance', iconSize: 'md' },
-    ],
-    value: 'account-balance',
-    showLabels: false,
-    // fixed 제거
-  },
-  render: (args) => ({
-    components: { BaseBottomNavigation },
-    setup() {
-      const selectedValue = ref(args.value);
-      const handleChange = (value: string | number) => {
-        selectedValue.value = value;
-      };
-      return { ...args, value: selectedValue, handleChange };
-    },
-    template: `
-      <div style="height: 100vh; display: flex; align-items: center; justify-content: center;">
-        <div style="width: 300px; height: 500px; background: #f5f5f5; border: 1px solid #e5e7eb; border-radius: 0; overflow: hidden; display: flex; flex-direction: column;">
-          <div style="flex: 1; overflow: auto; background: white; padding: 12px;">
-            <h2>5개 아이템</h2>
             <p>현재 선택된 값: {{ value }}</p>
           </div>
           <BaseBottomNavigation :items="items" :value="value" :show-labels="showLabels" @change="handleChange" />
@@ -252,47 +172,6 @@ export const WithDisabledItems: Story = {
             <h2>비활성화된 아이템 포함</h2>
             <p>현재 선택된 값: {{ value }}</p>
             <p>검색과 프로필 아이템이 비활성화되어 있습니다.</p>
-          </div>
-          <BaseBottomNavigation :items="items" :value="value" @change="handleChange" />
-        </div>
-      </div>
-    `,
-  }),
-};
-
-/**
- * 고정되지 않은 네비게이션
- */
-export const NotFixed: Story = {
-  args: {
-    items: [
-      { value: 'home', label: '홈', icon: 'home', iconSize: 'md' },
-      { value: 'order', label: '주문', icon: 'order', iconSize: 'md' },
-      { value: 'trade', label: '거래', icon: 'trade', iconSize: 'md' },
-    ],
-    value: 'home',
-    // fixed 제거
-  },
-  parameters: {
-    layout: 'padded',
-  },
-  render: (args) => ({
-    components: { BaseBottomNavigation },
-    setup() {
-      const selectedValue = ref(args.value);
-      const handleChange = (value: string | number) => {
-        selectedValue.value = value;
-      };
-      return { ...args, value: selectedValue, handleChange };
-    },
-    template: `
-      <div style="height: 100vh; display: flex; align-items: center; justify-content: center;">
-        <div style="width: 300px; height: 500px; background: #f5f5f5; border: 1px solid #e5e7eb; border-radius: 0; overflow: hidden; display: flex; flex-direction: column;">
-          <div style="flex: 1; overflow: auto; background: white; padding: 12px;">
-            <h2>고정되지 않은 네비게이션</h2>
-            <p>현재 선택된 값: {{ value }}</p>
-            <p>이 네비게이션은 하단에 고정되지 않습니다.</p>
-            <p>폰 화면(300x700) 내 하단 네비게이션</p>
           </div>
           <BaseBottomNavigation :items="items" :value="value" @change="handleChange" />
         </div>

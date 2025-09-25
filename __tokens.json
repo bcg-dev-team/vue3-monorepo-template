@@ -328,6 +328,14 @@
         "border": {
           "value": "{Base-Colors.Neutral.neutral550}",
           "type": "color"
+        },
+        "background-hover": {
+          "value": "#f7f7f7",
+          "type": "color"
+        },
+        "background-hover 2": {
+          "value": "#f7f7f7",
+          "type": "color"
         }
       },
       "Primary": {
@@ -370,7 +378,7 @@
           "type": "color"
         },
         "background-hover": {
-          "value": "{Base-Colors.Neutral.neutral250}",
+          "value": "#ffe5e6",
           "type": "color"
         },
         "background-blank": {
@@ -389,6 +397,10 @@
         },
         "border": {
           "value": "{Base-Colors.Primary.primary-deep}",
+          "type": "color"
+        },
+        "background-hover": {
+          "value": "#fff4c3",
           "type": "color"
         }
       },
@@ -521,6 +533,58 @@
           "value": "{Base-Colors.Neutral.neutral000}",
           "type": "color"
         }
+      },
+      "Red-outline-big": {
+        "background": {
+          "value": "{Base-Colors.Red.red050}",
+          "type": "color"
+        },
+        "background-blank": {
+          "value": "{Base-Colors.Neutral.neutral000}",
+          "type": "color"
+        },
+        "background-none": {
+          "value": "{Base-Colors.Neutral.neutral150}",
+          "type": "color"
+        },
+        "background-hover": {
+          "value": "{Base-Colors.Neutral.neutral250}",
+          "type": "color"
+        },
+        "text": {
+          "value": "{Base-Colors.Red.red800}",
+          "type": "color"
+        },
+        "border": {
+          "value": "{Base-Colors.Red.red800}",
+          "type": "color"
+        }
+      },
+      "Blue-outline-big": {
+        "background": {
+          "value": "{Base-Colors.Blue.blue050}",
+          "type": "color"
+        },
+        "background-blank": {
+          "value": "{Base-Colors.Neutral.neutral000}",
+          "type": "color"
+        },
+        "background-none": {
+          "value": "{Base-Colors.Neutral.neutral150}",
+          "type": "color"
+        },
+        "background-hover": {
+          "value": "{Base-Colors.Neutral.neutral250}",
+          "type": "color"
+        },
+        "text": {
+          "value": "{Base-Colors.Blue.blue800-deep}",
+          "type": "color"
+        },
+        "border": {
+          "value": "{Base-Colors.Blue.blue800-deep}",
+          "type": "color"
+        }
       }
     },
     "Font": {
@@ -626,66 +690,66 @@
       },
       "lineHeights": {
         "0": {
-          "value": "3.5rem",
-          "type": "dimension"
+          "value": 56,
+          "type": "number"
         },
         "1": {
-          "value": "2.5rem",
-          "type": "dimension"
+          "value": 40,
+          "type": "number"
         },
         "2": {
-          "value": "1.875rem",
-          "type": "dimension"
+          "value": 30,
+          "type": "number"
         },
         "3": {
-          "value": "1.5rem",
-          "type": "dimension"
+          "value": 24,
+          "type": "number"
         },
         "4": {
-          "value": "1.375rem",
-          "type": "dimension"
+          "value": 22,
+          "type": "number"
         },
         "5": {
-          "value": "1.25rem",
-          "type": "dimension"
+          "value": 20,
+          "type": "number"
         },
         "6": {
-          "value": "1.125rem",
-          "type": "dimension"
+          "value": 18,
+          "type": "number"
         },
         "7": {
-          "value": "1rem",
-          "type": "dimension"
+          "value": 16,
+          "type": "number"
         },
         "8": {
-          "value": "0.875rem",
-          "type": "dimension"
+          "value": 14,
+          "type": "number"
         }
       },
       "letterSpacing": {
         "0": {
-          "value": "0rem",
-          "type": "dimension"
+          "value": 0,
+          "type": "number"
         },
         "1": {
-          "value": "-0.062rem",
-          "type": "dimension"
+          "value": -1,
+          "type": "number"
         },
         "2": {
-          "value": "-0.039rem",
-          "type": "dimension"
+          "value": -0.63,
+          "type": "number"
         },
         "3": {
-          "value": "-0.022rem",
-          "type": "dimension"
+          "value": -0.35,
+          "type": "number"
         },
         "4": {
-          "value": "-0.006rem",
-          "type": "dimension"
+          "value": -0.1,
+          "type": "number"
         },
         "5": {
-          "value": "0.006rem",
-          "type": "dimension"
+          "value": 0.1,
+          "type": "number"
         }
       }
     },
@@ -1091,100 +1155,100 @@
     },
     "Base-Size": {
       "size-14": {
-        "value": "0.875rem",
-        "type": "dimension"
+        "value": 14,
+        "type": "number"
       },
       "size-13": {
-        "value": "0.812rem",
-        "type": "dimension"
+        "value": 13,
+        "type": "number"
       },
       "size-10": {
-        "value": "0.625rem",
-        "type": "dimension"
+        "value": 10,
+        "type": "number"
       },
       "size-8": {
-        "value": "0.5rem",
-        "type": "dimension"
+        "value": 8,
+        "type": "number"
       },
       "size-16": {
-        "value": "1rem",
-        "type": "dimension"
+        "value": 16,
+        "type": "number"
       },
       "size-6": {
-        "value": "0.375rem",
-        "type": "dimension"
+        "value": 6,
+        "type": "number"
       },
       "size-300": {
-        "value": "18.75rem",
-        "type": "dimension"
+        "value": 300,
+        "type": "number"
       },
       "size-12": {
-        "value": "0.75rem",
-        "type": "dimension"
+        "value": 12,
+        "type": "number"
       },
       "size-64": {
-        "value": "4rem",
-        "type": "dimension"
+        "value": 64,
+        "type": "number"
       },
       "size-130": {
-        "value": "8.125rem",
-        "type": "dimension"
+        "value": 130,
+        "type": "number"
       },
       "size-200": {
-        "value": "12.5rem",
-        "type": "dimension"
+        "value": 200,
+        "type": "number"
       },
       "size-4": {
-        "value": "0.25rem",
-        "type": "dimension"
+        "value": 4,
+        "type": "number"
       },
       "size-140": {
-        "value": "8.75rem",
-        "type": "dimension"
+        "value": 140,
+        "type": "number"
       },
       "size-48": {
-        "value": "3rem",
-        "type": "dimension"
+        "value": 48,
+        "type": "number"
       },
       "size-18": {
-        "value": "1.125rem",
-        "type": "dimension"
+        "value": 18,
+        "type": "number"
       },
       "size-36": {
-        "value": "2.25rem",
-        "type": "dimension"
+        "value": 36,
+        "type": "number"
       },
       "size-24": {
-        "value": "1.5rem",
-        "type": "dimension"
+        "value": 24,
+        "type": "number"
       },
       "size-20": {
-        "value": "1.25rem",
-        "type": "dimension"
+        "value": 20,
+        "type": "number"
       },
       "size-round": {
-        "value": "62.438rem",
-        "type": "dimension"
+        "value": 999,
+        "type": "number"
       },
       "size-100": {
-        "value": "6.25rem",
-        "type": "dimension"
+        "value": 100,
+        "type": "number"
       },
       "size-0": {
-        "value": "0rem",
-        "type": "dimension"
+        "value": 0,
+        "type": "number"
       },
       "size-40": {
-        "value": "2.5rem",
-        "type": "dimension"
+        "value": 40,
+        "type": "number"
       },
       "size-50": {
-        "value": "3.125rem",
-        "type": "dimension"
+        "value": 50,
+        "type": "number"
       },
       "size-88": {
-        "value": "5.5rem",
-        "type": "dimension"
+        "value": 88,
+        "type": "number"
       }
     },
     "Padding": {
@@ -3401,6 +3465,14 @@
         "border": {
           "value": "{Base-Colors.Neutral.neutral200}",
           "type": "color"
+        },
+        "background-hover": {
+          "value": "{Base-Colors.Neutral.neutral100}",
+          "type": "color"
+        },
+        "background-hover 2": {
+          "value": "{Base-Colors.Neutral.neutral100}",
+          "type": "color"
         }
       },
       "Primary": {
@@ -3462,6 +3534,10 @@
         },
         "border": {
           "value": "{Base-Colors.Primary.primary800}",
+          "type": "color"
+        },
+        "background-hover": {
+          "value": "{Base-Colors.Primary.primary050}",
           "type": "color"
         }
       },
@@ -3594,6 +3670,58 @@
           "value": "{Base-Colors.Neutral.neutral100}",
           "type": "color"
         }
+      },
+      "Red-outline-big": {
+        "background": {
+          "value": "{Base-Colors.Red.red100}",
+          "type": "color"
+        },
+        "background-blank": {
+          "value": "{Base-Colors.Neutral.neutral100}",
+          "type": "color"
+        },
+        "background-none": {
+          "value": "{Base-Colors.Neutral.neutral150}",
+          "type": "color"
+        },
+        "background-hover": {
+          "value": "{Base-Colors.Neutral.neutral200}",
+          "type": "color"
+        },
+        "text": {
+          "value": "{Base-Colors.Red.red700}",
+          "type": "color"
+        },
+        "border": {
+          "value": "{Base-Colors.Red.red700}",
+          "type": "color"
+        }
+      },
+      "Blue-outline-big": {
+        "background": {
+          "value": "{Base-Colors.Blue.blue100}",
+          "type": "color"
+        },
+        "background-blank": {
+          "value": "{Base-Colors.Neutral.neutral100}",
+          "type": "color"
+        },
+        "background-none": {
+          "value": "{Base-Colors.Neutral.neutral100}",
+          "type": "color"
+        },
+        "background-hover": {
+          "value": "{Base-Colors.Neutral.neutral200}",
+          "type": "color"
+        },
+        "text": {
+          "value": "{Base-Colors.Blue.blue800-deep}",
+          "type": "color"
+        },
+        "border": {
+          "value": "{Base-Colors.Blue.blue700}",
+          "type": "color"
+        }
       }
     },
     "Font": {
@@ -3699,66 +3827,66 @@
       },
       "lineHeights": {
         "0": {
-          "value": "3.5rem",
-          "type": "dimension"
+          "value": 56,
+          "type": "number"
         },
         "1": {
-          "value": "2.5rem",
-          "type": "dimension"
+          "value": 40,
+          "type": "number"
         },
         "2": {
-          "value": "1.875rem",
-          "type": "dimension"
+          "value": 30,
+          "type": "number"
         },
         "3": {
-          "value": "1.5rem",
-          "type": "dimension"
+          "value": 24,
+          "type": "number"
         },
         "4": {
-          "value": "1.375rem",
-          "type": "dimension"
+          "value": 22,
+          "type": "number"
         },
         "5": {
-          "value": "1.25rem",
-          "type": "dimension"
+          "value": 20,
+          "type": "number"
         },
         "6": {
-          "value": "1.125rem",
-          "type": "dimension"
+          "value": 18,
+          "type": "number"
         },
         "7": {
-          "value": "1rem",
-          "type": "dimension"
+          "value": 16,
+          "type": "number"
         },
         "8": {
-          "value": "0.875rem",
-          "type": "dimension"
+          "value": 14,
+          "type": "number"
         }
       },
       "letterSpacing": {
         "0": {
-          "value": "0rem",
-          "type": "dimension"
+          "value": 0,
+          "type": "number"
         },
         "1": {
-          "value": "-0.062rem",
-          "type": "dimension"
+          "value": -1,
+          "type": "number"
         },
         "2": {
-          "value": "-0.039rem",
-          "type": "dimension"
+          "value": -0.63,
+          "type": "number"
         },
         "3": {
-          "value": "-0.022rem",
-          "type": "dimension"
+          "value": -0.35,
+          "type": "number"
         },
         "4": {
-          "value": "-0.006rem",
-          "type": "dimension"
+          "value": -0.1,
+          "type": "number"
         },
         "5": {
-          "value": "0.006rem",
-          "type": "dimension"
+          "value": 0.1,
+          "type": "number"
         }
       }
     },
@@ -4164,100 +4292,100 @@
     },
     "Base-Size": {
       "size-14": {
-        "value": "0.875rem",
-        "type": "dimension"
+        "value": 14,
+        "type": "number"
       },
       "size-13": {
-        "value": "0.812rem",
-        "type": "dimension"
+        "value": 13,
+        "type": "number"
       },
       "size-10": {
-        "value": "0.625rem",
-        "type": "dimension"
+        "value": 10,
+        "type": "number"
       },
       "size-8": {
-        "value": "0.5rem",
-        "type": "dimension"
+        "value": 8,
+        "type": "number"
       },
       "size-16": {
-        "value": "1rem",
-        "type": "dimension"
+        "value": 16,
+        "type": "number"
       },
       "size-6": {
-        "value": "0.375rem",
-        "type": "dimension"
+        "value": 6,
+        "type": "number"
       },
       "size-300": {
-        "value": "18.75rem",
-        "type": "dimension"
+        "value": 300,
+        "type": "number"
       },
       "size-12": {
-        "value": "0.75rem",
-        "type": "dimension"
+        "value": 12,
+        "type": "number"
       },
       "size-64": {
-        "value": "4rem",
-        "type": "dimension"
+        "value": 64,
+        "type": "number"
       },
       "size-130": {
-        "value": "8.125rem",
-        "type": "dimension"
+        "value": 130,
+        "type": "number"
       },
       "size-200": {
-        "value": "12.5rem",
-        "type": "dimension"
+        "value": 200,
+        "type": "number"
       },
       "size-4": {
-        "value": "0.25rem",
-        "type": "dimension"
+        "value": 4,
+        "type": "number"
       },
       "size-140": {
-        "value": "8.75rem",
-        "type": "dimension"
+        "value": 140,
+        "type": "number"
       },
       "size-48": {
-        "value": "3rem",
-        "type": "dimension"
+        "value": 48,
+        "type": "number"
       },
       "size-18": {
-        "value": "1.125rem",
-        "type": "dimension"
+        "value": 18,
+        "type": "number"
       },
       "size-36": {
-        "value": "2.25rem",
-        "type": "dimension"
+        "value": 36,
+        "type": "number"
       },
       "size-24": {
-        "value": "1.5rem",
-        "type": "dimension"
+        "value": 24,
+        "type": "number"
       },
       "size-20": {
-        "value": "1.25rem",
-        "type": "dimension"
+        "value": 20,
+        "type": "number"
       },
       "size-round": {
-        "value": "62.438rem",
-        "type": "dimension"
+        "value": 999,
+        "type": "number"
       },
       "size-100": {
-        "value": "6.25rem",
-        "type": "dimension"
+        "value": 100,
+        "type": "number"
       },
       "size-0": {
-        "value": "0rem",
-        "type": "dimension"
+        "value": 0,
+        "type": "number"
       },
       "size-40": {
-        "value": "2.5rem",
-        "type": "dimension"
+        "value": 40,
+        "type": "number"
       },
       "size-50": {
-        "value": "3.125rem",
-        "type": "dimension"
+        "value": 50,
+        "type": "number"
       },
       "size-88": {
-        "value": "5.5rem",
-        "type": "dimension"
+        "value": 88,
+        "type": "number"
       }
     },
     "Padding": {

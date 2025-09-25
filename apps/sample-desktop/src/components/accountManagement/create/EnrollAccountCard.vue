@@ -61,20 +61,30 @@
             </LabelContent>
 
             <div>
-              <BaseButton
-                variant="contained"
-                size="lg"
-                color="primary"
-                label="계좌 등록하기"
-                :disabled="
-                  state.accountAlias === '' ||
-                  state.accountPassword === '' ||
-                  state.accountPasswordCheck === '' ||
-                  state.accountPassword !== state.accountPasswordCheck
-                "
-                fullWidth
-                @click="handleCreateAccount"
-              />
+              <div class="flex items-center justify-between gap-4">
+                <BaseButton
+                  variant="contained"
+                  size="lg"
+                  color="primary"
+                  label="계좌 등록하기"
+                  :disabled="
+                    state.accountAlias === '' ||
+                    state.accountPassword === '' ||
+                    state.accountPasswordCheck === '' ||
+                    state.accountPassword !== state.accountPasswordCheck
+                  "
+                  fullWidth
+                  @click="handleCreateAccount"
+                />
+                <BaseButton
+                  variant="outlined"
+                  size="lg"
+                  color="white"
+                  label="취소"
+                  fullWidth
+                  @click="emit('cancel')"
+                />
+              </div>
             </div>
           </form>
         </div>
@@ -96,6 +106,7 @@ const state = reactive({
 });
 const emit = defineEmits<{
   (e: 'createAccount'): void;
+  (e: 'cancel'): void;
 }>();
 
 const handleCreateAccount = async () => {

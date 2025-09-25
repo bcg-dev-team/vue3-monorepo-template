@@ -23,7 +23,7 @@ const meta: Meta<typeof BaseBadge> = {
       description: '배지에 표시할 값 (숫자 또는 문자열)',
       control: { type: 'text' },
       table: {
-        type: { summary: 'string | number' },
+        type: { summary: 'string | number | boolean' },
         defaultValue: { summary: '' },
         category: 'Props',
       },
@@ -98,7 +98,7 @@ const meta: Meta<typeof BaseBadge> = {
     },
   },
   args: {
-    value: 4,
+    value: '',
     max: 99,
     variant: 'standard',
     color: 'blue',
@@ -115,7 +115,7 @@ type Story = StoryObj<typeof BaseBadge>;
 // 컨트롤 패널과 연동되는 Playground
 export const Playground: Story = {
   args: {
-    value: 4,
+    value: '4',
     max: 99,
     variant: 'standard',
     color: 'blue',
@@ -266,19 +266,19 @@ export const DotBadge: Story = {
     },
     template: `
       <div class="flex gap-10 items-center">
-        <BaseBadge variant="dot" color="grey" >
+        <BaseBadge variant="dot" color="grey" :value="true">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
-        <BaseBadge variant="dot" color="blue" >
+        <BaseBadge variant="dot" color="blue" :value="true">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
-        <BaseBadge variant="dot" color="green">
+        <BaseBadge variant="dot" color="green" :value="true">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
-        <BaseBadge variant="dot" color="yellow">
+        <BaseBadge variant="dot" color="yellow" :value="true">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
-        <BaseBadge variant="dot" color="red">
+        <BaseBadge variant="dot" color="red" :value="true">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
       </div>

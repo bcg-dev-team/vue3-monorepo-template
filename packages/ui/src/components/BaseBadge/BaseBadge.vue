@@ -17,7 +17,7 @@ interface Props {
   /**
    * 배지에 표시할 값
    */
-  value?: string | number;
+  value: string | number | boolean;
   /**
    * 최대값 (숫자일 때만 적용)
    */
@@ -66,7 +66,9 @@ const props = withDefaults(defineProps<Props>(), {
 // 배지 표시 여부 계산
 const shouldShowBadge = computed(() => {
   if (props.hidden) return false;
-  if (props.variant === 'dot') return true;
+  if (props.variant === 'dot') {
+    return props.value;
+  }
   if (typeof props.value === 'number') {
     return props.showZero ? true : props.value > 0;
   }
@@ -115,11 +117,7 @@ const badgeClasses = computed(() => {
     <slot />
 
     <!-- 배지 -->
-    <span
-      v-if="shouldShowBadge"
-      :class="badgeClasses"
-      :aria-hidden="variant === 'dot' ? 'true' : 'false'"
-    >
+    <span v-if="shouldShowBadge" :class="badgeClasses">
       {{ displayValue }}
     </span>
   </div>

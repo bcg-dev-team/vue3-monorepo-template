@@ -10,42 +10,9 @@
  * @props overlap - 겹침 여부 (overlap: 겹쳐서, no-overlap: 나란히)
  * @props anchorOrigin - 배지 위치 (overlap일 때만 적용)
  */
+import { BadgeColor, BadgeVariant, BadgeOverlap, BadgeAnchorOrigin } from '../../types/components';
 import { computed } from 'vue';
 import './BaseBadge.scss';
-
-/**
- * 배지 색상 타입
- */
-export type BadgeColor = 'grey' | 'red' | 'green' | 'blue' | 'yellow' | 'purple';
-
-/**
- * 배지 스타일 타입
- */
-export type BadgeVariant = 'dot' | 'standard' | 'square';
-
-/**
- * 배지 겹침 타입
- */
-export type BadgeOverlap = 'overlap' | 'no-overlap';
-
-/**
- * 배지 수직 위치 타입
- */
-export type BadgeVertical = 'top' | 'middle' | 'bottom';
-
-/**
- * 배지 수평 위치 타입
- */
-export type BadgeHorizontal = 'left' | 'right';
-
-/**
- * 배지 앵커 오리진 타입
- */
-export interface BadgeAnchorOrigin {
-  vertical: BadgeVertical;
-  horizontal: BadgeHorizontal;
-}
-
 interface Props {
   /**
    * 배지에 표시할 값

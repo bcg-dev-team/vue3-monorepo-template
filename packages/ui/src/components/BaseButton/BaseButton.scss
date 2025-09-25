@@ -75,6 +75,10 @@
   border: 1px solid var(--button-outline-border);
 }
 
+.btn-color-white:hover {
+  background-color: var(--button-outline-background-hover);
+}
+
 .btn-variant-contained {
   border: none;
 }
@@ -122,14 +126,14 @@
   color: var(--font-color-white);
 }
 .btn-variant-outlined.btn-color-primary:hover {
-  background-color: var(--button-primary-background-deep);
+  background-color: var(--button-light-solid-background-hover);
 }
 
 .btn-variant-outlined.btn-color-red:hover {
   background-color: var(--button-red-background-hover);
 }
 .btn-variant-outlined.btn-color-blue:hover {
-  background-color: var(--button-blue-background-hover);
+  background-color: var(--button-blue-outline-big-background-hover);
 }
 .btn-variant-outlined.btn-color-green:hover {
   background-color: var(--button-green-background-hover, var(--base-colors-green-green700));

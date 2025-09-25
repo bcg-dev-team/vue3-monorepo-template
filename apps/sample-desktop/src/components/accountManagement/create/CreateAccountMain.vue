@@ -13,7 +13,7 @@
               color="primary"
               :leftIcon="{ name: 'plus', size: 'md' }"
               label="새 계좌 등록"
-              @click="showEnrollAccountCard = !showEnrollAccountCard"
+              @click="((showEnrollAccountCard = !showEnrollAccountCard), (selectedAccount = null))"
             ></BaseButton>
           </div>
         </div>
@@ -26,8 +26,11 @@
                   color="white"
                   variant="outlined"
                   :label="showAccountOrderChange ? '변경 완료' : '계좌 순서 변경'"
-                  :leftIcon="{ name: 'arrow-updown', size: 'md' }"
-                  @click="showAccountOrderChange = !showAccountOrderChange"
+                  :leftIcon="{
+                    name: showAccountOrderChange ? 'check-sm' : 'arrow-updown',
+                    size: 'md',
+                  }"
+                  @click="handleAccountOrderChange"
                 >
                 </BaseButton>
               </div>
@@ -39,6 +42,7 @@
                   item-key="accountNo"
                   tag="ul"
                   @start="drag = true"
+                  MODA
                   @end="onDragEnd"
                   class="account-list draggable-list flex flex-col gap-2"
                 >
@@ -52,7 +56,7 @@
                         'flip-list-item': !drag,
                         'drag-mode-active': showAccountOrderChange,
                       }"
-                      @click="selectedAccount = account"
+                      @click="((selectedAccount = account), (showEnrollAccountCard = false))"
                     >
                       <template #content>
                         <BaseListItemAvatar
@@ -124,6 +128,7 @@
             </div>
             <div class="w-full" v-if="selectedAccount">
               <AccountInfoDetail
+                :key="selectedAccount.accountNo"
                 :account="selectedAccount"
                 @updateAccountName="updateAccountName"
                 @updateAccountActive="updateAccountActive"
@@ -142,15 +147,14 @@ import {
   BaseListItem,
   BaseListItemAvatar,
   BaseListItemText,
-  BaseChip,
   BaseIcon,
 } from '@template/ui';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import EnrollAccountCard from './EnrollAccountCard.vue';
 import AccountInfoDetail from './AccountInfoDetail.vue';
-import { ref, onMounted, computed, watch } from 'vue';
 import { useUserStore } from '@/stores/useUserStore';
 import { accountService } from '@/service/api';
+import { ref, onMounted, computed } from 'vue';
 import { AccountInfo } from '@template/api';
 import draggable from 'vuedraggable';
 const userStore = useUserStore();
@@ -263,22 +267,7 @@ const onDragEnd = async () => {
       visibleSequence: acc.visibleSequence,
     }))
   );
-
-  // 서버에 변경된 순서 저장
-  try {
-    const updateInfos = activeAccounts.value.map((account) => ({
-      accountNo: account.accountNo,
-      accountAlias: account.accountAlias,
-      visible: account.visible,
-      visibleSequence: account.visibleSequence,
-    }));
-
-    // await accountService.updateAccountInfo(updateInfos);
-    console.log('계좌 순서가 성공적으로 저장되었습니다.');
-  } catch (error) {
-    console.error('계좌 순서 저장 실패:', error);
-    // TODO: 사용자에게 에러 메시지 표시
-  }
+  console.log('현재 accountList.value', accountList.value);
 };
 
 const getAccountInfo = async () => {
@@ -294,12 +283,10 @@ const updateAccountActive = async (isActive: boolean) => {
   console.log('계좌 활성화 상태 변경:', isActive ? 'Y' : 'N');
 
   if (selectedAccount.value) {
-    // selectedAccount의 visible 값 업데이트
     selectedAccount.value.visible = isActive ? 'Y' : 'N';
 
-    // accountList에서 해당 계좌 찾아서 업데이트
     const accountIndex = accountList.value.findIndex(
-      (acc) => acc.accountNo === selectedAccount.value.accountNo
+      (acc) => acc.accountNo === selectedAccount.value!.accountNo
     );
 
     if (accountIndex !== -1) {
@@ -309,6 +296,9 @@ const updateAccountActive = async (isActive: boolean) => {
       // activeAccounts 즉시 업데이트
       updateActiveAccounts();
     }
+
+    // 계좌 정보 변경 요청(활성화 상태)
+    // updateAccountInfo();
   }
 };
 
@@ -316,18 +306,43 @@ const updateAccountName = (newAlias: string) => {
   console.log('계좌 별명 변경:', newAlias);
 
   if (selectedAccount.value) {
-    // selectedAccount의 accountAlias 값 업데이트
     selectedAccount.value.accountAlias = newAlias;
 
-    // accountList에서 해당 계좌 찾아서 업데이트
     const accountIndex = accountList.value.findIndex(
-      (acc) => acc.accountNo === selectedAccount.value.accountNo
+      (acc) => acc.accountNo === selectedAccount.value!.accountNo
     );
 
     if (accountIndex !== -1) {
       accountList.value[accountIndex].accountAlias = newAlias;
       console.log('accountList 업데이트 완료:', accountList.value[accountIndex]);
     }
+    // 계좌 정보 변경 요청(별칭)
+    // updateAccountInfo();
+  }
+};
+
+// 계좌 정보 변경 요청(별칭, 활성화 상태, 계좌 순서)
+const updateAccountInfo = async () => {
+  try {
+    const updateInfos = activeAccounts.value.map((account) => ({
+      accountNo: account.accountNo,
+      accountAlias: account.accountAlias,
+      visible: account.visible,
+    }));
+
+    // await accountService.updateAccountInfo(updateInfos);
+    console.log('계좌 순서가 성공적으로 저장되었습니다.');
+  } catch (error) {
+    console.error('계좌 순서 저장 실패:', error);
+    // TODO: 사용자에게 에러 메시지 표시
+  }
+};
+
+const handleAccountOrderChange = () => {
+  showAccountOrderChange.value = !showAccountOrderChange.value;
+  if (!showAccountOrderChange.value) {
+    // 서버에 변경된 순서 저장
+    updateAccountInfo();
   }
 };
 

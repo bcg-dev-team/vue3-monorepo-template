@@ -6,6 +6,7 @@
       :rowData="rowData"
       :defaultColDef="defaultColDef"
       :gridOptions="gridOptions"
+      :headerHeight="32"
       :style="gridStyle"
       @grid-ready="onGridReady"
       @sort-changed="onSortChanged"
@@ -114,7 +115,7 @@ const props = withDefaults(defineProps<Props>(), {
   paginationPageSizeSelector: () => [25, 50, 100, 200],
   suppressPaginationPanel: false,
   resizable: true,
-  theme: 'quartz',
+  theme: 'alpine',
 });
 
 const emit = defineEmits<Emits>();
@@ -194,7 +195,8 @@ const gridOptions = computed(() => ({
       return params.data.id;
     }
     // 고유 ID가 없는 경우 인덱스 기반으로 생성
-    return `row-${params.node.rowIndex}`;
+    const rowIndex = params.node?.rowIndex ?? Math.random().toString(36).substr(2, 9);
+    return `row-${rowIndex}`;
   },
 
   ...props.gridOptions,

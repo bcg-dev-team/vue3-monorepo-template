@@ -14,7 +14,7 @@ const meta: Meta<typeof BaseAlert> = {
     },
   },
   args: {
-    variant: 'subtle',
+    variant: 'light',
     title: '',
     description: '추가 설명 텍스트입니다.',
     closable: true,
@@ -23,12 +23,12 @@ const meta: Meta<typeof BaseAlert> = {
   },
   argTypes: {
     variant: {
-      description: '스타일 변형 (subtle: 연한, filled: 원색 배경, outlined: 테두리)',
+      description: '스타일 변형 (light: 연한, filled: 원색 배경, outlined: 테두리)',
       control: { type: 'select' },
-      options: ['subtle', 'filled', 'outlined'],
+      options: ['light', 'filled', 'outlined'],
       table: {
-        type: { summary: 'subtle | filled | outlined' },
-        defaultValue: { summary: 'subtle' },
+        type: { summary: 'light | filled | outlined' },
+        defaultValue: { summary: 'light' },
         category: 'Props',
       },
     },
@@ -125,7 +125,7 @@ export const Variant: Story = {
     },
     template: `
       <div class="space-y-3 flex-1">
-        <BaseAlert v-bind="{...args, variant: 'subtle'}" title="subtle" :closable="false" />
+        <BaseAlert v-bind="{...args, variant: 'light'}" title="light" :closable="false" />
         <BaseAlert v-bind="{...args, variant: 'filled'}" title="filled" :closable="false" />
         <BaseAlert v-bind="{...args, variant: 'outlined'}" title="outlined" :closable="false" />
       </div>

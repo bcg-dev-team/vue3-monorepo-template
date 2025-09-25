@@ -1,6 +1,6 @@
-import BaseDataGrid from '../components/BaseDataGrid/BaseDataGrid.vue';
 import type { Meta, StoryObj } from '@storybook/vue3';
 import type { ColDef } from 'ag-grid-community';
+import BaseDataGrid from '../BaseDataGrid.vue';
 import { ref, computed } from 'vue';
 
 // 테스트용 데이터 생성 함수

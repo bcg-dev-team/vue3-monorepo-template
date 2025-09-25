@@ -21,10 +21,10 @@ const meta: Meta<typeof BaseBadge> = {
   argTypes: {
     value: {
       description: '배지에 표시할 값 (숫자 또는 문자열)',
-      control: { type: 'text' },
+      control: { type: 'number' },
       table: {
-        type: { summary: 'string | number | boolean' },
-        defaultValue: { summary: '' },
+        type: { summary: 'number' },
+        defaultValue: { summary: '0' },
         category: 'Props',
       },
     },
@@ -98,7 +98,7 @@ const meta: Meta<typeof BaseBadge> = {
     },
   },
   args: {
-    value: '',
+    value: 0,
     max: 99,
     variant: 'standard',
     color: 'blue',
@@ -112,10 +112,10 @@ const meta: Meta<typeof BaseBadge> = {
 export default meta;
 type Story = StoryObj<typeof BaseBadge>;
 
-// 컨트롤 패널과 연동되는 Playground
-export const Playground: Story = {
+// 기본 배지 (Material UI 스타일)
+export const BasicBadge: Story = {
   args: {
-    value: '4',
+    value: 4,
     max: 99,
     variant: 'standard',
     color: 'blue',
@@ -124,23 +124,6 @@ export const Playground: Story = {
     overlap: 'overlap',
     anchorOrigin: { vertical: 'top', horizontal: 'right' },
   },
-  render: (args) => ({
-    components: { BaseBadge, BaseIcon },
-    setup() {
-      return { args };
-    },
-    template: `
-      <div class="flex items-center">
-        <BaseBadge v-bind="args">
-          <BaseIcon name="notification" size="md" />
-        </BaseBadge>
-      </div>
-    `,
-  }),
-};
-
-// 기본 배지 (Material UI 스타일)
-export const BasicBadge: Story = {
   render: (args) => ({
     components: { BaseBadge, BaseIcon },
     setup() {
@@ -188,7 +171,7 @@ export const Colors: Story = {
   }),
 };
 
-// 최대값 설정 (Material UI 스타일)
+// 최대값 설정
 export const MaxValue: Story = {
   render: (args) => ({
     components: { BaseBadge, BaseIcon },
@@ -208,7 +191,7 @@ export const MaxValue: Story = {
   }),
 };
 
-// 배지 가시성 (Material UI 스타일)
+// 배지 가시성
 export const BadgeVisibility: Story = {
   render: (args) => ({
     components: { BaseBadge, BaseIcon, BaseSwitch, BaseButton },
@@ -257,7 +240,7 @@ export const BadgeVisibility: Story = {
   }),
 };
 
-// 점 배지 (Material UI 스타일)
+// 점 배지
 export const DotBadge: Story = {
   render: (args) => ({
     components: { BaseBadge, BaseIcon },
@@ -266,19 +249,22 @@ export const DotBadge: Story = {
     },
     template: `
       <div class="flex gap-10 items-center">
-        <BaseBadge variant="dot" color="grey" :value="true">
+        <BaseBadge variant="dot" color="grey" >
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
-        <BaseBadge variant="dot" color="blue" :value="true">
+        <BaseBadge variant="dot" color="blue">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
-        <BaseBadge variant="dot" color="green" :value="true">
+        <BaseBadge variant="dot" color="green">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
-        <BaseBadge variant="dot" color="yellow" :value="true">
+        <BaseBadge variant="dot" color="yellow">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
-        <BaseBadge variant="dot" color="red" :value="true">
+        <BaseBadge variant="dot" color="red">
+          <BaseIcon name="notification" size="md" />
+        </BaseBadge>
+        <BaseBadge variant="dot" color="purple">
           <BaseIcon name="notification" size="md" />
         </BaseBadge>
       </div>
@@ -286,7 +272,7 @@ export const DotBadge: Story = {
   }),
 };
 
-// 배지 겹침 (Material UI 스타일)
+// 배지 겹침
 export const BadgeOverlap: Story = {
   render: (args) => ({
     components: { BaseBadge, BaseIcon, BaseButton, BaseSwitch },
@@ -317,7 +303,7 @@ export const BadgeOverlap: Story = {
   }),
 };
 
-// 배지 정렬 (Material UI 스타일)
+// 배지 정렬
 export const BadgeAlignment: Story = {
   render: (args) => ({
     components: { BaseBadge, BaseIcon, BaseRadioGroup },

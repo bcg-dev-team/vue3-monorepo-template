@@ -17,7 +17,7 @@ interface Props {
   /**
    * 배지에 표시할 값
    */
-  value: string | number | boolean;
+  value: number;
   /**
    * 최대값 (숫자일 때만 적용)
    */
@@ -53,7 +53,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  value: '',
+  value: 0,
   max: 99,
   variant: 'standard',
   color: 'red',
@@ -66,20 +66,16 @@ const props = withDefaults(defineProps<Props>(), {
 // 배지 표시 여부 계산
 const shouldShowBadge = computed(() => {
   if (props.hidden) return false;
-  if (props.variant === 'dot') {
-    return props.value;
-  }
-  if (typeof props.value === 'number') {
-    return props.showZero ? true : props.value > 0;
-  }
-  return !!props.value;
+  if (props.variant === 'dot') return true;
+
+  return props.showZero ? true : props.value > 0;
 });
 
 // 배지 표시 값 계산
 const displayValue = computed(() => {
-  if (props.variant === 'dot') return '';
+  if (props.variant === 'dot') return;
   if (typeof props.value === 'number') {
-    return props.value > props.max ? `${props.max}+` : props.value.toString();
+    return props.value > props.max ? `${props.max}+` : props.value;
   }
   return props.value;
 });

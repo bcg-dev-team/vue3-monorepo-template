@@ -39,12 +39,6 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       ...commonConfig.server,
-      proxy: {
-        '/posts': {
-          target: env.VITE_EXAMPLE_URL,
-          changeOrigin: true,
-        },
-      },
     },
     build: {
       ...commonConfig.build,

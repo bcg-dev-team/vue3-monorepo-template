@@ -67,6 +67,6 @@ const errorHandler = async (error: AxiosError) => {
   return Promise.reject(error); // 에러를 다시 reject하여 호출한 곳에서 처리할 수 있도록 함
 };
 
-const api = createAxiosInstance(tokenResolver, errorHandler);
+const api = createAxiosInstance(tokenResolver, errorHandler, import.meta.env.VITE_MODA_API);
 
 export default api;

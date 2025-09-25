@@ -1,7 +1,17 @@
-import type { AxiosError } from 'axios';
+import type { AxiosError, AxiosRequestConfig } from 'axios';
 
 // axios 타입들도 export
 export type { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
+
+// 인터셉터가 response.data를 반환하는 커스텀 axios 인스턴스 타입
+export interface CustomAxiosInstance {
+  get<T = any>(url: string, config?: AxiosRequestConfig): Promise<T>;
+  post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T>;
+  put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T>;
+  delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<T>;
+  patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T>;
+  request<T = any>(config: AxiosRequestConfig): Promise<T>;
+}
 
 /**
  * 토큰을 반환하는 함수 타입

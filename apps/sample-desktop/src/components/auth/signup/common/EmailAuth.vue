@@ -1,15 +1,21 @@
 <template>
   <div>
     <div class="gap-size-12 flex items-center">
-      <BaseInput size="md" />
-      <BaseInput size="md" />
-      <BaseInput size="md" />
-      <BaseInput size="md" />
-      <BaseInput size="md" />
-      <BaseInput size="md" />
+      <BaseInput
+        v-for="(value, index) in inputValues"
+        :key="index"
+        :ref="(el) => (inputRefs[index] = el)"
+        :modelValue="inputValues[index]"
+        size="md"
+        variant="number"
+        :maxLength="maxLength"
+        @update:modelValue="handleInput(index, $event)"
+        @keydown="handleKeydown(index, $event)"
+        @paste="handlePaste(index, $event)"
+      />
     </div>
     <div class="mt-size-8 flex items-center justify-end">
-      <span class="text-font-12 text-red tracking-3">남은 시간: 10:00</span>
+      <Countdown :duration="600" format="mm:ss" @finished="handleCountdownFinished" />
     </div>
   </div>
   <div
@@ -23,26 +29,116 @@
   </div>
 
   <div class="gap-size-12 mt-[33px] flex items-center">
-    <BaseButton size="lg" label="인증 메일 재전송" variant="outlined" color="primary" full-width />
+    <BaseButton
+      size="lg"
+      label="인증 메일 재전송"
+      variant="outlined"
+      color="primary"
+      full-width
+      @click="userService.requestEmailVerification(signupStore.userInfo.email)"
+    />
     <BaseButton
       size="lg"
       label="다음"
       variant="contained"
       color="primary"
       full-width
-      @click="router.push({ query: { step: 4 } })"
+      :disabled="inputValues.some((value) => value === '')"
+      @click="handleClickNext"
     />
   </div>
   <div class="mt-size-16 flex items-center justify-center">
-    <span class="text-font-14 text-default-muted cursor-pointer font-medium underline"
-      >다른 이메일주소로 변경하기</span
+    <span
+      class="text-font-14 text-default-muted cursor-pointer font-medium underline"
+      @click="router.push({ query: { step: 2 } })"
     >
+      다른 이메일주소로 변경하기
+    </span>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { BaseInput, BaseButton, BaseIcon } from '@template/ui';
+import Countdown from '@/components/common/Countdown.vue';
+import { useSignupStore } from '@/stores/useSignupStore';
+import { userService } from '@/service/api';
 import { useRouter } from 'vue-router';
+import { ref, nextTick } from 'vue';
 
+const signupStore = useSignupStore();
+
+const maxLength = ref(1);
 const router = useRouter();
+
+const inputValues = ref(['', '', '', '', '', '']);
+const inputRefs = ref<any[]>([]);
+
+// 입력 처리
+const handleInput = async (index: number, value: string) => {
+  inputValues.value[index] = value;
+
+  // maxLength 도달 시 다음 input으로 포커스 이동
+  if (value.length === maxLength.value && index < 5) {
+    await nextTick();
+    inputRefs.value[index + 1]?.focus();
+  }
+};
+
+// 키보드 이벤트 처리 (백스페이스)
+const handleKeydown = async (index: number, event: KeyboardEvent) => {
+  if (event.key === 'Backspace' && !inputValues.value[index] && index > 0) {
+    await nextTick();
+    inputRefs.value[index - 1]?.focus();
+  }
+};
+
+// 붙여넣기 이벤트 처리
+const handlePaste = async (startIndex: number, event: ClipboardEvent) => {
+  event.preventDefault();
+
+  // 클립보드에서 텍스트 가져오기
+  const pasteData = event.clipboardData?.getData('text') || '';
+  const numbers = pasteData.replace(/[^0-9]/g, '');
+
+  if (numbers.length === 0) return;
+
+  // 붙여넣은 숫자를 각 칸에 배치 (최대 6자리, startIndex부터 시작)
+  const maxFillCount = Math.min(numbers.length, 6, 6 - startIndex);
+
+  for (let i = 0; i < maxFillCount; i++) {
+    const targetIndex = startIndex + i;
+    if (targetIndex < 6) {
+      inputValues.value[targetIndex] = numbers[i];
+    }
+  }
+
+  // 마지막으로 채워진 칸의 다음 칸으로 포커스 이동
+  const lastFilledIndex = startIndex + maxFillCount - 1;
+  if (lastFilledIndex < 5) {
+    await nextTick();
+    inputRefs.value[lastFilledIndex + 1]?.focus();
+  }
+};
+
+// 카운트다운 이벤트 처리
+const handleCountdownFinished = () => {
+  console.log('인증시간이 만료되었습니다!');
+  // TODO: 인증시간 만료 처리 로직
+};
+
+const handleClickNext = async () => {
+  try {
+    // 진행을 위한 임시 주석처리
+    // const res = await userService.verifyEmailCode(
+    //   signupStore.userInfo.email,
+    //   inputValues.value.join('')
+    // );
+
+    // if (res.status === 'success') {
+    router.push({ query: { step: 4 } });
+    // }
+  } catch (error) {
+    console.error('이메일 인증 실패:', error);
+  }
+};
 </script>

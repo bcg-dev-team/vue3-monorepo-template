@@ -3,8 +3,9 @@ import {
   CorporateSignUpInfo,
   IndividualSignUpInfo,
   UserInfo,
+  UserInfoForPass,
 } from '@/types/store/signup.types';
-import { CorporateMemberJoinRequest, IndividualMemberJoinRequest } from '@/types/api/user.types';
+import { CorporateMemberJoinRequest, IndividualMemberJoinRequest } from '@template/api';
 import { reactive, computed } from 'vue';
 import { defineStore } from 'pinia';
 
@@ -31,6 +32,7 @@ export const useSignupStore = defineStore('signup', () => {
     detailAddress: '', //상세주소(한글)
     addressEn: '', //주소(영문)
     detailAddressEn: '', //상세주소(영문)
+    zipCode: '', //우편번호
 
     idCard: null, //신분증(주민등록증 또는 운전면허증)
     additionalIdDocument: null, //신분증 초본(영문)
@@ -44,6 +46,9 @@ export const useSignupStore = defineStore('signup', () => {
     representativeBirth: '', //법인대표 생년월일
     address: '', //법인주소
     detailAddress: '', //법인주소 상세
+    addressEn: '', //법인주소(영문)
+    detailAddressEn: '', //법인주소 상세(영문)
+    zipCode: '', //우편번호
 
     businessRegistration: null, //사업자등록증명원
     corporateRepresentative: null, //법인대표 초본(영문)
@@ -61,8 +66,7 @@ export const useSignupStore = defineStore('signup', () => {
       ...userInfo,
       ...individualInfo,
 
-      zipCode: '',
-      birthAsLocalDate: '', // TODO: 제거될 예정
+      zipCode: individualInfo.zipCode,
       idCard: individualInfo.idCard!, // File 타입으로 명시적 할당
       additionalIdDocument: individualInfo.additionalIdDocument || undefined,
     };
@@ -75,11 +79,9 @@ export const useSignupStore = defineStore('signup', () => {
     return {
       ...userInfo,
       ...corporateInfo,
-      zipCode: '',
-      representativeCount: 0, // TODO: 제거될 예정
-      representativeBirthAsLocalDate: '', // TODO: 제거될 예정
-      addressEn: '', // TODO: 제거될 예정
-      detailAddressEn: '', // TODO: 제거될 예정
+      zipCode: corporateInfo.zipCode,
+      addressEn: corporateInfo.addressEn,
+      detailAddressEn: corporateInfo.detailAddressEn,
 
       businessRegistration: corporateInfo.businessRegistration!,
       corporateRepresentative: corporateInfo.corporateRepresentative!,
@@ -112,7 +114,7 @@ export const useSignupStore = defineStore('signup', () => {
    *
    * @description 휴대폰인증(PASS) 후 얻은 사용자 정보를 업데이트합니다.
    */
-  const updateUserInfo = (value: UserInfo) => {
+  const updateUserInfo = (value: UserInfoForPass) => {
     userInfo.ci = value.ci;
     userInfo.name = value.name;
     userInfo.phoneNo = value.phoneNo;
@@ -152,6 +154,7 @@ export const useSignupStore = defineStore('signup', () => {
     individualInfo.detailAddress = value.detailAddress;
     individualInfo.addressEn = value.addressEn;
     individualInfo.detailAddressEn = value.detailAddressEn;
+    individualInfo.zipCode = value.zipCode;
   };
 
   /**
@@ -160,7 +163,10 @@ export const useSignupStore = defineStore('signup', () => {
    *
    * @description 개인 회원가입 시 필요한 파일을 업데이트합니다.
    */
-  const uploadIndividualDocument = (individualDocument: File, additionalIdDocument: File) => {
+  const uploadIndividualDocument = (
+    individualDocument: File,
+    additionalIdDocument: File | null
+  ) => {
     individualInfo.idCard = individualDocument;
     individualInfo.additionalIdDocument = additionalIdDocument;
   };
@@ -179,6 +185,9 @@ export const useSignupStore = defineStore('signup', () => {
     corporateInfo.representativeBirth = value.representativeBirth;
     corporateInfo.address = value.address;
     corporateInfo.detailAddress = value.detailAddress;
+    corporateInfo.addressEn = value.addressEn;
+    corporateInfo.detailAddressEn = value.detailAddressEn;
+    corporateInfo.zipCode = value.zipCode;
   };
 
   /**
@@ -188,11 +197,11 @@ export const useSignupStore = defineStore('signup', () => {
    * @description 법인 회원가입 시 필요한 파일을 업데이트합니다.
    */
   const uploadCorpInfoDocument = (
-    businessCertificateDocument: File,
+    businessRegistration: File,
     corporateRepresentative: File,
     billPaymentCorporate: File
   ) => {
-    corporateInfo.businessRegistration = businessCertificateDocument;
+    corporateInfo.businessRegistration = businessRegistration;
     corporateInfo.corporateRepresentative = corporateRepresentative;
     corporateInfo.billPaymentCorporate = billPaymentCorporate;
   };
@@ -203,7 +212,13 @@ export const useSignupStore = defineStore('signup', () => {
    *
    * @description 법인 회원가입 시 필요한 법인대표 관련 파일을 업데이트합니다.
    */
-  const uploadCorpAdminDocument = (additionalCorporateRepresentativePassport: File[]) => {
+  const uploadCorpAdminDocument = (
+    shareholderRegister: File,
+    corporateRepresentativePassport: File,
+    additionalCorporateRepresentativePassport: File[]
+  ) => {
+    corporateInfo.shareholderRegister = shareholderRegister;
+    corporateInfo.corporateRepresentativePassport = corporateRepresentativePassport;
     corporateInfo.additionalCorporateRepresentativePassport =
       additionalCorporateRepresentativePassport;
   };

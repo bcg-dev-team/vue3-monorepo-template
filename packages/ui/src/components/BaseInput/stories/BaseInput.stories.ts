@@ -31,7 +31,7 @@ const meta: Meta<typeof BaseInput> = {
     variant: {
       description: '입력 타입 변형',
       control: 'select',
-      options: ['default', 'search', 'password', 'tel', 'number'],
+      options: ['default', 'search', 'password', 'password-strength', 'tel', 'number'],
     },
     disabled: {
       description: '비활성화 여부',
@@ -48,6 +48,10 @@ const meta: Meta<typeof BaseInput> = {
     readonly: {
       description: '읽기 전용 여부',
       control: 'boolean',
+    },
+    userInputs: {
+      description: '비밀번호 강도 분석 시 사용할 사용자 입력 데이터 (password-strength variant용)',
+      control: 'object',
     },
   },
   tags: ['autodocs'],
@@ -595,6 +599,94 @@ export const PasswordVariant: Story = {
   }),
 };
 
+// Password Strength Variant
+export const PasswordStrengthVariant: Story = {
+  render: () => ({
+    components: { BaseInput },
+    setup() {
+      const password = ref('password123');
+      const weakPassword = ref('123');
+      const strongPassword = ref('MyStr0ng!P@ssw0rd');
+      const userPassword = ref('john123');
+
+      // 사용자 입력 데이터 예시
+      const userInputs = ['john', 'smith', 'john.smith@example.com', 'johnsmith'];
+
+      return { password, weakPassword, strongPassword, userPassword, userInputs };
+    },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 16px; max-width: 400px;">
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Password Strength - MD 크기</h4>
+          <BaseInput 
+            v-model="password"
+            variant="password-strength"
+            placeholder="비밀번호를 입력하세요"
+            size="md"
+          />
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Password Strength - SM 크기</h4>
+          <BaseInput 
+            v-model="weakPassword"
+            variant="password-strength"
+            placeholder="비밀번호를 입력하세요"
+            size="sm"
+          />
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Password Strength - 강한 비밀번호</h4>
+          <BaseInput
+            v-model="strongPassword"
+            variant="password-strength"
+            placeholder="강한 비밀번호를 입력하세요"
+            size="md"
+          />
+        </div>
+
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Password Strength - 사용자 정보 포함 (취약)</h4>
+          <BaseInput
+            v-model="userPassword"
+            variant="password-strength"
+            placeholder="사용자 정보가 포함된 비밀번호"
+            size="md"
+            :user-inputs="userInputs"
+          />
+          <p style="margin-top: 4px; font-size: 11px; color: #666; line-height: 1.3;">
+            사용자 정보: {{ userInputs.join(', ') }}
+          </p>
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Password Strength - 에러 상태</h4>
+          <BaseInput 
+            v-model="weakPassword"
+            variant="password-strength"
+            placeholder="비밀번호를 입력하세요"
+            size="md"
+            :error="true"
+            error-message="비밀번호가 너무 약합니다"
+          />
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Password Strength - 비활성화</h4>
+          <BaseInput 
+            v-model="password"
+            variant="password-strength"
+            placeholder="비활성화된 비밀번호"
+            size="md"
+            :disabled="true"
+          />
+        </div>
+      </div>
+    `,
+  }),
+};
+
 // Tel Variant
 export const TelVariant: Story = {
   render: () => ({
@@ -721,6 +813,7 @@ export const AllVariantsComparison: Story = {
       const defaultValue = ref('기본 입력값');
       const searchValue = ref('검색어 예시');
       const passwordValue = ref('password123');
+      const passwordStrengthValue = ref('MyStr0ng!P@ssw0rd');
       const telValue = ref('010-1234-5678');
       const numberValue = ref('25');
 
@@ -732,6 +825,7 @@ export const AllVariantsComparison: Story = {
         defaultValue,
         searchValue,
         passwordValue,
+        passwordStrengthValue,
         telValue,
         numberValue,
         handleSearch,
@@ -776,6 +870,20 @@ export const AllVariantsComparison: Story = {
           />
           <p style="margin-top: 4px; font-size: 12px; color: #666;">
             비밀번호 길이: {{ passwordValue ? passwordValue.length + '자' : '없음' }}
+          </p>
+        </div>
+        
+        <div>
+          <h4 style="margin-bottom: 8px; color: #131313;">Password Strength Variant</h4>
+          <BaseInput
+            v-model="passwordStrengthValue"
+            variant="password-strength"
+            placeholder="강한 비밀번호를 입력하세요"
+            size="md"
+            :user-inputs="['user', 'example', 'test']"
+          />
+          <p style="margin-top: 4px; font-size: 12px; color: #666;">
+            비밀번호 길이: {{ passwordStrengthValue ? passwordStrengthValue.length + '자' : '없음' }}
           </p>
         </div>
         

@@ -76,9 +76,9 @@ const progressColorClass = computed(() => {
     const score = props.strengthScore || 0;
     const colorClasses = [
       'bg-red-red800', // 0: 매우 약함
-      'bg-red-red800', // 1: 약함
+      'bg-[#FF9500]', // 1: 약함
       'bg-primary-primary800', // 2: 보통
-      'bg-blue-blue800-deep', // 3: 강함
+      'bg-[#7ED428]', // 3: 강함
       'bg-green-green800', // 4: 매우 강함
     ];
     return colorClasses[score];
@@ -93,9 +93,9 @@ const labelColorClass = computed(() => {
     const score = props.strengthScore || 0;
     const colorClasses = [
       'text-red', // 0: 매우 약함
-      'text-red', // 1: 약함
+      'text-[#FF9500]', // 1: 약함
       'text-primary', // 2: 보통
-      'text-blue', // 3: 강함
+      'text-[#7ED428]', // 3: 강함
       'text-green', // 4: 매우 강함
     ];
     return colorClasses[score];

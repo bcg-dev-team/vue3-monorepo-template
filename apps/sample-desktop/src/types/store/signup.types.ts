@@ -53,6 +53,16 @@ export interface UserInfo {
 }
 
 /**
+ * 휴대폰 본인인증 후 얻은 사용자 정보 인터페이스
+ */
+export interface UserInfoForPass {
+  ci: string;
+  name: string;
+  phoneNo: string;
+  birth: string;
+}
+
+/**
  * 개인 회원가입 정보 인터페이스
  */
 export interface IndividualSignUpInfo {
@@ -68,7 +78,8 @@ export interface IndividualSignUpInfo {
   addressEn: string;
   /** 상세주소(영문) */
   detailAddressEn: string;
-
+  /** 우편번호 */
+  zipCode: string;
   /** 신분증(주민등록증 또는 운전면허증) */
   idCard: File | null;
   /** 신분증 초본(영문) */
@@ -93,7 +104,12 @@ export interface CorporateSignUpInfo {
   address: string;
   /** 법인주소 상세 */
   detailAddress: string;
-
+  /** 법인주소(영문) */
+  addressEn: string;
+  /** 법인주소 상세(영문) */
+  detailAddressEn: string;
+  /** 우편번호 */
+  zipCode: string;
   /** 사업자등록증명원 */
   businessRegistration: File | null;
   /** 법인대표 초본(영문) */

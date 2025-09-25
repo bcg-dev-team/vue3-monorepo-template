@@ -125,14 +125,28 @@
             </LabelContent>
 
             <div v-if="accoutInfoState">
-              <BaseButton
-                variant="contained"
-                size="lg"
-                color="primary"
-                label="계좌정보 변경하기"
-                fullWidth
-                @click="updateAccountInfo"
-              />
+              <div class="flex items-center justify-between gap-4">
+                <BaseButton
+                  variant="contained"
+                  size="lg"
+                  color="primary"
+                  label="계좌정보 변경하기"
+                  fullWidth
+                  :disabled="checkDisabled"
+                  @click="updateAccountInfo"
+                />
+                <BaseButton
+                  variant="outlined"
+                  size="lg"
+                  color="white"
+                  label="취소"
+                  fullWidth
+                  @click="
+                    ((inputState.updateAccountName = false),
+                    (inputState.updateAccountPassword = false))
+                  "
+                />
+              </div>
             </div>
           </form>
         </div>
@@ -157,7 +171,7 @@ const emit = defineEmits<{
   (e: 'updateAccountName', value: string): void;
 }>();
 
-const accountAlias = ref('');
+const accountAlias = ref(props.account.accountAlias);
 const accountPassword = ref('');
 const accountPasswordCheck = ref('');
 
@@ -172,6 +186,21 @@ const isAccountActive = computed({
 const inputState = reactive({
   updateAccountName: false,
   updateAccountPassword: false,
+});
+
+const checkDisabled = computed(() => {
+  // 계좌별명 변경
+  if (inputState.updateAccountName) {
+    return accountAlias.value.trim() === '';
+  }
+
+  // 비밀번호 변경
+  if (inputState.updateAccountPassword) {
+    const isPasswordEmpty = accountPassword.value === '' && accountPasswordCheck.value === '';
+    const isPasswordMatch =
+      accountPassword.value === accountPasswordCheck.value && accountPassword.value !== '';
+    return !(isPasswordEmpty || isPasswordMatch);
+  }
 });
 
 const updateAccountInfo = () => {

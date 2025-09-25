@@ -6,11 +6,11 @@ import BaseIcon from '../BaseIcon/BaseIcon.vue';
 interface Props {
   /**
    * 스타일 변형
-   * - subtle: 연한 배경 + 원색 글씨
+   * - light: 연한 배경 + 원색 글씨
    * - filled: 원색 배경 + 흰 글씨
    * - outlined: 투명 배경 + 원색 경계 + 원색 글씨
    */
-  variant?: 'subtle' | 'filled' | 'outlined';
+  variant?: 'light' | 'filled' | 'outlined';
   /**
    * 심각도 (아이콘/기본 색상 매핑)
    * - success, info, warning, error
@@ -62,7 +62,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  variant: 'subtle',
+  variant: 'light',
   closable: true,
   showIcon: false,
   center: false,

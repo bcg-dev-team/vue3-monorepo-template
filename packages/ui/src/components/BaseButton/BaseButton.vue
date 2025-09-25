@@ -249,11 +249,11 @@ const getSkeletonWidth = () => {
   const getIconSize = () => {
     switch (props.size) {
       case 'md':
-        return 24; // .btn-size-small .icon { width: 24px; height: 24px; }
+        return 24;
       case 'sm':
-        return 16; // .btn-size-small-inner .icon { width: 16px; height: 16px; }
+        return 16;
       default:
-        return 24; // .btn-size-regular .icon { width: 24px; height: 24px; }
+        return 24;
     }
   };
 
@@ -352,7 +352,6 @@ const getSkeletonHeight = () => {
       :name="props.centerIcon.name"
       :size="getIconSize(props.size)"
       :color="getIconColor(props.centerIcon, props.color)"
-      class="icon"
     />
 
     <!-- 텍스트 영역 (중앙 아이콘이 없을 때만) -->

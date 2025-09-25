@@ -23,13 +23,13 @@ const meta: Meta<typeof BaseBottomNavigation> = {
         type: {
           summary: 'BottomNavigationItem[]',
           detail: `interface BottomNavigationItem {
-  value: string | number
-  label: string
-  icon: IconName
-  iconSize?: 'sm' | 'md' | 'lg'
-  iconColor?: string
-  disabled?: boolean
-}`,
+                      value: string | number
+                      label: string
+                      icon: IconName
+                      iconSize?: 'sm' | 'md' | 'lg'
+                      iconColor?: string
+                      disabled?: boolean
+                  }`,
         },
       },
     },

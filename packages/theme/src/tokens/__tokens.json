@@ -316,6 +316,10 @@
         "border": {
           "$type": "color",
           "$value": "{Base-Colors.Neutral.neutral550}"
+        },
+        "background-hover": {
+          "$type": "color",
+          "$value": "#f7f7f7"
         }
       },
       "Primary": {
@@ -359,7 +363,7 @@
         },
         "background-hover": {
           "$type": "color",
-          "$value": "{Base-Colors.Neutral.neutral250}"
+          "$value": "#ffe5e6"
         },
         "background-blank": {
           "$type": "color",
@@ -378,6 +382,10 @@
         "border": {
           "$type": "color",
           "$value": "{Base-Colors.Primary.primary-deep}"
+        },
+        "background-hover": {
+          "$type": "color",
+          "$value": "#fff4c3"
         }
       },
       "Red-solid": {
@@ -508,6 +516,58 @@
         "background-blank": {
           "$type": "color",
           "$value": "{Base-Colors.Neutral.neutral000}"
+        }
+      },
+      "Red-outline-big": {
+        "background": {
+          "$type": "color",
+          "$value": "{Base-Colors.Red.red050}"
+        },
+        "background-blank": {
+          "$type": "color",
+          "$value": "{Base-Colors.Neutral.neutral000}"
+        },
+        "background-none": {
+          "$type": "color",
+          "$value": "{Base-Colors.Neutral.neutral150}"
+        },
+        "background-hover": {
+          "$type": "color",
+          "$value": "{Base-Colors.Neutral.neutral250}"
+        },
+        "text": {
+          "$type": "color",
+          "$value": "{Base-Colors.Red.red800}"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{Base-Colors.Red.red800}"
+        }
+      },
+      "Blue-outline-big": {
+        "background": {
+          "$type": "color",
+          "$value": "{Base-Colors.Blue.blue050}"
+        },
+        "background-blank": {
+          "$type": "color",
+          "$value": "{Base-Colors.Neutral.neutral000}"
+        },
+        "background-none": {
+          "$type": "color",
+          "$value": "{Base-Colors.Neutral.neutral150}"
+        },
+        "background-hover": {
+          "$type": "color",
+          "$value": "{Base-Colors.Neutral.neutral250}"
+        },
+        "text": {
+          "$type": "color",
+          "$value": "{Base-Colors.Blue.blue800-deep}"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{Base-Colors.Blue.blue800-deep}"
         }
       }
     },
@@ -2573,6 +2633,14 @@
         "border": {
           "$type": "color",
           "$value": "{Base-Colors.Neutral.neutral200}"
+        },
+        "background-hover": {
+          "$type": "color",
+          "$value": "{Base-Colors.Neutral.neutral100}"
+        },
+        "background-hover 2": {
+          "$type": "color",
+          "$value": "{Base-Colors.Neutral.neutral100}"
         }
       },
       "Primary": {
@@ -2635,6 +2703,10 @@
         "border": {
           "$type": "color",
           "$value": "{Base-Colors.Primary.primary800}"
+        },
+        "background-hover": {
+          "$type": "color",
+          "$value": "{Base-Colors.Primary.primary050}"
         }
       },
       "Red-solid": {
@@ -2765,6 +2837,58 @@
         "background-blank": {
           "$type": "color",
           "$value": "{Base-Colors.Neutral.neutral100}"
+        }
+      },
+      "Red-outline-big": {
+        "background": {
+          "$type": "color",
+          "$value": "{Base-Colors.Red.red100}"
+        },
+        "background-blank": {
+          "$type": "color",
+          "$value": "{Base-Colors.Neutral.neutral100}"
+        },
+        "background-none": {
+          "$type": "color",
+          "$value": "{Base-Colors.Neutral.neutral150}"
+        },
+        "background-hover": {
+          "$type": "color",
+          "$value": "{Base-Colors.Neutral.neutral200}"
+        },
+        "text": {
+          "$type": "color",
+          "$value": "{Base-Colors.Red.red700}"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{Base-Colors.Red.red700}"
+        }
+      },
+      "Blue-outline-big": {
+        "background": {
+          "$type": "color",
+          "$value": "{Base-Colors.Blue.blue100}"
+        },
+        "background-blank": {
+          "$type": "color",
+          "$value": "{Base-Colors.Neutral.neutral100}"
+        },
+        "background-none": {
+          "$type": "color",
+          "$value": "{Base-Colors.Neutral.neutral100}"
+        },
+        "background-hover": {
+          "$type": "color",
+          "$value": "{Base-Colors.Neutral.neutral200}"
+        },
+        "text": {
+          "$type": "color",
+          "$value": "{Base-Colors.Blue.blue800-deep}"
+        },
+        "border": {
+          "$type": "color",
+          "$value": "{Base-Colors.Blue.blue700}"
         }
       }
     },

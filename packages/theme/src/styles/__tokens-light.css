@@ -70,6 +70,9 @@
   --base-colors-purple-purple100: #f3eafd;
   --base-colors-purple-purple050: #f9f3ff;
   --button-disabled-color: #ffffff;
+  --button-outline-background-hover: #f7f7f7;
+  --button-red-background-hover: #ffe5e6;
+  --button-light-solid-background-hover: #fff4c3;
   --font-line-heights-0: 3.5rem;
   --font-line-heights-1: 2.5rem;
   --font-line-heights-2: 1.875rem;
@@ -365,7 +368,6 @@
   --button-red-text: var(--base-colors-red-red800);
   --button-red-border: var(--base-colors-red-red800);
   --button-red-background-none: var(--base-colors-neutral-neutral150);
-  --button-red-background-hover: var(--base-colors-neutral-neutral250);
   --button-red-background-blank: var(--base-colors-neutral-neutral000);
   --button-light-solid-background: var(--base-colors-primary-primary100);
   --button-light-solid-text: var(--base-colors-primary-primary-deep);
@@ -399,6 +401,18 @@
   --button-blue-background-none: var(--base-colors-neutral-neutral150);
   --button-blue-background-hover: var(--base-colors-neutral-neutral250);
   --button-blue-background-blank: var(--base-colors-neutral-neutral000);
+  --button-red-outline-big-background: var(--base-colors-red-red050);
+  --button-red-outline-big-background-blank: var(--base-colors-neutral-neutral000);
+  --button-red-outline-big-background-none: var(--base-colors-neutral-neutral150);
+  --button-red-outline-big-background-hover: var(--base-colors-neutral-neutral250);
+  --button-red-outline-big-text: var(--base-colors-red-red800);
+  --button-red-outline-big-border: var(--base-colors-red-red800);
+  --button-blue-outline-big-background: var(--base-colors-blue-blue050);
+  --button-blue-outline-big-background-blank: var(--base-colors-neutral-neutral000);
+  --button-blue-outline-big-background-none: var(--base-colors-neutral-neutral150);
+  --button-blue-outline-big-background-hover: var(--base-colors-neutral-neutral250);
+  --button-blue-outline-big-text: var(--base-colors-blue-blue800-deep);
+  --button-blue-outline-big-border: var(--base-colors-blue-blue800-deep);
   --font-color-primary: var(--base-colors-primary-primary800);
   --font-color-default: var(--base-colors-neutral-neutral800);
   --font-color-default-muted: var(--base-colors-neutral-neutral500);

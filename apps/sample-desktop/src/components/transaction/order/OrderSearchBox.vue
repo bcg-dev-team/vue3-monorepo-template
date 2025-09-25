@@ -29,21 +29,18 @@
         <PeriodSelect title="주문일자" @period-change="handlePeriodChange" />
       </div>
     </div>
-    <div class="mb-[1px]">
-      <BaseButton variant="contained" label="조회하기" size="md" @click="search" />
-    </div>
   </div>
 </template>
 <script setup lang="ts">
 import { POSITION_CODE, ORDER_CODE } from '@/components/transaction/constants/searchBoxCod';
 import PeriodSelect from '@/components/transaction/common/PeriodSelect.vue';
-import { BaseButton, BaseRadioGroup } from '@template/ui';
-import { ref } from 'vue';
+import { useTradeSearchStore } from '@/stores/useTradeSearchStore';
+import { BaseRadioGroup } from '@template/ui';
+import { onMounted, onUnmounted } from 'vue';
+import { storeToRefs } from 'pinia';
 
-const positionCd = ref(POSITION_CODE.total);
-const orderCd = ref(ORDER_CODE.total);
-const orderStartDate = ref('');
-const orderEndDate = ref('');
+const tradeSearchStore = useTradeSearchStore();
+const { positionCd, orderCd } = storeToRefs(tradeSearchStore);
 
 /**
  * 기간 변경 이벤트 핸들러
@@ -51,15 +48,22 @@ const orderEndDate = ref('');
  * @param endDate - 종료 날짜
  * @param periodType - 선택된 기간 타입
  */
+/**
+ * 기간 변경 시 스토어에 시작/종료일을 저장합니다.
+ * @param startDate - 시작 날짜(yyyy-MM-dd)
+ * @param endDate - 종료 날짜(yyyy-MM-dd)
+ */
 const handlePeriodChange = (startDate: string, endDate: string) => {
-  orderStartDate.value = startDate;
-  orderEndDate.value = endDate;
+  tradeSearchStore.setOrderPeriod(startDate, endDate);
 };
 
-const search = () => {
-  console.log('orderCd', orderCd.value);
-  console.log('positionCd', positionCd.value);
-  console.log('orderStartDate', orderStartDate.value);
-  console.log('orderEndDate', orderEndDate.value);
-};
+onMounted(() => {
+  // 마운트 시점에 기본값을 설정 (스토어 초기값은 빈 값)
+  if (!positionCd.value) tradeSearchStore.setPositionCd(POSITION_CODE.total);
+  if (!orderCd.value) tradeSearchStore.setOrderCd(ORDER_CODE.total);
+});
+
+onUnmounted(() => {
+  tradeSearchStore.reset();
+});
 </script>

@@ -3,22 +3,22 @@
     <CardLayoutVertical gap="gap-3">
       <MainCardContent class="p-6" title="거래내역" size="lg">
         <template #content>
-          <div>
-            <BaseTabs
-              v-model="modelValue"
-              size="lg"
-              variant="underline"
-              :tabs="tabs"
-              @click="handleTabClick"
-            />
+          <div class="flex items-end gap-2">
+            <BaseTabs v-model="modelValue" size="lg" variant="underline" :tabs="tabs" />
+            <div class="mb-[1px]">
+              <BaseButton variant="contained" label="조회하기" size="md" @click="handleSearch" />
+            </div>
           </div>
         </template>
       </MainCardContent>
 
       <MainCardContent class="p-6" size="lg">
         <template #content>
-          <router-view />
-          <OrderTableContent v-if="modelValue === 'order'" />
+          <OrderTableContent
+            v-if="modelValue === 'order'"
+            :summaryData="summaryData"
+            :detailData="detailData"
+          />
           <ClearTableContent v-if="modelValue === 'clear'" />
           <HistoryTableContent v-if="modelValue === 'history'" />
         </template>
@@ -26,7 +26,17 @@
     </CardLayoutVertical>
   </div>
 </template>
+
 <script setup lang="ts">
+import {
+  OrderSummary,
+  TradePaymentsHistorySummary,
+  TradeProfitAndLossSummary,
+  OrderDetail,
+  TradePaymentsHistoryDetail,
+  TradeProfitAndLossDetail,
+  TradeOrderListRequest,
+} from '@/types/api/trade.types';
 import HistoryTableContent from '@/components/transaction/history/HistoryTableContent.vue';
 import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
 import HistorySearchBox from '@/components/transaction/history/HistorySearchBox.vue';
@@ -35,14 +45,24 @@ import ClearTableContent from '@/components/transaction/clear/ClearTableContent.
 import OrderSearchBox from '@/components/transaction/order/OrderSearchBox.vue';
 import ClearSearchBox from '@/components/transaction/clear/ClearSearchBox.vue';
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
-import { BaseTabs } from '@template/ui';
-import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { useTradeSearchStore } from '@/stores/useTradeSearchStore';
+import { BaseTabs, BaseButton } from '@template/ui';
+import { useRouter, useRoute } from 'vue-router';
+import { tradeService } from '@/service/api';
+import { computed, ref } from 'vue';
 
 type Tab = 'order' | 'clear' | 'history';
 
 const router = useRouter();
-const modelValue = ref<Tab>((router.currentRoute.value.params.transactionTab as Tab) || 'order');
+const route = useRoute();
+const modelValue = computed<Tab>({
+  get: () => (route.params.transactionTab as Tab) || 'order',
+  set: (val: Tab) => {
+    if ((route.params.transactionTab as Tab | undefined) !== val) {
+      router.push({ name: 'transaction', params: { transactionTab: val } });
+    }
+  },
+});
 
 const tabs = [
   {
@@ -62,7 +82,59 @@ const tabs = [
   },
 ];
 
-const handleTabClick = () => {
-  router.push({ name: 'transaction', params: { transactionTab: modelValue.value } });
+const tradeSearchStore = useTradeSearchStore();
+
+const orderSummaryData = ref<OrderSummary[]>([]);
+const orderDetailData = ref<OrderDetail[]>([]);
+
+// 현재 탭에 따른 데이터 반환
+const summaryData = computed(() => {
+  switch (modelValue.value) {
+    case 'order':
+      return orderSummaryData.value;
+    default:
+      return [];
+  }
+});
+
+const detailData = computed(() => {
+  switch (modelValue.value) {
+    case 'order':
+      return orderDetailData.value;
+    default:
+      return [];
+  }
+});
+
+const handleSearch = async () => {
+  try {
+    if (modelValue.value === 'order') {
+      const queryParams: TradeOrderListRequest = {
+        accountNo: '',
+        accountPassword: '',
+        positionCd: tradeSearchStore.positionCd,
+        orderCd: tradeSearchStore.orderCd,
+        orderStartDate: tradeSearchStore.orderStartDate,
+        orderEndDate: tradeSearchStore.orderEndDate,
+        nextKey: 0,
+      };
+      const response = await tradeService.getTradeOrderList(queryParams);
+      orderSummaryData.value = response.data.orderSummary;
+      orderDetailData.value = response.data.orderDetail;
+    } else if (modelValue.value === 'clear') {
+      //TODO: 청산손익 조회
+    } else if (modelValue.value === 'history') {
+      //TODO: 결제내역 조회
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 </script>
+
+<style scoped>
+/* BaseTabs의 TabPanel content padding을 0px로 오버라이드 */
+:deep([role='tabpanel']) {
+  padding: 0px !important;
+}
+</style>

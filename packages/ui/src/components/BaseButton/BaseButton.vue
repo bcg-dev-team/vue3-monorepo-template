@@ -352,6 +352,7 @@ const getSkeletonHeight = () => {
       :name="props.centerIcon.name"
       :size="getIconSize(props.size)"
       :color="getIconColor(props.centerIcon, props.color)"
+      class="icon"
     />
 
     <!-- 텍스트 영역 (중앙 아이콘이 없을 때만) -->

@@ -4,7 +4,7 @@
  */
 
 import type { OrderData } from '../types/chart.js';
-import { SYMBOL_LIST } from './symbols.js';
+import { ALL_SYMBOLS } from '@template/types';
 
 /**
  * 랜덤 주문 데이터 생성
@@ -14,31 +14,36 @@ import { SYMBOL_LIST } from './symbols.js';
 export function generateOrderData(count: number = 10000): OrderData[] {
   const orders: OrderData[] = [];
   const orderTypes: Array<'Buy' | 'Sell'> = ['Buy', 'Sell'];
-  const orderStatuses: Array<'Open' | 'Closed' | 'Pending' | 'Cancelled'> = ['Open', 'Closed', 'Pending', 'Cancelled'];
-  
+  const orderStatuses: Array<'Open' | 'Closed' | 'Pending' | 'Cancelled'> = [
+    'Open',
+    'Closed',
+    'Pending',
+    'Cancelled',
+  ];
+
   // 상태별 가중치 (현실적인 분포)
   const statusWeights = {
-    'Open': 0.15,      // 15%
-    'Closed': 0.70,    // 70%
-    'Pending': 0.10,   // 10%
-    'Cancelled': 0.05  // 5%
+    Open: 0.15, // 15%
+    Closed: 0.7, // 70%
+    Pending: 0.1, // 10%
+    Cancelled: 0.05, // 5%
   };
 
   const now = Date.now();
-  const oneYearAgo = now - (365 * 24 * 60 * 60 * 1000); // 1년 전
+  const oneYearAgo = now - 365 * 24 * 60 * 60 * 1000; // 1년 전
 
   for (let i = 0; i < count; i++) {
     // 랜덤 심볼 선택
-    const symbol = SYMBOL_LIST[Math.floor(Math.random() * SYMBOL_LIST.length)];
-    
+    const symbol = ALL_SYMBOLS[Math.floor(Math.random() * ALL_SYMBOLS.length)];
+
     // 랜덤 주문 타입
     const type = orderTypes[Math.floor(Math.random() * orderTypes.length)];
-    
+
     // 가중치 기반 상태 선택
     const random = Math.random();
     let cumulativeWeight = 0;
     let status: 'Open' | 'Closed' | 'Pending' | 'Cancelled' = 'Closed';
-    
+
     for (const [statusKey, weight] of Object.entries(statusWeights)) {
       cumulativeWeight += weight;
       if (random <= cumulativeWeight) {
@@ -60,7 +65,7 @@ export function generateOrderData(count: number = 10000): OrderData[] {
     }
 
     const price = basePrice * (0.8 + Math.random() * 0.4); // ±20% 변동
-    
+
     // 수량 생성 (가격에 반비례)
     const maxQuantity = Math.floor(10000 / price);
     const quantity = Math.max(0.01, Math.random() * maxQuantity);
@@ -68,7 +73,7 @@ export function generateOrderData(count: number = 10000): OrderData[] {
     // 랜덤 시간 생성 (1년 전 ~ 현재)
     const createdAt = oneYearAgo + Math.random() * (now - oneYearAgo);
     const date = new Date(createdAt);
-    
+
     // 시간 포맷팅
     const time = date.toISOString().replace('T', ' ').substring(0, 19);
 
@@ -80,7 +85,7 @@ export function generateOrderData(count: number = 10000): OrderData[] {
       quantity: Math.round(quantity * 100) / 100, // 소수점 2자리
       status,
       time,
-      createdAt: Math.floor(createdAt / 1000) // 초 단위 타임스탬프
+      createdAt: Math.floor(createdAt / 1000), // 초 단위 타임스탬프
     });
   }
 
@@ -110,9 +115,7 @@ export function getOrderData(limit: number = 100, offset: number = 0): OrderData
  * @returns 해당 심볼의 주문 데이터 배열
  */
 export function getOrderDataBySymbol(symbol: string, limit: number = 100): OrderData[] {
-  return ORDER_DATA
-    .filter(order => order.symbol === symbol)
-    .slice(0, limit);
+  return ORDER_DATA.filter((order) => order.symbol === symbol).slice(0, limit);
 }
 
 /**
@@ -123,11 +126,10 @@ export function getOrderDataBySymbol(symbol: string, limit: number = 100): Order
  */
 export function searchOrderData(query: string, limit: number = 100): OrderData[] {
   const lowerQuery = query.toLowerCase();
-  return ORDER_DATA
-    .filter(order => 
+  return ORDER_DATA.filter(
+    (order) =>
       order.symbol.toLowerCase().includes(lowerQuery) ||
       order.type.toLowerCase().includes(lowerQuery) ||
       order.status.toLowerCase().includes(lowerQuery)
-    )
-    .slice(0, limit);
+  ).slice(0, limit);
 }

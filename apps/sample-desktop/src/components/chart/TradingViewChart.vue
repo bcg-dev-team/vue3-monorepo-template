@@ -29,6 +29,7 @@ import { generateContainerId } from '@/utils/chart/ChartUtils';
 interface Props {
   symbol?: string;
   chartId?: string;
+  isDialogOpen?: boolean;
 }
 
 interface Emits {
@@ -174,7 +175,7 @@ defineExpose({
   top: 45px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1000;
+  z-index: 1;
   pointer-events: none; /* 차트 상호작용 방해 방지 */
 }
 

@@ -23,13 +23,20 @@ interface Props {
    * 알림 아이콘 표시 여부
    */
   showAlertIcon?: boolean;
+  /**
+   * 컨텐츠 여백 조정
+   */
+  contentPadding?: 'default' | 'compact' | 'none';
 }
 
 interface Emits {
   (e: 'content-click'): void;
 }
 
-defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  contentPadding: 'default',
+});
+
 defineEmits<Emits>();
 
 // 알림 아이콘 매핑
@@ -53,7 +60,7 @@ const getAlertColorClass = (variant: AlertVariant) => `alert-${variant}`;
 </script>
 
 <template>
-  <main class="modal-content">
+  <main :class="['modal-content', `modal-content--${props.contentPadding}`]">
     <!-- 알림 모달 아이콘 -->
     <div
       v-if="showAlertIcon && alertVariant"
@@ -77,3 +84,36 @@ const getAlertColorClass = (variant: AlertVariant) => `alert-${variant}`;
     </div>
   </main>
 </template>
+
+<style scoped>
+.modal-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.modal-content--compact {
+  padding: 8px;
+}
+
+.modal-content--none {
+  padding: 0;
+}
+
+.alert-icon-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.modal-description {
+  margin-bottom: 16px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.modal-default-content {
+  /* 기본 컨텐츠 스타일 */
+}
+</style>

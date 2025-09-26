@@ -383,42 +383,6 @@ export function needsFeaturesRecreation(
   currentSettings: ChartSettings,
   newSettings: ChartSettings
 ): boolean {
-  console.log('[TradingViewFeatures] 🔍 RECREATION CHECK INPUT:', {
-    currentSettings: JSON.stringify(currentSettings, null, 2),
-    newSettings: JSON.stringify(newSettings, null, 2),
-  });
-  // 범례 표시 여부 결정 - 모든 범례 항목 포함 (안전한 접근)
-  const currentShowAnyLegend =
-    currentSettings.symbols.showSymbolName ||
-    currentSettings.symbols.showChartValues ||
-    currentSettings.symbols.showBarChangeValues ||
-    (currentSettings.symbols as any).showIndicatorNames ||
-    currentSettings.symbols.showIndicatorArguments ||
-    currentSettings.symbols.showIndicatorValues;
-
-  const newShowAnyLegend =
-    newSettings.symbols.showSymbolName ||
-    newSettings.symbols.showChartValues ||
-    newSettings.symbols.showBarChangeValues ||
-    newSettings.symbols.showIndicatorNames ||
-    newSettings.symbols.showIndicatorArguments ||
-    newSettings.symbols.showIndicatorValues;
-
-  // 개별 변경사항 확인
-  const legendChange = currentShowAnyLegend !== newShowAnyLegend;
-  const symbolNameChange =
-    currentSettings.symbols.showSymbolName !== newSettings.symbols.showSymbolName;
-  const chartValuesChange =
-    currentSettings.symbols.showChartValues !== newSettings.symbols.showChartValues;
-  const barChangeValuesChange =
-    currentSettings.symbols.showBarChangeValues !== newSettings.symbols.showBarChangeValues;
-  const indicatorNamesChange =
-    (currentSettings.symbols as any).showIndicatorNames !== newSettings.symbols.showIndicatorNames;
-  const indicatorArgumentsChange =
-    currentSettings.symbols.showIndicatorArguments !== newSettings.symbols.showIndicatorArguments;
-  const indicatorValuesChange =
-    currentSettings.symbols.showIndicatorValues !== newSettings.symbols.showIndicatorValues;
-
   // 축 및 눈금선 변경사항 확인 (안전한 접근)
   const gridLinesChange =
     currentSettings.scales?.showGridLines !== newSettings.scales.showGridLines;
@@ -429,73 +393,25 @@ export function needsFeaturesRecreation(
   const priceLabelsChange =
     currentSettings.scales?.showPriceLabels !== newSettings.scales.showPriceLabels;
 
-  console.log('[TradingViewFeatures] 🔍 SCALES DEBUG:', {
-    currentScales: currentSettings.scales,
-    newScales: newSettings.scales,
-    crosshairChange: crosshairChange,
-    currentCrosshair: currentSettings.scales?.showCrosshair,
-    newCrosshair: newSettings.scales.showCrosshair,
-  });
-
   // 트레이딩 변경사항 확인
   const tradingButtonsChange =
     currentSettings.trading.showBuySellButtons !== newSettings.trading.showBuySellButtons;
   const tradingOrdersChange = currentSettings.trading.showOrders !== newSettings.trading.showOrders;
 
-  // Features 변경이 필요한 설정들 확인 - 모든 UI 변경사항 포함
-  // 십자선 변경은 특히 강제로 재생성 (TradingView API 제한으로 인해)
+  // 차트 재생성이 꼭 필요한 경우만 확인
+  // 대부분의 UI 설정은 overrides로 적용 가능
   const needsRecreation =
-    legendChange ||
-    symbolNameChange ||
-    chartValuesChange ||
-    barChangeValuesChange ||
-    indicatorNamesChange ||
-    indicatorArgumentsChange ||
-    indicatorValuesChange ||
-    gridLinesChange ||
-    gridLineModeChange ||
-    crosshairChange ||
-    priceLabelsChange ||
-    tradingButtonsChange ||
-    tradingOrdersChange;
+    gridLineModeChange || // 격자선 모드 변경 (API 제한)
+    tradingOrdersChange; // 주문 표시 변경 (테마 변경 필요)
 
-  console.log('[TradingViewFeatures] Recreation check details:', {
-    currentShowAnyLegend,
-    newShowAnyLegend,
-    legendChange,
-    symbolNameChange,
-    chartValuesChange,
-    barChangeValuesChange,
-    indicatorNamesChange,
-    indicatorArgumentsChange,
-    indicatorValuesChange,
-    gridLinesChange,
+  // 재생성 필요성 변경사항만 로깅
+  console.log('[TradingViewFeatures] 🔍 RECREATION CHECK:', {
     gridLineModeChange,
-    crosshairChange,
-    priceLabelsChange,
-    tradingButtonsChange,
     tradingOrdersChange,
     needsRecreation,
-    '🔍 CROSSHAIR DEBUG': {
-      currentCrosshair: currentSettings.scales.showCrosshair,
-      newCrosshair: newSettings.scales.showCrosshair,
-      crosshairChange: crosshairChange,
-    },
-    currentSettings: {
-      showSymbolName: currentSettings.symbols.showSymbolName,
-      showChartValues: currentSettings.symbols.showChartValues,
-      showBarChangeValues: currentSettings.symbols.showBarChangeValues,
-      showIndicatorValues: currentSettings.symbols.showIndicatorValues,
-      showIndicatorArguments: currentSettings.symbols.showIndicatorArguments,
-    },
-    newSettings: {
-      showSymbolName: newSettings.symbols.showSymbolName,
-      showChartValues: newSettings.symbols.showChartValues,
-      showBarChangeValues: newSettings.symbols.showBarChangeValues,
-      showIndicatorValues: newSettings.symbols.showIndicatorValues,
-      showIndicatorArguments: newSettings.symbols.showIndicatorArguments,
-    },
   });
+
+  // 불필요한 상세 로그는 제거하고 핵심 로직만 유지
 
   return needsRecreation;
 }

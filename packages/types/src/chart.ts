@@ -1,0 +1,322 @@
+/**
+ * 차트 관련 타입 정의
+ * @fileoverview 차트 레이아웃, 설정, 데이터 타입 및 상수 정의
+ */
+
+import type { TradingSymbol } from './market/symbol';
+
+/**
+ * 차트 레이아웃 타입
+ */
+export type ChartLayout = '1x1' | '2x2' | '3x3' | '4x4';
+
+/**
+ * 차트 데이터 타입
+ */
+export interface ChartData {
+  id: string;
+  symbol: TradingSymbol;
+  timeframe: string;
+  isSelected: boolean;
+  syncColor?: string;
+  position: { row: number; col: number };
+}
+
+/**
+ * 차트 설정 타입 정의
+ */
+export interface ChartSettings {
+  // === 기본 탭 ===
+  basic: {
+    // 테마 (redBlue: 빨강/파랑, greenRed: 녹색/빨강)
+    theme: 'redBlue' | 'greenRed';
+    // 가격 정밀도
+    precision: string;
+    // 타임존 (UTC +09:00) 서울(KST)
+    timezone: string;
+    // 시간 형식 (24시간)
+    locale?: string;
+  };
+  // === 심볼 및 지표 탭 ===
+  symbols: {
+    // 종목명 (차트 상단에 심볼명 표시)
+    showSymbolName: boolean;
+    // 차트 값 (현재 가격 정보 표시)
+    showChartValues: boolean;
+    // 봉 변화값 (가격 변동 정보 표시)
+    showBarChangeValues: boolean;
+    // 지표 값 (지표 이름 표시)
+    showIndicatorNames: boolean;
+    // 지표 매개변수 (지표 설정값 표시)
+    showIndicatorArguments: boolean;
+    // 지표 값 (지표 계산값 표시)
+    showIndicatorValues: boolean;
+  };
+  // === 축 및 눈금선 탭 ===
+  scales: {
+    // 종목 가격 (우측 가격 축 표시)
+    showPriceLabels: boolean;
+    // 격자선 (차트 격자선 표시/숨김)
+    showGridLines: boolean;
+    // 격자선 모드 (수직/수평)
+    gridLineMode: 'both' | 'vertical' | 'horizontal';
+    // 수직 격자선 색상
+    verticalGridColor: string;
+    // 수평 격자선 색상
+    horizontalGridColor: string;
+    // 십자선 (마우스 커서 십자선 표시)
+    showCrosshair: boolean;
+    // 십자선 색상
+    crosshairColor: string;
+  };
+  // === 트레이딩 탭 ===
+  trading: {
+    // 매수/매도 버튼 (차트 위 거래 버튼 표시)
+    showBuySellButtons: boolean;
+    // 즉시 주문 실행 (원클릭 거래 활성화)
+    instantOrderExecution: boolean;
+    // 주문 (차트에 주문 정보 표시)
+    showOrders: boolean;
+  };
+}
+
+/**
+ * 차트 초기화 설정
+ */
+export interface ChartConfig {
+  // 심볼 (거래 종목명, 예: EURUSD, BTCUSD)
+  symbol: string;
+  // 시간 간격 (1분, 5분, 1시간 등)
+  interval: string;
+  // 컨테이너 ID (TradingView 위젯이 렌더링될 DOM 요소 ID)
+  container: string;
+  // 차트 너비 (픽셀 또는 퍼센트)
+  width?: number | string;
+  // 차트 높이 (픽셀 또는 퍼센트)
+  height?: number | string;
+  // 언어 설정 (ko, en 등)
+  locale?: string;
+  // 디버그 모드 (개발 시 TradingView 디버그 정보 표시)
+  debug?: boolean;
+  // 차트 설정 (테마, 정밀도, 타임존 등)
+  settings?: ChartSettings;
+}
+
+/**
+ * 차트 심볼 정보
+ */
+export interface ChartSymbolInfo {
+  // 심볼 (거래 종목명)
+  symbol: string;
+  // 시간 간격 (차트 시간대)
+  interval: string;
+  // 마지막 업데이트 시간 (타임스탬프)
+  lastUpdate: number;
+}
+
+/**
+ * 차트 시간대 옵션
+ */
+export const CHART_TIMEFRAMES = [
+  { value: '1m', label: '1m' },
+  { value: '5m', label: '5m' },
+  { value: '15m', label: '15m' },
+  { value: '30m', label: '30m' },
+  { value: '1h', label: '1h' },
+  { value: '4h', label: '4h' },
+  { value: '1d', label: '1D' },
+  { value: '1w', label: '1W' },
+  { value: '1M', label: '1M' },
+] as const;
+
+/**
+ * 차트 레이아웃 옵션 타입 (UI 특화 타입은 제거하고 기본적으로 정의)
+ */
+export interface ChartLayoutOption {
+  value: ChartLayout;
+  label?: string;
+}
+
+/**
+ * 동기화 색상 옵션
+ */
+export const SYNC_COLORS = [
+  { value: '--base-colors-blue-blue800-deep', label: 'A' },
+  { value: '--base-colors-green-green700', label: 'B' },
+  { value: '--base-colors-purple-purple600', label: 'C' },
+  { value: '--base-colors-primary-primary900', label: 'D' },
+  { value: '--base-colors-neutral-neutral600', label: 'E' },
+  { value: '--base-colors-red-red700', label: 'F' },
+] as const;
+
+/**
+ * 기본 외환 심볼 데이터
+ */
+export const DEFAULT_FOREX_SYMBOLS = [
+  {
+    symbol: 'EURUSD',
+    ticker: 'EURUSD',
+    description: 'EUR/USD',
+    exchange: 'FOREX',
+    type: 'forex' as const,
+  },
+  {
+    symbol: 'GBPUSD',
+    ticker: 'GBPUSD',
+    description: 'GBP/USD',
+    exchange: 'FOREX',
+    type: 'forex' as const,
+  },
+  {
+    symbol: 'USDJPY',
+    ticker: 'USDJPY',
+    description: 'USD/JPY',
+    exchange: 'FOREX',
+    type: 'forex' as const,
+  },
+  {
+    symbol: 'AUDUSD',
+    ticker: 'AUDUSD',
+    description: 'AUD/USD',
+    exchange: 'FOREX',
+    type: 'forex' as const,
+  },
+  {
+    symbol: 'USDCAD',
+    ticker: 'USDCAD',
+    description: 'USD/CAD',
+    exchange: 'FOREX',
+    type: 'forex' as const,
+  },
+  {
+    symbol: 'NZDUSD',
+    ticker: 'NZDUSD',
+    description: 'NZD/USD',
+    exchange: 'FOREX',
+    type: 'forex' as const,
+  },
+  {
+    symbol: 'EURGBP',
+    ticker: 'EURGBP',
+    description: 'EUR/GBP',
+    exchange: 'FOREX',
+    type: 'forex' as const,
+  },
+  {
+    symbol: 'EURJPY',
+    ticker: 'EURJPY',
+    description: 'EUR/JPY',
+    exchange: 'FOREX',
+    type: 'forex' as const,
+  },
+  {
+    symbol: 'GBPJPY',
+    ticker: 'GBPJPY',
+    description: 'GBP/JPY',
+    exchange: 'FOREX',
+    type: 'forex' as const,
+  },
+  {
+    symbol: 'AUDJPY',
+    ticker: 'AUDJPY',
+    description: 'AUD/JPY',
+    exchange: 'FOREX',
+    type: 'forex' as const,
+  },
+  {
+    symbol: 'CADJPY',
+    ticker: 'CADJPY',
+    description: 'CAD/JPY',
+    exchange: 'FOREX',
+    type: 'forex' as const,
+  },
+  {
+    symbol: 'NZDJPY',
+    ticker: 'NZDJPY',
+    description: 'NZD/JPY',
+    exchange: 'FOREX',
+    type: 'forex' as const,
+  },
+  {
+    symbol: 'EURCHF',
+    ticker: 'EURCHF',
+    description: 'EUR/CHF',
+    exchange: 'FOREX',
+    type: 'forex' as const,
+  },
+  {
+    symbol: 'GBPCHF',
+    ticker: 'GBPCHF',
+    description: 'GBP/CHF',
+    exchange: 'FOREX',
+    type: 'forex' as const,
+  },
+  {
+    symbol: 'AUDCHF',
+    ticker: 'AUDCHF',
+    description: 'AUD/CHF',
+    exchange: 'FOREX',
+    type: 'forex' as const,
+  },
+  {
+    symbol: 'NZDCHF',
+    ticker: 'NZDCHF',
+    description: 'NZD/CHF',
+    exchange: 'FOREX',
+    type: 'forex' as const,
+  },
+] as const;
+
+/**
+ * 차트 컴포넌트 공통 이벤트 타입
+ */
+export interface ChartComponentEmits {
+  (e: 'chart-select', chartId: string): void;
+  (e: 'chart-close', chartId: string): void;
+  (e: 'chart-sync', chartId: string, syncColor: string): void;
+  (e: 'chart-symbol-change', chartId: string, symbol: any): void;
+  (e: 'chart-timeframe-change', chartId: string, timeframe: string): void;
+}
+
+/**
+ * 차트 윈도우 Props 타입
+ */
+export interface ChartWindowProps {
+  chart: ChartData;
+  isSelected: boolean;
+}
+
+/**
+ * 차트 그리드 Props 타입
+ */
+export interface ChartGridProps {
+  charts: ChartData[];
+  selectedChart: string | null;
+  layout: ChartLayout;
+}
+
+/**
+ * 차트 글로벌 설정 Props 타입
+ */
+export interface ChartGlobalSettingsProps {
+  selectedChart?: string | null;
+  selectedChartData?: ChartData | null;
+  currentLayout?: ChartLayout;
+}
+
+/**
+ * 차트 글로벌 설정 이벤트 타입
+ */
+export interface ChartGlobalSettingsEmits {
+  (e: 'timeframe-change', timeframe: string): void;
+  (e: 'indicator-change', indicator: string): void;
+  (e: 'layout-change', layout: ChartLayout): void;
+  (e: 'chart-manage'): void;
+  (e: 'chart-eye'): void;
+  (e: 'chart-setup'): void;
+  (e: 'chart-settings'): void;
+  (e: 'workspace-save'): void;
+  (e: 'workspace-change', workspace: any): void;
+  (e: 'workspace-save', workspace: any): void;
+  (e: 'workspace-delete', workspaceId: string): void;
+}

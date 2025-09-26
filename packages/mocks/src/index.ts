@@ -9,7 +9,6 @@ export { MockWebSocket, mockWebSocketManager } from './handlers/chart/MockWebSoc
 export { handlers } from './handlers/index.js';
 
 // 데이터 export
-export * from './data/symbols.js';
 export * from './data/orders.js';
 
 // 유틸리티 함수 export

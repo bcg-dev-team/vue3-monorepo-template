@@ -18,9 +18,7 @@ export function generateUniqueId(prefix: string = ''): string {
  * @returns TradingView 컨테이너 ID
  */
 export function generateContainerId(chartId?: string): string {
-  return chartId 
-    ? `tv_chart_container_${chartId}`
-    : `tv_chart_container_${generateUniqueId()}`;
+  return chartId ? `tv_chart_container_${chartId}` : `tv_chart_container_${generateUniqueId()}`;
 }
 
 /**

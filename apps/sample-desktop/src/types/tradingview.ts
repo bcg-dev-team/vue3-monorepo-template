@@ -82,9 +82,11 @@ export interface TradingViewWidgetConfig {
   user_id?: string;
   overrides?: Record<string, any>;
   studies_overrides?: Record<string, any>;
-  theme?: 'light' | 'dark';
+  // theme 제거됨 - settings.basic.theme으로 캔들 색상 제어
   custom_css_url?: string;
   loading_screen?: { backgroundColor: string };
+  timezone?: string; // 타임존 설정
+  time_frames?: any[]; // 시간대 설정
 }
 
 // TradingView 위젯 인스턴스

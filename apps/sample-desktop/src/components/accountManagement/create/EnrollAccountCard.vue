@@ -74,7 +74,7 @@
                     state.accountPassword !== state.accountPasswordCheck
                   "
                   fullWidth
-                  @click="handleCreateAccount"
+                  @click="isOpen = true"
                 />
                 <BaseButton
                   variant="outlined"
@@ -91,13 +91,27 @@
       </div>
     </template>
   </MainCardContent>
+  <BaseModal
+    closeOnEscape
+    closeOnOverlayClick
+    fullWidth
+    v-model:isOpen="isOpen"
+    :showBackButton="false"
+    showCloseButton
+    size="md"
+    variant="default"
+    @confirm="handleCreateAccount"
+  >
+    <template #title>계좌 개설</template>
+    <div class="text-font-16 flex justify-center font-medium">이대로 계좌를 개설하시겠어요?</div>
+  </BaseModal>
 </template>
 <script setup lang="ts">
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import LabelContent from '@/components/common/LabelContent.vue';
-import { BaseButton, BaseInput } from '@template/ui';
+import { BaseButton, BaseInput, BaseModal } from '@template/ui';
 import { accountService } from '@/service/api';
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 
 const state = reactive({
   accountAlias: '',
@@ -108,6 +122,7 @@ const emit = defineEmits<{
   (e: 'createAccount'): void;
   (e: 'cancel'): void;
 }>();
+const isOpen = ref(false);
 
 const handleCreateAccount = async () => {
   const requestData = {

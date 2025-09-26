@@ -29,8 +29,106 @@
                   reLongExecutionQuantity: 300,
                   reLongExecutionPrice: 405000,
                 },
+                {
+                  tradeCurrencyCd: 'USD',
+                  longExecutionQuantity: 1000,
+                  longExecutionPrice: 1350000,
+                  reShortExecutionQuantity: 500,
+                  reShortExecutionPrice: 675000,
+                  shortExecutionQuantity: 800,
+                  shortExecutionPrice: 1080000,
+                  reLongExecutionQuantity: 300,
+                  reLongExecutionPrice: 405000,
+                },
+                {
+                  tradeCurrencyCd: 'USD',
+                  longExecutionQuantity: 1000,
+                  longExecutionPrice: 1350000,
+                  reShortExecutionQuantity: 500,
+                  reShortExecutionPrice: 675000,
+                  shortExecutionQuantity: 800,
+                  shortExecutionPrice: 1080000,
+                  reLongExecutionQuantity: 300,
+                  reLongExecutionPrice: 405000,
+                },
+                {
+                  tradeCurrencyCd: 'USD',
+                  longExecutionQuantity: 1000,
+                  longExecutionPrice: 1350000,
+                  reShortExecutionQuantity: 500,
+                  reShortExecutionPrice: 675000,
+                  shortExecutionQuantity: 800,
+                  shortExecutionPrice: 1080000,
+                  reLongExecutionQuantity: 300,
+                  reLongExecutionPrice: 405000,
+                },
+                {
+                  tradeCurrencyCd: 'USD',
+                  longExecutionQuantity: 1000,
+                  longExecutionPrice: 1350000,
+                  reShortExecutionQuantity: 500,
+                  reShortExecutionPrice: 675000,
+                  shortExecutionQuantity: 800,
+                  shortExecutionPrice: 1080000,
+                  reLongExecutionQuantity: 300,
+                  reLongExecutionPrice: 405000,
+                },
+                {
+                  tradeCurrencyCd: 'USD',
+                  longExecutionQuantity: 1000,
+                  longExecutionPrice: 1350000,
+                  reShortExecutionQuantity: 500,
+                  reShortExecutionPrice: 675000,
+                  shortExecutionQuantity: 800,
+                  shortExecutionPrice: 1080000,
+                  reLongExecutionQuantity: 300,
+                  reLongExecutionPrice: 405000,
+                },
+                {
+                  tradeCurrencyCd: 'USD',
+                  longExecutionQuantity: 1000,
+                  longExecutionPrice: 1350000,
+                  reShortExecutionQuantity: 500,
+                  reShortExecutionPrice: 675000,
+                  shortExecutionQuantity: 800,
+                  shortExecutionPrice: 1080000,
+                  reLongExecutionQuantity: 300,
+                  reLongExecutionPrice: 405000,
+                },
+                {
+                  tradeCurrencyCd: 'USD',
+                  longExecutionQuantity: 1000,
+                  longExecutionPrice: 1350000,
+                  reShortExecutionQuantity: 500,
+                  reShortExecutionPrice: 675000,
+                  shortExecutionQuantity: 800,
+                  shortExecutionPrice: 1080000,
+                  reLongExecutionQuantity: 300,
+                  reLongExecutionPrice: 405000,
+                },
+                {
+                  tradeCurrencyCd: 'USD',
+                  longExecutionQuantity: 1000,
+                  longExecutionPrice: 1350000,
+                  reShortExecutionQuantity: 500,
+                  reShortExecutionPrice: 675000,
+                  shortExecutionQuantity: 800,
+                  shortExecutionPrice: 1080000,
+                  reLongExecutionQuantity: 300,
+                  reLongExecutionPrice: 405000,
+                },
+                {
+                  tradeCurrencyCd: 'USD',
+                  longExecutionQuantity: 1000,
+                  longExecutionPrice: 1350000,
+                  reShortExecutionQuantity: 500,
+                  reShortExecutionPrice: 675000,
+                  shortExecutionQuantity: 800,
+                  shortExecutionPrice: 1080000,
+                  reLongExecutionQuantity: 300,
+                  reLongExecutionPrice: 405000,
+                },
               ]"
-              :height="200"
               :sortable="false"
               :filterable="false"
               :pagination="false"
@@ -55,7 +153,6 @@
                 <BaseDataGrid
                   :column-defs="detailColumnDefs"
                   :row-data="[]"
-                  :height="200"
                   :sortable="false"
                   :filterable="false"
                   :pagination="false"
@@ -63,20 +160,16 @@
 
                 <!-- 스크롤 컨트롤 버튼들 (주문일자 뒤에 위치) -->
                 <div class="scroll-controls">
-                  <button
-                    class="scroll-btn left"
+                  <GridWidthButton
+                    :hidden="!canScrollLeft"
+                    direction="left"
                     @click="scrollTable('left')"
-                    :disabled="!canScrollLeft"
-                  >
-                    &lt;
-                  </button>
-                  <button
-                    class="scroll-btn right"
+                  />
+                  <GridWidthButton
+                    :hidden="!canScrollRight"
+                    direction="right"
                     @click="scrollTable('right')"
-                    :disabled="!canScrollRight"
-                  >
-                    &gt;
-                  </button>
+                  />
                 </div>
               </div>
             </div>
@@ -87,9 +180,10 @@
   </div>
 </template>
 <script setup lang="ts">
-import { BaseDataGrid, type TableHeader, type TableRow } from '@template/ui';
+import GridWidthButton from '@/components/transaction/common/GridWidthButton.vue';
 import { OrderDetail, OrderSummary } from '@/types/api/trade.types';
 import LabelContent from '@/components/common/LabelContent.vue';
+import { BaseDataGrid, BaseIcon } from '@template/ui';
 import type { ColDef } from 'ag-grid-community';
 import { computed, ref } from 'vue';
 
@@ -403,6 +497,11 @@ const summaryColumnDefs = computed((): ColDef[] => [
     color: var(--font-color-default) !important;
     background-color: var(--background-bg-default) !important;
   }
+
+  /* No Rows Overlay 텍스트 색상 */
+  :deep(.ag-overlay-no-rows-center) {
+    color: var(--font-color-default) !important;
+  }
 }
 
 .default-table {
@@ -416,47 +515,29 @@ const summaryColumnDefs = computed((): ColDef[] => [
     left: 0;
     right: 0;
     height: 32px;
-    display: flex;
-    justify-content: space-between;
     pointer-events: none;
     z-index: 10;
 
-    .scroll-btn {
-      width: 30px;
-      height: 32px;
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px solid #ddd;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 14px;
+    /* GridWidthButton 위치 조정 */
+    :deep(.w-size-20) {
       pointer-events: auto;
-      transition: background-color 0.2s;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
 
-      &:hover:not(:disabled) {
-        background: rgba(0, 0, 0, 0.1);
+      &:first-child {
+        left: 105px; /* 주문일자 컬럼 너비만큼 오른쪽으로 이동 */
       }
 
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
-
-      &.left {
-        border-top-left-radius: 4px;
-        margin-left: 120px; /* 주문일자 컬럼 너비만큼 오른쪽으로 이동 */
-      }
-
-      &.right {
-        border-top-right-radius: 4px;
+      &:last-child {
+        right: 8px; /* 오른쪽 여백 */
       }
     }
   }
 
-  .table-wrapper {
-    /* 스크롤 제거 - 컬럼 가시성으로 제어 */
+  /* No Rows Overlay 텍스트 색상 */
+  :deep(.ag-overlay-no-rows-center) {
+    color: var(--font-color-default) !important;
   }
 }
 </style>

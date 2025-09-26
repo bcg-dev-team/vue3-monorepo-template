@@ -118,6 +118,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* TODO: Figma 와 비교후 Storybook 수정 필요시 Storybook 수정 후 override style 제거 */
 /* BaseInputCalendar 컴포넌트 스타일 오버라이드 */
 :deep(.el-date-editor.el-input.input-date) {
   .el-input__wrapper {

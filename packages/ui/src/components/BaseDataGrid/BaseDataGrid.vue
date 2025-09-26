@@ -259,4 +259,21 @@ defineExpose({
   width: 100%;
   position: relative;
 }
+
+/* AG-Grid domLayout: 'normal' 모드에서 높이 문제 해결 */
+.grid-container :deep(.ag-root-wrapper) {
+  height: 100% !important;
+}
+
+.grid-container :deep(.ag-layout-normal) {
+  height: 100% !important;
+}
+
+.grid-container :deep(.ag-viewport) {
+  min-height: 100px !important;
+}
+
+.grid-container :deep(.ag-center-cols-viewport) {
+  min-height: 100px !important;
+}
 </style>

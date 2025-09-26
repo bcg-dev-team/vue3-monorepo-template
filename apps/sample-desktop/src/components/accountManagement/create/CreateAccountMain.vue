@@ -262,15 +262,6 @@ const onDragEnd = async () => {
       };
     }
   });
-
-  console.log(
-    '활성화된 계좌 순서가 변경되었습니다:',
-    activeAccounts.value.map((acc) => ({
-      accountAlias: acc.accountAlias,
-      visibleSequence: acc.visibleSequence,
-    }))
-  );
-  console.log('현재 accountList.value', accountList.value);
 };
 
 const getAccountInfo = async () => {
@@ -283,8 +274,6 @@ const getAccountInfo = async () => {
 };
 
 const updateAccountActive = async (isActive: boolean) => {
-  console.log('계좌 활성화 상태 변경:', isActive ? 'Y' : 'N');
-
   if (selectedAccount.value) {
     selectedAccount.value.visible = isActive ? 'Y' : 'N';
 
@@ -294,20 +283,15 @@ const updateAccountActive = async (isActive: boolean) => {
 
     if (accountIndex !== -1) {
       accountList.value[accountIndex].visible = isActive ? 'Y' : 'N';
-      console.log('accountList 업데이트 완료:', accountList.value[accountIndex]);
-
-      // activeAccounts 즉시 업데이트
       updateActiveAccounts();
     }
 
     // 계좌 정보 변경 요청(활성화 상태)
-    // updateAccountInfo();
+    updateAccountInfo();
   }
 };
 
 const updateAccountName = (newAlias: string) => {
-  console.log('계좌 별명 변경:', newAlias);
-
   if (selectedAccount.value) {
     selectedAccount.value.accountAlias = newAlias;
 
@@ -317,27 +301,35 @@ const updateAccountName = (newAlias: string) => {
 
     if (accountIndex !== -1) {
       accountList.value[accountIndex].accountAlias = newAlias;
-      console.log('accountList 업데이트 완료:', accountList.value[accountIndex]);
     }
     // 계좌 정보 변경 요청(별칭)
-    // updateAccountInfo();
+    updateAccountInfo();
   }
 };
 
 // 계좌 정보 변경 요청(별칭, 활성화 상태, 계좌 순서)
 const updateAccountInfo = async () => {
   try {
-    const updateInfos = activeAccounts.value.map((account) => ({
+    // 활성화된 계좌들
+    const activeUpdateInfos = activeAccounts.value.map((account) => ({
       accountNo: account.accountNo,
       accountAlias: account.accountAlias,
       visible: account.visible,
     }));
 
-    // await accountService.updateAccountInfo(updateInfos);
-    console.log('계좌 순서가 성공적으로 저장되었습니다.');
+    // 비활성화된 계좌들
+    const disabledUpdateInfos = disabledAccounts.value.map((account) => ({
+      accountNo: account.accountNo,
+      accountAlias: account.accountAlias,
+      visible: account.visible,
+    }));
+
+    // 모든 계좌 정보를 합쳐서 전송
+    const updateInfos = [...activeUpdateInfos, ...disabledUpdateInfos];
+
+    await accountService.updateAccountInfo(updateInfos);
   } catch (error) {
     console.error('계좌 순서 저장 실패:', error);
-    // TODO: 사용자에게 에러 메시지 표시
   }
 };
 

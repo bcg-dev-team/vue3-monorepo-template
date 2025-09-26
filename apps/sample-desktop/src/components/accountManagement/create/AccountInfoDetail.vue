@@ -133,7 +133,7 @@
                   label="계좌정보 변경하기"
                   fullWidth
                   :disabled="checkDisabled"
-                  @click="updateAccountInfo"
+                  @click="isOpen = true"
                 />
                 <BaseButton
                   variant="outlined"
@@ -153,15 +153,30 @@
       </div>
     </template>
   </MainCardContent>
+  <BaseModal
+    closeOnEscape
+    closeOnOverlayClick
+    fullWidth
+    v-model:isOpen="isOpen"
+    :showBackButton="false"
+    showCloseButton
+    size="md"
+    variant="default"
+    @confirm="updateAccountInfo"
+  >
+    <template #title>정보 변경</template>
+    <div class="text-font-16 flex justify-center font-medium">계좌정보를 변경하시겠어요?</div>
+  </BaseModal>
 </template>
 <script setup lang="ts">
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
-import { BaseButton, BaseInput, BaseSwitch } from '@template/ui';
+import { BaseButton, BaseInput, BaseSwitch, BaseModal } from '@template/ui';
 import LabelContent from '@/components/common/LabelContent.vue';
 import { accountService } from '@/service/api';
 import { computed, reactive, ref } from 'vue';
 import { AccountInfo } from '@template/api';
 
+const isOpen = ref(false);
 const props = defineProps<{
   account: AccountInfo;
 }>();

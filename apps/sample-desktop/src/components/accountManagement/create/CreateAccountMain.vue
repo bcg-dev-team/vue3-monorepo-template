@@ -163,54 +163,54 @@ import draggable from 'vuedraggable';
 const userStore = useUserStore();
 
 const accountList = ref<AccountInfo[]>([
-  {
-    accountNo: '110-81-345150',
-    accountSequence: '1',
-    accountGrade: '1',
-    accountAlias: '전략99',
-    visible: 'Y',
-    visibleSequence: '1',
-  },
-  {
-    accountNo: '110-81-345151',
-    accountSequence: '2',
-    accountGrade: '2',
-    accountAlias: '전략88',
-    visible: 'Y',
-    visibleSequence: '2',
-  },
-  {
-    accountNo: '110-81-345152',
-    accountSequence: '3',
-    accountGrade: '3',
-    accountAlias: '전략77',
-    visible: 'Y',
-    visibleSequence: '3',
-  },
-  {
-    accountNo: '110-81-345153',
-    accountSequence: '4',
-    accountGrade: '4',
-    accountAlias: '전략66',
-    visible: 'Y',
-    visibleSequence: '4',
-  },
-  {
-    accountNo: '110-81-151533',
-    accountSequence: '5',
-    accountGrade: '4',
-    accountAlias: '전략55',
-    visible: 'N',
-    visibleSequence: '5',
-  },
-  {
-    accountNo: '110-81-151534',
-    accountSequence: '6',
-    accountGrade: '5',
-    accountAlias: '전략4',
-    visible: 'N',
-    visibleSequence: '6',
-  },
+  // {
+  //   accountNo: '110-81-345150',
+  //   accountSequence: '1',
+  //   accountGrade: '1',
+  //   accountAlias: '전략99',
+  //   visible: 'Y',
+  //   visibleSequence: '1',
+  // },
+  // {
+  //   accountNo: '110-81-345151',
+  //   accountSequence: '2',
+  //   accountGrade: '2',
+  //   accountAlias: '전략88',
+  //   visible: 'Y',
+  //   visibleSequence: '2',
+  // },
+  // {
+  //   accountNo: '110-81-345152',
+  //   accountSequence: '3',
+  //   accountGrade: '3',
+  //   accountAlias: '전략77',
+  //   visible: 'Y',
+  //   visibleSequence: '3',
+  // },
+  // {
+  //   accountNo: '110-81-345153',
+  //   accountSequence: '4',
+  //   accountGrade: '4',
+  //   accountAlias: '전략66',
+  //   visible: 'Y',
+  //   visibleSequence: '4',
+  // },
+  // {
+  //   accountNo: '110-81-151533',
+  //   accountSequence: '5',
+  //   accountGrade: '4',
+  //   accountAlias: '전략55',
+  //   visible: 'N',
+  //   visibleSequence: '5',
+  // },
+  // {
+  //   accountNo: '110-81-151534',
+  //   accountSequence: '6',
+  //   accountGrade: '5',
+  //   accountAlias: '전략4',
+  //   visible: 'N',
+  //   visibleSequence: '6',
+  // },
 ]);
 
 const selectedAccount = ref<AccountInfo | null>(null);
@@ -243,6 +243,8 @@ const updateActiveAccounts = () => {
   activeAccounts.value = accountList.value
     .filter((account) => account.visible === 'Y')
     .sort((a, b) => parseInt(a.visibleSequence) - parseInt(b.visibleSequence));
+
+  console.log('activeAccounts.value', activeAccounts.value);
 };
 
 /**
@@ -267,7 +269,8 @@ const onDragEnd = async () => {
 const getAccountInfo = async () => {
   try {
     const res = await accountService.getAccountInfo();
-    accountList.value = res.data.data.accountList;
+    console.log(res.data.accountList);
+    accountList.value = res.data.accountList;
   } catch (error) {
     console.error('계좌 정보 조회 실패:', error);
   }
@@ -342,7 +345,7 @@ const handleAccountOrderChange = () => {
 };
 
 onMounted(() => {
-  // getAccountInfo();
+  getAccountInfo();
   updateActiveAccounts();
 });
 </script>

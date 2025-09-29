@@ -173,6 +173,7 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   'arrow-drawer': 'fill', // fill="#333740"
   'arrow-right-thin': 'stroke', // stroke="#333740"
   'arrow-updown': 'fill', // fill="#333740"
+  'arrow-updown-solid': 'fill', // fill="#333740"
   'arrow-forward-sm': 'fill', // fill="#333740"
   'arrow-backward-sm': 'fill', // fill="#333740"
 
@@ -199,6 +200,7 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   pause: 'fill', // fill="#333740"
   move: 'fill', // fill="#333740" (path만 사용)
   withdraw: 'fill', // fill="#333740" (path만 사용)
+  grap: 'fill', // fill="#333740"
 
   // 네비게이션 아이콘
   home: 'fill', // fill="#333740"

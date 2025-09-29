@@ -8,8 +8,6 @@ import BaseProgressBar from '../BaseProgressBar/BaseProgressBar.vue';
 import BaseIcon from '../BaseIcon/BaseIcon.vue';
 import { computed, ref, watch } from 'vue';
 
-let passwordStrengthAnalyzer: any = null;
-
 /**
  * BaseInput - 모든 Input 타입의 공통 베이스 컴포넌트
  *
@@ -198,26 +196,8 @@ const handleKeydown = (event: KeyboardEvent) => {
   }
 };
 
-/**
- * 비밀번호 강도 실시간 분석
- */
-const updatePasswordStrength = async (value: string, userInputs: string[] = []) => {
-  try {
-    if (!passwordStrengthAnalyzer) {
-      const { analyzePasswordStrength } = await import('@template/utils');
-      passwordStrengthAnalyzer = analyzePasswordStrength;
-    }
-
-    const result = await passwordStrengthAnalyzer(value, userInputs);
-    passwordStrengthResult.value = Math.max(0, Math.min(4, result.score)) as 0 | 1 | 2 | 3 | 4;
-  } catch (error) {
-    console.warn('Password strength analysis failed:', error);
-    passwordStrengthResult.value = 0;
-  }
-};
-
 // Input 입력 이벤트 핸들러
-const handleInput = (event: Event) => {
+const handleInput = async (event: Event) => {
   const target = event.target as HTMLInputElement;
   let value = target.value;
 

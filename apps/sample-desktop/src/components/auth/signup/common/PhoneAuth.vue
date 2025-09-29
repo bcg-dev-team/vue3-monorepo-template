@@ -41,10 +41,19 @@ const router = useRouter();
 const status = ref<boolean>(false);
 const signupStore = useSignupStore();
 
+const generatePhoneNumber = (): string => {
+  const timestamp = Date.now().toString();
+  const lastEightDigits = timestamp.slice(-8);
+  const middlePart = lastEightDigits.slice(0, 4);
+  const lastPart = lastEightDigits.slice(4);
+
+  return `010-${middlePart}-${lastPart}`;
+};
+
 const mockUserInfo = {
   ci: Date.now().toString(),
   name: '홍길동',
-  phoneNo: '010-1234-5678',
+  phoneNo: generatePhoneNumber(),
   birth: '1990-01-01',
 };
 

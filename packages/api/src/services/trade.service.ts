@@ -8,7 +8,8 @@ import {
 } from '../types/trade.types';
 import { CustomAxiosInstance } from '../types';
 
-const BASE_URL = 'http://172.25.1.24:8080';
+// const BASE_URL = 'http://172.25.1.24:8080';
+const BASE_URL = 'http://192.168.0.123:8080';
 
 export class TradeService {
   private axios: CustomAxiosInstance;

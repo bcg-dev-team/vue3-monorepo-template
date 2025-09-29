@@ -48,7 +48,7 @@ export interface TradeOrderListData {
   hasNext: boolean;
   nextKey: number;
   summary: OrderSummary[];
-  deatils: OrderDetail[];
+  details: OrderDetail[];
 }
 
 export interface TradeOrderListResponse extends ApiSuccessResponse<TradeOrderListData> {}

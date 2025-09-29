@@ -15,11 +15,11 @@ export default defineConfig(({ mode }) => {
     plugins: [
       vue(),
       // Vue Inspector - 개발 모드에서만 활성화  
-      VueInspector({
-        toggleComboKey: 'alt',
-        enabled: mode === 'dev' || mode === 'development',
-        launchEditor: 'cursor'
-      }),
+      // VueInspector({
+      //   toggleComboKey: 'alt',
+      //   enabled: mode === 'dev' || mode === 'development',
+      //   launchEditor: 'cursor'
+      // }),
       // Bundle Analyzer - 분석 모드에서만 활성화
       ...(isAnalyze ? [
         visualizer({

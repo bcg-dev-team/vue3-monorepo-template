@@ -12,7 +12,7 @@
               size="md"
               color="primary"
               :leftIcon="{ name: 'plus', size: 'md' }"
-              label="새 계좌 등록"
+              label="새 계좌 개설"
               @click="((showEnrollAccountCard = !showEnrollAccountCard), (selectedAccount = null))"
             ></BaseButton>
           </div>
@@ -125,7 +125,7 @@
           <div class="gap-size-16 flex w-1/2 flex-col">
             <div class="w-full" v-if="showEnrollAccountCard">
               <EnrollAccountCard
-                @createAccount="showEnrollAccountCard = false"
+                @createAccount="((showEnrollAccountCard = false), getAccountInfo())"
                 @cancel="showEnrollAccountCard = false"
               />
             </div>
@@ -271,6 +271,8 @@ const getAccountInfo = async () => {
     const res = await accountService.getAccountInfo();
     console.log(res.data.accountList);
     accountList.value = res.data.accountList;
+
+    updateActiveAccounts();
   } catch (error) {
     console.error('계좌 정보 조회 실패:', error);
   }
@@ -346,7 +348,6 @@ const handleAccountOrderChange = () => {
 
 onMounted(() => {
   getAccountInfo();
-  updateActiveAccounts();
 });
 </script>
 

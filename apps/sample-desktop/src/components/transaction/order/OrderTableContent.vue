@@ -140,37 +140,28 @@
     <div>
       <LabelContent label="상세내역" size="lg">
         <template #content>
-          <!-- <BaseTable
-            :headers="detailHeaders"
-            :data="detailData"
-            :selectable="true"
-            :sortable="true"
-          /> -->
           <div class="default-table">
             <div class="table-container">
               <!-- 데이터 그리드 -->
-              <div class="table-wrapper">
-                <BaseDataGrid
-                  :column-defs="detailColumnDefs"
-                  :row-data="[]"
-                  :sortable="false"
-                  :filterable="false"
-                  :pagination="false"
+              <BaseDataGrid
+                :column-defs="detailColumnDefs"
+                :row-data="[]"
+                :sortable="false"
+                :filterable="false"
+                :pagination="false"
+              />
+              <!-- 스크롤 컨트롤 버튼들 (주문일자 뒤에 위치) -->
+              <div class="scroll-controls">
+                <GridWidthButton
+                  :hidden="!canScrollLeft"
+                  direction="left"
+                  @click="scrollTable('left')"
                 />
-
-                <!-- 스크롤 컨트롤 버튼들 (주문일자 뒤에 위치) -->
-                <div class="scroll-controls">
-                  <GridWidthButton
-                    :hidden="!canScrollLeft"
-                    direction="left"
-                    @click="scrollTable('left')"
-                  />
-                  <GridWidthButton
-                    :hidden="!canScrollRight"
-                    direction="right"
-                    @click="scrollTable('right')"
-                  />
-                </div>
+                <GridWidthButton
+                  :hidden="!canScrollRight"
+                  direction="right"
+                  @click="scrollTable('right')"
+                />
               </div>
             </div>
           </div>
@@ -183,8 +174,8 @@
 import GridWidthButton from '@/components/transaction/common/GridWidthButton.vue';
 import { OrderDetail, OrderSummary } from '@/types/api/trade.types';
 import LabelContent from '@/components/common/LabelContent.vue';
-import { BaseDataGrid, BaseIcon } from '@template/ui';
 import type { ColDef } from 'ag-grid-community';
+import { BaseDataGrid } from '@template/ui';
 import { computed, ref } from 'vue';
 
 const props = defineProps<{
@@ -198,7 +189,9 @@ const allColumns: ColDef[] = [
     headerName: '주문일자',
     field: 'orderDate',
     width: 120,
+    pinned: 'left',
     cellStyle: { textAlign: 'center' },
+    filter: false,
   },
   {
     headerName: '주문번호',
@@ -251,25 +244,21 @@ const allColumns: ColDef[] = [
   {
     headerName: '배리어가격',
     field: 'barrierPrice',
-    width: 140,
     cellStyle: { textAlign: 'right' },
   },
   {
     headerName: '주문가격',
     field: 'orderPrice',
-    width: 140,
     cellStyle: { textAlign: 'right' },
   },
   {
     headerName: '이익실현배리어가격',
     field: 'takeProfitBarrierPrice',
-    width: 140,
     cellStyle: { textAlign: 'right' },
   },
   {
     headerName: '손실제한배리어가격',
     field: 'stopLossBarrierPrice',
-    width: 140,
     cellStyle: { textAlign: 'right' },
   },
   {
@@ -281,58 +270,68 @@ const allColumns: ColDef[] = [
   {
     headerName: '체결가격',
     field: 'executionPrice',
-    width: 140,
     cellStyle: { textAlign: 'right' },
   },
   {
     headerName: '주문잔량',
     field: 'remainingQuantity',
-    width: 140,
     cellStyle: { textAlign: 'right' },
   },
   {
     headerName: '주문상태코드',
     field: 'orderStatusCode',
-    width: 140,
     cellStyle: { textAlign: 'center' },
   },
   {
     headerName: '접수일시',
     field: 'receiptDateTime',
-    width: 140,
     cellStyle: { textAlign: 'center' },
   },
   {
     headerName: '거부사유명',
     field: 'rejectionReason',
-    width: 140,
     cellStyle: { textAlign: 'center' },
   },
 ];
 
-// 시작 인덱스 (몇 번째 컬럼부터 보여줄지)
+// 시작 인덱스 (몇 번째 컬럼부터 보여줄지) - 고정 컬럼 제외
 const startIndex = ref(0);
-const visibleColumnCount = 16; // 화면에 보여줄 컬럼 수 고정
+const visibleColumnCount = 15; // 화면에 보여줄 컬럼 수 고정 (고정 컬럼 제외)
 
-// 동적으로 보여질 컬럼들 계산
+// 동적으로 보여질 컬럼들 계산 (고정 컬럼 + 스크롤 가능한 컬럼들)
 const detailColumnDefs = computed((): ColDef[] => {
-  return allColumns.slice(startIndex.value, startIndex.value + visibleColumnCount);
+  const pinnedColumns = allColumns.filter((col) => col.pinned === 'left');
+  const scrollableColumns = allColumns.filter((col) => !col.pinned);
+  const visibleScrollableColumns = scrollableColumns.slice(
+    startIndex.value,
+    startIndex.value + visibleColumnCount
+  );
+
+  return [...pinnedColumns, ...visibleScrollableColumns];
 });
 
 // 컬럼 가시성 제어
 const scrollTable = (direction: 'left' | 'right') => {
+  const scrollableColumns = allColumns.filter((col) => !col.pinned);
+
   if (direction === 'left') {
     // 왼쪽 버튼: 시작 인덱스 감소 (최소 0)
     startIndex.value = Math.max(0, startIndex.value - 1);
   } else {
-    // 오른쪽 버튼: 시작 인덱스 증가 (최대 전체 컬럼 수 - 보여줄 컬럼 수)
-    startIndex.value = Math.min(allColumns.length - visibleColumnCount, startIndex.value + 1);
+    // 오른쪽 버튼: 시작 인덱스 증가 (최대 스크롤 가능한 컬럼 수 - 보여줄 컬럼 수)
+    startIndex.value = Math.min(
+      scrollableColumns.length - visibleColumnCount,
+      startIndex.value + 1
+    );
   }
 };
 
-// 버튼 활성화 상태 계산
+// 버튼 활성화 상태 계산 (고정 컬럼 제외한 스크롤 가능한 컬럼 기준)
 const canScrollLeft = computed(() => startIndex.value > 0);
-const canScrollRight = computed(() => startIndex.value < allColumns.length - visibleColumnCount);
+const canScrollRight = computed(() => {
+  const scrollableColumns = allColumns.filter((col) => !col.pinned);
+  return startIndex.value < scrollableColumns.length - visibleColumnCount;
+});
 
 const summaryColumnDefs = computed((): ColDef[] => [
   {
@@ -342,6 +341,7 @@ const summaryColumnDefs = computed((): ColDef[] => [
     pinned: 'left',
     cellStyle: { textAlign: 'center', fontWeight: 'bold' },
     headerClass: 'summary-header',
+    rowDrag: false,
   },
   {
     headerName: '매수',
@@ -350,28 +350,28 @@ const summaryColumnDefs = computed((): ColDef[] => [
       {
         headerName: '매입수량',
         field: 'longExecutionQuantity',
-        width: 110,
+
         cellStyle: { textAlign: 'right' },
         headerClass: 'buy-header',
       },
       {
         headerName: '매입금액',
         field: 'longExecutionPrice',
-        width: 110,
+
         cellStyle: { textAlign: 'right' },
         headerClass: 'buy-header',
       },
       {
         headerName: '청산수량',
         field: 'reShortExecutionQuantity',
-        width: 110,
+
         cellStyle: { textAlign: 'right' },
         headerClass: 'buy-header',
       },
       {
         headerName: '청산금액',
         field: 'reShortExecutionPrice',
-        width: 110,
+
         cellStyle: { textAlign: 'right' },
         headerClass: 'buy-header',
       },
@@ -384,28 +384,28 @@ const summaryColumnDefs = computed((): ColDef[] => [
       {
         headerName: '매입수량',
         field: 'shortExecutionQuantity',
-        width: 110,
+
         cellStyle: { textAlign: 'right' },
         headerClass: 'sell-header',
       },
       {
         headerName: '매입금액',
         field: 'shortExecutionPrice',
-        width: 110,
+
         cellStyle: { textAlign: 'right' },
         headerClass: 'sell-header',
       },
       {
         headerName: '청산수량',
         field: 'reLongExecutionQuantity',
-        width: 110,
+
         cellStyle: { textAlign: 'right' },
         headerClass: 'sell-header',
       },
       {
         headerName: '청산금액',
         field: 'reLongExecutionPrice',
-        width: 110,
+
         cellStyle: { textAlign: 'right' },
         headerClass: 'sell-header',
       },
@@ -526,13 +526,33 @@ const summaryColumnDefs = computed((): ColDef[] => [
       transform: translateY(-50%);
 
       &:first-child {
-        left: 105px; /* 주문일자 컬럼 너비만큼 오른쪽으로 이동 */
+        left: 120px; /* 주문일자 컬럼 너비만큼 오른쪽으로 이동 */
       }
 
       &:last-child {
         right: 8px; /* 오른쪽 여백 */
       }
     }
+  }
+
+  /* AG-Grid 전체 테두리와 radius 제거 */
+  :deep(.ag-root-wrapper) {
+    border: none !important;
+    border-radius: 0 !important;
+  }
+
+  /* AG-Grid 헤더 전체 가운데 정렬 */
+  :deep(.ag-header-cell-label),
+  :deep(.ag-header-group-cell-label) {
+    justify-content: center !important;
+    text-align: center !important;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    font-family: 'Pretendard GOV', sans-serif !important;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--font-color-default);
   }
 
   /* No Rows Overlay 텍스트 색상 */

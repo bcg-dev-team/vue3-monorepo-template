@@ -14,7 +14,7 @@ export interface MemberLoginRequest {
   password: string;
 }
 
-export interface AccountInfo {
+export interface AccountInfos {
   accountNo: string;
   accountSequence: string;
   accountGrade: string;
@@ -27,7 +27,7 @@ export interface MemberInfo {
   memberId: number;
   email: string;
   memberType: MemberType;
-  accountList: AccountInfo[];
+  accountList: AccountInfos[];
 }
 
 export interface MemberApprovalResponse extends ApiSuccessResponse<string> {}
@@ -35,6 +35,9 @@ export interface MemberApprovalResponse extends ApiSuccessResponse<string> {}
 export interface LoginResponse
   extends ApiSuccessResponse<{
     contents: MemberInfo[];
+    tokenInfo: {
+      accessToken: string;
+    };
   }> {}
 
 export interface EmailVerificationRequest {

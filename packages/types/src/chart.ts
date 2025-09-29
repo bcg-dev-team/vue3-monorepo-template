@@ -11,6 +11,17 @@ import type { TradingSymbol } from './market/symbol';
 export type ChartLayout = '1x1' | '2x2' | '3x3' | '4x4';
 
 /**
+ * 차트 기본값 상수
+ */
+export const CHART_DEFAULTS = {
+  TIMEFRAME: '1m',
+  LAYOUT: '2x2' as ChartLayout,
+  SYNC_COLOR: '#2962FF',
+  GRID_COLUMNS: 2,
+  GRID_ROWS: 2,
+} as const;
+
+/**
  * 차트 데이터 타입
  */
 export interface ChartData {

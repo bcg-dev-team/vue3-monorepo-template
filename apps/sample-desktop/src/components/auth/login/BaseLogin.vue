@@ -48,6 +48,7 @@
         variant="password"
         placeholder="영문+숫자, 8~16자리 이상"
         v-model="password"
+        autocomplete="current-password"
       />
     </FormField>
     <div class="flex items-center justify-between">
@@ -133,7 +134,11 @@ const handleLogin = async () => {
   try {
     const response = await userService.webLogin(email.value, password.value);
     if (response.status === 'success') {
-      LocalStorageService.setItem(LocalStorageKey.ACCESS_TOKEN, 'Authorized Token');
+      LocalStorageService.setItem(
+        LocalStorageKey.ACCESS_TOKEN,
+        response.data.tokenInfo.accessToken
+      );
+      console.log(response.data.tokenInfo.accessToken);
       router.push({ name: 'home' });
     }
   } catch (error) {

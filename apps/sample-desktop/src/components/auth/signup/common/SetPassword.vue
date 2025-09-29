@@ -11,6 +11,7 @@
         :errorMessage="
           state.password.length > 0 && !isPasswordValid ? '비밀번호 조건을 확인해주세요' : ''
         "
+        autocomplete="new-password"
       />
     </FormField>
     <div
@@ -96,6 +97,7 @@
         :errorMessage="
           state.passwordCheck.length > 0 && !isPasswordMatch ? '비밀번호가 일치하지 않습니다' : ''
         "
+        autocomplete="new-password"
       />
       <div v-if="state.passwordCheck.length > 0 && isPasswordMatch" class="text-green text-[12px]">
         <BaseIcon name="check-sm" size="sm" color="var(--font-color-green)" />

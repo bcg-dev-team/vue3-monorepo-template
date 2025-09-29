@@ -93,7 +93,7 @@ export class UserService {
       useType,
     };
 
-    return this.axios.post<SmsVerificationResponse>('/members/sms/send', requestBody);
+    return this.axios.post<SmsVerificationResponse>('/auths/sms/send', requestBody);
   }
 
   /**
@@ -113,7 +113,7 @@ export class UserService {
       useType,
     };
 
-    return this.axios.post<SmsVerificationCodeResponse>('/members/sms/verify', requestBody);
+    return this.axios.post<SmsVerificationCodeResponse>('/auths/sms/verify', requestBody);
   }
 
   /**
@@ -128,7 +128,7 @@ export class UserService {
       useType: 'SIGN_UP',
     };
 
-    return this.axios.post<EmailVerificationResponse>('/members/email/send', requestBody);
+    return this.axios.post<EmailVerificationResponse>('/auths/email/send', requestBody);
   }
 
   /**
@@ -145,7 +145,7 @@ export class UserService {
       useType: 'SIGN_UP',
     };
 
-    return this.axios.post<EmailVerificationCodeResponse>('/members/email/verify', requestBody);
+    return this.axios.post<EmailVerificationCodeResponse>('/auths/email/verify', requestBody);
   }
 
   /**

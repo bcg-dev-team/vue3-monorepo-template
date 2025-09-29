@@ -241,7 +241,15 @@ const handleInput = (event: Event) => {
     if (!value) {
       passwordStrengthResult.value = 0;
     } else {
-      updatePasswordStrength(value, props.userInputs);
+      try {
+        // @ts-ignore
+        const { analyzePasswordStrength } = await import('@template/utils');
+        const result = await analyzePasswordStrength(value, props.userInputs);
+        passwordStrengthResult.value = Math.max(0, Math.min(4, result.score)) as 0 | 1 | 2 | 3 | 4;
+      } catch (error) {
+        console.warn('Password strength analysis failed:', error);
+        passwordStrengthResult.value = 0;
+      }
     }
   }
 };

@@ -6,129 +6,7 @@
           <div class="order-summary-table">
             <BaseDataGrid
               :column-defs="summaryColumnDefs"
-              :row-data="[
-                {
-                  tradeCurrencyCd: 'USD',
-                  longExecutionQuantity: 1000,
-                  longExecutionPrice: 1350000,
-                  reShortExecutionQuantity: 500,
-                  reShortExecutionPrice: 675000,
-                  shortExecutionQuantity: 800,
-                  shortExecutionPrice: 1080000,
-                  reLongExecutionQuantity: 300,
-                  reLongExecutionPrice: 405000,
-                },
-                {
-                  tradeCurrencyCd: 'USD',
-                  longExecutionQuantity: 1000,
-                  longExecutionPrice: 1350000,
-                  reShortExecutionQuantity: 500,
-                  reShortExecutionPrice: 675000,
-                  shortExecutionQuantity: 800,
-                  shortExecutionPrice: 1080000,
-                  reLongExecutionQuantity: 300,
-                  reLongExecutionPrice: 405000,
-                },
-                {
-                  tradeCurrencyCd: 'USD',
-                  longExecutionQuantity: 1000,
-                  longExecutionPrice: 1350000,
-                  reShortExecutionQuantity: 500,
-                  reShortExecutionPrice: 675000,
-                  shortExecutionQuantity: 800,
-                  shortExecutionPrice: 1080000,
-                  reLongExecutionQuantity: 300,
-                  reLongExecutionPrice: 405000,
-                },
-                {
-                  tradeCurrencyCd: 'USD',
-                  longExecutionQuantity: 1000,
-                  longExecutionPrice: 1350000,
-                  reShortExecutionQuantity: 500,
-                  reShortExecutionPrice: 675000,
-                  shortExecutionQuantity: 800,
-                  shortExecutionPrice: 1080000,
-                  reLongExecutionQuantity: 300,
-                  reLongExecutionPrice: 405000,
-                },
-                {
-                  tradeCurrencyCd: 'USD',
-                  longExecutionQuantity: 1000,
-                  longExecutionPrice: 1350000,
-                  reShortExecutionQuantity: 500,
-                  reShortExecutionPrice: 675000,
-                  shortExecutionQuantity: 800,
-                  shortExecutionPrice: 1080000,
-                  reLongExecutionQuantity: 300,
-                  reLongExecutionPrice: 405000,
-                },
-                {
-                  tradeCurrencyCd: 'USD',
-                  longExecutionQuantity: 1000,
-                  longExecutionPrice: 1350000,
-                  reShortExecutionQuantity: 500,
-                  reShortExecutionPrice: 675000,
-                  shortExecutionQuantity: 800,
-                  shortExecutionPrice: 1080000,
-                  reLongExecutionQuantity: 300,
-                  reLongExecutionPrice: 405000,
-                },
-                {
-                  tradeCurrencyCd: 'USD',
-                  longExecutionQuantity: 1000,
-                  longExecutionPrice: 1350000,
-                  reShortExecutionQuantity: 500,
-                  reShortExecutionPrice: 675000,
-                  shortExecutionQuantity: 800,
-                  shortExecutionPrice: 1080000,
-                  reLongExecutionQuantity: 300,
-                  reLongExecutionPrice: 405000,
-                },
-                {
-                  tradeCurrencyCd: 'USD',
-                  longExecutionQuantity: 1000,
-                  longExecutionPrice: 1350000,
-                  reShortExecutionQuantity: 500,
-                  reShortExecutionPrice: 675000,
-                  shortExecutionQuantity: 800,
-                  shortExecutionPrice: 1080000,
-                  reLongExecutionQuantity: 300,
-                  reLongExecutionPrice: 405000,
-                },
-                {
-                  tradeCurrencyCd: 'USD',
-                  longExecutionQuantity: 1000,
-                  longExecutionPrice: 1350000,
-                  reShortExecutionQuantity: 500,
-                  reShortExecutionPrice: 675000,
-                  shortExecutionQuantity: 800,
-                  shortExecutionPrice: 1080000,
-                  reLongExecutionQuantity: 300,
-                  reLongExecutionPrice: 405000,
-                },
-                {
-                  tradeCurrencyCd: 'USD',
-                  longExecutionQuantity: 1000,
-                  longExecutionPrice: 1350000,
-                  reShortExecutionQuantity: 500,
-                  reShortExecutionPrice: 675000,
-                  shortExecutionQuantity: 800,
-                  shortExecutionPrice: 1080000,
-                  reLongExecutionQuantity: 300,
-                  reLongExecutionPrice: 405000,
-                },
-                {
-                  tradeCurrencyCd: 'USD',
-                  longExecutionQuantity: 1000,
-                  longExecutionPrice: 1350000,
-                  reShortExecutionQuantity: 500,
-                  reShortExecutionPrice: 675000,
-                  shortExecutionQuantity: 800,
-                  shortExecutionPrice: 1080000,
-                  reLongExecutionQuantity: 300,
-                  reLongExecutionPrice: 405000,
-                },
-              ]"
+              :row-data="props.summaryData"
               :sortable="false"
               :filterable="false"
               :pagination="false"
@@ -145,7 +23,7 @@
               <!-- 데이터 그리드 -->
               <BaseDataGrid
                 :column-defs="detailColumnDefs"
-                :row-data="[]"
+                :row-data="detailData"
                 :sortable="false"
                 :filterable="false"
                 :pagination="false"
@@ -171,12 +49,20 @@
   </div>
 </template>
 <script setup lang="ts">
+import {
+  orderDetailColumns,
+  orderSummaryColumns,
+} from '@/components/transaction/constants/tableColumnDefs';
 import GridWidthButton from '@/components/transaction/common/GridWidthButton.vue';
 import { OrderDetail, OrderSummary } from '@/types/api/trade.types';
 import LabelContent from '@/components/common/LabelContent.vue';
 import type { ColDef } from 'ag-grid-community';
+import { computed, onMounted, ref } from 'vue';
 import { BaseDataGrid } from '@template/ui';
-import { computed, ref } from 'vue';
+
+const emits = defineEmits<{
+  (e: 'loadInitialData'): void;
+}>();
 
 const props = defineProps<{
   summaryData: OrderSummary[];
@@ -184,115 +70,7 @@ const props = defineProps<{
 }>();
 
 // 컬럼 정의 (전체)
-const allColumns: ColDef[] = [
-  {
-    headerName: '주문일자',
-    field: 'orderDate',
-    width: 120,
-    pinned: 'left',
-    cellStyle: { textAlign: 'center' },
-    filter: false,
-  },
-  {
-    headerName: '주문번호',
-    field: 'orderNumber',
-    width: 120,
-    cellStyle: { textAlign: 'center' },
-  },
-  {
-    headerName: '체결일자',
-    field: 'executionDate',
-    width: 80,
-    cellStyle: { textAlign: 'center' },
-  },
-  {
-    headerName: '체결번호',
-    field: 'executionNumber',
-    width: 120,
-    cellStyle: { textAlign: 'center' },
-  },
-  {
-    headerName: '종목코드',
-    field: 'symbolCode',
-    width: 100,
-    cellStyle: { textAlign: 'center' },
-  },
-  {
-    headerName: 'L / S',
-    field: 'positionCode',
-    width: 80,
-    cellStyle: { textAlign: 'center' },
-  },
-  {
-    headerName: '유형',
-    field: 'orderTypeCode',
-    width: 140,
-    cellStyle: { textAlign: 'center' },
-  },
-  {
-    headerName: '구분',
-    field: 'tradeTypeCode',
-    width: 60,
-    cellStyle: { textAlign: 'center' },
-  },
-  {
-    headerName: '주문수량',
-    field: 'orderQuantity',
-    width: 80,
-    cellStyle: { textAlign: 'right' },
-  },
-  {
-    headerName: '배리어가격',
-    field: 'barrierPrice',
-    cellStyle: { textAlign: 'right' },
-  },
-  {
-    headerName: '주문가격',
-    field: 'orderPrice',
-    cellStyle: { textAlign: 'right' },
-  },
-  {
-    headerName: '이익실현배리어가격',
-    field: 'takeProfitBarrierPrice',
-    cellStyle: { textAlign: 'right' },
-  },
-  {
-    headerName: '손실제한배리어가격',
-    field: 'stopLossBarrierPrice',
-    cellStyle: { textAlign: 'right' },
-  },
-  {
-    headerName: '체결수량',
-    field: 'executionQuantity',
-    width: 80,
-    cellStyle: { textAlign: 'right' },
-  },
-  {
-    headerName: '체결가격',
-    field: 'executionPrice',
-    cellStyle: { textAlign: 'right' },
-  },
-  {
-    headerName: '주문잔량',
-    field: 'remainingQuantity',
-    cellStyle: { textAlign: 'right' },
-  },
-  {
-    headerName: '주문상태코드',
-    field: 'orderStatusCode',
-    cellStyle: { textAlign: 'center' },
-  },
-  {
-    headerName: '접수일시',
-    field: 'receiptDateTime',
-    cellStyle: { textAlign: 'center' },
-  },
-  {
-    headerName: '거부사유명',
-    field: 'rejectionReason',
-    cellStyle: { textAlign: 'center' },
-  },
-];
+const allColumns: ColDef[] = orderDetailColumns;
 
 // 시작 인덱스 (몇 번째 컬럼부터 보여줄지) - 고정 컬럼 제외
 const startIndex = ref(0);
@@ -333,85 +111,11 @@ const canScrollRight = computed(() => {
   return startIndex.value < scrollableColumns.length - visibleColumnCount;
 });
 
-const summaryColumnDefs = computed((): ColDef[] => [
-  {
-    headerName: '통화',
-    field: 'tradeCurrencyCd',
-    width: 120,
-    pinned: 'left',
-    cellStyle: { textAlign: 'center', fontWeight: 'bold' },
-    headerClass: 'summary-header',
-    rowDrag: false,
-  },
-  {
-    headerName: '매수',
-    headerClass: 'buy-header',
-    children: [
-      {
-        headerName: '매입수량',
-        field: 'longExecutionQuantity',
+const summaryColumnDefs = computed((): ColDef[] => orderSummaryColumns);
 
-        cellStyle: { textAlign: 'right' },
-        headerClass: 'buy-header',
-      },
-      {
-        headerName: '매입금액',
-        field: 'longExecutionPrice',
-
-        cellStyle: { textAlign: 'right' },
-        headerClass: 'buy-header',
-      },
-      {
-        headerName: '청산수량',
-        field: 'reShortExecutionQuantity',
-
-        cellStyle: { textAlign: 'right' },
-        headerClass: 'buy-header',
-      },
-      {
-        headerName: '청산금액',
-        field: 'reShortExecutionPrice',
-
-        cellStyle: { textAlign: 'right' },
-        headerClass: 'buy-header',
-      },
-    ],
-  } as any,
-  {
-    headerName: '매도',
-    headerClass: 'sell-header',
-    children: [
-      {
-        headerName: '매입수량',
-        field: 'shortExecutionQuantity',
-
-        cellStyle: { textAlign: 'right' },
-        headerClass: 'sell-header',
-      },
-      {
-        headerName: '매입금액',
-        field: 'shortExecutionPrice',
-
-        cellStyle: { textAlign: 'right' },
-        headerClass: 'sell-header',
-      },
-      {
-        headerName: '청산수량',
-        field: 'reLongExecutionQuantity',
-
-        cellStyle: { textAlign: 'right' },
-        headerClass: 'sell-header',
-      },
-      {
-        headerName: '청산금액',
-        field: 'reLongExecutionPrice',
-
-        cellStyle: { textAlign: 'right' },
-        headerClass: 'sell-header',
-      },
-    ],
-  } as any,
-]);
+onMounted(() => {
+  emits('loadInitialData');
+});
 </script>
 
 <style lang="scss" scoped>

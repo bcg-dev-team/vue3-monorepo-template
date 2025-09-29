@@ -18,6 +18,7 @@
             v-if="modelValue === 'order'"
             :summaryData="summaryData"
             :detailData="detailData"
+            @loadInitialData="handleSearch"
           />
           <ClearTableContent v-if="modelValue === 'clear'" />
           <HistoryTableContent v-if="modelValue === 'history'" />
@@ -119,8 +120,8 @@ const handleSearch = async () => {
         nextKey: 0,
       };
       const response = await tradeService.getTradeOrderList(queryParams);
-      orderSummaryData.value = response.data.orderSummary;
-      orderDetailData.value = response.data.orderDetail;
+      orderSummaryData.value = response.data.summary;
+      orderDetailData.value = response.data.details;
     } else if (modelValue.value === 'clear') {
       //TODO: 청산손익 조회
     } else if (modelValue.value === 'history') {
@@ -133,7 +134,6 @@ const handleSearch = async () => {
 </script>
 
 <style scoped>
-/* BaseTabs의 TabPanel content padding을 0px로 오버라이드 */
 :deep([role='tabpanel']) {
   padding: 0px !important;
 }

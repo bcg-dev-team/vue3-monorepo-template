@@ -7,13 +7,13 @@ import {
   AccountUpdateResponse,
   AccountChangePasswordResponse,
 } from '../types/account.types';
-import { AxiosInstance } from '../types/axios';
+import { CustomAxiosInstance } from '../types/axios';
 
 export class AccountService {
-  private axios: AxiosInstance;
+  private axios: CustomAxiosInstance;
 
-  constructor(axios: AxiosInstance) {
-    this.axios = axios;
+  constructor(axiosInstance: CustomAxiosInstance) {
+    this.axios = axiosInstance;
   }
 
   /**

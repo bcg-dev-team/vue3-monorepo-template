@@ -124,7 +124,6 @@ onMounted(() => {
   .el-input__wrapper {
     .el-input__inner {
       font-size: 13px !important;
-      margin-left: 4px !important;
     }
 
     .el-input__suffix {

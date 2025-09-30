@@ -19,7 +19,7 @@
         <!-- 시간대 선택 -->
         <div class="timeframe-group">
           <button
-            v-for="timeframe in timeframes"
+            v-for="timeframe in CHART_TIMEFRAMES"
             :key="timeframe.value"
             class="timeframe-button"
             :class="{ active: selectedTimeframe === timeframe.value }"
@@ -47,7 +47,7 @@
         <div class="layout-group">
           <div class="layout-buttons">
             <button
-              v-for="layout in layoutOptions"
+              v-for="layout in CHART_LAYOUT_OPTIONS"
               :key="layout.value"
               class="layout-button"
               :class="{ active: selectedLayout === layout.value }"
@@ -92,7 +92,7 @@
 <script setup lang="ts">
 import type { ChartLayout, ChartToolbarProps, ChartToolbarEmits } from '@template/types';
 import { CHART_TIMEFRAMES, CHART_DEFAULTS } from '@template/types';
-import { CHART_LAYOUT_OPTIONS } from '@/types/chart.types';
+import { CHART_LAYOUT_OPTIONS } from '@/types/chart-layout';
 import { BaseIcon } from '@template/ui';
 import './ChartTopToolbar.scss';
 import { computed } from 'vue';
@@ -103,9 +103,6 @@ const props = defineProps<ChartToolbarProps>();
 // Emits 정의
 const emit = defineEmits<ChartToolbarEmits>();
 
-// 시간대 옵션
-const timeframes = CHART_TIMEFRAMES;
-
 // 선택된 시간대
 const selectedTimeframe = computed(
   () => props.selectedChartData?.timeframe || CHART_DEFAULTS.TIMEFRAME
@@ -113,9 +110,6 @@ const selectedTimeframe = computed(
 
 // 선택된 레이아웃
 const selectedLayout = computed(() => props.currentLayout || CHART_DEFAULTS.LAYOUT);
-
-// 레이아웃 옵션
-const layoutOptions = CHART_LAYOUT_OPTIONS;
 
 // 이벤트 핸들러
 const handleChartManage = () => {

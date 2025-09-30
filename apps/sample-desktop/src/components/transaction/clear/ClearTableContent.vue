@@ -40,8 +40,8 @@ import {
   profitAndLossDetailColumns,
 } from '@/components/transaction/constants/tableColumnDefs';
 import { TradeProfitAndLossSummary, TradeProfitAndLossDetail } from '@template/api';
-import { BaseDataGrid, type TableHeader, type TableRow } from '@template/ui';
 import LabelContent from '@/components/common/LabelContent.vue';
+import { BaseDataGrid } from '@template/ui';
 import { onMounted, computed } from 'vue';
 
 const emits = defineEmits<{

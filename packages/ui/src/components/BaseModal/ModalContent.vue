@@ -23,16 +23,27 @@ interface Props {
    * 알림 아이콘 표시 여부
    */
   showAlertIcon?: boolean;
+  /**
+   * 컨텐츠 여백 조정
+   */
+  contentPadding?: 'default' | 'compact' | 'none';
 }
 
 interface Emits {
   (e: 'content-click'): void;
 }
 
-defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  contentPadding: 'default',
+});
+
 defineEmits<Emits>();
 
-// 알림 아이콘 매핑
+/**
+ * 알림 아이콘 매핑
+ * @param variant - 알림 타입
+ * @returns 아이콘 이름
+ */
 const getAlertIcon = (variant: AlertVariant): IconName => {
   switch (variant) {
     case 'success':
@@ -48,12 +59,16 @@ const getAlertIcon = (variant: AlertVariant): IconName => {
   }
 };
 
-// 알림 색상 클래스
+/**
+ * 알림 색상 클래스 생성
+ * @param variant - 알림 타입
+ * @returns CSS 클래스명
+ */
 const getAlertColorClass = (variant: AlertVariant) => `alert-${variant}`;
 </script>
 
 <template>
-  <main class="modal-content">
+  <main :class="['modal-content', `modal-content--${props.contentPadding}`]">
     <!-- 알림 모달 아이콘 -->
     <div
       v-if="showAlertIcon && alertVariant"

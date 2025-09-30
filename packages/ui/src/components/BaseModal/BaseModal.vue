@@ -95,6 +95,10 @@ interface Props {
    * 버튼을 fullwidth로 표시할지 여부
    */
   fullWidth?: boolean;
+  /**
+   * 컨텐츠 여백 조정 (차트 설정 다이얼로그 등에서 사용)
+   */
+  contentPadding?: 'default' | 'compact' | 'none';
 }
 
 interface ModalEmits {
@@ -135,6 +139,7 @@ const props = withDefaults(defineProps<Props>(), {
   showCancelButton: true,
   showConfirmButton: true,
   fullWidth: true,
+  contentPadding: 'default',
 });
 
 const emit = defineEmits<Emits>();
@@ -260,6 +265,7 @@ const handleAction = (action: any, index: number) => {
           :description="description"
           :alert-variant="alertVariant"
           :show-alert-icon="variant === 'alert'"
+          :content-padding="contentPadding"
         >
           <slot />
         </ModalContent>

@@ -19,6 +19,13 @@ interface Props {
    */
   size?: 'sm' | 'md';
   /**
+   * 라디오 스타일 variant
+   * - default: 기본 스타일
+   * - underline: 밑줄 스타일
+   * @default 'default'
+   */
+  variant?: 'default' | 'underline';
+  /**
    * 비활성화 여부
    */
   disabled?: boolean;
@@ -30,14 +37,20 @@ interface Props {
    * 객체 비교를 위한 키 또는 비교 함수
    */
   by?: string | ((a: any, b: any) => boolean);
+  /**
+   * 전체 너비 사용 여부 (underline variant에서만 사용)
+   */
+  fullwidth?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   options: () => [],
   label: '',
   size: 'md',
+  variant: 'default',
   disabled: false,
   name: '',
+  fullwidth: false,
 });
 
 const model = defineModel<any>();
@@ -51,6 +64,9 @@ const model = defineModel<any>();
  */
 // 컨테이너 클래스
 const containerClasses = computed(() => {
+  if (props.variant === 'underline') {
+    return props.fullwidth ? 'flex w-full' : 'flex flex-nowrap';
+  }
   return `bg-neutral-neutral050 flex gap-x-[10px] rounded-[6px] py-1 px-1`;
 });
 
@@ -59,34 +75,69 @@ const getRadioOptionClasses = (
   active: boolean = false,
   disabled: boolean = false
 ): string => {
+  const baseClasses = `focus:outline-none focus:ring-0 flex items-center gap-x-2 ${props.fullwidth ? 'flex-1 justify-center' : ''}`;
+
+  // underline variant 스타일
+  if (props.variant === 'underline') {
+    // 비활성화 상태
+    if (disabled) {
+      const sizeClasses =
+        props.size === 'sm' ? 'px-4 py-3 text-sm font-medium' : 'py-3 px-6 text-base font-semibold';
+      return [
+        baseClasses,
+        'opacity-50 cursor-not-allowed',
+        sizeClasses,
+        'text-default-muted-dark',
+      ].join(' ');
+    }
+
+    const sizeClasses =
+      props.size === 'sm' ? 'px-4 py-3 text-sm font-medium' : 'py-3 px-6 text-base font-semibold';
+    const textColorClasses = checked
+      ? 'bg-bg-bg-default text-default font-semibold'
+      : 'bg-bg-bg-default text-default-muted-dark';
+    const underlineClasses = checked
+      ? props.size === 'sm'
+        ? 'shadow-[inset_0_-2px_0_0_var(--input-color-border-focus)]'
+        : 'shadow-[inset_0_-3px_0_0_var(--input-color-border-focus)]'
+      : '';
+
+    return [baseClasses, 'whitespace-nowrap', sizeClasses, textColorClasses, underlineClasses]
+      .filter(Boolean)
+      .join(' ');
+  }
+
+  // default variant 스타일 (기존)
   const sizeClass = props.size === 'sm' ? 'h-[28px]' : 'h-[34px]';
-  const baseClasses = `focus:outline-none focus:ring-0 flex items-center justify-center gap-x-2 px-3 ${sizeClass} text-[13px] leading-[16px] tracking-tight rounded-xs font-medium transition-colors duration-200`;
+  const defaultBaseClasses = `${baseClasses} justify-center px-3 ${sizeClass} text-[13px] leading-[16px] tracking-tight rounded-xs transition-colors duration-200`;
 
   // 비활성화 상태
   if (disabled) {
-    return [baseClasses, 'opacity-50 cursor-not-allowed text-[var(--button-tab-text-off)]'].join(
-      ' '
-    );
+    return [
+      defaultBaseClasses,
+      'opacity-50 cursor-not-allowed text-[var(--button-tab-text-off)]',
+    ].join(' ');
   }
 
   // 선택된 상태
   if (checked) {
-    return [baseClasses, 'bg-[var(--button-tab-button-on)] text-[var(--button-tab-text-on)]'].join(
-      ' '
-    );
+    return [
+      defaultBaseClasses,
+      'bg-[var(--button-tab-button-on)] text-[var(--button-tab-text-on)] font-semibold',
+    ].join(' ');
   }
 
   // 활성 상태 (호버/포커스)
   if (active) {
     return [
-      baseClasses,
+      defaultBaseClasses,
       'bg-[var(--button-tab-button-hover)] text-[var(--button-tab-text-on)]',
     ].join(' ');
   }
 
   // 기본 상태
   return [
-    baseClasses,
+    defaultBaseClasses,
     'text-[var(--button-tab-text-off)] hover:bg-[var(--button-tab-button-hover)] hover:text-[var(--button-tab-text-on)]',
   ].join(' ');
 };

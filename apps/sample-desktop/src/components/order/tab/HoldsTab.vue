@@ -1,33 +1,48 @@
 <template>
-  <div class="symbol-list">
-    <!-- 종목 카테고리 -->
-    <div class="category-container">
-      <BaseRadioGroup
-        v-model="activeTab"
-        :options="categoryOptions"
-        name="symbol-category"
-        size="sm"
-        variant="underline"
-        fullwidth
-      />
+  <div
+    ref="symbolListRef"
+    class="symbol-list-container overflow-hidden px-2 transition-all duration-300 ease-in-out"
+  >
+    <div
+      v-for="symbol in filteredSymbols"
+      :key="symbol.ticker"
+      :data-ticker="symbol.ticker"
+      class="symbol-item"
+      :class="{ selected: currentSelectedSymbol === symbol.ticker }"
+      @click="selectSymbol(symbol)"
+    >
+      <div class="symbol-content">
+        <div class="symbol-info">
+          <div class="symbol-icon">
+            <!-- FIXME: 실제 종목별 아이콘으로 교체 필요 -->
+            <BaseIcon name="chart-line" size="sm" />
+          </div>
+          <div class="symbol-name">{{ symbol.ticker }}</div>
+        </div>
+        <div class="symbol-values">
+          <div class="price-info">
+            <div class="price">{{ getPrice(symbol.ticker) }}</div>
+            <div class="change" :class="getChangeClass(symbol.ticker)">
+              {{ getChange(symbol.ticker) }}%
+            </div>
+          </div>
+          <div class="favorite-icon" @click.stop="toggleFavorite(symbol.ticker)">
+            <!-- FIXME: 'fav' 아이콘 추가 후 변경 -->
+            <BaseIcon
+              name="heart-thin"
+              size="sm"
+              :color="
+                isFavorite(symbol.ticker)
+                  ? 'var(--font-color-red)'
+                  : 'var(--background-bg-surface-muted)'
+              "
+            />
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!-- 검색 입력창 (탭 외부에 위치) -->
-    <div class="search-container">
-      <BaseInput
-        v-model="searchQuery"
-        placeholder="종목명, 종목코드 검색"
-        size="sm"
-        variant="search"
-      />
-    </div>
-
-    <AllTab v-if="activeTab === 'all'" @symbol-select="selectSymbol" />
-    <WatchTab v-if="activeTab === 'favorite'" @symbol-select="selectSymbol" />
-    <HoldsTab v-if="activeTab === 'holding'" @symbol-select="selectSymbol" />
   </div>
 </template>
-
 <script setup lang="ts">
 import {
   getProfitLossClass,
@@ -41,9 +56,6 @@ import { useSymbolData } from '@/composables/useSymbolData';
 import { onMounted, onUnmounted, reactive } from 'vue';
 import type { TradingSymbol } from '@template/types';
 import type { RadioOption } from '@template/ui';
-import WatchTab from './tab/WatchTab.vue';
-import HoldsTab from './tab/HoldsTab.vue';
-import AllTab from './tab/AllTab.vue';
 
 interface Emits {
   (e: 'symbol-select', symbol: TradingSymbol): void;
@@ -66,21 +78,14 @@ const {
   unsubscribeAll,
 } = useSymbolData();
 
-// BaseRadioGroup용 카테고리 옵션
-const categoryOptions: RadioOption[] = [
-  {
-    value: 'all',
-    label: '전체',
-  },
-  {
-    value: 'favorite',
-    label: '관심',
-  },
-  {
-    value: 'holding',
-    label: '보유',
-  },
-];
+// 카테고리 열림/닫힘 상태 관리
+const open = reactive({
+  all: true,
+  forex: false,
+  indices: false,
+  commodities: false,
+  crypto: false,
+});
 
 // 가시성 관리
 const { symbolListRef } = useSymbolVisibility(addVisibleSymbols, filteredSymbols);
@@ -109,5 +114,5 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
-@use './SymbolList.scss';
+@use '../SymbolList.scss';
 </style>

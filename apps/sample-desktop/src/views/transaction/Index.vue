@@ -44,6 +44,7 @@ import {
   TradeProfitAndLossDetail,
   TradeOrderListRequest,
 } from '@template/api';
+import { initialProfitAndLossSummary } from '@/components/transaction/constants/initialData';
 import HistoryTableContent from '@/components/transaction/history/HistoryTableContent.vue';
 import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
 import HistorySearchBox from '@/components/transaction/history/HistorySearchBox.vue';
@@ -93,15 +94,15 @@ const tradeSearchStore = useTradeSearchStore();
 
 const orderSummaryData = ref<OrderSummary[]>([]);
 const orderDetailData = ref<OrderDetail[]>([]);
-const profitAndLossSummaryData = ref<TradeProfitAndLossSummary>();
+const profitAndLossSummaryData = ref<TradeProfitAndLossSummary>(initialProfitAndLossSummary);
 const profitAndLossDetailData = ref<TradeProfitAndLossDetail[]>([]);
 
 const handleSearch = async () => {
   try {
     if (modelValue.value === 'order') {
       const queryParams: TradeOrderListRequest = {
-        accountNo: '',
-        accountPassword: '',
+        accountNo: '250929000009',
+        accountPassword: '123456',
         positionCd: tradeSearchStore.positionCd,
         orderCd: tradeSearchStore.orderCd,
         orderStartDate: tradeSearchStore.orderStartDate,
@@ -113,8 +114,8 @@ const handleSearch = async () => {
       orderDetailData.value = response.data.details;
     } else if (modelValue.value === 'clear') {
       const queryParams: TradeProfitAndLossRequest = {
-        accountNo: '',
-        accountPassword: '',
+        accountNo: '250929000009',
+        accountPassword: '123456',
         orderStartDate: tradeSearchStore.orderStartDate,
         orderEndDate: tradeSearchStore.orderEndDate,
         nextKey: 0,

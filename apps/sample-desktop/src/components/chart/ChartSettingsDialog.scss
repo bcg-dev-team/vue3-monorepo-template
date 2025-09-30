@@ -269,9 +269,9 @@
 
 .theme-check {
   position: absolute;
-  top: -2px;
-  right: -2px;
-  background: white;
-  border-radius: 50%;
+  top: -5px;
+  right: -5px;
+  background: var(--background-primary);
+  border-radius: var(--radius-pill);
   padding: 2px;
 }

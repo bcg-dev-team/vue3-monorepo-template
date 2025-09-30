@@ -141,7 +141,7 @@ export function useGlobalChartSettings() {
     // 글로벌 설정 업데이트
     Object.assign(globalChartSettings, newSettings);
 
-    // 백그라운드에서 모든 차트에 설정 적용 (대기하지 않음)
+    // 백그라운드에서 모든 차트에 설정 적용
     globalChartManagers.forEach((chartManager) => {
       applySettingsToChart(chartManager, newSettings).catch((error) => {
         console.error('[GlobalChartSettings] Failed to apply settings:', error);
@@ -153,7 +153,7 @@ export function useGlobalChartSettings() {
   };
 
   /**
-   * 테마만 변경 (빠른 적용)
+   * 테마만 변경
    */
   const changeTheme = (theme: 'greenRed' | 'redBlue') => {
     const newSettings = { ...globalChartSettings };

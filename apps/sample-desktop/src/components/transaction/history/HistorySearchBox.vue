@@ -1,47 +1,35 @@
 <template>
-  <div class="gap-size-8 p-padding-24 flex items-end">
-    <div class="gap-size-36 flex">
-      <LabelContent label="계좌번호" size="md">
-        <template #content>
-          <BaseInputSelect v-model="selectedAccount" :options="accountOptions" />
-        </template>
-      </LabelContent>
-      <LabelContent label="결제 일자" size="md">
-        <template #content>
-          <div class="gap-size-4 flex items-center">
-            <div>
-              <BaseInputCalendar size="sm" />
-            </div>
-            <div>
-              <BaseRadioGroup
-                v-model="selectedType"
-                size="md"
-                :options="[
-                  { value: 'today', label: '오늘' },
-                  { value: 'weeks', label: '일주일' },
-                  { value: 'months', label: '30일' },
-                ]"
-              />
-            </div>
-          </div>
-        </template>
-      </LabelContent>
-    </div>
-    <div>
-      <BaseButton variant="contained" label="조회하기" size="sm" />
+  <div class="gap-size-8 pt-padding-24 flex items-end">
+    <div class="gap-size-36 flex items-end">
+      <div>
+        <PeriodSelect title="결제일자" @period-change="handlePeriodChange" />
+      </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { BaseInputSelect, BaseButton, BaseRadioGroup, BaseInputCalendar } from '@template/ui';
-import LabelContent from '@/components/common/LabelContent.vue';
-import { ref } from 'vue';
+import PeriodSelect from '@/components/transaction/common/PeriodSelect.vue';
+import { useTradeSearchStore } from '@/stores/useTradeSearchStore';
+import { onUnmounted } from 'vue';
 
-const selectedAccount = ref('');
-const accountOptions = [
-  { value: 'account1', label: '라이브계좌#1 110-81-345150' },
-  { value: 'account2', label: '라이브계좌#2 110-81-345151' },
-  { value: 'account3', label: '데모계좌#1 110-81-345152' },
-];
-const selectedType = ref('today');
+const tradeSearchStore = useTradeSearchStore();
+
+/**
+ * 기간 변경 이벤트 핸들러
+ * @param startDate - 시작 날짜
+ * @param endDate - 종료 날짜
+ * @param periodType - 선택된 기간 타입
+ */
+/**
+ * 기간 변경 시 스토어에 시작/종료일을 저장합니다.
+ * @param startDate - 시작 날짜(yyyy-MM-dd)
+ * @param endDate - 종료 날짜(yyyy-MM-dd)
+ */
+const handlePeriodChange = (startDate: string, endDate: string) => {
+  tradeSearchStore.setOrderPeriod(startDate, endDate);
+};
+
+onUnmounted(() => {
+  tradeSearchStore.reset();
+});
 </script>

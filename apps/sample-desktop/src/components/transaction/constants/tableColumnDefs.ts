@@ -316,41 +316,41 @@ export const paymentDetailColumns: ColDef[] = [
   },
   {
     headerName: '종목코드',
-    field: 'itemCode',
+    field: 'symbolCd',
     width: 120,
   },
   { headerName: '적요명', field: 'description', width: 120 },
   {
     headerName: '통화',
-    field: 'currency',
+    field: 'tradeCurrencyCd',
     width: 120,
   },
   {
     headerName: '구분',
-    field: 'type',
+    field: 'positionCd',
     width: 120,
   },
-  { headerName: '유형', field: 'type2', width: 120 },
+  { headerName: '유형', field: 'tradeCd', width: 120 },
 
   {
     headerName: '체결수량',
-    field: 'executedQuantity',
+    field: 'executionQuantity',
     width: 120,
   },
 
   {
     headerName: '체결가격',
-    field: 'executedPrice',
+    field: 'executionPrice',
     width: 120,
   },
   {
     headerName: '체결금액',
-    field: 'executedAmount',
+    field: 'paymentAmount',
     width: 120,
   },
   {
     headerName: '결제금액($)',
-    field: 'settlementAmount',
+    field: 'bookQuantity',
     width: 120,
   },
   {
@@ -358,12 +358,12 @@ export const paymentDetailColumns: ColDef[] = [
     children: [
       {
         headerName: '이전',
-        field: 'balanceQuantityBefore',
+        field: 'beforeBookQuantity',
         width: 120,
       },
       {
         headerName: '이후',
-        field: 'balanceQuantityAfter',
+        field: 'afterBookQuantity',
         width: 120,
       },
     ],
@@ -373,12 +373,12 @@ export const paymentDetailColumns: ColDef[] = [
     children: [
       {
         headerName: '이전',
-        field: 'balanceQuantityBefore',
+        field: 'beforeDeposit',
         width: 120,
       },
       {
         headerName: '이후',
-        field: 'balanceQuantityAfter',
+        field: 'afterDeposit',
         width: 120,
       },
     ],

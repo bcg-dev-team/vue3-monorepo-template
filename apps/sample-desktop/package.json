@@ -11,7 +11,7 @@
     "build": "vue-tsc --noEmit && vite build",
     "build:analyze": "ANALYZE=true vite build",
     "preview": "vite preview",
-    "type-check": "tsc --noEmit",
+    "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path ../../.gitignore",
     "test": "vitest",
     "test:watch": "vitest --watch",

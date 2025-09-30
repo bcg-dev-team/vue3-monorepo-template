@@ -9,7 +9,6 @@
       :ref="(el: any) => setChartWindowRef(chart.id, el)"
       :chart="chart"
       :is-selected="chart.id === selectedChart"
-      :is-dialog-open="isDialogOpen"
       @select="() => handleChartSelect(chart.id)"
       @close="() => handleChartClose(chart.id)"
       @sync="(syncColor: string) => handleChartSync(chart.id, syncColor)"
@@ -27,7 +26,7 @@ import { computed, ref } from 'vue';
 import './ChartGrid.scss';
 
 // Props 정의 (공통 타입 사용)
-const props = defineProps<ChartGridProps & { isDialogOpen?: boolean }>();
+const props = defineProps<ChartGridProps>();
 
 // Emits 정의 (공통 타입 사용)
 const emit = defineEmits<ChartComponentEmits>();
@@ -78,6 +77,10 @@ const handleChartTimeframeChange = (chartId: string, timeframe: string) => {
 defineExpose({
   getChartWindowRef: (chartId: string) => {
     return chartWindowRefs.value.get(chartId) || null;
+  },
+  getChartManager: (chartId: string) => {
+    const chartWindow = chartWindowRefs.value.get(chartId);
+    return chartWindow?.getChartManager?.() || null;
   },
 });
 </script>

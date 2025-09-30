@@ -6,6 +6,15 @@
 import type { Bar } from '../../types/chart.js';
 
 /**
+ * 구독 ID를 생성합니다
+ * @param symbol - 심볼명
+ * @returns 고유한 구독 ID 문자열
+ */
+function generateSubscriptionId(symbol: string): string {
+  return `${symbol}_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+}
+
+/**
  * 심볼별 실시간 가격 데이터 관리 클래스
  */
 class MockWebSocketManager {
@@ -117,7 +126,7 @@ class MockWebSocketManager {
   }
 
   subscribe(symbol: string, callback: (data: any) => void): string {
-    const subscriptionId = `${symbol}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const subscriptionId = generateSubscriptionId(symbol);
     console.log('[MockWebSocket] 구독 시작:', symbol, 'ID:', subscriptionId);
 
     if (!this.subscriptions.has(symbol)) {

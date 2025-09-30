@@ -68,6 +68,7 @@ import type { ChartLayout, ChartData, TradingSymbol } from '@template/types';
 import { DEFAULT_FOREX_SYMBOLS, CHART_DEFAULTS } from '@template/types';
 import ChartIndicatorDialog from './ChartIndicatorDialog.vue';
 import ChartSettingsDialog from './ChartSettingsDialog.vue';
+import { generateChartId } from '@/utils/chart/ChartUtils';
 // import ChartDrawingToolbar from './ChartDrawingToolbar.vue';
 import ChartTopToolbar from './ChartTopToolbar.vue';
 import { ref, computed, onMounted } from 'vue';
@@ -105,7 +106,7 @@ const chartGridRef = ref();
 // 차트 추가
 const addChart = (symbol: TradingSymbol) => {
   const newChart: ChartData = {
-    id: `chart-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    id: generateChartId(),
     symbol,
     timeframe: CHART_DEFAULTS.TIMEFRAME,
     isSelected: false,

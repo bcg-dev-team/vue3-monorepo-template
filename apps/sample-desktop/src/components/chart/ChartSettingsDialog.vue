@@ -2,7 +2,7 @@
   @fileoverview 차트 설정 다이얼로그 컴포넌트
   @component ChartSettingsDialog
   @figma 차트 설정 다이얼로그
-  FIXME: 기능 구현을 위한 임시 UI로, 피그마 참고하여 수정 필요
+  FIXME: 피그마 확인하여 추가 수정
 -->
 <template>
   <BaseModal

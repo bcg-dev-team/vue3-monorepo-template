@@ -65,7 +65,6 @@
         :timeframe="chart.timeframe"
         :height="chartHeight"
         :chart-id="chart.id"
-        :is-dialog-open="isDialogOpen"
         :key="`chart-${chart.id}-${chart.symbol.ticker}-${chart.timeframe}`"
       />
     </div>
@@ -112,11 +111,11 @@ import { CHART_TIMEFRAMES, ALL_SYMBOLS, SYNC_COLORS } from '@template/types';
 import type { ChartWindowProps, ChartWindowEmits } from '@template/types';
 import { BaseIcon, BaseInputSelect } from '@template/ui';
 import TradingViewChart from './TradingViewChart.vue';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import './ChartWindow.scss';
 
 // Props 정의
-const props = defineProps<ChartWindowProps & { isDialogOpen?: boolean }>();
+const props = defineProps<ChartWindowProps>();
 
 // Emits 정의
 const emit = defineEmits<ChartWindowEmits>();

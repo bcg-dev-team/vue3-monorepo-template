@@ -1,4 +1,5 @@
 <template>
+  <!-- 전체 종목 리스트 -->
   <div
     ref="symbolListRef"
     class="symbol-list-container overflow-hidden px-2 transition-all duration-300 ease-in-out"
@@ -42,6 +43,7 @@
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 import {
   getProfitLossClass,
@@ -50,8 +52,8 @@ import {
   getChangeFromBaseClass,
 } from '@template/utils';
 import { useSymbolVisibility } from '@/composables/useSymbolVisibility';
+import { onMounted, onUnmounted, reactive, watch } from 'vue';
 import { useSymbolData } from '@/composables/useSymbolData';
-import { onMounted, onUnmounted, reactive } from 'vue';
 import type { TradingSymbol } from '@template/types';
 import { BaseIcon } from '@template/ui';
 
@@ -61,8 +63,14 @@ interface Emits {
 
 const emit = defineEmits<Emits>();
 
+const props = defineProps<{
+  symbolSearchInput: string;
+}>();
+
 // 심볼 데이터 관리
 const {
+  activeTab,
+  searchQuery,
   currentSelectedSymbol,
   marketData,
   filteredSymbols,
@@ -73,6 +81,14 @@ const {
   addVisibleSymbols,
   unsubscribeAll,
 } = useSymbolData();
+
+watch(
+  () => props.symbolSearchInput,
+  (newSearchInput) => {
+    searchQuery.value = newSearchInput;
+  },
+  { immediate: true }
+);
 
 // 카테고리 열림/닫힘 상태 관리
 const open = reactive({

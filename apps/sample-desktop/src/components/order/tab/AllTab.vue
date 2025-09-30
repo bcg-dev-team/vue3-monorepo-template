@@ -40,7 +40,6 @@
             </div>
           </div>
           <div class="favorite-icon" @click.stop="toggleFavorite(symbol.ticker)">
-            <!-- FIXME: 'fav' 아이콘 추가 후 변경 -->
             <BaseIcon
               name="heart-thin"
               size="sm"
@@ -209,11 +208,10 @@ import {
   getChangeFromBaseClass,
 } from '@template/utils';
 import { useSymbolVisibility } from '@/composables/useSymbolVisibility';
-import { BaseRadioGroup, BaseInput, BaseIcon } from '@template/ui';
 import { useSymbolData } from '@/composables/useSymbolData';
 import { onMounted, onUnmounted, reactive } from 'vue';
 import type { TradingSymbol } from '@template/types';
-import type { RadioOption } from '@template/ui';
+import { BaseIcon } from '@template/ui';
 
 interface Emits {
   (e: 'symbol-select', symbol: TradingSymbol): void;
@@ -223,8 +221,6 @@ const emit = defineEmits<Emits>();
 
 // 심볼 데이터 관리
 const {
-  activeTab,
-  searchQuery,
   currentSelectedSymbol,
   marketData,
   filteredSymbols,

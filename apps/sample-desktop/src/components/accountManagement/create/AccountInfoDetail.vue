@@ -194,7 +194,6 @@ const isAccountActive = computed({
   get: () => props.account.visible === 'Y',
   set: (value: boolean) => {
     emit('updateAccountActive', value);
-    console.log('계좌 활성화 상태 변경:', value ? 'Y' : 'N');
   },
 });
 

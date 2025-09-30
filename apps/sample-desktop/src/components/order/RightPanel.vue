@@ -2,7 +2,6 @@
   <div class="flex flex-col bg-white p-4">
     <!-- 계좌 선택 -->
     <div class="mt-3">
-      <!-- TODO: BaseInputSelect로 대체될 영역-->
       <BaseInputSelect v-model="selectedAccount" :options="accountOptions" />
     </div>
 
@@ -25,7 +24,12 @@
 
     <!-- 주문 유형 선택 -->
     <div class="mt-3">
-      <BaseRadioGroup v-model="selectedOrderType" :options="orderTypeOptions" name="orderType" />
+      <BaseRadioGroup
+        v-model="selectedOrderType"
+        :options="orderTypeOptions"
+        name="orderType"
+        fullwidth
+      />
     </div>
 
     <!-- 매도 매수 버튼 -->

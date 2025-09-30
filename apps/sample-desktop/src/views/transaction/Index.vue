@@ -124,7 +124,6 @@ const handleSearch = async () => {
       const response = await tradeService.getTradeProfitAndLoss(queryParams);
       profitAndLossSummaryData.value = response.data.summary;
       profitAndLossDetailData.value = response.data.details;
-      //TODO: 청산손익 조회
     } else if (modelValue.value === 'history') {
       //TODO: 결제내역 조회
     }

@@ -208,15 +208,8 @@ export function generateSymbolOverrides(settings: ChartSettings): Record<string,
   // 3. 차트 값 표시 (OHLC 값만) - 범례에서 OHLC 표시
   overrides['paneProperties.legendProperties.showSeriesOHLC'] = settings.symbols.showChartValues;
 
-  // 4. 봉 변화값 표시 (변화값/비율) - 여러 속성 시도
-  // TradingView에서 변화값과 OHLC를 분리하는 속성들 시도
+  // 4. 봉 변화값 표시 (변화값/비율)
   overrides['paneProperties.legendProperties.showBarChange'] = settings.symbols.showBarChangeValues;
-  overrides['paneProperties.legendProperties.showPriceChange'] =
-    settings.symbols.showBarChangeValues;
-  overrides['paneProperties.legendProperties.showPercentChange'] =
-    settings.symbols.showBarChangeValues;
-  overrides['paneProperties.legendProperties.showSeriesChange'] =
-    settings.symbols.showBarChangeValues;
 
   // 5. 지표 관련 설정 - 올바른 매핑
   overrides['paneProperties.legendProperties.showStudyTitles'] =
@@ -246,58 +239,33 @@ export function generateSymbolOverrides(settings: ChartSettings): Record<string,
 export function generateScalesOverrides(settings: ChartSettings): Record<string, any> {
   const overrides: Record<string, any> = {};
 
-  // 가격 라벨 표시 (축의 가격 스케일 표시)
-  overrides['scalesProperties.showRightScale'] = settings.scales.showPriceLabels;
-  overrides['scalesProperties.showLeftScale'] = settings.scales.showPriceLabels;
-
   // 현재 가격 표시 (우측 현재 값) - "종목 가격" 설정으로 제어
   overrides['scalesProperties.showSeriesLastValue'] = settings.scales.showPriceLabels;
 
-  // 격자선 설정 - 개별 방향 제어
+  // 격자선 설정
   if (settings.scales.showGridLines) {
-    // 격자선 모드에 따른 설정
-    const gridMode = settings.scales.gridLineMode;
+    // 격자선 모드 매핑
+    const gridModeMap: Record<string, string> = {
+      both: 'both',
+      vertical: 'vert',
+      horizontal: 'horz',
+    };
 
-    // TradingView에서 사용하는 정확한 격자선 모드 값들
-    if (gridMode === 'both') {
-      // 수직 + 수평 모두 표시 - 여러 가능한 값 시도
-      overrides['paneProperties.gridLinesMode'] = 'both';
-      overrides['paneProperties.vertGridProperties.visible'] = true;
-      overrides['paneProperties.horzGridProperties.visible'] = true;
-    } else if (gridMode === 'vertical') {
-      // 수직선만 표시 - 여러 가능한 값 시도
-      overrides['paneProperties.gridLinesMode'] = 'vert';
-      overrides['paneProperties.vertGridProperties.visible'] = true;
-      overrides['paneProperties.horzGridProperties.visible'] = false;
-    } else if (gridMode === 'horizontal') {
-      // 수평선만 표시 - 여러 가능한 값 시도
-      overrides['paneProperties.gridLinesMode'] = 'horz';
-      overrides['paneProperties.vertGridProperties.visible'] = false;
-      overrides['paneProperties.horzGridProperties.visible'] = true;
-    }
+    overrides['paneProperties.gridLinesMode'] = gridModeMap[settings.scales.gridLineMode] || 'both';
 
     // 격자선 색상 설정
     overrides['paneProperties.vertGridProperties.color'] = settings.scales.verticalGridColor;
     overrides['paneProperties.horzGridProperties.color'] = settings.scales.horizontalGridColor;
   } else {
-    // 격자선 완전 비활성화
+    // 격자선 비활성화
     overrides['paneProperties.gridLinesMode'] = 'none';
-    overrides['paneProperties.vertGridProperties.visible'] = false;
-    overrides['paneProperties.horzGridProperties.visible'] = false;
   }
 
   console.log('[TradingViewFeatures] Grid lines settings:', {
     showGridLines: settings.scales.showGridLines,
     gridLineMode: settings.scales.gridLineMode,
-    appliedOverrides: {
-      'paneProperties.gridLinesMode': overrides['paneProperties.gridLinesMode'],
-      'paneProperties.vertGridProperties.visible':
-        overrides['paneProperties.vertGridProperties.visible'],
-      'paneProperties.horzGridProperties.visible':
-        overrides['paneProperties.horzGridProperties.visible'],
-    },
+    appliedMode: overrides['paneProperties.gridLinesMode'],
   });
-
   // 십자선 설정 - TradingView 공식 API 사용
   if (settings.scales.showCrosshair) {
     // 십자선 활성화 - mode 1 (기본 모드)
@@ -352,9 +320,6 @@ export function generateBasicSettingsOverrides(settings: ChartSettings): Record<
     overrides['timezone'] = settings.basic.timezone;
   }
 
-  // 시간 형식 설정 (24시간 고정)
-  overrides['scalesProperties.timeVisible'] = true;
-
   return overrides;
 }
 
@@ -383,42 +348,6 @@ export function needsFeaturesRecreation(
   currentSettings: ChartSettings,
   newSettings: ChartSettings
 ): boolean {
-  console.log('[TradingViewFeatures] 🔍 RECREATION CHECK INPUT:', {
-    currentSettings: JSON.stringify(currentSettings, null, 2),
-    newSettings: JSON.stringify(newSettings, null, 2),
-  });
-  // 범례 표시 여부 결정 - 모든 범례 항목 포함 (안전한 접근)
-  const currentShowAnyLegend =
-    currentSettings.symbols.showSymbolName ||
-    currentSettings.symbols.showChartValues ||
-    currentSettings.symbols.showBarChangeValues ||
-    (currentSettings.symbols as any).showIndicatorNames ||
-    currentSettings.symbols.showIndicatorArguments ||
-    currentSettings.symbols.showIndicatorValues;
-
-  const newShowAnyLegend =
-    newSettings.symbols.showSymbolName ||
-    newSettings.symbols.showChartValues ||
-    newSettings.symbols.showBarChangeValues ||
-    newSettings.symbols.showIndicatorNames ||
-    newSettings.symbols.showIndicatorArguments ||
-    newSettings.symbols.showIndicatorValues;
-
-  // 개별 변경사항 확인
-  const legendChange = currentShowAnyLegend !== newShowAnyLegend;
-  const symbolNameChange =
-    currentSettings.symbols.showSymbolName !== newSettings.symbols.showSymbolName;
-  const chartValuesChange =
-    currentSettings.symbols.showChartValues !== newSettings.symbols.showChartValues;
-  const barChangeValuesChange =
-    currentSettings.symbols.showBarChangeValues !== newSettings.symbols.showBarChangeValues;
-  const indicatorNamesChange =
-    (currentSettings.symbols as any).showIndicatorNames !== newSettings.symbols.showIndicatorNames;
-  const indicatorArgumentsChange =
-    currentSettings.symbols.showIndicatorArguments !== newSettings.symbols.showIndicatorArguments;
-  const indicatorValuesChange =
-    currentSettings.symbols.showIndicatorValues !== newSettings.symbols.showIndicatorValues;
-
   // 축 및 눈금선 변경사항 확인 (안전한 접근)
   const gridLinesChange =
     currentSettings.scales?.showGridLines !== newSettings.scales.showGridLines;
@@ -429,72 +358,21 @@ export function needsFeaturesRecreation(
   const priceLabelsChange =
     currentSettings.scales?.showPriceLabels !== newSettings.scales.showPriceLabels;
 
-  console.log('[TradingViewFeatures] 🔍 SCALES DEBUG:', {
-    currentScales: currentSettings.scales,
-    newScales: newSettings.scales,
-    crosshairChange: crosshairChange,
-    currentCrosshair: currentSettings.scales?.showCrosshair,
-    newCrosshair: newSettings.scales.showCrosshair,
-  });
-
   // 트레이딩 변경사항 확인
   const tradingButtonsChange =
     currentSettings.trading.showBuySellButtons !== newSettings.trading.showBuySellButtons;
   const tradingOrdersChange = currentSettings.trading.showOrders !== newSettings.trading.showOrders;
 
-  // Features 변경이 필요한 설정들 확인 - 모든 UI 변경사항 포함
-  // 십자선 변경은 특히 강제로 재생성 (TradingView API 제한으로 인해)
+  // 차트 재생성이 꼭 필요한 경우만 확인
+  // 대부분의 UI 설정은 overrides로 적용 가능
   const needsRecreation =
-    legendChange ||
-    symbolNameChange ||
-    chartValuesChange ||
-    barChangeValuesChange ||
-    indicatorNamesChange ||
-    indicatorArgumentsChange ||
-    indicatorValuesChange ||
-    gridLinesChange ||
-    gridLineModeChange ||
-    crosshairChange ||
-    priceLabelsChange ||
-    tradingButtonsChange ||
-    tradingOrdersChange;
+    gridLineModeChange || // 격자선 모드 변경 (API 제한)
+    tradingOrdersChange; // 주문 표시 변경 (테마 변경 필요)
 
-  console.log('[TradingViewFeatures] Recreation check details:', {
-    currentShowAnyLegend,
-    newShowAnyLegend,
-    legendChange,
-    symbolNameChange,
-    chartValuesChange,
-    barChangeValuesChange,
-    indicatorNamesChange,
-    indicatorArgumentsChange,
-    indicatorValuesChange,
-    gridLinesChange,
+  console.log('[TradingViewFeatures] 🔍 RECREATION CHECK:', {
     gridLineModeChange,
-    crosshairChange,
-    priceLabelsChange,
-    tradingButtonsChange,
     tradingOrdersChange,
     needsRecreation,
-    '🔍 CROSSHAIR DEBUG': {
-      currentCrosshair: currentSettings.scales.showCrosshair,
-      newCrosshair: newSettings.scales.showCrosshair,
-      crosshairChange: crosshairChange,
-    },
-    currentSettings: {
-      showSymbolName: currentSettings.symbols.showSymbolName,
-      showChartValues: currentSettings.symbols.showChartValues,
-      showBarChangeValues: currentSettings.symbols.showBarChangeValues,
-      showIndicatorValues: currentSettings.symbols.showIndicatorValues,
-      showIndicatorArguments: currentSettings.symbols.showIndicatorArguments,
-    },
-    newSettings: {
-      showSymbolName: newSettings.symbols.showSymbolName,
-      showChartValues: newSettings.symbols.showChartValues,
-      showBarChangeValues: newSettings.symbols.showBarChangeValues,
-      showIndicatorValues: newSettings.symbols.showIndicatorValues,
-      showIndicatorArguments: newSettings.symbols.showIndicatorArguments,
-    },
   });
 
   return needsRecreation;

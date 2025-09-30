@@ -187,3 +187,200 @@ export const orderSummaryColumns: ColDef[] = [
     ],
   } as any,
 ];
+
+/**
+ * 거래내역 청산손익 요약 테이블 컬럼 정의
+ */
+export const profitAndLossSummaryColumns: ColDef[] = [
+  {
+    headerName: '구분',
+    field: 'type',
+    width: 120,
+  },
+  {
+    headerName: '매입금액',
+    field: 'purchaseAmount',
+    width: 120,
+  },
+  {
+    headerName: '청산금액',
+    field: 'liquidationAmount',
+    width: 120,
+  },
+  {
+    headerName: '청산손익',
+    field: 'liquidationPnL',
+    width: 120,
+  },
+  {
+    headerName: '수익률',
+    field: 'returnRate',
+    width: 120,
+  },
+  {
+    headerName: '수수료',
+    field: 'commission',
+    width: 120,
+  },
+  {
+    headerName: '스왑',
+    field: 'swap',
+    width: 120,
+  },
+  {
+    headerName: '순손익',
+    field: 'netPnL',
+    width: 120,
+  },
+  {
+    headerName: '순수익률',
+    field: 'netReturnRate',
+    width: 120,
+  },
+];
+
+/**
+ * 거래내역 청산손익 상세 테이블 컬럼 정의
+ */
+export const profitAndLossDetailColumns: ColDef[] = [
+  {
+    headerName: '청산일자',
+    field: 'liquidationDate',
+    width: 120,
+  },
+  {
+    headerName: '종목코드',
+    field: 'itemCode',
+    width: 120,
+  },
+  {
+    headerName: '구분',
+    field: 'type',
+    width: 120,
+  },
+  {
+    headerName: '매입가격',
+    field: 'purchasePrice',
+    width: 120,
+  },
+  {
+    headerName: '청산가격',
+    field: 'liquidationPrice',
+    width: 120,
+  },
+  {
+    headerName: '청산수량',
+    field: 'liquidationQuantity',
+    width: 120,
+  },
+  {
+    headerName: '청산손익',
+    field: 'liquidationPnL',
+    width: 120,
+  },
+  {
+    headerName: '스왑수수료',
+    field: 'swap',
+    width: 120,
+  },
+  {
+    headerName: '체결수수료',
+    field: 'tradeCharge',
+    width: 120,
+  },
+  {
+    headerName: '청산산순손익',
+    field: 'netPnL',
+    width: 120,
+  },
+  {
+    headerName: '매입일시',
+    field: 'purchaseDate',
+    width: 120,
+  },
+  {
+    headerName: '청산일시',
+    field: 'liquidationDate',
+    width: 120,
+  },
+];
+
+/**
+ * 거래내역 결제내역 상세 테이블 컬럼 정의
+ */
+export const paymentDetailColumns: ColDef[] = [
+  {
+    headerName: '결제일자',
+    field: 'paymentDate',
+    width: 120,
+  },
+  {
+    headerName: '종목코드',
+    field: 'itemCode',
+    width: 120,
+  },
+  { headerName: '적요명', field: 'description', width: 120 },
+  {
+    headerName: '통화',
+    field: 'currency',
+    width: 120,
+  },
+  {
+    headerName: '구분',
+    field: 'type',
+    width: 120,
+  },
+  { headerName: '유형', field: 'type2', width: 120 },
+
+  {
+    headerName: '체결수량',
+    field: 'executedQuantity',
+    width: 120,
+  },
+
+  {
+    headerName: '체결가격',
+    field: 'executedPrice',
+    width: 120,
+  },
+  {
+    headerName: '체결금액',
+    field: 'executedAmount',
+    width: 120,
+  },
+  {
+    headerName: '결제금액',
+    field: 'settlementAmount',
+    width: 120,
+  },
+  {
+    headerName: '잔고수량',
+    children: [
+      {
+        headerName: '이전',
+        field: 'balanceQuantityBefore',
+        width: 120,
+      },
+      {
+        headerName: '이후',
+        field: 'balanceQuantityAfter',
+        width: 120,
+      },
+    ],
+  } as any,
+  {
+    headerName: '잔고수량 ',
+    children: [
+      {
+        headerName: '이전',
+        field: 'balanceQuantityBefore',
+        width: 120,
+      },
+      {
+        headerName: '이후',
+        field: 'balanceQuantityAfter',
+        width: 120,
+      },
+    ],
+  } as any,
+];

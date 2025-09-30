@@ -22,9 +22,16 @@
       />
     </div>
 
-    <AllTab v-if="activeTab === 'all'" @symbol-select="selectSymbol" />
-    <WatchTab v-if="activeTab === 'favorite'" @symbol-select="selectSymbol" />
-    <HoldsTab v-if="activeTab === 'holding'" @symbol-select="selectSymbol" />
+    <SearchTab
+      v-if="searchQuery !== ''"
+      @symbol-select="selectSymbol"
+      :symbolSearchInput="searchQuery"
+    />
+    <div v-else>
+      <AllTab v-if="activeTab === 'all'" @symbol-select="selectSymbol" />
+      <WatchTab v-if="activeTab === 'favorite'" @symbol-select="selectSymbol" />
+      <HoldsTab v-if="activeTab === 'holding'" @symbol-select="selectSymbol" />
+    </div>
   </div>
 </template>
 
@@ -41,6 +48,7 @@ import { useSymbolData } from '@/composables/useSymbolData';
 import { onMounted, onUnmounted, reactive } from 'vue';
 import type { TradingSymbol } from '@template/types';
 import type { RadioOption } from '@template/ui';
+import SearchTab from './tab/SearchTab.vue';
 import WatchTab from './tab/WatchTab.vue';
 import HoldsTab from './tab/HoldsTab.vue';
 import AllTab from './tab/AllTab.vue';

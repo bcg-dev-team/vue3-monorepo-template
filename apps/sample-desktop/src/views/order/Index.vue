@@ -1,7 +1,7 @@
 <template>
   <div class="order-page min-w-[1920px]">
     <!-- 실시간 설정 패널 -->
-    <RealtimeConfigPanel />
+    <!-- <RealtimeConfigPanel /> -->
 
     <!-- 좌측(15%) + 우측(85%) 분할 -->
     <BaseTwoWaySplitPane

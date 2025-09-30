@@ -101,8 +101,8 @@ const handleSearch = async () => {
   try {
     if (modelValue.value === 'order') {
       const queryParams: TradeOrderListRequest = {
-        accountNo: '',
-        accountPassword: '',
+        accountNo: '250929000009',
+        accountPassword: '123456',
         positionCd: tradeSearchStore.positionCd,
         orderCd: tradeSearchStore.orderCd,
         orderStartDate: tradeSearchStore.orderStartDate,
@@ -114,8 +114,8 @@ const handleSearch = async () => {
       orderDetailData.value = response.data.details;
     } else if (modelValue.value === 'clear') {
       const queryParams: TradeProfitAndLossRequest = {
-        accountNo: '',
-        accountPassword: '',
+        accountNo: '250929000009',
+        accountPassword: '123456',
         orderStartDate: tradeSearchStore.orderStartDate,
         orderEndDate: tradeSearchStore.orderEndDate,
         nextKey: 0,

@@ -1,3 +1,4 @@
+import { ORDER_CODE, POSITION_CODE } from '../components/transaction/constants/searchBoxCod';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
@@ -7,9 +8,9 @@ import { ref } from 'vue';
  */
 export const useTradeSearchStore = defineStore('tradeSearch', () => {
   // L/S 구분
-  const positionCd = ref<string>('');
+  const positionCd = ref<string>(POSITION_CODE.total);
   // 매입/청산 구분
-  const orderCd = ref<string>('');
+  const orderCd = ref<string>(ORDER_CODE.total);
   // 기간: 시작일, 종료일 (yyyy-MM-dd 형식 가정)
   const orderStartDate = ref<string>('');
   const orderEndDate = ref<string>('');
@@ -44,8 +45,8 @@ export const useTradeSearchStore = defineStore('tradeSearch', () => {
    * 검색 조건을 초기화합니다.
    */
   const reset = () => {
-    positionCd.value = '';
-    orderCd.value = '';
+    positionCd.value = POSITION_CODE.total;
+    orderCd.value = ORDER_CODE.total;
     orderStartDate.value = '';
     orderEndDate.value = '';
   };

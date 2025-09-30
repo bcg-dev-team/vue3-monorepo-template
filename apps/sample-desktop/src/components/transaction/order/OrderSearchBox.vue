@@ -36,8 +36,8 @@ import { POSITION_CODE, ORDER_CODE } from '@/components/transaction/constants/se
 import PeriodSelect from '@/components/transaction/common/PeriodSelect.vue';
 import { useTradeSearchStore } from '@/stores/useTradeSearchStore';
 import { BaseRadioGroup } from '@template/ui';
-import { onMounted, onUnmounted } from 'vue';
 import { storeToRefs } from 'pinia';
+import { onUnmounted } from 'vue';
 
 const tradeSearchStore = useTradeSearchStore();
 const { positionCd, orderCd } = storeToRefs(tradeSearchStore);
@@ -56,12 +56,6 @@ const { positionCd, orderCd } = storeToRefs(tradeSearchStore);
 const handlePeriodChange = (startDate: string, endDate: string) => {
   tradeSearchStore.setOrderPeriod(startDate, endDate);
 };
-
-onMounted(() => {
-  // 마운트 시점에 기본값을 설정 (스토어 초기값은 빈 값)
-  if (!positionCd.value) tradeSearchStore.setPositionCd(POSITION_CODE.total);
-  if (!orderCd.value) tradeSearchStore.setOrderCd(ORDER_CODE.total);
-});
 
 onUnmounted(() => {
   tradeSearchStore.reset();

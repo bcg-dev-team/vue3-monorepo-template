@@ -54,8 +54,8 @@ import {
   orderSummaryColumns,
 } from '@/components/transaction/constants/tableColumnDefs';
 import GridWidthButton from '@/components/transaction/common/GridWidthButton.vue';
-import { OrderDetail, OrderSummary } from '@/types/api/trade.types';
 import LabelContent from '@/components/common/LabelContent.vue';
+import { OrderDetail, OrderSummary } from '@template/api';
 import type { ColDef } from 'ag-grid-community';
 import { computed, onMounted, ref } from 'vue';
 import { BaseDataGrid } from '@template/ui';

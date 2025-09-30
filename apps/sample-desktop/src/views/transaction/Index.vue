@@ -37,7 +37,7 @@ import {
   TradePaymentsHistoryDetail,
   TradeProfitAndLossDetail,
   TradeOrderListRequest,
-} from '@/types/api/trade.types';
+} from '@template/api';
 import HistoryTableContent from '@/components/transaction/history/HistoryTableContent.vue';
 import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';
 import HistorySearchBox from '@/components/transaction/history/HistorySearchBox.vue';

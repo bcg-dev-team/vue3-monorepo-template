@@ -76,7 +76,7 @@
                           v-if="showAccountOrderChange"
                           class="drag-handle flex cursor-move items-center opacity-50 transition-opacity hover:opacity-100"
                         >
-                          <BaseIcon name="grap" size="md" color="var(--font-color-muted)" />
+                          <BaseIcon name="grab" size="md" color="var(--font-color-muted)" />
                         </div>
                       </template>
                     </BaseListItem>

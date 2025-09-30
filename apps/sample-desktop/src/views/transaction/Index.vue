@@ -26,7 +26,11 @@
             :detailData="profitAndLossDetailData"
             @loadInitialData="handleSearch"
           />
-          <HistoryTableContent v-if="modelValue === 'history'" />
+          <HistoryTableContent
+            v-if="modelValue === 'history'"
+            :detailData="paymentHistoryDetailData"
+            @loadInitialData="handleSearch"
+          />
         </template>
       </MainCardContent>
     </CardLayoutVertical>
@@ -36,13 +40,13 @@
 <script setup lang="ts">
 import {
   OrderSummary,
-  TradePaymentsHistorySummary,
   TradeProfitAndLossSummary,
   TradeProfitAndLossRequest,
   OrderDetail,
   TradePaymentsHistoryDetail,
   TradeProfitAndLossDetail,
   TradeOrderListRequest,
+  TradePaymentsHistoryRequest,
 } from '@template/api';
 import { initialProfitAndLossSummary } from '@/components/transaction/constants/initialData';
 import HistoryTableContent from '@/components/transaction/history/HistoryTableContent.vue';
@@ -96,6 +100,7 @@ const orderSummaryData = ref<OrderSummary[]>([]);
 const orderDetailData = ref<OrderDetail[]>([]);
 const profitAndLossSummaryData = ref<TradeProfitAndLossSummary>(initialProfitAndLossSummary);
 const profitAndLossDetailData = ref<TradeProfitAndLossDetail[]>([]);
+const paymentHistoryDetailData = ref<TradePaymentsHistoryDetail[]>([]);
 
 const handleSearch = async () => {
   try {
@@ -110,8 +115,11 @@ const handleSearch = async () => {
         nextKey: 0,
       };
       const response = await tradeService.getTradeOrderList(queryParams);
-      orderSummaryData.value = response.data.summary;
-      orderDetailData.value = response.data.details;
+
+      if (response?.data) {
+        orderSummaryData.value = response.data.summary || [];
+        orderDetailData.value = response.data.details || [];
+      }
     } else if (modelValue.value === 'clear') {
       const queryParams: TradeProfitAndLossRequest = {
         accountNo: '250929000009',
@@ -125,10 +133,22 @@ const handleSearch = async () => {
       profitAndLossSummaryData.value = response.data.summary;
       profitAndLossDetailData.value = response.data.details;
     } else if (modelValue.value === 'history') {
-      //TODO: 결제내역 조회
+      const queryParams: TradePaymentsHistoryRequest = {
+        accountNo: '250929000009',
+        accountPassword: '123456',
+        orderStartDate: tradeSearchStore.orderStartDate,
+        orderEndDate: tradeSearchStore.orderEndDate,
+        nextKey: 0,
+      };
+
+      const response = await tradeService.getTradePaymentsHistory(queryParams);
+
+      if (response?.data) {
+        paymentHistoryDetailData.value = response.data.details || [];
+      }
     }
   } catch (error) {
-    console.error(error);
+    console.error('거래 내역 조회 중 오류 발생:', error);
   }
 };
 </script>

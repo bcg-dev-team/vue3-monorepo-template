@@ -3,6 +3,7 @@
  * Mock과 WebSocket을 명확히 분리하여 관리
  */
 
+import { generateSubscriptionId } from '../../../utils/chart/ChartUtils';
 import { getDataSourceConfig } from '../../../config/dataSource';
 import { webSocketManager } from './WebSocketManager';
 import type { SymbolData } from '@template/types';
@@ -46,7 +47,7 @@ export class DataSourceManager {
 
     // 각 심볼에 대해 구독자 등록
     symbols.forEach((symbol) => {
-      const subscriptionId = `${symbol}_${Date.now()}_${Math.random()}`;
+      const subscriptionId = generateSubscriptionId(symbol);
       subscriptionIds.push(subscriptionId);
 
       // 구독자 등록

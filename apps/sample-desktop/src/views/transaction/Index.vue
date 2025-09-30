@@ -20,7 +20,12 @@
             :detailData="orderDetailData"
             @loadInitialData="handleSearch"
           />
-          <ClearTableContent v-if="modelValue === 'clear'" />
+          <ClearTableContent
+            v-if="modelValue === 'clear'"
+            :summaryData="profitAndLossSummaryData"
+            :detailData="profitAndLossDetailData"
+            @loadInitialData="handleSearch"
+          />
           <HistoryTableContent v-if="modelValue === 'history'" />
         </template>
       </MainCardContent>
@@ -33,6 +38,7 @@ import {
   OrderSummary,
   TradePaymentsHistorySummary,
   TradeProfitAndLossSummary,
+  TradeProfitAndLossRequest,
   OrderDetail,
   TradePaymentsHistoryDetail,
   TradeProfitAndLossDetail,
@@ -87,13 +93,15 @@ const tradeSearchStore = useTradeSearchStore();
 
 const orderSummaryData = ref<OrderSummary[]>([]);
 const orderDetailData = ref<OrderDetail[]>([]);
+const profitAndLossSummaryData = ref<TradeProfitAndLossSummary>();
+const profitAndLossDetailData = ref<TradeProfitAndLossDetail[]>([]);
 
 const handleSearch = async () => {
   try {
     if (modelValue.value === 'order') {
       const queryParams: TradeOrderListRequest = {
-        accountNo: '250929000009',
-        accountPassword: '123456',
+        accountNo: '',
+        accountPassword: '',
         positionCd: tradeSearchStore.positionCd,
         orderCd: tradeSearchStore.orderCd,
         orderStartDate: tradeSearchStore.orderStartDate,
@@ -104,6 +112,17 @@ const handleSearch = async () => {
       orderSummaryData.value = response.data.summary;
       orderDetailData.value = response.data.details;
     } else if (modelValue.value === 'clear') {
+      const queryParams: TradeProfitAndLossRequest = {
+        accountNo: '',
+        accountPassword: '',
+        orderStartDate: tradeSearchStore.orderStartDate,
+        orderEndDate: tradeSearchStore.orderEndDate,
+        nextKey: 0,
+      };
+
+      const response = await tradeService.getTradeProfitAndLoss(queryParams);
+      profitAndLossSummaryData.value = response.data.summary;
+      profitAndLossDetailData.value = response.data.details;
       //TODO: 청산손익 조회
     } else if (modelValue.value === 'history') {
       //TODO: 결제내역 조회

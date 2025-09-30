@@ -4,16 +4,12 @@
  */
 
 import { getAllSymbols, getSymbolBasePrice } from '@template/mocks';
-import { useRealtimeConfig } from './useRealtimeConfig';
 import type { SymbolData } from '@template/types';
 import { ref, readonly } from 'vue';
 
 export function useMarketData() {
   // 시장 데이터 상태
   const marketData = ref<SymbolData[]>([]);
-
-  // 실시간 설정 관리
-  const realtimeConfig = useRealtimeConfig();
 
   // 시장 데이터 초기화
   const initializeMarketData = () => {
@@ -59,7 +55,6 @@ export function useMarketData() {
     } else {
       console.warn(`[useMarketData] ${symbol} 데이터를 찾을 수 없습니다!`);
     }
-    recordMarketUpdate();
   };
 
   // 차트 스트리밍 시스템과 연동을 위한 전역 함수 등록
@@ -67,18 +62,7 @@ export function useMarketData() {
     if (typeof window !== 'undefined') {
       // 전역 함수로 차트 스트리밍 데이터를 받을 수 있도록 설정
       (window as any).updateMarketDataFromStream = updateMarketDataFromStream;
-
-      // 스트리밍 간격 설정 함수 등록
-      (window as any).getStreamingInterval = () => {
-        const config = realtimeConfig.getConfig();
-        return config.market.interval;
-      };
     }
-  };
-
-  // 시장 데이터 업데이트 기록
-  const recordMarketUpdate = () => {
-    realtimeConfig.recordUpdate('market');
   };
 
   // 특정 심볼의 데이터 가져오기

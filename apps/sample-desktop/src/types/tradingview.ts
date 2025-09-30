@@ -2,9 +2,8 @@
  * TradingView 관련 타입 정의
  */
 
-// 공통 타입 import 및 re-export
-import type { TradingSymbol, TradingViewBar, SymbolPrice } from '@template/types';
-export type { TradingSymbol, TradingViewBar, SymbolPrice };
+// 공통 타입 import
+import type { TradingSymbol, TradingViewBar } from '@template/types';
 
 // 심볼 정보
 export interface TradingViewSymbolInfo {
@@ -82,9 +81,11 @@ export interface TradingViewWidgetConfig {
   user_id?: string;
   overrides?: Record<string, any>;
   studies_overrides?: Record<string, any>;
-  theme?: 'light' | 'dark';
+  // theme - settings.basic.theme으로 캔들 색상 제어
   custom_css_url?: string;
   loading_screen?: { backgroundColor: string };
+  timezone?: string; // 타임존 설정
+  time_frames?: any[]; // 시간대 설정
 }
 
 // TradingView 위젯 인스턴스

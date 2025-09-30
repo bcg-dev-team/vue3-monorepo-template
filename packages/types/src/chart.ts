@@ -330,3 +330,45 @@ export interface ChartToolbarEmits {
   (e: 'chart-settings'): void;
   (e: 'workspace-save'): void;
 }
+
+/**
+ * 차트 윈도우 이벤트 타입
+ * 개별 차트 윈도우의 상호작용 이벤트
+ */
+export interface ChartWindowEmits {
+  (e: 'select'): void;
+  (e: 'close'): void;
+  (e: 'sync', syncColor: string): void;
+  (e: 'external-link'): void;
+  (e: 'previous'): void;
+  (e: 'next'): void;
+  (e: 'symbol-change', symbol: TradingSymbol): void;
+  (e: 'timeframe-change', timeframe: string): void;
+}
+
+/**
+ * 멀티 차트 레이아웃 이벤트 타입
+ * 여러 차트를 관리하는 레이아웃의 이벤트
+ */
+export interface MultiChartLayoutEmits {
+  (e: 'chart-select', chart: ChartData): void;
+  (e: 'symbol-change', symbol: TradingSymbol): void;
+}
+
+/**
+ * 차트 드로잉 툴바 이벤트 타입
+ * 차트 그리기 도구들의 이벤트
+ */
+export interface ChartDrawingToolbarEmits {
+  (e: 'add-chart'): void;
+  (e: 'chart-eye'): void;
+  (e: 'chart-setup'): void;
+}
+
+/**
+ * TradingView 차트 이벤트 타입
+ * TradingView 차트 컴포넌트의 이벤트
+ */
+export interface TradingViewChartEmits {
+  (e: 'chart-ready'): void;
+}

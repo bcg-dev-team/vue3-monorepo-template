@@ -29,17 +29,10 @@ export function generateThemeOverrides(theme: 'greenRed' | 'redBlue'): Record<st
 
   const overrides: Record<string, any> = {
     // 캔들스틱 스타일 강제 설정
+    // FIXME: 차트 종류 기획에 따라 수정 필요
+
     'mainSeriesProperties.style': 1, // 1 = 캔들스틱
-
-    // 기본 캔들 색상 속성들
-    'mainSeriesProperties.upColor': colors.up,
-    'mainSeriesProperties.downColor': colors.down,
-    'mainSeriesProperties.borderUpColor': colors.up,
-    'mainSeriesProperties.borderDownColor': colors.down,
-    'mainSeriesProperties.wickUpColor': colors.up,
-    'mainSeriesProperties.wickDownColor': colors.down,
-
-    // candleStyle 속성들
+    // 캔들 색상 속성들
     'mainSeriesProperties.candleStyle.upColor': colors.up,
     'mainSeriesProperties.candleStyle.downColor': colors.down,
     'mainSeriesProperties.candleStyle.borderUpColor': colors.up,
@@ -47,11 +40,6 @@ export function generateThemeOverrides(theme: 'greenRed' | 'redBlue'): Record<st
     'mainSeriesProperties.candleStyle.wickUpColor': colors.up,
     'mainSeriesProperties.candleStyle.wickDownColor': colors.down,
   };
-
-  console.log(`[ChartTheme] Applying ${theme} theme:`, {
-    upColor: colors.up,
-    downColor: colors.down,
-  });
 
   return overrides;
 }

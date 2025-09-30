@@ -1,3 +1,4 @@
+import { generateSubscriptionId } from '../../../utils/chart/ChartUtils';
 import { getDataSourceConfig } from '../../../config/dataSource';
 
 /**
@@ -140,7 +141,7 @@ export class WebSocketManager {
    * 종목 구독
    */
   subscribe(symbol: string, callback: (data: any) => void): string {
-    const subscriptionId = `${symbol}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const subscriptionId = generateSubscriptionId(symbol);
     console.log('[WebSocket] 구독 시작:', symbol, 'ID:', subscriptionId);
 
     if (!this.subscriptions.has(symbol)) {

@@ -46,15 +46,11 @@ export type IconName =
   | 'pause'
   | 'move'
   | 'withdraw'
-<<<<<<< HEAD
-  | 'grap'
-=======
   | 'delete'
   | 'save'
   | 'sort'
   | 'grab'
   | 'drag-draw'
->>>>>>> 08afe46f (chore(packages/ui): 아이콘 타입 목록 업데이트 및 문서 수정)
 
   // 네비게이션 아이콘
   | 'home'
@@ -224,7 +220,6 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   'arrow-drawer': 'fill', // fill="#333740"
   'arrow-right-thin': 'stroke', // stroke="#333740"
   'arrow-updown': 'fill', // fill="#333740"
-  'arrow-updown-solid': 'fill', // fill="#333740"
   'arrow-forward-sm': 'fill', // fill="#333740"
   'arrow-backward-sm': 'fill', // fill="#333740"
   'arrow-down-solid': 'fill', // fill (path 요소)
@@ -257,15 +252,11 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   pause: 'fill', // fill="#333740"
   move: 'fill', // fill="#333740" (path만 사용)
   withdraw: 'fill', // fill="#333740" (path만 사용)
-<<<<<<< HEAD
-  grap: 'fill', // fill="#333740"
-=======
   delete: 'fill', // fill (path 요소)
   save: 'fill', // fill (path 요소)
   sort: 'fill', // fill (path 요소)
   grab: 'fill', // fill (path 요소)
   'drag-draw': 'fill', // fill (path 요소)
->>>>>>> 08afe46f (chore(packages/ui): 아이콘 타입 목록 업데이트 및 문서 수정)
 
   // 네비게이션 아이콘
   home: 'fill', // fill="#333740"

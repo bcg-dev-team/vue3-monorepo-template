@@ -8,9 +8,6 @@ import {
 } from '../types/trade.types';
 import { CustomAxiosInstance } from '../types';
 
-// const BASE_URL = 'http://172.25.1.24:8080';
-const BASE_URL = 'http://192.168.0.123:8080';
-
 export class TradeService {
   private axios: CustomAxiosInstance;
 
@@ -19,23 +16,20 @@ export class TradeService {
   }
 
   getTradeOrderList(requestBody: TradeOrderListRequest) {
-    return this.axios.get<TradeOrderListResponse>(`${BASE_URL}/trades`, {
+    return this.axios.get<TradeOrderListResponse>('/trades', {
       params: requestBody,
     });
   }
 
   getTradePaymentsHistory(requestBody: TradePaymentsHistoryRequest) {
-    return this.axios.get<TradePaymentsHistoryResponse>(`${BASE_URL}/trades/payments`, {
+    return this.axios.get<TradePaymentsHistoryResponse>('trades/payments', {
       params: requestBody,
     });
   }
 
   getTradeProfitAndLoss(requestBody: TradeProfitAndLossRequest) {
-    return this.axios.get<TradeProfitAndLossResponse>(
-      `${BASE_URL}/trades/liquidation/profit-loss`,
-      {
-        params: requestBody,
-      }
-    );
+    return this.axios.get<TradeProfitAndLossResponse>('trades/liquidation/profit-loss', {
+      params: requestBody,
+    });
   }
 }

@@ -34,7 +34,7 @@ import {
   themeMaterial,
   themeAlpine,
 } from 'ag-grid-community';
-import type { GridOptions, ColDef } from 'ag-grid-community';
+import type { GridOptions, ColDef, DomLayoutType } from 'ag-grid-community';
 
 // 635.9k (gzipped: 177.4k) - 전체 모듈 (사용하지 않음)
 // import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
@@ -180,7 +180,7 @@ const gridOptions = computed(() => ({
   paginationPageSize: props.paginationPageSize,
   paginationPageSizeSelector: props.paginationPageSizeSelector,
   suppressPaginationPanel: props.suppressPaginationPanel,
-  domLayout: 'normal',
+  domLayout: 'normal' as DomLayoutType,
   suppressHorizontalScroll: false,
 
   // v31+ 권장 설정

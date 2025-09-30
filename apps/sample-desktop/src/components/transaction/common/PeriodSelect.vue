@@ -3,11 +3,15 @@
     <template #content>
       <div class="gap-size-4 flex items-center">
         <div class="w-[140px]">
-          <BaseInputCalendar class="input-calendar" v-model="orderStartDate" />
+          <BaseInputCalendar
+            class="input-calendar"
+            v-model="orderStartDate"
+            @change="handleDateChange"
+          />
         </div>
         ~
         <div class="w-[140px]">
-          <BaseInputCalendar v-model="orderEndDate" />
+          <BaseInputCalendar v-model="orderEndDate" @change="handleDateChange" />
         </div>
         <div>
           <BaseRadioGroup
@@ -109,6 +113,10 @@ const handlePeriodChange = () => {
   orderStartDate.value = start;
   orderEndDate.value = end;
   emit('period-change', start, end, selectedPeriod.value);
+};
+
+const handleDateChange = () => {
+  emit('period-change', orderStartDate.value, orderEndDate.value, selectedPeriod.value);
 };
 
 // 컴포넌트 마운트 시 초기 날짜 설정

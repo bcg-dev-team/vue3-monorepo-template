@@ -16,8 +16,8 @@
         <template #content>
           <OrderTableContent
             v-if="modelValue === 'order'"
-            :summaryData="summaryData"
-            :detailData="detailData"
+            :summaryData="orderSummaryData"
+            :detailData="orderDetailData"
             @loadInitialData="handleSearch"
           />
           <ClearTableContent v-if="modelValue === 'clear'" />
@@ -87,25 +87,6 @@ const tradeSearchStore = useTradeSearchStore();
 
 const orderSummaryData = ref<OrderSummary[]>([]);
 const orderDetailData = ref<OrderDetail[]>([]);
-
-// 현재 탭에 따른 데이터 반환
-const summaryData = computed(() => {
-  switch (modelValue.value) {
-    case 'order':
-      return orderSummaryData.value;
-    default:
-      return [];
-  }
-});
-
-const detailData = computed(() => {
-  switch (modelValue.value) {
-    case 'order':
-      return orderDetailData.value;
-    default:
-      return [];
-  }
-});
 
 const handleSearch = async () => {
   try {

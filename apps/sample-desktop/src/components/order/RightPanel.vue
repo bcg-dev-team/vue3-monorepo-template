@@ -9,15 +9,10 @@
     <div
       class="h-13 relative mt-3 flex items-center justify-between rounded-md border border-[#0067ef] bg-[#f5f7f9] p-4"
     >
-      <div class="flex w-52 flex-col gap-1">
+      <div class="flex w-52 gap-1">
+        <BaseIcon name="check-sm" size="md" color="var(--input-icon-success)" />
         <div class="text-base font-semibold leading-5 tracking-[-0.35px] text-[#131313]">
           {{ currentSymbol }}
-        </div>
-        <div class="text-sm text-gray-600">
-          {{ currentPrice.toFixed(5) }}
-          <span :class="changePercent >= 0 ? 'text-green-600' : 'text-red-600'">
-            {{ changePercent >= 0 ? '+' : '' }}{{ changePercent.toFixed(2) }}%
-          </span>
         </div>
       </div>
     </div>
@@ -109,13 +104,7 @@
             <div class="text-[14px] font-medium leading-[18px] tracking-[-0.35px] text-[#131313]">
               수량(Lots)
             </div>
-            <BaseInputStepper
-              v-model="quantity"
-              :min="0"
-              :max="100"
-              :step="0.01"
-              variant="default"
-            />
+            <BaseInputStepper v-model="quantity" :step="0.01" variant="default" />
           </div>
         </template>
 
@@ -258,12 +247,7 @@
           <!-- Stop Loss 핍 입력 -->
           <div class="flex h-8 w-full items-center justify-between gap-1">
             <div class="flex h-full w-[150px] items-center">
-              <BaseInputStepper
-                v-model="stopLossPip"
-                :max="100"
-                :step="0.00001"
-                variant="default"
-              />
+              <BaseInputStepper v-model="stopLossPip" :step="0.00001" variant="default" />
             </div>
 
             <div
@@ -272,12 +256,7 @@
               핍
             </div>
             <div class="flex h-full w-[150px] items-center">
-              <BaseInputStepper
-                v-model="takeProfitPip"
-                :max="100"
-                :step="0.00001"
-                variant="default"
-              />
+              <BaseInputStepper v-model="takeProfitPip" :step="0.00001" variant="default" />
             </div>
           </div>
 
@@ -395,14 +374,14 @@ const changePercent = computed(() => {
 });
 
 // 주문 입력 데이터
-const quantity = ref(0);
+const quantity = ref(1.0);
 const entryPrice = ref(0);
 const barrier = ref(0);
 
 // Stop Loss & Take Profit 데이터
-const stopLossPip = ref(0);
+const stopLossPip = ref(-100.1);
 const stopLossPrice = ref(0);
-const takeProfitPip = ref(0);
+const takeProfitPip = ref(100.1);
 const takeProfitPrice = ref(0);
 
 // 진행바 비율 계산

@@ -4,8 +4,8 @@
  */
 
 import type { TradingViewBar } from '@template/types';
-import { SYMBOL_LIST } from '../../data/symbols.js';
-import { getSymbolBasePrice } from '../symbols.js';
+import { getSymbolBasePrice } from '../symbols';
+import { ALL_SYMBOLS } from '@template/types';
 
 /**
  * TradingView용 히스토리컬 바 데이터 생성 함수
@@ -60,7 +60,7 @@ export function generateTradingViewBars(
   let currentPrice = basePrice;
 
   // 심볼 타입에 따른 변동성 조정
-  const symbolInfo = SYMBOL_LIST.find((s) => s.ticker === symbol);
+  const symbolInfo = ALL_SYMBOLS.find((s) => s.ticker === symbol);
   let volatilityFactor = 0.02; // 기본 2%
 
   if (symbolInfo) {

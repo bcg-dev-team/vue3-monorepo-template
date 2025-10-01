@@ -16,19 +16,19 @@ export class TradeService {
   }
 
   getTradeOrderList(requestBody: TradeOrderListRequest) {
-    return this.axios.get<TradeOrderListResponse>('/trades', {
+    return this.axios.get<TradeOrderListResponse>('/main/v1/trades', {
       params: requestBody,
     });
   }
 
   getTradePaymentsHistory(requestBody: TradePaymentsHistoryRequest) {
-    return this.axios.get<TradePaymentsHistoryResponse>('trades/payments', {
+    return this.axios.get<TradePaymentsHistoryResponse>('/main/v1/trades/payments', {
       params: requestBody,
     });
   }
 
   getTradeProfitAndLoss(requestBody: TradeProfitAndLossRequest) {
-    return this.axios.get<TradeProfitAndLossResponse>('trades/liquidation/profit-loss', {
+    return this.axios.get<TradeProfitAndLossResponse>('/main/v1/trades/liquidation/profit-loss', {
       params: requestBody,
     });
   }

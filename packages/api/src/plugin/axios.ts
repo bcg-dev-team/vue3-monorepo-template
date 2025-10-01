@@ -4,11 +4,9 @@ import type { TokenResolver, ErrorHandler, CustomAxiosInstance } from '../types'
 
 export function createAxiosInstance(
   tokenResolver?: TokenResolver,
-  errorHandler?: ErrorHandler,
-  baseURL?: string
+  errorHandler?: ErrorHandler
 ): CustomAxiosInstance {
   const instance = axios.create({
-    baseURL,
     timeout: 5000,
     headers: { 'Content-Type': 'application/json' },
   });

@@ -100,7 +100,7 @@
         </div>
       </div>
       <div class="flex w-full items-center justify-between text-xs">
-        <div class="relative z-10">
+        <div class="relative">
           <div class="relative z-10 ml-[9px]">1.35100</div>
           <div
             class="absolute left-0 top-1/2 h-6 w-[150px] -translate-y-1/2 rounded bg-[#FFDBDC]"

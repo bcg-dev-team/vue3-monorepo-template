@@ -5,6 +5,9 @@
 // 공통 타입 import
 import type { TradingSymbol, TradingViewBar } from '@template/types';
 
+// 공통 타입 re-export
+export type { TradingSymbol, TradingViewBar };
+
 // 심볼 정보
 export interface TradingViewSymbolInfo {
   ticker: string;

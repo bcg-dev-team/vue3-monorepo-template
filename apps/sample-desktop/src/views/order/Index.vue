@@ -29,25 +29,25 @@
           :max-sizes="{ first: 75, second: 25 }"
           :push-other-panes="false"
         >
-          <!-- 중앙 패널: 주문 차트 (75%) -->
+          <!-- 중앙 패널: 다중 차트 레이아웃 (75%) -->
           <template #first>
             <div class="order-detail-panel">
-              <!-- 차트와 테이블을 8:2 vertical 분할 -->
+              <!-- 다중 차트와 테이블을 8:2 vertical 분할 -->
               <BaseTwoWaySplitPane
                 direction="vertical"
                 :min-sizes="{ first: 75, second: 25 }"
                 :max-sizes="{ first: 75, second: 25 }"
                 :push-other-panes="false"
               >
-                <!-- 위쪽: 차트 (75%) -->
+                <!-- 위쪽: 다중 차트 (75%) -->
                 <template #first>
                   <div class="chart-panel">
-                    <div class="panel-content">
-                      <TradingViewChart
-                        ref="tradingViewChartRef"
-                        :symbol="selectedSymbol.selectedSymbol.value"
-                      />
-                    </div>
+                    <MultiChartLayout
+                      ref="multiChartLayoutRef"
+                      :initial-symbols="[]"
+                      @chart-select="handleChartSelect"
+                      @symbol-change="handleSymbolChange"
+                    />
                   </div>
                 </template>
 
@@ -95,20 +95,19 @@
 <script setup lang="ts">
 import { selectedSymbolInstance as selectedSymbol } from '@/composables/useSelectedSymbol';
 import OrderBalanceTable from '@/components/order/bottomSection/OrderBalanceTable.vue';
-import RealtimeConfigPanel from '@/components/order/RealtimeConfigPanel.vue';
-import { BaseTwoWaySplitPane, BaseDataGrid, BaseTabs } from '@template/ui';
-import TradingViewChart from '@/components/chart/TradingViewChart.vue';
+import MultiChartLayout from '@/components/chart/MultiChartLayout.vue';
 import { predefinedStyles, getProfitLossStyle } from '@template/utils';
 import type { TradingSymbol, PositionType } from '@template/types';
 import type { GridOptions, ColDef, GridApi } from '@template/ui';
 import { ref, onMounted, onUnmounted, shallowRef } from 'vue';
+import { BaseTwoWaySplitPane, BaseTabs } from '@template/ui';
 import SymbolList from '@/components/order/SymbolList.vue';
 import RightPanel from '@/components/order/RightPanel.vue';
 import { getOrderData } from '@template/mocks';
 import './Index.scss';
 
 // 상태 관리
-const tradingViewChartRef = ref<InstanceType<typeof TradingViewChart> | null>(null);
+const multiChartLayoutRef = ref<InstanceType<typeof MultiChartLayout> | null>(null);
 
 // 선택된 심볼의 시장 데이터 사용
 const { marketData, addVisibleSymbols, unsubscribeAll } = selectedSymbol;
@@ -126,10 +125,21 @@ const tabs = [
 const handleSymbolSelect = (symbol: TradingSymbol) => {
   selectedSymbol.setSelectedSymbol(symbol.ticker);
 
-  // ChartService를 통한 심볼 변경
-  if (tradingViewChartRef.value && tradingViewChartRef.value.isChartReady()) {
-    tradingViewChartRef.value.changeChartSymbol(symbol.ticker);
+  // 선택된 차트의 심볼 변경
+  if (multiChartLayoutRef.value) {
+    multiChartLayoutRef.value.changeSelectedChartSymbol(symbol);
   }
+};
+
+// 다중 차트 이벤트 핸들러
+const handleChartSelect = (chart: any) => {
+  console.log('차트 선택됨:', chart);
+  // 선택된 차트에 따른 우측 패널 업데이트 로직
+};
+
+const handleSymbolChange = (symbol: TradingSymbol) => {
+  // 선택된 차트의 심볼만 업데이트 (다른 차트는 영향받지 않음)
+  selectedSymbol.setSelectedSymbol(symbol.ticker);
 };
 
 // 테이블 데이터 타입 정의 (실시간 데이터 기반)

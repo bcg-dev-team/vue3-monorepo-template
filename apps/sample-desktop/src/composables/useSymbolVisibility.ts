@@ -29,7 +29,7 @@ export function useSymbolVisibility(
       const visibleArray = Array.from(visibleSymbols.value);
       if (visibleArray.length > 0) {
         addVisibleSymbols('SymbolList', visibleArray);
-        console.error(`[SymbolList] 가시성 업데이트: ${visibleArray.length}개 종목`, visibleArray);
+        console.log(`[SymbolList] 가시성 업데이트: ${visibleArray.length}개 종목`, visibleArray);
       }
       debounceTimer = null;
     }, 300); // 300ms 디바운스

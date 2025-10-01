@@ -11,7 +11,8 @@ import { useMarketData } from './useMarketData';
 import { ref, computed, readonly } from 'vue';
 
 // 전역 선택된 심볼 상태
-const globalSelectedSymbol = ref<string>('EURTRY');
+// 항상 하나의 심볼이 선택되어 있어야 하므로 기본값 설정
+const globalSelectedSymbol = ref<string>('EURUSD');
 
 // 심볼 변경 이벤트 리스너
 const symbolChangeListeners = new Set<(symbol: string) => void>();
@@ -43,16 +44,18 @@ export function useSelectedSymbol() {
       await dataSourceManager.initialize();
       updateChartSymbolSubscription(globalSelectedSymbol.value);
     } catch (error) {
-      console.warn('⚠️ useSelectedSymbol 초기화 지연 - 재시도');
-      // 1초 후 재시도
+      console.warn('⚠️ useSelectedSymbol 초기화 지연 - 재시도', error);
+      // 100ms 후 재시도 (ManagerFactory 초기화 대기)
       setTimeout(() => {
         safeInitialize();
-      }, 1000);
+      }, 100);
     }
   };
 
-  // 비동기 초기화
-  safeInitialize();
+  // 비동기 초기화 (다음 틱에서 실행하여 ManagerFactory 초기화 완료 대기)
+  setTimeout(() => {
+    safeInitialize();
+  }, 0);
 
   // 선택된 심볼의 시장 데이터
   const selectedSymbolData = computed(() => {

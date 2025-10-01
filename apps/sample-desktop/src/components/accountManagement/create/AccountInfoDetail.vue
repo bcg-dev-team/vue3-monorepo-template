@@ -53,11 +53,12 @@
                 </div>
               </template>
             </LabelContent>
+
             <LabelContent
               :class="
                 inputState.updateAccountPassword && 'pb-padding-16 border-bg-bg-outline border-b'
               "
-              label="계좌 비밀번호"
+              :label="inputState.updateAccountPassword ? '이전 비밀번호' : '계좌 비밀번호'"
               class="pb-padding-16 border-bg-bg-outline border-b"
               size="custom"
               :style="'text-font-14 text-default-muted'"
@@ -83,6 +84,25 @@
                     variant="number"
                     placeholder="6자 이내 입력"
                     v-model="accountPassword"
+                  />
+                </div>
+              </template>
+            </LabelContent>
+            <LabelContent
+              v-if="inputState.updateAccountPassword"
+              label="계좌 비밀번호"
+              class="pb-padding-16 border-bg-bg-outline border-b"
+              size="custom"
+              :style="'text-font-14 text-default-muted '"
+            >
+              <template #content>
+                <div class="mt-size-4 flex items-center justify-between">
+                  <BaseInput
+                    class="w-[140px]"
+                    size="sm"
+                    variant="number"
+                    placeholder="6자리 입력"
+                    v-model="accountNewPassword"
                   />
                 </div>
               </template>
@@ -184,10 +204,12 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'updateAccountActive', value: boolean): void;
   (e: 'updateAccountName', value: string): void;
+  (e: 'updateAccountPassword', value: string, value2: string): void;
 }>();
 
 const accountAlias = ref(props.account.accountAlias);
 const accountPassword = ref('');
+const accountNewPassword = ref('');
 const accountPasswordCheck = ref('');
 
 const isAccountActive = computed({
@@ -212,7 +234,7 @@ const checkDisabled = computed(() => {
   if (inputState.updateAccountPassword) {
     const isPasswordEmpty = accountPassword.value === '' && accountPasswordCheck.value === '';
     const isPasswordMatch =
-      accountPassword.value === accountPasswordCheck.value && accountPassword.value !== '';
+      accountNewPassword.value === accountPasswordCheck.value && accountNewPassword.value !== '';
     return !(isPasswordEmpty || isPasswordMatch);
   }
 });
@@ -220,6 +242,9 @@ const checkDisabled = computed(() => {
 const updateAccountInfo = () => {
   if (inputState.updateAccountName) {
     emit('updateAccountName', accountAlias.value);
+  }
+  if (inputState.updateAccountPassword) {
+    emit('updateAccountPassword', accountPassword.value, accountNewPassword.value);
   }
   inputState.updateAccountName = false;
   inputState.updateAccountPassword = false;

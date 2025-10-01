@@ -350,7 +350,7 @@ export const paymentDetailColumns: ColDef[] = [
   },
   {
     headerName: '결제금액($)',
-    field: 'bookQuantity',
+    field: 'paymentAmount',
     width: 120,
   },
   {

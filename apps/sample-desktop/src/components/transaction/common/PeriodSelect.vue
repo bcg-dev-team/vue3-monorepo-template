@@ -6,12 +6,13 @@
           <BaseInputCalendar
             class="input-calendar"
             v-model="orderStartDate"
+            disabled
             @change="handleDateChange"
           />
         </div>
         ~
         <div class="w-[140px]">
-          <BaseInputCalendar v-model="orderEndDate" @change="handleDateChange" />
+          <BaseInputCalendar v-model="orderEndDate" disabled @change="handleDateChange" />
         </div>
         <div>
           <BaseRadioGroup
@@ -97,9 +98,9 @@ const dateRange = computed(() => {
     case 'today':
       return { start: today, end: today };
     case 'weeks':
-      return { start: getDaysAgoString(7), end: today };
+      return { start: getDaysAgoString(6), end: today };
     case 'months':
-      return { start: getDaysAgoString(30), end: today };
+      return { start: getDaysAgoString(29), end: today };
     default:
       return { start: today, end: today };
   }

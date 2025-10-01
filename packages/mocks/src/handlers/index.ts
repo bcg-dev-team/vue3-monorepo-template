@@ -4,9 +4,8 @@
  */
 
 import { websocketHandlers } from './chart/MockWebSocketHandler.js';
-import { chartHttpHandlers } from './chart/http.js';
 
 /**
  * 모든 MSW 핸들러를 통합하여 내보냅니다.
  */
-export const handlers = [...chartHttpHandlers, ...websocketHandlers];
+export const handlers = [...websocketHandlers];

@@ -3,9 +3,9 @@
  * 실시간 가격, 변동률, 거래량 등 생성
  */
 
-import { SYMBOL_LIST, SYMBOL_BASE_PRICES } from '../../data/symbols.js';
+import { ALL_SYMBOLS, SYMBOL_BASE_PRICES } from '@template/types';
 import type { SymbolPrice } from '@template/types';
-import { isValidSymbol } from '../symbols.js';
+import { isValidSymbol } from '../symbols';
 
 /**
  * 심볼별 가격 정보를 생성하는 함수
@@ -26,7 +26,7 @@ export function generateSymbolPrice(ticker: string): SymbolPrice {
 
   // 거래량 (심볼 타입에 따라 다름)
   let baseVolume = 1000000;
-  const symbol = SYMBOL_LIST.find((s) => s.ticker === ticker);
+  const symbol = ALL_SYMBOLS.find((s) => s.ticker === ticker);
   if (symbol) {
     if (symbol.type === 'crypto') baseVolume = 50000000;
     else if (symbol.type === 'forex') baseVolume = 100000000;
@@ -48,19 +48,11 @@ export function generateSymbolPrice(ticker: string): SymbolPrice {
 }
 
 /**
- * 모든 심볼의 가격 정보를 가져오는 함수
- * @returns 모든 심볼의 가격 정보 배열
- */
-export function getAllSymbolPrices(): SymbolPrice[] {
-  return SYMBOL_LIST.map((symbol) => generateSymbolPrice(symbol.ticker));
-}
-
-/**
  * 특정 심볼의 가격 정보를 가져오는 함수
  * @param ticker - 심볼 티커
  * @returns 가격 정보 또는 null
  */
-export function getSymbolPrice(ticker: string): SymbolPrice | null {
+export function getSymbolPriceData(ticker: string): SymbolPrice | null {
   if (!isValidSymbol(ticker)) {
     return null;
   }

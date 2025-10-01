@@ -3,7 +3,7 @@
  * 심볼 검색, 유효성 검사, 기준 가격 조회 등
  */
 
-import { SYMBOL_LIST, SYMBOL_BASE_PRICES } from '../data/symbols.js';
+import { ALL_SYMBOLS, SYMBOL_BASE_PRICES } from '@template/types';
 import type { TradingSymbol } from '@template/types';
 
 /**
@@ -11,7 +11,7 @@ import type { TradingSymbol } from '@template/types';
  * @returns 전체 심볼 목록
  */
 export function getAllSymbols(): TradingSymbol[] {
-  return [...SYMBOL_LIST];
+  return [...ALL_SYMBOLS];
 }
 
 /**
@@ -21,7 +21,7 @@ export function getAllSymbols(): TradingSymbol[] {
  */
 export function searchSymbols(query: string): TradingSymbol[] {
   const lowerQuery = query.toLowerCase();
-  return SYMBOL_LIST.filter(
+  return ALL_SYMBOLS.filter(
     (symbol) =>
       symbol.ticker.toLowerCase().includes(lowerQuery) ||
       symbol.description.toLowerCase().includes(lowerQuery)
@@ -34,7 +34,7 @@ export function searchSymbols(query: string): TradingSymbol[] {
  * @returns 유효한 심볼인지 여부
  */
 export function isValidSymbol(ticker: string): boolean {
-  return SYMBOL_LIST.some((symbol) => symbol.ticker === ticker);
+  return ALL_SYMBOLS.some((symbol) => symbol.ticker === ticker);
 }
 
 /**

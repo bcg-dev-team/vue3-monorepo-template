@@ -82,10 +82,8 @@ export class ChartManager {
       return;
     }
 
-    // UDF 번들 먼저 로드
-    await this.loadScript('/charting_library/datafeeds/udf/dist/bundle.js');
-
     // TradingView 메인 라이브러리 로드
+    // 커스텀 Datafeed를 사용하므로 UDF 번들은 불필요
     await this.loadScript('/charting_library/charting_library.standalone.js');
   }
 

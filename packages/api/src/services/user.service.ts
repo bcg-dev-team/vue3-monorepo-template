@@ -43,7 +43,10 @@ export class UserService {
       approvedAdminUser,
     };
 
-    return this.axios.post<MemberApprovalResponse>(`/members/${email}/approve`, requestBody); // 제네릭 타입 추가
+    return this.axios.post<MemberApprovalResponse>(
+      `/main/v1/members/${email}/approve`,
+      requestBody
+    ); // 제네릭 타입 추가
   }
 
   /**
@@ -59,7 +62,7 @@ export class UserService {
       password,
     };
 
-    return this.axios.post<LoginResponse>('/auths/web/login', requestBody);
+    return this.axios.post<LoginResponse>('/main/v1/auths/web/login', requestBody);
   }
 
   /**
@@ -75,7 +78,7 @@ export class UserService {
       phoneNo,
     };
 
-    return this.axios.post<FindIdResponse>('/members/find-id', requestBody);
+    return this.axios.post<FindIdResponse>('/main/v1/members/find-id', requestBody);
   }
 
   /**
@@ -93,7 +96,7 @@ export class UserService {
       useType,
     };
 
-    return this.axios.post<SmsVerificationResponse>('/auths/sms/send', requestBody);
+    return this.axios.post<SmsVerificationResponse>('/main/v1/auths/sms/send', requestBody);
   }
 
   /**
@@ -113,7 +116,7 @@ export class UserService {
       useType,
     };
 
-    return this.axios.post<SmsVerificationCodeResponse>('/auths/sms/verify', requestBody);
+    return this.axios.post<SmsVerificationCodeResponse>('/main/v1/auths/sms/verify', requestBody);
   }
 
   /**
@@ -128,7 +131,7 @@ export class UserService {
       useType: 'SIGN_UP',
     };
 
-    return this.axios.post<EmailVerificationResponse>('/auths/email/send', requestBody);
+    return this.axios.post<EmailVerificationResponse>('/main/v1/auths/email/send', requestBody);
   }
 
   /**
@@ -145,7 +148,10 @@ export class UserService {
       useType: 'SIGN_UP',
     };
 
-    return this.axios.post<EmailVerificationCodeResponse>('/auths/email/verify', requestBody);
+    return this.axios.post<EmailVerificationCodeResponse>(
+      '/main/v1/auths/email/verify',
+      requestBody
+    );
   }
 
   /**
@@ -184,11 +190,15 @@ export class UserService {
       formData.append('additionalIdDocument', individualMember.additionalIdDocument);
     }
 
-    return this.axios.post<IndividualMemberJoinResponse>('/members/join/individual', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    return this.axios.post<IndividualMemberJoinResponse>(
+      '/main/v1/members/join/individual',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
   }
 
   /**
@@ -237,10 +247,14 @@ export class UserService {
       });
     }
 
-    return this.axios.post<CorporateMemberJoinResponse>('/members/join/corporate', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    return this.axios.post<CorporateMemberJoinResponse>(
+      '/main/v1/members/join/corporate',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
   }
 }

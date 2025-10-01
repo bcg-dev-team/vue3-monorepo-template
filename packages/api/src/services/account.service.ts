@@ -52,29 +52,22 @@ export class AccountService {
   /**
    * 계좌 비밀번호 변경
    * 개설한 계좌의 비밀번호를 변경합니다.
-   * @param email - 이메일 주소
    * @param accountNo - 계좌번호
    * @param beforeAccountPassword - 변경 전 비밀번호
    * @param afterAccountPassword - 변경 후 비밀번호
    * @returns 계좌 비밀번호 변경 결과
    */
   changeAccountPassword(
-    email: string,
     accountNo: string,
     beforeAccountPassword: string,
     afterAccountPassword: string
   ) {
-    const formData = new FormData();
+    const requestBody = {
+      accountNo,
+      beforeAccountPassword,
+      afterAccountPassword,
+    };
 
-    formData.append('email', email);
-    formData.append('accountNo', accountNo);
-    formData.append('beforeAccountPassword', beforeAccountPassword);
-    formData.append('afterAccountPassword', afterAccountPassword);
-
-    return this.axios.put<AccountChangePasswordResponse>('/accounts/change-pw', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    return this.axios.put<AccountChangePasswordResponse>('/accounts/change-pw', requestBody);
   }
 }

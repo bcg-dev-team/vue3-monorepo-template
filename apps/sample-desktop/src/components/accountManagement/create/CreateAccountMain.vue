@@ -135,6 +135,7 @@
                 :account="selectedAccount"
                 @updateAccountName="updateAccountName"
                 @updateAccountActive="updateAccountActive"
+                @updateAccountPassword="updateAccountPassword"
               />
             </div>
           </div>
@@ -309,6 +310,21 @@ const updateAccountName = (newAlias: string) => {
     }
     // 계좌 정보 변경 요청(별칭)
     updateAccountInfo();
+  }
+};
+
+const updateAccountPassword = async (oldPassword: string, newPassword: string) => {
+  // TODO: 계좌 비밀번호 변경 요청
+  try {
+    if (selectedAccount.value) {
+      await accountService.changeAccountPassword(
+        selectedAccount.value.accountNo,
+        oldPassword,
+        newPassword
+      );
+    }
+  } catch (error) {
+    console.error('계좌 비밀번호 변경 실패:', error);
   }
 };
 

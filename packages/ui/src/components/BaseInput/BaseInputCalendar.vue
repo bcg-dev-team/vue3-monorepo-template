@@ -128,5 +128,22 @@ const handleDateChange = (value: string | null) => {
       }
     }
   }
+
+  /* disabled 상태 스타일 */
+  &.is-disabled {
+    .el-input__wrapper {
+      background-color: var(--input-color-bg-disabled) !important;
+
+      .el-input__inner {
+        color: var(--input-color-text-disable) !important;
+      }
+
+      .el-input__suffix {
+        &::after {
+          background-color: var(--input-color-text-disable) !important;
+        }
+      }
+    }
+  }
 }
 </style>

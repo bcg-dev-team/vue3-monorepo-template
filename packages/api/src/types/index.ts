@@ -8,3 +8,4 @@ export * from './terms.types';
 export * from './trade.types';
 export * from './auth.types';
 export * from './account.types';
+export * from './stock.types';

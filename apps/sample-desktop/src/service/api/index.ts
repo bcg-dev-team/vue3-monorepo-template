@@ -1,6 +1,7 @@
-import { TermsService, TradeService, UserService } from '@template/api';
+import { StockService, TermsService, TradeService, UserService } from '@template/api';
 import api from '@/modules/axios';
 
 export const userService = new UserService(api);
 export const termsService = new TermsService(api);
 export const tradeService = new TradeService(api);
+export const stockService = new StockService(api);

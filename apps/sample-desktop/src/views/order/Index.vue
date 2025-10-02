@@ -55,8 +55,11 @@
                 <template #second>
                   <div class="table-panel">
                     <div class="panel-content">
+                      <BaseTabs v-model="activeTab" :tabs="tabs" size="md" />
                       <!-- theme: 'quartz' | 'balham' | 'material' | 'alpine' -->
-                      <BaseDataGrid
+
+                      <!--TDOO: 동적 데이터 할당은 각 컴포넌트에 적용 필요 (OrderBalanceTable.vue)  -->
+                      <!-- <BaseDataGrid
                         :columnDefs="columnDefs"
                         :rowData="rowData"
                         :defaultColDef="defaultColDef"
@@ -69,7 +72,7 @@
                         theme="alpine"
                         @grid-ready="onGridReady"
                         @sort-changed="onSortChanged"
-                      />
+                      /> -->
                     </div>
                   </div>
                 </template>
@@ -91,11 +94,12 @@
 
 <script setup lang="ts">
 import { selectedSymbolInstance as selectedSymbol } from '@/composables/useSelectedSymbol';
+import OrderBalanceTable from '@/components/order/bottomSection/OrderBalanceTable.vue';
 import RealtimeConfigPanel from '@/components/order/RealtimeConfigPanel.vue';
+import { BaseTwoWaySplitPane, BaseDataGrid, BaseTabs } from '@template/ui';
 import TradingViewChart from '@/components/chart/TradingViewChart.vue';
 import { predefinedStyles, getProfitLossStyle } from '@template/utils';
 import type { TradingSymbol, PositionType } from '@template/types';
-import { BaseTwoWaySplitPane, BaseDataGrid } from '@template/ui';
 import type { GridOptions, ColDef, GridApi } from '@template/ui';
 import { ref, onMounted, onUnmounted, shallowRef } from 'vue';
 import SymbolList from '@/components/order/SymbolList.vue';
@@ -108,6 +112,15 @@ const tradingViewChartRef = ref<InstanceType<typeof TradingViewChart> | null>(nu
 
 // 선택된 심볼의 시장 데이터 사용
 const { marketData, addVisibleSymbols, unsubscribeAll } = selectedSymbol;
+
+const activeTab = ref('balance');
+
+const tabs = [
+  { key: 'balance', label: '잔고', component: OrderBalanceTable },
+  { key: 'order', label: '주문', component: '' },
+  { key: 'unsettled', label: '미체결', component: '' },
+  { key: 'clear', label: '청산', component: '' },
+];
 
 // 이벤트 핸들러
 const handleSymbolSelect = (symbol: TradingSymbol) => {
@@ -463,3 +476,10 @@ onUnmounted(() => {
   unsubscribeAll();
 });
 </script>
+
+<style scoped>
+:deep([role='tabpanel']) {
+  padding: 0px !important;
+  margin-top: -8px !important;
+}
+</style>

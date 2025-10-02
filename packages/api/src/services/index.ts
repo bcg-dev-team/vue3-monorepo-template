@@ -5,3 +5,4 @@ export { TermsService } from './terms.service';
 export { TradeService } from './trade.service';
 export { AccountService } from './account.service';
 export { AuthService } from './auth.service';
+export { StockService } from './stock.service';

@@ -26,7 +26,7 @@
 import FormField from '@/components/auth/common/FormField.vue';
 import { useSignupStore } from '@/stores/useSignupStore';
 import { BaseInput, BaseButton } from '@template/ui';
-import { userService } from '@/service/api';
+import { authService } from '@/service/api';
 import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
 
@@ -54,7 +54,7 @@ const updateEmail = (value: string) => {
 const handleClickNext = async () => {
   updateEmail(email.value);
   try {
-    const res = await userService.requestEmailVerification(email.value);
+    const res = await authService.requestEmailVerification(email.value);
     if (res.status === 'success') {
       router.push({ query: { step: 3 } });
     }

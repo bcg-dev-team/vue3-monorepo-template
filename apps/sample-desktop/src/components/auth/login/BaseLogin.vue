@@ -86,7 +86,7 @@ import { BaseInput, BaseButton, BaseCheckbox } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
 import { RadioGroup, RadioGroupOption } from '@headlessui/vue';
 import Anchor from '@/components/common/Anchor.vue';
-import { userService } from '@/service/api';
+import { authService } from '@/service/api';
 import { MemberType } from '@template/api';
 import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
@@ -132,7 +132,7 @@ const isChecked = ref<boolean>(false);
 
 const handleLogin = async () => {
   try {
-    const response = await userService.webLogin(email.value, password.value);
+    const response = await authService.webLogin(email.value, password.value);
     if (response.status === 'success') {
       LocalStorageService.setItem(
         LocalStorageKey.ACCESS_TOKEN,

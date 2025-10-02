@@ -33,30 +33,154 @@ graph TD
 ### 1.2 파일 위치
 ```
 packages/ui/src/assets/icons/
-├── arrow-forward.svg
 ├── account-balance.svg
-├── home.svg
-├── notification.svg
-├── screen-single.svg
-├── screen-multi.svg
-├── screem-multi2.svg
-├── chart-line.svg
-├── chart-candle.svg
-├── chart-bubble.svg
-├── chart-area.svg
-├── chart-5m.svg
-├── chart-4h.svg
-├── chart-1w.svg
-├── chart-1mon.svg
-├── chart-1m.svg
-├── chart-1h.svg
-├── chart-1d.svg
+├── account.svg
+├── add-symbol.svg
+├── arrow-backward-sm.svg
+├── arrow-backward.svg
+├── arrow-close.svg
+├── arrow-down-solid.svg
+├── arrow-down.svg
+├── arrow-drawer.svg
+├── arrow-forward-sm.svg
+├── arrow-forward.svg
+├── arrow-left-solid.svg
+├── arrow-open.svg
+├── arrow-outward.svg
+├── arrow-right-solid.svg
+├── arrow-right-thin.svg
+├── arrow-up-solid.svg
+├── arrow-up.svg
+├── arrow-updown-solid.svg
+├── arrow-updown.svg
+├── asset.svg
+├── calendar.svg
+├── campaign-thin.svg
+├── card.svg
+├── cert.svg
+├── chart-1-d.svg
+├── chart-1-w.svg
 ├── chart-15m.svg
-├── chart-10m.svg
+├── chart-1h.svg
+├── chart-1m.svg
+├── chart-30m.svg
+├── chart-4h.svg
+├── chart-5m.svg
+├── chart-area.svg
+├── chart-bubble.svg
+├── chart-candle.svg
+├── chart-eye-thin.svg
+├── chart-indicator.svg
+├── chart-line.svg
+├── chart-new.svg
+├── chart-setting.svg
+├── chart-setup.svg
+├── chart-snapshot.svg
+├── chart.svg
+├── check-circle.svg
+├── check-sm.svg
+├── close small.svg
+├── close-thin.svg
+├── close.svg
+├── cloud-upload.svg
+├── comm.svg
+├── copy.svg
+├── delete.svg
+├── deposit-thin.svg
+├── description.svg
+├── dollar.svg
+├── download.svg
+├── drag-draw.svg
+├── edit.svg
+├── email.svg
+├── external-link.svg
+├── eye-close.svg
+├── eye.svg
+├── faq-thin.svg
+├── fav.svg
+├── favorite.svg
+├── file-attached.svg
+├── filter.svg
+├── fullscreen.svg
+├── grab.svg
+├── grade.svg
+├── heart-thin.svg
+├── heart.svg
+├── home.svg
+├── icn-delete.svg
+├── info-thin.svg
+├── info.svg
+├── layout-1x1.svg
+├── layout-2x2.svg
+├── layout-3x3.svg
+├── layout-4x4.svg
+├── list-thin.svg
+├── list.svg
+├── login.svg
+├── logout-thin.svg
+├── logout.svg
+├── minus.svg
+├── mode-dark.svg
+├── mode-light.svg
+├── more vert.svg
+├── move.svg
+├── mypage-thin.svg
+├── mypage.svg
+├── noti.svg
+├── order.svg
+├── pause.svg
+├── person.svg
+├── phone.svg
+├── plus-minus.svg
+├── plus.svg
+├── refresh.svg
+├── save.svg
+├── screen-multi.svg
+├── screen-multi2.svg
+├── screen-single.svg
+├── search.svg
+├── send.svg
+├── settings.svg
+├── sort.svg
+├── star.svg
+├── support-thin.svg
+├── support.svg
+├── time.svg
+├── trade-thin.svg
+├── trade.svg
+├── transparent.svg
+├── trash-thin.svg
+├── trash.svg
+├── trending-down.svg
+├── trending-up.svg
+├── upload.svg
+├── warning.svg
+├── warning2.svg
+├── watch.svg
+├── withdraw.svg
 └── flags/
-    ├── flag-kr.svg
-    ├── flag-us.svg
-    └── ...
+    ├── flag-AU.svg
+    ├── flag-CA.svg
+    ├── flag-CN.svg
+    ├── flag-de.svg
+    ├── flag-es.svg
+    ├── flag-EU.svg
+    ├── flag-fr.svg
+    ├── flag-HK.svg
+    ├── flag-it.svg
+    ├── flag-JP.svg
+    ├── flag-KR.svg
+    ├── flag-MX.svg
+    ├── flag-nl.svg
+    ├── flag-NR.svg
+    ├── flag-NZ.svg
+    ├── flag-SE.svg
+    ├── flag-SG.svg
+    ├── flag-SUI.svg
+    ├── flag-TR.svg
+    ├── flag-UK.svg
+    ├── flag-US.svg
+    └── flag-ZA.svg
 ```
 
 ## ⚙️ 2. 아이콘 최적화 스크립트 실행
@@ -332,21 +456,28 @@ const handleClose = () => {
 - `arrow-close`, `arrow-open`
 - `arrow-drawer`, `arrow-right-thin`
 - `arrow-updown`, `arrow-forward-sm`, `arrow-backward-sm`
+- `arrow-down-solid`, `arrow-left-solid`, `arrow-outward`
+- `arrow-right-solid`, `arrow-up-solid`, `arrow-updown-solid`
 
 ### 9.2 액션 아이콘
 - `heart`, `heart-thin`, `star`
 - `plus`, `minus`, `plus-minus`
 - `edit`, `trash`, `refresh`
 - `search`, `eye`, `eye-close`, `fullscreen`
-- `external-link`, `icn-delete`
+- `external-link`, `icn-delete`, `delete`
 - `copy`, `download`, `upload`
 - `send`, `pause`, `move`, `withdraw`
+- `save`, `sort`, `grab`, `drag-draw`
 
 ### 9.3 네비게이션 아이콘
 - `home`, `settings`, `person`
 - `login`, `logout`, `mypage`
 - `order`, `trade`, `support`
-- `list`, `phone`, `notification`
+- `list`, `phone`, `noti`
+- `campaign-thin`, `deposit-thin`, `faq-thin`
+- `logout-thin`, `mypage-thin`, `support-thin`
+- `trade-thin`, `trash-thin`, `info-thin`
+- `close-thin`, `list-thin`
 
 ### 9.4 테마 아이콘
 - `mode-dark`, `mode-light`
@@ -354,32 +485,37 @@ const handleClose = () => {
 ### 9.5 상태/알림 아이콘
 - `warning`, `warning2`, `info`
 - `check-sm`, `check-circle`, `grade`
+- `fav`, `favorite`
 
 ### 9.6 화면/디스플레이 아이콘
 - `screen-single`, `screen-multi`, `screem-multi2`
+- `layout-1x1`, `layout-2x2`, `layout-3x3`, `layout-4x4`
 
 ### 9.7 차트 아이콘
 - `chart`, `chart-line`, `chart-candle`
 - `chart-bubble`, `chart-area`
-- `chart-5m`, `chart-4h`, `chart-1w`
-- `chart-1mon`, `chart-1m`, `chart-1h`
-- `chart-1d`, `chart-15m`, `chart-10m`
+- `chart-5m`, `chart-4h`, `chart-1-w`
+- `chart-1-mon`, `chart-1m`, `chart-1h`
+- `chart-1-d`, `chart-15m`, `chart-30m`, `chart-10m`
+- `chart-eye-thin`, `chart-indicator`, `chart-new`
+- `chart-setting`, `chart-setup`, `chart-snapshot`
 
 ### 9.8 기타 아이콘
-- `asset`, `calendar`
-- `email`, `time`, `cert`
-- `comm`, `account-balance`
+- `asset`, `calendar`, `account`, `account-balance`
+- `email`, `time`, `cert`, `comm`
 - `description`, `file-attached`, `filter`
 - `card`, `close`, `close small`
 - `trending-up`, `trending-down`
+- `dollar`, `cloud-upload`, `transparent`, `watch`
+- `more vert`, `add-symbol`
 
 ### 9.9 플래그 아이콘
-- `flag-au`, `flag-ca`, `flag-cn`
-- `flag-eu`, `flag-hk`, `flag-jp`
-- `flag-kr`, `flag-mx`, `flag-nr`
-- `flag-nz`, `flag-se`, `flag-sg`
-- `flag-sui`, `flag-tr`, `flag-uk`
-- `flag-us`, `flag-za`
+- `flag-AU`, `flag-CA`, `flag-CN`, `flag-de`
+- `flag-es`, `flag-EU`, `flag-fr`, `flag-HK`
+- `flag-it`, `flag-JP`, `flag-KR`, `flag-MX`
+- `flag-nl`, `flag-NR`, `flag-NZ`, `flag-SE`
+- `flag-SG`, `flag-SUI`, `flag-TR`, `flag-UK`
+- `flag-US`, `flag-ZA`
 
 ## 🛠️ 10. 개발 가이드라인
 
@@ -446,23 +582,23 @@ pnpm type-check
 ## 📊 14. 아이콘 통계
 
 ### 14.1 현재 등록된 아이콘 수
-- **일반 아이콘**: 85개
-- **플래그 아이콘**: 17개
-- **총 아이콘 수**: 102개
+- **일반 아이콘**: 115개
+- **플래그 아이콘**: 23개
+- **총 아이콘 수**: 138개
 
 ### 14.2 카테고리별 분포
-- **화살표 아이콘**: 11개
-- **액션 아이콘**: 19개
-- **네비게이션 아이콘**: 12개 (notification 추가)
+- **화살표 아이콘**: 18개 (arrow-down-solid, arrow-left-solid, arrow-outward, arrow-right-solid, arrow-up-solid, arrow-updown-solid 추가)
+- **액션 아이콘**: 25개 (delete, save, sort, grab, drag-draw 추가)
+- **네비게이션 아이콘**: 23개 (noti, campaign-thin, deposit-thin, faq-thin, logout-thin, mypage-thin, support-thin, trade-thin, trash-thin, info-thin, close-thin, list-thin 추가)
 - **테마 아이콘**: 2개
-- **상태/알림 아이콘**: 5개
-- **화면/디스플레이 아이콘**: 3개 (screen-single, screen-multi, screem-multi2 추가)
-- **차트 아이콘**: 13개 (chart-line, chart-candle, chart-bubble, chart-area, chart-5m, chart-4h, chart-1w, chart-1mon, chart-1m, chart-1h, chart-1d, chart-15m, chart-10m 추가)
-- **기타 아이콘**: 20개
-- **플래그 아이콘**: 17개
+- **상태/알림 아이콘**: 7개 (fav, favorite 추가)
+- **화면/디스플레이 아이콘**: 7개 (layout-1x1, layout-2x2, layout-3x3, layout-4x4 추가)
+- **차트 아이콘**: 19개 (chart-1-w, chart-1-mon, chart-1-d, chart-30m, chart-eye-thin, chart-indicator, chart-new, chart-setting, chart-setup, chart-snapshot 추가)
+- **기타 아이콘**: 28개 (account, dollar, cloud-upload, transparent, watch, more vert, add-symbol 추가)
+- **플래그 아이콘**: 23개 (flag-de, flag-es, flag-fr, flag-it, flag-nl 추가)
 
 ### 14.3 타입별 분포
-- **fill 타입**: 95개 (93.1%)
-- **stroke 타입**: 7개 (6.9%)
+- **fill 타입**: 136개 (98.6%)
+- **stroke 타입**: 2개 (1.4%)
 
 이 가이드를 따라 아이콘 시스템을 효과적으로 활용하세요! 

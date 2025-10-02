@@ -5,6 +5,14 @@
   background-color: var(--popup-background);
 }
 
+.modal-content--compact {
+  padding: var(--padding-padding-8);
+}
+
+.modal-content--none {
+  padding: var(--padding-padding-z);
+}
+
 .alert-icon-container {
   display: flex;
   justify-content: center;

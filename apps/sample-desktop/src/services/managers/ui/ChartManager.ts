@@ -3,9 +3,21 @@
  * TradingView Chart Widget의 복잡한 API를 단순화하고 관리합니다.
  */
 
-import type { TradingViewWidgetConfig, TradingViewWidget } from '@/types/tradingview';
-import type { ChartConfig, ChartSymbolInfo } from '@template/types';
-import Datafeed from '@/adapters/tradingview/datafeed.js';
+import {
+  needsFeaturesRecreation,
+  getSymbolOverrideKeys,
+  generateAllOverrides,
+} from '@/utils/chart/TradingViewFeatures';
+import {
+  getThemeFromSettings,
+  getThemeColors,
+  generateThemeOverrides,
+} from '@/utils/chart/ChartTheme';
+import type { ChartConfig, ChartSymbolInfo, ChartSettings } from '@template/types';
+import { buildWidgetConfig } from '@/utils/chart/ChartConfigBuilder';
+import { generateChartManagerId } from '@/utils/chart/ChartUtils';
+import type { TradingViewWidget } from '@/types/tradingview';
+import { setupChart } from '@/utils/chart/ChartSetupUtils';
 
 export class ChartManager {
   private widget: TradingViewWidget | null = null;
@@ -13,6 +25,16 @@ export class ChartManager {
   private currentInterval: string = '1';
   private currentSubscriberUID: string | null = null;
   private isInitialized: boolean = false;
+  private currentSettings: ChartSettings | null = null;
+  private instanceId: string = '';
+  // private containerId: string = '';
+  // private lastConfig: ChartConfig | null = null;
+
+  constructor() {
+    // 각 인스턴스마다 고유 ID 생성
+    this.instanceId = generateChartManagerId();
+    console.log(`[ChartManager] 새 인스턴스 생성: ${this.instanceId}`);
+  }
 
   /**
    * Chart Widget 초기화
@@ -25,181 +47,58 @@ export class ChartManager {
 
     this.currentSymbol = config.symbol;
     this.currentInterval = config.interval;
+    this.currentSettings = config.settings || null;
 
-    return new Promise((resolve, reject) => {
-      this.waitForTradingView(() => {
-        try {
-          const widgetConfig: TradingViewWidgetConfig = {
-            symbol: config.symbol,
-            interval: config.interval,
-            fullscreen: false,
-            container: config.container,
-            datafeed: Datafeed,
-            library_path: '/charting_library/',
-            width: config.width || '100%',
-            height: config.height || '100%',
-            locale: config.locale || 'ko',
-            debug: config.debug || false,
-            enabled_features: [
-              'study_templates',
-              'side_toolbar_in_fullscreen_mode',
-              'header_compare',
-              'compare_symbol',
-              'show_spread_operators',
-              'hide_price_scale_if_all_sources_hidden',
-            ],
-            disabled_features: [
-              'use_localstorage_for_settings',
-              'volume_force_overlay',
-              'create_volume_indicator_by_default',
-              'left_toolbar', // 왼쪽 도구모음 숨기기
-              'header_widget', // 헤더 위젯 숨기기
-              'right_toolbar', // 우측 도구모음 숨기기
-              'main_series_scale_menu', // 오른쪽하단 설정버튼 숨기기
-              'legend_inplace_edit', // 범례 수정 안보이게 (Symbol Search Dialog 숨기기)
-            ],
-            // 차트 스타일 오버라이드
-            overrides: {
-              // 'mainSeriesProperties.style': 2, // 2 = 라인 차트
-              // 'scalesProperties.showRightScale': false, // 오른쪽 가격 스케일 숨기기
-              // 'mainSeriesProperties.showPriceLine': false, // 가격 라인 숨기기
-              'paneProperties.gridLinesMode': 'none', // 그리드 라인 숨기기
-              'paneProperties.background': '#ffffff',
-              'paneProperties.vertGridProperties.color': '#e6e6e6',
-              'paneProperties.horzGridProperties.color': '#e6e6e6',
-              'symbolWatermarkProperties.transparency': 90,
-              'scalesProperties.textColor': '#191919',
-              'scalesProperties.lineColor': '#b8b8b8',
-              // 가격 스케일 표시 강제
-              // 'scalesProperties.showSeriesLastValue': true,
-              // 'scalesProperties.showStudyLastValue': true,
-              // 'scalesProperties.fontSize': 12,
-              // 시간 축 표시 형식 설정
-              // 'timeScale.timeVisible': true,
-              // 'timeScale.secondsVisible': false,
-              // 'timeScale.rightOffset': 12,
-              // 'timeScale.barSpacing': 3,
-              // 'timeScale.fixLeftEdge': true,
-              // 'timeScale.fixRightEdge': true,
-              // 'timeScale.lockVisibleTimeRangeOnResize': true,
-              // 'timeScale.rightBarStaysOnScroll': true,
-              // 'timeScale.borderVisible': true,
-              // 'timeScale.visible': true,
-              // 'timeScale.tickMarkFormatter': {
-              //   '1': '%H:%M', // 1분: 시:분
-              //   '5': '%H:%M', // 5분: 시:분
-              //   '15': '%H:%M', // 15분: 시:분
-              //   '30': '%H:%M', // 30분: 시:분
-              //   '60': '%m-%d %H:%M', // 1시간: 월-일 시:분
-              //   '240': '%m-%d %H:%M', // 4시간: 월-일 시:분
-              //   '1D': '%Y-%m-%d', // 1일: 년-월-일
-              //   '1W': '%Y-%m-%d', // 1주: 년-월-일
-              //   '1M': '%Y-%m', // 1개월: 년-월
-              // },
-            },
-            studies_overrides: {},
-            // charts_storage_url: 'https://saveload.tradingview.com',
-            // charts_storage_api_version: '1.1',
-            client_id: 'tradingview.com',
-            user_id: 'public_user_id',
-            theme: config.theme || 'light',
-            custom_css_url: '',
-            loading_screen: { backgroundColor: '#ffffff' },
-          };
+    return new Promise(async (resolve, reject) => {
+      try {
+        await this.loadTradingViewOnDemand();
 
-          this.widget = new window.TradingView.widget(widgetConfig);
+        // 위젯 설정 생성
+        const widgetConfig = buildWidgetConfig(config);
 
-          this.widget?.onChartReady(() => {
-            console.log('[ChartManager] Chart loaded successfully');
-            this.isInitialized = true;
-            this.setupChart();
-            resolve();
-          });
-        } catch (error) {
-          console.error('[ChartManager] Failed to initialize chart:', error);
-          reject(error);
-        }
-      });
+        this.widget = new window.TradingView.widget(widgetConfig);
+
+        this.widget?.onChartReady(() => {
+          this.isInitialized = true;
+          setupChart(this.widget);
+
+          // 차트 로드 완료 후 추가 설정 적용
+          this.applyPostLoadSettings();
+
+          resolve();
+        });
+      } catch (error) {
+        console.error('[ChartManager] Failed to initialize chart:', error);
+        reject(error);
+      }
     });
   }
 
   /**
-   * TradingView 라이브러리 로드 대기
+   * TradingView 라이브러리 동적 로드
    */
-  private waitForTradingView(callback: () => void): void {
+  private async loadTradingViewOnDemand(): Promise<void> {
     if (window.TradingView && window.TradingView.widget) {
-      callback();
-    } else {
-      setTimeout(() => this.waitForTradingView(callback), 100);
+      return;
     }
+
+    // TradingView 메인 라이브러리 로드
+    // 커스텀 Datafeed를 사용하므로 UDF 번들은 불필요
+    await this.loadScript('/charting_library/charting_library.standalone.js');
   }
 
   /**
-   * 차트 설정 및 초기화
+   * 스크립트 동적 로드 헬퍼
    */
-  private setupChart(): void {
-    if (!this.widget) return;
-
-    setTimeout(() => {
-      try {
-        const chart = this.widget!.chart();
-        if (!chart) return;
-
-        // 가격 스케일 설정
-        this.setupPriceScale(chart);
-
-        // 시간 축 설정
-        this.setupTimeScale(chart);
-
-        // 차트 새로고침
-        this.refreshChart();
-      } catch (error) {
-        console.error('[ChartManager] Chart setup error:', error);
-      }
-    }, 1000);
-  }
-
-  /**
-   * 가격 스케일 설정
-   */
-  private setupPriceScale(chart: any): void {
-    try {
-      if (chart.getPanes && chart.getPanes().length > 0) {
-        const panes = chart.getPanes();
-        const firstPane = panes[0];
-
-        if (firstPane && typeof firstPane.getRightPriceScale === 'function') {
-          const priceScale = firstPane.getRightPriceScale();
-          if (priceScale) {
-            console.log('[ChartManager] Setting up price scale');
-            priceScale.setAutoScale(true);
-            priceScale.setVisible(true);
-          }
-        }
-      }
-    } catch (error) {
-      console.error('[ChartManager] Price scale setup error:', error);
-    }
-  }
-
-  /**
-   * 시간 축 설정
-   */
-  private setupTimeScale(chart: any): void {
-    try {
-      if (chart.timeScale) {
-        const timeScale = chart.timeScale();
-        if (timeScale) {
-          console.log('[ChartManager] Setting up time scale');
-          timeScale.setVisible(true);
-          timeScale.setTimeVisible(true);
-          timeScale.setSecondsVisible(false);
-          timeScale.refresh();
-        }
-      }
-    } catch (error) {
-      console.error('[ChartManager] Time scale setup error:', error);
-    }
+  private loadScript(src: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.type = 'text/javascript';
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+      document.head.appendChild(script);
+    });
   }
 
   /**
@@ -211,7 +110,7 @@ export class ChartManager {
       return;
     }
 
-    console.log('[ChartManager] Changing symbol:', { from: this.currentSymbol, to: symbol });
+    console.log('[ChartManager] Changing symbol from', this.currentSymbol, 'to', symbol);
 
     // 이전 심볼 구독 해제
     if (this.currentSymbol && this.currentSubscriberUID) {
@@ -229,7 +128,7 @@ export class ChartManager {
         this.refreshChart();
       }, 500);
     } catch (error) {
-      console.error('[ChartManager] Symbol change error:', error);
+      console.error('[ChartManager] Symbol change failed');
     }
   }
 
@@ -242,11 +141,14 @@ export class ChartManager {
       return;
     }
 
-    console.log('[ChartManager] Changing interval:', { from: this.currentInterval, to: interval });
-
     this.currentInterval = interval;
 
     try {
+      if (typeof this.widget.chart !== 'function') {
+        console.warn('[ChartManager] Chart method not available');
+        return;
+      }
+
       const chart = this.widget.chart();
       if (chart && chart.timeScale) {
         const timeScale = chart.timeScale();
@@ -255,7 +157,7 @@ export class ChartManager {
         }
       }
     } catch (error) {
-      console.error('[ChartManager] Interval change error:', error);
+      console.error('[ChartManager] Interval change failed');
     }
   }
 
@@ -269,14 +171,210 @@ export class ChartManager {
     }
 
     try {
+      if (typeof this.widget.chart !== 'function') {
+        console.warn('[ChartManager] Chart method not available');
+        return;
+      }
+
       const chart = this.widget.chart();
       if (chart && typeof chart.refresh === 'function') {
-        console.log('[ChartManager] Refreshing chart');
         chart.refresh();
       }
     } catch (error) {
-      console.error('[ChartManager] Chart refresh error:', error);
+      console.error('[ChartManager] Chart refresh failed');
     }
+  }
+
+  /**
+   * 볼륨 지표 제거
+   */
+  removeVolumeIndicator(): void {
+    if (!this.widget) {
+      console.warn('[ChartManager] Chart not initialized');
+      return;
+    }
+
+    try {
+      const chart = this.widget.chart();
+      if (!chart || typeof chart.getAllStudies !== 'function') {
+        console.warn('[ChartManager] Chart getAllStudies method not available');
+        return;
+      }
+
+      // 볼륨 지표 제거
+      const studies = chart.getAllStudies();
+      const volumeStudy = studies.find((s: any) => s.name === 'Volume');
+
+      if (volumeStudy && typeof chart.removeEntity === 'function') {
+        chart.removeEntity(volumeStudy.id);
+        console.log('[ChartManager] Volume indicator removed');
+      }
+    } catch (error) {
+      console.error('[ChartManager] Volume indicator remove failed');
+    }
+  }
+
+  /**
+   * 테스트용 지표 추가
+   */
+  addTestIndicators(): void {
+    if (!this.isInitialized || !this.widget) {
+      console.warn('[ChartManager] Cannot add test indicators: chart not initialized');
+      return;
+    }
+
+    try {
+      const chart = this.widget.chart();
+      if (!chart || typeof chart.createStudy !== 'function') {
+        console.warn('[ChartManager] Chart createStudy method not available');
+        return;
+      }
+
+      const theme = this.currentSettings ? getThemeFromSettings(this.currentSettings) : 'redBlue';
+      const themeColors = getThemeColors(theme);
+
+      const studyOverrides = {
+        'volume.color.0': themeColors.up,
+        'volume.color.1': themeColors.down,
+        'volume.transparency': 50,
+      };
+
+      chart.createStudy('Volume', false, false, {}, null, studyOverrides);
+      console.log('[ChartManager] Test indicators added successfully');
+    } catch (error) {
+      console.warn('[ChartManager] Failed to add test indicators:', error);
+    }
+  }
+
+  /**
+   * 테스트용 지표 제거
+   */
+  removeAllIndicators(): void {
+    if (!this.widget) {
+      console.warn('[ChartManager] Cannot remove indicators: chart not initialized');
+      return;
+    }
+
+    try {
+      const chart = this.widget.chart();
+      if (!chart || typeof chart.getAllStudies !== 'function') {
+        console.warn('[ChartManager] Chart getAllStudies method not available');
+        return;
+      }
+
+      const studies = chart.getAllStudies();
+      const volumeStudy = studies.find((s: any) => s.name === 'Volume');
+
+      if (volumeStudy && typeof chart.removeEntity === 'function') {
+        chart.removeEntity(volumeStudy.id);
+        console.log('[ChartManager] Test indicators removed successfully');
+      }
+    } catch (error) {
+      console.warn('[ChartManager] Failed to remove test indicators:', error);
+    }
+  }
+
+  /**
+   * 차트 설정 적용 (overrides)
+   */
+  applyChartOverrides(overrides: Record<string, any>): void {
+    if (!this.widget || !this.isInitialized) {
+      console.warn('[ChartManager] Chart is not initialized');
+      return;
+    }
+
+    try {
+      if (typeof this.widget.chart !== 'function') {
+        console.warn('[ChartManager] Chart method not available');
+        return;
+      }
+
+      const chart = this.widget.chart();
+      if (chart && typeof chart.applyOverrides === 'function') {
+        // 심볼 관련 override 로깅
+        const symbolKeys = getSymbolOverrideKeys(overrides);
+        const symbolOverrides = symbolKeys.reduce((obj: any, key) => {
+          obj[key] = overrides[key];
+          return obj;
+        }, {});
+
+        chart.applyOverrides(overrides);
+      } else {
+        console.warn('[ChartManager] Chart applyOverrides method not available');
+      }
+    } catch (error) {
+      console.error('[ChartManager] Failed to apply chart overrides');
+    }
+  }
+
+  /**
+   * 설정 기반 차트 업데이트
+   */
+  async applyChartSettings(settings: ChartSettings): Promise<void> {
+    if (!this.widget || !this.isInitialized) {
+      console.warn('[ChartManager] Chart not initialized');
+      return;
+    }
+
+    this.currentSettings = settings;
+
+    try {
+      // 차트 오버라이드 적용
+      const overrides = generateAllOverrides(settings);
+      const theme = getThemeFromSettings(settings);
+      const themeOverrides = generateThemeOverrides(theme);
+      const allOverrides = { ...overrides, ...themeOverrides };
+
+      this.applyChartOverrides(allOverrides);
+
+      // 차트 새로고침으로 테마 변경 적용
+      setTimeout(() => {
+        this.refreshChart();
+      }, 100);
+    } catch (error) {
+      console.error('[ChartManager] Error applying chart settings');
+    }
+  }
+
+  /**
+   * 현재 설정 가져오기
+   */
+  getCurrentSettings(): ChartSettings | null {
+    // 깊은 복사로 독립된 객체 반환 (참조 문제 방지)
+    return this.currentSettings ? JSON.parse(JSON.stringify(this.currentSettings)) : null;
+  }
+
+  /**
+   * 설정 변경으로 인한 차트 재생성이 필요한지 확인
+   */
+  needsRecreation(newSettings: ChartSettings): boolean {
+    if (!this.currentSettings) return true;
+
+    const needsRecreation = needsFeaturesRecreation(this.currentSettings, newSettings);
+
+    if (needsRecreation) {
+      console.log('[ChartManager] Recreation needed due to trading feature changes:', {
+        showBuySellButtons:
+          this.currentSettings.trading.showBuySellButtons !==
+          newSettings.trading.showBuySellButtons,
+        showOrders: this.currentSettings.trading.showOrders !== newSettings.trading.showOrders,
+      });
+    } else {
+      console.log('[ChartManager] Settings can be applied via overrides (no recreation needed)');
+    }
+
+    return needsRecreation;
+  }
+
+  /**
+   * 설정을 TradingView overrides로 변환
+   */
+  public convertSettingsToOverrides(settings: ChartSettings): Record<string, any> {
+    const basicOverrides = generateAllOverrides(settings);
+    const theme = getThemeFromSettings(settings);
+    const themeOverrides = generateThemeOverrides(theme);
+
+    return { ...basicOverrides, ...themeOverrides };
   }
 
   /**
@@ -329,6 +427,32 @@ export class ChartManager {
   }
 
   /**
+   * 차트 로드 완료 후에만 적용 가능한 설정들
+   * 차트 위젯이 완전히 초기화된 후 실행되는 설정
+   *
+   * 현재는 테스트용 지표 추가만 구현
+   * TODO: 추후 다음 설정들의 필요에 따라 구현
+   *  - 크로스헤어 설정
+   *  - 저장된 레이아웃 복원
+   *  - 사용자 정의 지표 추가
+   *  - 드로잉 도구 설정
+   */
+  private applyPostLoadSettings(): void {
+    // 테스트용 볼륨 지표 추가
+    // TODO: 지표 테스트 시 주석 해제
+    // this.addTestIndicators();
+    // TODO: 차트 설정(this.currentSettings)을 사용한 추가 설정 적용
+    // if (this.currentSettings) {
+    //   // 저장된 지표 복원
+    //   // 드로잉 도구 복원
+    //   // 사용자 정의 설정 적용
+    // }
+    /**
+     * TODO: 크로스헤어 설정 업데이트 로직 구현
+     */
+  }
+
+  /**
    * 차트 정리 및 해제
    */
   destroy(): void {
@@ -338,9 +462,14 @@ export class ChartManager {
 
     if (this.widget) {
       try {
-        this.widget.chart().remove();
+        if (typeof this.widget.chart === 'function') {
+          const chart = this.widget.chart();
+          if (chart && typeof chart.remove === 'function') {
+            chart.remove();
+          }
+        }
       } catch (error) {
-        console.error('[ChartManager] Chart destroy error:', error);
+        console.error('[ChartManager] Chart destroy failed');
       }
     }
 
@@ -353,6 +482,3 @@ export class ChartManager {
     console.log('[ChartManager] Chart destroyed');
   }
 }
-
-// 싱글톤 인스턴스
-export const chartManager = new ChartManager();

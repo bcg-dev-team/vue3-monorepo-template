@@ -28,6 +28,59 @@ const regularSvgConfig = {
   ],
 };
 
+// 플래그 아이콘용 SVGO 설정 (fill, stroke 유지)
+const flagSvgConfig = {
+  multipass: true,
+  plugins: [
+    {
+      name: 'preset-default',
+      params: {
+        overrides: {
+          removeUselessStrokeAndFill: false, // 플래그는 색상 유지
+        },
+      },
+    },
+    {
+      name: 'removeAttrs',
+      params: {
+        attrs: ['width', 'height'], // fill, stroke는 제거하지 않음
+      },
+    },
+  ],
+};
+
+// 중복 파일 처리 함수
+function handleDuplicateFile(originalPath: string, newPath: string): boolean {
+  try {
+    // 같은 경로인 경우 (대소문자만 다른 경우)
+    if (originalPath.toLowerCase() === newPath.toLowerCase()) {
+      // 임시 파일명으로 먼저 이동
+      const tempPath = newPath + '.temp';
+      fs.renameSync(originalPath, tempPath);
+
+      // 기존 파일이 있다면 삭제
+      if (fs.existsSync(newPath)) {
+        fs.unlinkSync(newPath);
+      }
+
+      // 임시 파일을 최종 경로로 이동
+      fs.renameSync(tempPath, newPath);
+      return true;
+    }
+
+    // 다른 경로인 경우
+    if (fs.existsSync(newPath)) {
+      fs.unlinkSync(newPath);
+    }
+
+    fs.renameSync(originalPath, newPath);
+    return true;
+  } catch (error) {
+    console.error(`❌ Error handling duplicate file:`, error);
+    return false;
+  }
+}
+
 // SVG 최적화 함수
 function cleanSVGs(dir: string) {
   const files = fs.readdirSync(dir);
@@ -57,13 +110,10 @@ function cleanSVGs(dir: string) {
 
       // 파일 경로에 따라 적절한 SVGO 설정 선택
       const isFlagIcon = fullPath.startsWith(FLAGS_DIR);
-      if (isFlagIcon) {
-        continue;
-      }
 
       const result = optimize(originalContent, {
         path: fullPath,
-        ...regularSvgConfig,
+        ...(isFlagIcon ? flagSvgConfig : regularSvgConfig),
       } as any);
 
       if ('error' in result) {
@@ -110,6 +160,11 @@ function cleanSVGs(dir: string) {
         kebabCaseName = 'flag-sui';
       }
 
+      // noti를 notification으로 특별 처리
+      if (kebabCaseName === 'noti') {
+        kebabCaseName = 'notification';
+      }
+
       // 연속된 하이픈을 하나로 변환
       kebabCaseName = kebabCaseName.replace(/-+/g, '-');
 
@@ -121,14 +176,15 @@ function cleanSVGs(dir: string) {
 
       // 파일명이 변경된 경우에만 리네임
       if (file !== newFileName) {
-        try {
-          fs.renameSync(fullPath, newFilePath);
+        // 최적화된 데이터를 먼저 저장
+        fs.writeFileSync(fullPath, result.data, 'utf8');
+
+        // 파일명 변경 처리
+        if (handleDuplicateFile(fullPath, newFilePath)) {
           console.log(`🔄 Renamed: ${file} → ${newFileName}`);
           renamedCount++;
-        } catch (error) {
-          console.error(`❌ Error renaming ${file}:`, error);
-          // 리네임 실패 시 원래 경로에 저장
-          fs.writeFileSync(fullPath, result.data, 'utf8');
+        } else {
+          console.error(`❌ Failed to rename ${file} to ${newFileName}`);
         }
       } else {
         // 파일명이 이미 kebab-case인 경우

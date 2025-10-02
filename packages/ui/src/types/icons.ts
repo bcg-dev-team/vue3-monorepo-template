@@ -16,6 +16,12 @@ export type IconName =
   | 'arrow-updown-solid'
   | 'arrow-forward-sm'
   | 'arrow-backward-sm'
+  | 'arrow-down-solid'
+  | 'arrow-left-solid'
+  | 'arrow-outward'
+  | 'arrow-right-solid'
+  | 'arrow-up-solid'
+  | 'arrow-updown-solid'
 
   // 액션 아이콘
   | 'heart'
@@ -40,7 +46,15 @@ export type IconName =
   | 'pause'
   | 'move'
   | 'withdraw'
+<<<<<<< HEAD
   | 'grap'
+=======
+  | 'delete'
+  | 'save'
+  | 'sort'
+  | 'grab'
+  | 'drag-draw'
+>>>>>>> 08afe46f (chore(packages/ui): 아이콘 타입 목록 업데이트 및 문서 수정)
 
   // 네비게이션 아이콘
   | 'home'
@@ -54,7 +68,18 @@ export type IconName =
   | 'support'
   | 'list'
   | 'phone'
-  | 'notification'
+  | 'noti'
+  | 'campaign-thin'
+  | 'deposit-thin'
+  | 'faq-thin'
+  | 'logout-thin'
+  | 'mypage-thin'
+  | 'support-thin'
+  | 'trade-thin'
+  | 'trash-thin'
+  | 'info-thin'
+  | 'close-thin'
+  | 'list-thin'
 
   // 테마 아이콘
   | 'mode-dark'
@@ -67,15 +92,19 @@ export type IconName =
   | 'check-sm'
   | 'check-circle'
   | 'grade'
+  | 'fav'
+  | 'favorite'
 
   // 화면/디스플레이 아이콘
   | 'screen-single'
   | 'screen-multi'
   | 'screem-multi2'
+  | 'layout-1x1'
+  | 'layout-2x2'
+  | 'layout-3x3'
+  | 'layout-4x4'
 
-  // 기타 아이콘
-  | 'asset'
-  | 'calendar'
+  // 차트 아이콘
   | 'chart'
   | 'chart-line'
   | 'chart-candle'
@@ -83,18 +112,30 @@ export type IconName =
   | 'chart-area'
   | 'chart-5m'
   | 'chart-4h'
-  | 'chart-1w'
-  | 'chart-1mon'
+  | 'chart-1-w'
+  | 'chart-1-mon'
   | 'chart-1m'
   | 'chart-1h'
-  | 'chart-1d'
+  | 'chart-1-d'
   | 'chart-15m'
+  | 'chart-30m'
   | 'chart-10m'
+  | 'chart-eye-thin'
+  | 'chart-indicator'
+  | 'chart-new'
+  | 'chart-setting'
+  | 'chart-setup'
+  | 'chart-snapshot'
+
+  // 기타 아이콘
+  | 'asset'
+  | 'calendar'
   | 'email'
   | 'time'
   | 'cert'
   | 'comm'
   | 'account-balance'
+  | 'account'
   | 'description'
   | 'file-attached'
   | 'filter'
@@ -103,25 +144,35 @@ export type IconName =
   | 'close small'
   | 'trending-up'
   | 'trending-down'
+  | 'dollar'
+  | 'cloud-upload'
+  | 'transparent'
+  | 'watch'
+  | 'more vert'
 
   // 플래그 아이콘
-  | 'flag-au'
-  | 'flag-ca'
-  | 'flag-cn'
-  | 'flag-eu'
-  | 'flag-hk'
-  | 'flag-jp'
-  | 'flag-kr'
-  | 'flag-mx'
-  | 'flag-nr'
-  | 'flag-nz'
-  | 'flag-se'
-  | 'flag-sg'
-  | 'flag-sui'
-  | 'flag-tr'
-  | 'flag-uk'
-  | 'flag-us'
-  | 'flag-za';
+  | 'flag-AU'
+  | 'flag-CA'
+  | 'flag-CN'
+  | 'flag-de'
+  | 'flag-es'
+  | 'flag-EU'
+  | 'flag-fr'
+  | 'flag-HK'
+  | 'flag-it'
+  | 'flag-JP'
+  | 'flag-KR'
+  | 'flag-MX'
+  | 'flag-nl'
+  | 'flag-NR'
+  | 'flag-NZ'
+  | 'flag-SE'
+  | 'flag-SG'
+  | 'flag-SUI'
+  | 'flag-TR'
+  | 'flag-UK'
+  | 'flag-US'
+  | 'flag-ZA';
 
 /**
  * 아이콘 타입 정의
@@ -176,6 +227,12 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   'arrow-updown-solid': 'fill', // fill="#333740"
   'arrow-forward-sm': 'fill', // fill="#333740"
   'arrow-backward-sm': 'fill', // fill="#333740"
+  'arrow-down-solid': 'fill', // fill (path 요소)
+  'arrow-left-solid': 'fill', // fill (path 요소)
+  'arrow-outward': 'fill', // fill="#333740"
+  'arrow-right-solid': 'fill', // fill (path 요소)
+  'arrow-up-solid': 'fill', // fill (path 요소)
+  'arrow-updown-solid': 'fill', // fill (path 요소)
 
   // 액션 아이콘
   heart: 'fill', // fill="#333740"
@@ -200,7 +257,15 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   pause: 'fill', // fill="#333740"
   move: 'fill', // fill="#333740" (path만 사용)
   withdraw: 'fill', // fill="#333740" (path만 사용)
+<<<<<<< HEAD
   grap: 'fill', // fill="#333740"
+=======
+  delete: 'fill', // fill (path 요소)
+  save: 'fill', // fill (path 요소)
+  sort: 'fill', // fill (path 요소)
+  grab: 'fill', // fill (path 요소)
+  'drag-draw': 'fill', // fill (path 요소)
+>>>>>>> 08afe46f (chore(packages/ui): 아이콘 타입 목록 업데이트 및 문서 수정)
 
   // 네비게이션 아이콘
   home: 'fill', // fill="#333740"
@@ -214,7 +279,18 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   support: 'fill', // fill="#333740"
   list: 'fill', // fill="#333740"
   phone: 'fill', // fill="#333740"
-  notification: 'fill', // fill="#333740" (path만 사용)
+  noti: 'fill', // fill (path 요소)
+  'campaign-thin': 'fill', // fill (path 요소)
+  'deposit-thin': 'fill', // fill (path 요소)
+  'faq-thin': 'fill', // fill (path 요소)
+  'logout-thin': 'fill', // fill (path 요소)
+  'mypage-thin': 'fill', // fill (path 요소)
+  'support-thin': 'fill', // fill (path 요소)
+  'trade-thin': 'fill', // fill (path 요소)
+  'trash-thin': 'fill', // fill (path 요소)
+  'info-thin': 'fill', // fill (path 요소)
+  'close-thin': 'fill', // fill (path 요소)
+  'list-thin': 'fill', // fill (path 요소)
 
   // 테마 아이콘
   'mode-dark': 'fill', // fill="#333740"
@@ -227,15 +303,19 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   'check-sm': 'fill', // fill="#333740" (path만 사용)
   'check-circle': 'fill', // fill="#000"
   grade: 'fill', // fill="#333740"
+  fav: 'fill', // fill (path 요소)
+  favorite: 'fill', // fill (path 요소)
 
   // 화면/디스플레이 아이콘
   'screen-single': 'fill', // fill="#333740" (path만 사용)
   'screen-multi': 'fill', // fill="#333740" (path만 사용)
   'screem-multi2': 'fill', // fill="#333740" (path만 사용)
+  'layout-1x1': 'fill', // fill (path 요소)
+  'layout-2x2': 'fill', // fill (path 요소)
+  'layout-3x3': 'fill', // fill (path 요소)
+  'layout-4x4': 'fill', // fill (path 요소)
 
-  // 기타 아이콘
-  asset: 'fill', // fill="#333740"
-  calendar: 'fill', // fill="#333740"
+  // 차트 아이콘
   chart: 'fill', // fill="#333740"
   'chart-line': 'fill', // fill="#333740" (path만 사용)
   'chart-candle': 'fill', // fill="#333740" (path만 사용)
@@ -243,18 +323,30 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   'chart-area': 'fill', // fill="#333740" (path만 사용)
   'chart-5m': 'fill', // fill="#333740" (path만 사용)
   'chart-4h': 'fill', // fill="#333740" (path만 사용)
-  'chart-1w': 'fill', // fill="#333740" (path만 사용)
-  'chart-1mon': 'fill', // fill="#333740" (path만 사용)
+  'chart-1-w': 'fill', // fill (text 요소)
+  'chart-1-mon': 'fill', // fill (path 요소)
   'chart-1m': 'fill', // fill="#333740" (path만 사용)
   'chart-1h': 'fill', // fill="#333740" (path만 사용)
-  'chart-1d': 'fill', // fill="#333740" (path만 사용)
+  'chart-1-d': 'fill', // fill (text 요소)
   'chart-15m': 'fill', // fill="#333740" (path만 사용)
+  'chart-30m': 'fill', // fill (path 요소)
   'chart-10m': 'fill', // fill="#333740" (path만 사용)
+  'chart-eye-thin': 'fill', // fill (path 요소)
+  'chart-indicator': 'fill', // fill (path 요소)
+  'chart-new': 'fill', // fill (path 요소)
+  'chart-setting': 'fill', // fill (path 요소)
+  'chart-setup': 'fill', // fill (path 요소)
+  'chart-snapshot': 'fill', // fill (path 요소)
+
+  // 기타 아이콘
+  asset: 'fill', // fill="#333740"
+  calendar: 'fill', // fill="#333740"
   email: 'fill', // fill="#333740"
   time: 'fill', // fill="#333740"
   cert: 'fill', // fill="#000"
   comm: 'fill', // fill="#333740"
   'account-balance': 'fill', // fill="#717375"
+  account: 'fill', // fill="#333740"
   description: 'fill', // fill="#333740" (path만 사용)
   'file-attached': 'fill', // fill="#333740" (path만 사용)
   filter: 'fill', // fill="#333740" (path만 사용)
@@ -263,25 +355,35 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   'close small': 'fill', // fill="#333740" (path만 사용)
   'trending-up': 'fill', // fill="#333740"
   'trending-down': 'fill', // fill="#333740"
+  dollar: 'fill', // fill (path 요소)
+  'cloud-upload': 'fill', // fill (path 요소)
+  transparent: 'stroke', // stroke (path 요소)
+  watch: 'fill', // fill (path 요소)
+  'more vert': 'fill', // fill (path 요소)
 
   // 플래그 아이콘 (특별 처리)
-  'flag-au': 'fill',
-  'flag-ca': 'fill',
-  'flag-cn': 'fill',
-  'flag-eu': 'fill',
-  'flag-hk': 'fill',
-  'flag-jp': 'fill',
-  'flag-kr': 'fill',
-  'flag-mx': 'fill',
-  'flag-nr': 'fill',
-  'flag-nz': 'fill',
-  'flag-se': 'fill',
-  'flag-sg': 'fill',
-  'flag-sui': 'fill',
-  'flag-tr': 'fill',
-  'flag-uk': 'fill',
-  'flag-us': 'fill',
-  'flag-za': 'fill',
+  'flag-AU': 'fill',
+  'flag-CA': 'fill',
+  'flag-CN': 'fill',
+  'flag-de': 'fill',
+  'flag-es': 'fill',
+  'flag-EU': 'fill',
+  'flag-fr': 'fill',
+  'flag-HK': 'fill',
+  'flag-it': 'fill',
+  'flag-JP': 'fill',
+  'flag-KR': 'fill',
+  'flag-MX': 'fill',
+  'flag-nl': 'fill',
+  'flag-NR': 'fill',
+  'flag-NZ': 'fill',
+  'flag-SE': 'fill',
+  'flag-SG': 'fill',
+  'flag-SUI': 'fill',
+  'flag-TR': 'fill',
+  'flag-UK': 'fill',
+  'flag-US': 'fill',
+  'flag-ZA': 'fill',
 };
 
 /**

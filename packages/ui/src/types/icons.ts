@@ -68,7 +68,7 @@ export type IconName =
   | 'support'
   | 'list'
   | 'phone'
-  | 'noti'
+  | 'notification'
   | 'campaign-thin'
   | 'deposit-thin'
   | 'faq-thin'
@@ -279,7 +279,7 @@ export const ICON_TYPES: Record<IconName, IconType> = {
   support: 'fill', // fill="#333740"
   list: 'fill', // fill="#333740"
   phone: 'fill', // fill="#333740"
-  noti: 'fill', // fill (path 요소)
+  notification: 'fill', // fill (path 요소)
   'campaign-thin': 'fill', // fill (path 요소)
   'deposit-thin': 'fill', // fill (path 요소)
   'faq-thin': 'fill', // fill (path 요소)

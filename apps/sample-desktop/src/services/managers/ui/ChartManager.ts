@@ -439,15 +439,14 @@ export class ChartManager {
    */
   private applyPostLoadSettings(): void {
     // 테스트용 볼륨 지표 추가
-    this.addTestIndicators();
-
+    // TODO: 지표 테스트 시 주석 해제
+    // this.addTestIndicators();
     // TODO: 차트 설정(this.currentSettings)을 사용한 추가 설정 적용
     // if (this.currentSettings) {
     //   // 저장된 지표 복원
     //   // 드로잉 도구 복원
     //   // 사용자 정의 설정 적용
     // }
-
     /**
      * TODO: 크로스헤어 설정 업데이트 로직 구현
      */

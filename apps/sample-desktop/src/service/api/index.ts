@@ -1,4 +1,5 @@
 import {
+  StockService,
   TermsService,
   TradeService,
   UserService,
@@ -12,3 +13,4 @@ export const termsService = new TermsService(api);
 export const tradeService = new TradeService(api);
 export const accountService = new AccountService(api);
 export const authService = new AuthService(api);
+export const stockService = new StockService(api);

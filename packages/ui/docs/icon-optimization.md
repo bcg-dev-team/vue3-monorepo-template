@@ -126,7 +126,7 @@ packages/ui/src/assets/icons/
 ├── move.svg
 ├── mypage-thin.svg
 ├── mypage.svg
-├── noti.svg
+├── notification.svg
 ├── order.svg
 ├── pause.svg
 ├── person.svg
@@ -473,7 +473,7 @@ const handleClose = () => {
 - `home`, `settings`, `person`
 - `login`, `logout`, `mypage`
 - `order`, `trade`, `support`
-- `list`, `phone`, `noti`
+- `list`, `phone`, `notification`
 - `campaign-thin`, `deposit-thin`, `faq-thin`
 - `logout-thin`, `mypage-thin`, `support-thin`
 - `trade-thin`, `trash-thin`, `info-thin`

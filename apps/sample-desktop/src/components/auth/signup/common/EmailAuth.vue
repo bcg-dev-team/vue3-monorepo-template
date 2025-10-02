@@ -35,7 +35,7 @@
       variant="outlined"
       color="primary"
       full-width
-      @click="userService.requestEmailVerification(signupStore.userInfo.email)"
+      @click="authService.requestEmailVerification(signupStore.userInfo.email)"
     />
     <BaseButton
       size="lg"
@@ -61,7 +61,7 @@
 import { BaseInput, BaseButton, BaseIcon } from '@template/ui';
 import Countdown from '@/components/common/Countdown.vue';
 import { useSignupStore } from '@/stores/useSignupStore';
-import { userService } from '@/service/api';
+import { authService } from '@/service/api';
 import { useRouter } from 'vue-router';
 import { ref, nextTick } from 'vue';
 
@@ -128,7 +128,7 @@ const handleCountdownFinished = () => {
 
 const handleClickNext = async () => {
   try {
-    const res = await userService.verifyEmailCode(
+    const res = await authService.verifyEmailCode(
       signupStore.userInfo.email,
       inputValues.value.join('')
     );

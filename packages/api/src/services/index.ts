@@ -4,3 +4,4 @@ export { UserService } from './user.service';
 export { TermsService } from './terms.service';
 export { TradeService } from './trade.service';
 export { AccountService } from './account.service';
+export { AuthService } from './auth.service';

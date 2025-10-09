@@ -3,11 +3,13 @@
     <component :is="route.meta.layout || NoneLayout">
       <router-view />
     </component>
+    <ToastManager />
   </div>
 </template>
 
 <script setup lang="ts">
 import NoneLayout from './components/layout/fragments/NoneLayout.vue';
+import ToastManager from './components/ToastManager.vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();

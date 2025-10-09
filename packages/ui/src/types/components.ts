@@ -419,3 +419,25 @@ export interface BadgeProps {
   overlap?: BadgeOverlap;
   anchorOrigin?: BadgeAnchorOrigin;
 }
+
+// BaseToast
+export type ToastType = 'success' | 'error' | 'warning' | 'info';
+
+export interface ToastItem {
+  id: string;
+  message: string;
+  type?: ToastType;
+  duration?: number;
+  show: boolean;
+}
+
+export interface ToastOptions {
+  type?: ToastType;
+  duration?: number;
+}
+
+export interface ToastProps {
+  message: string;
+  duration?: number;
+  show?: boolean;
+}

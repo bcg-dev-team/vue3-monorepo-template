@@ -141,8 +141,8 @@ const handleLogin = async () => {
       console.log(response.data.tokenInfo.accessToken);
       router.push({ name: 'home' });
     }
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
   }
 };
 </script>

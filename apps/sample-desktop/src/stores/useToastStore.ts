@@ -19,6 +19,11 @@ export const useToastStore = defineStore('toast', () => {
   const activeToasts = reactive<ToastProps[]>([]);
 
   /**
+   * 토스트 ID 카운터
+   */
+  let toastCounter = 0;
+
+  /**
    * 현재 표시할 토스트 메시지 목록 (읽기 전용)
    */
   const toasts = computed(() => activeToasts);
@@ -29,7 +34,7 @@ export const useToastStore = defineStore('toast', () => {
    * @param duration - 표시 지속 시간 (기본값: 1200ms)
    */
   const addToast = (message: string, duration: number = 1200): void => {
-    const id = `toast-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
+    const id = `toast-${++toastCounter}`;
 
     activeToasts.push({
       id,

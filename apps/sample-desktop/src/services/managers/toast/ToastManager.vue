@@ -12,7 +12,6 @@ const showToast = ref(false);
 const currentMessage = ref('');
 let toastTimer: NodeJS.Timeout | null = null;
 
-// currentToast 변화 감지
 watch(
   () => toastStore.currentToast,
   (newToast) => {
@@ -22,7 +21,6 @@ watch(
     }
 
     if (newToast) {
-      // 토스트 표시
       currentMessage.value = newToast.message;
       showToast.value = true;
 

@@ -1,40 +1,44 @@
 <template>
-  <BaseToast :message="currentMessage" :show="showToast" />
+  <BaseToast
+    v-for="toast in toastStore.toasts"
+    :key="toast.id"
+    :message="toast.message"
+    :show="toast.show"
+  />
 </template>
 
 <script setup lang="ts">
 import { useToastStore } from '@/stores/useToastStore';
 import { BaseToast } from '@template/ui';
-import { watch, ref } from 'vue';
+import { watch } from 'vue';
 
 const toastStore = useToastStore();
-const showToast = ref(false);
-const currentMessage = ref('');
-let toastTimer: NodeJS.Timeout | null = null;
+const toastTimers = new Map<string, NodeJS.Timeout>();
 
 watch(
-  () => toastStore.currentToast,
-  (newToast) => {
-    if (toastTimer) {
-      clearTimeout(toastTimer);
-      toastTimer = null;
-    }
+  () => toastStore.toasts,
+  (toasts) => {
+    toasts.forEach((toast) => {
+      // 이미 타이머가 설정된 토스트는 건너뜀
+      if (toastTimers.has(toast.id)) {
+        return;
+      }
 
-    if (newToast) {
-      currentMessage.value = newToast.message;
-      showToast.value = true;
+      // 새 토스트에 대한 타이머 설정
+      const timer = setTimeout(() => {
+        // 페이드 아웃 애니메이션을 위해 show를 false로 변경
+        toast.show = false;
 
-      toastTimer = setTimeout(() => {
-        showToast.value = false;
-
+        // 애니메이션 완료 후 목록에서 제거
         setTimeout(() => {
-          toastStore.removeCurrentToast();
+          toastStore.removeToast(toast.id);
+          toastTimers.delete(toast.id);
         }, 300);
-      }, newToast.duration || 1200);
-    } else {
-      showToast.value = false;
-    }
+      }, toast.duration || 1200);
+
+      toastTimers.set(toast.id, timer);
+    });
   },
-  { immediate: true }
+  { deep: true, immediate: true }
 );
 </script>

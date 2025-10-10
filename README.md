@@ -32,6 +32,7 @@ vue3-monorepo-template/
 - [패키지 관리 가이드](./docs/package-management.md) - 패키지 추가/수정/삭제 방법
 - [개발 환경 설정](./docs/development-setup.md) - 개발 환경 구축 방법
 - [순환 의존성 방지](./docs/circular-dependency-prevention.md) - 순환 참조 방지 가이드
+- [**API 자동 생성 가이드**](./docs/api-generation-guide.md) - OpenAPI Generator를 활용한 타입 및 서비스 자동 생성 ⭐
 
 ### 📦 Packages
 - [@template/types](./packages/types/README.md) - 공통 타입 정의
@@ -184,15 +185,20 @@ pnpm lint                 # ESLint 검사 및 수정
 pnpm format               # Prettier 포맷팅
 pnpm type-check           # TypeScript 타입 검사
 
+# API 자동 생성
+pnpm generate:api         # Swagger로부터 타입 및 API 클라이언트 생성
+pnpm generate:services    # 서비스 클래스 자동 생성
+
 # Storybook
 pnpm storybook            # Storybook 개발 서버
 pnpm build-storybook      # Storybook 빌드
 ```
 
-## 📚 문서
+## 📚 추가 문서
 
 - [Cursor AI 명령어 사용법](./CURSOR_COMMANDS.md) - Cursor AI 명령어 상세 가이드
 - [모노레포 아키텍처 가이드](./docs/architecture.md) - 패키지 구조 및 데이터 흐름
+- [API 자동 생성 가이드](./docs/api-generation-guide.md) - OpenAPI Generator 활용 가이드 ⭐
 - [모바일 배포 가이드](./docs/mobile-deployment.md) - React Native 앱 배포 방법
 - [순환 의존성 방지](./docs/circular-dependency-prevention.md) - 모노레포에서 순환 의존성 방지
 

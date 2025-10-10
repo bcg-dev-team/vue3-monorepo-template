@@ -1,15 +1,17 @@
 <template>
-  <BaseDataGrid
-    :columnDefs="columnDefs"
-    :rowData="rowData"
-    :gridOptions="gridOptions"
-    :sortable="true"
-    :filterable="false"
-    :pagination="false"
-    :resizable="false"
-    :disalbeColumnAutoSize="false"
-    theme="alpine"
-  />
+  <div class="default-table">
+    <BaseDataGrid
+      :columnDefs="columnDefs"
+      :rowData="rowData"
+      :gridOptions="gridOptions"
+      :sortable="true"
+      :filterable="false"
+      :pagination="false"
+      :resizable="false"
+      :disalbeColumnAutoSize="false"
+      theme="alpine"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -46,7 +48,7 @@ const columnDefs = ref<ColDef[]>([
     cellStyle: predefinedStyles.center,
   },
   {
-    headerName: 'L/S',
+    headerName: 'L / S',
     field: 'positionCd',
     sortable: true,
     width: 70,
@@ -64,6 +66,17 @@ const columnDefs = ref<ColDef[]>([
   {
     headerName: '수량',
     field: 'accountBookQuantity',
+    sortable: true,
+    width: 80,
+    headerClass: 'text-center',
+    cellStyle: predefinedStyles.right,
+    valueFormatter: (params: any) => {
+      return params.value.toLocaleString();
+    },
+  },
+  {
+    headerName: '청산가능수량',
+    field: 'liquidationPossibleQuantity',
     sortable: true,
     width: 80,
     headerClass: 'text-center',
@@ -97,7 +110,7 @@ const columnDefs = ref<ColDef[]>([
     },
   },
   {
-    headerName: '손익',
+    headerName: '평가손익',
     field: 'assessmentProfitLoss',
     sortable: true,
     width: 80,
@@ -111,7 +124,7 @@ const columnDefs = ref<ColDef[]>([
     },
   },
   {
-    headerName: '액션',
+    headerName: '',
     field: 'actions',
     sortable: false,
     width: 120,

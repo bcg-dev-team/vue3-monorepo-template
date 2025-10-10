@@ -9,7 +9,7 @@ export class StockService {
   }
 
   getStockPosition(requestBody: StockPositionRequest) {
-    return this.axios.get<StockPositionResponse>('/stocks/positions', {
+    return this.axios.get<StockPositionResponse>('/main/v1/stocks/positions', {
       params: requestBody,
     });
   }

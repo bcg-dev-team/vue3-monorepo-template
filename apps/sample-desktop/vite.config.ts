@@ -43,8 +43,6 @@ export default defineConfig(({ mode }) => {
           target: env.VITE_MODA_API,
           changeOrigin: true,
           secure: false,
-          //FIXME: 백엔드 api 통합 후 변경 필요
-          rewrite: (path) => path.replace(/^\/main\/v1/, ''),
         }
       }
     },

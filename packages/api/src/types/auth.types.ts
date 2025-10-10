@@ -1,5 +1,5 @@
 import { ApiSuccessResponse } from './api.types';
-import { AccountInfos } from './account.types';
+import { AccountInfo } from './account.types';
 import { MemberType } from './user.types';
 
 export type UseType = 'SIGN_UP' | 'RESET_PASSWORD' | 'FIND_ID';
@@ -13,7 +13,7 @@ export interface MemberInfo {
   memberId: number;
   email: string;
   memberType: MemberType;
-  accountList: AccountInfos[];
+  accountList: AccountInfo[];
 }
 
 export interface LoginResponse

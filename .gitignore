@@ -10,6 +10,9 @@ dist/
 packages/ui/components.d.ts
 packages/ui/auto-imports.d.ts
 
+# OpenAPI Generator 중간 산물 (generated-types는 Git에 포함)
+packages/api/src/__generated__/
+
 # TypeScript 빌드 정보
 *.tsbuildinfo
 **/*.tsbuildinfo

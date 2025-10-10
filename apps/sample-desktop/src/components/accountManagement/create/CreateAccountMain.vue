@@ -126,7 +126,10 @@
             <div class="w-full" v-if="showEnrollAccountCard">
               <EnrollAccountCard
                 @createAccount="((showEnrollAccountCard = false), getAccountInfo())"
-                @cancel="showEnrollAccountCard = false"
+                @cancel="
+                  ((showEnrollAccountCard = false),
+                  toastStore.addToast(toastMessage.account.account_creation_cancelled))
+                "
               />
             </div>
             <div class="w-full" v-if="selectedAccount">
@@ -156,11 +159,15 @@ import {
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import EnrollAccountCard from './EnrollAccountCard.vue';
 import AccountInfoDetail from './AccountInfoDetail.vue';
+import { toastMessage } from '@/constant/toastMessage';
+import { useToastStore } from '@/stores/useToastStore';
 import { useUserStore } from '@/stores/useUserStore';
 import { accountService } from '@/service/api';
 import { ref, onMounted, computed } from 'vue';
 import { AccountInfo } from '@template/api';
 import draggable from 'vuedraggable';
+
+const toastStore = useToastStore();
 const userStore = useUserStore();
 
 const accountList = ref<AccountInfo[]>([
@@ -349,6 +356,7 @@ const updateAccountInfo = async () => {
     const updateInfos = [...activeUpdateInfos, ...disabledUpdateInfos];
 
     await accountService.updateAccountInfo(updateInfos);
+    toastStore.addToast(toastMessage.account.info_change_complete);
   } catch (error) {
     console.error('계좌 순서 저장 실패:', error);
   }

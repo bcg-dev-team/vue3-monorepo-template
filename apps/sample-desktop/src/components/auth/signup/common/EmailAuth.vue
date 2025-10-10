@@ -35,7 +35,7 @@
       variant="outlined"
       color="primary"
       full-width
-      @click="authService.requestEmailVerification(signupStore.userInfo.email)"
+      @click="handleClickResend"
     />
     <BaseButton
       size="lg"
@@ -61,10 +61,14 @@
 import { BaseInput, BaseButton, BaseIcon } from '@template/ui';
 import Countdown from '@/components/common/Countdown.vue';
 import { useSignupStore } from '@/stores/useSignupStore';
+import { toastMessage } from '@/constant/toastMessage';
+import { useToastStore } from '@/stores/useToastStore';
 import { authService } from '@/service/api';
+import { userService } from '@/service/api';
 import { useRouter } from 'vue-router';
 import { ref, nextTick } from 'vue';
 
+const toastStore = useToastStore();
 const signupStore = useSignupStore();
 
 const maxLength = ref(1);
@@ -122,8 +126,18 @@ const handlePaste = async (startIndex: number, event: ClipboardEvent) => {
 
 // 카운트다운 이벤트 처리
 const handleCountdownFinished = () => {
-  console.log('인증시간이 만료되었습니다!');
-  // TODO: 인증시간 만료 처리 로직
+  toastStore.addToast(toastMessage.login.verification_expired);
+};
+
+const handleClickResend = async () => {
+  try {
+    const res = await authService.requestEmailVerification(signupStore.userInfo.email);
+    if (res.status === 'success') {
+      toastStore.addToast(toastMessage.login.verification_email_resent);
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const handleClickNext = async () => {
@@ -134,10 +148,11 @@ const handleClickNext = async () => {
     );
 
     if (res.status === 'success') {
+      toastStore.addToast(toastMessage.login.email_verification_complete);
       router.push({ query: { step: 4 } });
     }
   } catch (error) {
-    console.error('이메일 인증 실패:', error);
+    toastStore.addToast(toastMessage.login.verification_code_mismatch);
   }
 };
 </script>

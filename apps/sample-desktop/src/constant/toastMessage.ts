@@ -2,13 +2,15 @@ export const toastMessage = {
   login: {
     no_email: '해당 이메일로 가입된 계정이 없습니다.이메일을 다시 한번 확인해 주세요',
     password_error: '비밀번호가 틀렸어요',
+    email_or_password_error: '이메일 또는 비밀번호가 틀렸어요',
     copy_email: '이메일 주소를 복사했어요',
     email_already_exists: '이미 가입된 이메일이에요',
     verification_email_resent: '인증메일을 재전송했어요',
     verification_code_mismatch: '인증번호가 일치하지 않아요, 다시 확인해주세요',
-    verification_expired: '유효시간이 만료됐어요,인증메일 재전송을 눌러주세요',
+    verification_expired: '유효시간이 만료됐어요, 인증메일 재전송을 눌러주세요',
     email_verification_complete: '이메일 인증이 완료됐어요',
     file_size_exceeded: '파일 용량이 초과됐어요',
+    file_type_error: '허용되지 않는 파일 형식이에요',
   },
 
   order: {

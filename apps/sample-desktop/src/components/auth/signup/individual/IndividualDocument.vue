@@ -5,6 +5,8 @@
         status="hover"
         @fileSelected="handleFileSelected"
         @remove="handleFileRemove"
+        @fileSizeError="toastStore.addToast(toastMessage.login.file_size_exceeded)"
+        @fileTypeError="toastStore.addToast(toastMessage.login.file_type_error)"
       />
     </FormField>
     <div>
@@ -21,6 +23,8 @@
           status="hover"
           @fileSelected="handleAdditionalFileSelected"
           @remove="handleAdditionalFileRemove"
+          @fileSizeError="toastStore.addToast(toastMessage.login.file_size_exceeded)"
+          @fileTypeError="toastStore.addToast(toastMessage.login.file_type_error)"
         />
       </div>
     </div>
@@ -41,10 +45,13 @@
 import { BaseButton, BaseFileUploadButton, BaseCheckbox } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
 import { useSignupStore } from '@/stores/useSignupStore';
+import { toastMessage } from '@/constant/toastMessage';
+import { useToastStore } from '@/stores/useToastStore';
 import { userService } from '@/service/api';
 import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
 
+const toastStore = useToastStore();
 const signupStore = useSignupStore();
 const router = useRouter();
 

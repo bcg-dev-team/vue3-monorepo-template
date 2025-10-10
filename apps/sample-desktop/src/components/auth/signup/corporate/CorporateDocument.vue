@@ -5,6 +5,8 @@
         status="hover"
         @fileSelected="handleSelectedBusinessRegistration"
         @remove="handleRemoveBusinessRegistration"
+        @fileSizeError="toastStore.addToast(toastMessage.login.file_size_exceeded)"
+        @fileTypeError="toastStore.addToast(toastMessage.login.file_type_error)"
       />
     </FormField>
     <FormField label="법인대표초본(영문)">
@@ -12,6 +14,8 @@
         status="hover"
         @fileSelected="handleSelectedCorporateRepresentative"
         @remove="handleRemoveCorporateRepresentative"
+        @fileSizeError="toastStore.addToast(toastMessage.login.file_size_exceeded)"
+        @fileTypeError="toastStore.addToast(toastMessage.login.file_type_error)"
       />
     </FormField>
     <FormField label="법인명 공과금 납부서">
@@ -19,6 +23,8 @@
         status="hover"
         @fileSelected="handleSelectedBillPaymentCorporate"
         @remove="handleRemoveBillPaymentCorporate"
+        @fileSizeError="toastStore.addToast(toastMessage.login.file_size_exceeded)"
+        @fileTypeError="toastStore.addToast(toastMessage.login.file_type_error)"
       />
     </FormField>
 
@@ -39,10 +45,13 @@
 import { BaseButton, BaseFileUploadButton } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
 import { useSignupStore } from '@/stores/useSignupStore';
+import { toastMessage } from '@/constant/toastMessage';
+import { useToastStore } from '@/stores/useToastStore';
 import { reactive, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const toastStore = useToastStore();
 const signupStore = useSignupStore();
 
 const isSubmitDisabled = computed(() => {

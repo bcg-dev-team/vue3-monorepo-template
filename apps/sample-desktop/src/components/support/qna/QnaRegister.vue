@@ -25,7 +25,12 @@
         <TableLabel title="첨부파일">
           <div class="gap-size-10 flex items-center">
             <div>
-              <BaseFileUploadButton class="w-[130px]" status="hover" />
+              <BaseFileUploadButton
+                class="w-[130px]"
+                status="hover"
+                @fileSizeError="toastStore.addToast(toastMessage.login.file_size_exceeded)"
+                @fileTypeError="toastStore.addToast(toastMessage.login.file_type_error)"
+              />
             </div>
             <div class="gap-size-4 flex items-center">
               <Anchor @click="() => console.log('첨부파일 클릭!')">
@@ -43,6 +48,7 @@
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 import {
   BaseInput,
@@ -52,8 +58,11 @@ import {
   BaseInputSelect,
 } from '@template/ui';
 import TableLabel from '@/components/support/qna/common/TableLabel.vue';
+import { toastMessage } from '@/constant/toastMessage';
+import { useToastStore } from '@/stores/useToastStore';
 import Anchor from '@/components/common/Anchor.vue';
 import { ref } from 'vue';
+const toastStore = useToastStore();
 
 const selectedAccount = ref('');
 const accountOptions = [

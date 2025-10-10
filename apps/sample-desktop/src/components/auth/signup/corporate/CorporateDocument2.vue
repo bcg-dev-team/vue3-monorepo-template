@@ -5,6 +5,8 @@
         status="hover"
         @fileSelected="handleSelectedShareholderRegister"
         @remove="handleRemoveShareholderRegister"
+        @fileSizeError="toastStore.addToast(toastMessage.login.file_size_exceeded)"
+        @fileTypeError="toastStore.addToast(toastMessage.login.file_type_error)"
       />
     </FormField>
     <FormField label="법인대표 여권 사본">
@@ -12,6 +14,8 @@
         status="hover"
         @fileSelected="handleSelectedCorporateRepresentativePassport"
         @remove="handleRemoveCorporateRepresentativePassport"
+        @fileSizeError="toastStore.addToast(toastMessage.login.file_size_exceeded)"
+        @fileTypeError="toastStore.addToast(toastMessage.login.file_type_error)"
       />
     </FormField>
     <div>
@@ -29,6 +33,8 @@
             (files: File[]) => handleSelectedAdditionalCorporateRepresentativePassport(files, index)
           "
           @remove="(file) => handleRemoveAdditionalCorporateRepresentativePassport(file, index)"
+          @fileSizeError="toastStore.addToast(toastMessage.login.file_size_exceeded)"
+          @fileTypeError="toastStore.addToast(toastMessage.login.file_type_error)"
         />
 
         <div
@@ -56,10 +62,13 @@
 import { BaseButton, BaseFileUploadButton, BaseCheckbox, BaseIcon } from '@template/ui';
 import FormField from '@/components/auth/common/FormField.vue';
 import { useSignupStore } from '@/stores/useSignupStore';
+import { toastMessage } from '@/constant/toastMessage';
+import { useToastStore } from '@/stores/useToastStore';
 import { ref, reactive, computed } from 'vue';
 import { userService } from '@/service/api';
 import { useRouter } from 'vue-router';
 
+const toastStore = useToastStore();
 const signupStore = useSignupStore();
 
 const state = reactive({

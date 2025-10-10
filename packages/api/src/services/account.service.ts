@@ -22,7 +22,7 @@ export class AccountService {
    * @returns 계좌 정보 목록
    */
   getAccountInfo() {
-    return this.axios.get<AccountInfoResponse>('/accounts/info');
+    return this.axios.get<AccountInfoResponse>('/main/v1/accounts/info');
   }
 
   /**
@@ -32,7 +32,7 @@ export class AccountService {
    * @returns 계좌 개설 결과 (계좌번호, 계좌 시퀀스, 노출 순서 포함)
    */
   createAccount(request: AccountCreateRequest) {
-    return this.axios.post<AccountCreateResponse>('/accounts/create', request);
+    return this.axios.post<AccountCreateResponse>('/main/v1/accounts/create', request);
   }
 
   /**
@@ -46,7 +46,7 @@ export class AccountService {
       accountInfos,
     };
 
-    return this.axios.put<AccountUpdateResponse>('/accounts/info', requestData);
+    return this.axios.put<AccountUpdateResponse>('/main/v1/accounts/info', requestData);
   }
 
   /**
@@ -68,6 +68,9 @@ export class AccountService {
       afterAccountPassword,
     };
 
-    return this.axios.put<AccountChangePasswordResponse>('/accounts/change-pw', requestBody);
+    return this.axios.put<AccountChangePasswordResponse>(
+      '/main/v1/accounts/change-pw',
+      requestBody
+    );
   }
 }

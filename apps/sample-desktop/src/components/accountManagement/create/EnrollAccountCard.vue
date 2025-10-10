@@ -110,9 +110,12 @@
 import MainCardContent from '@/components/common/cards/MainCardContent.vue';
 import LabelContent from '@/components/common/LabelContent.vue';
 import { BaseButton, BaseInput, BaseModal } from '@template/ui';
+import { toastMessage } from '@/constant/toastMessage';
+import { useToastStore } from '@/stores/useToastStore';
 import { accountService } from '@/service/api';
 import { reactive, ref } from 'vue';
 
+const toastStore = useToastStore();
 const state = reactive({
   accountAlias: '',
   accountPassword: '',
@@ -133,6 +136,7 @@ const handleCreateAccount = async () => {
     const res = await accountService.createAccount(requestData);
 
     if (res.status === 'success') {
+      toastStore.addToast(toastMessage.account.account_created);
       emit('createAccount');
     }
   } catch (error) {

@@ -32,15 +32,11 @@
 import { ref, watch } from 'vue';
 
 /**
- * 화면 정중앙에 표시되는 토스트 컴포넌트
- *
  * @props message - 표시할 메시지 텍스트
  * @props show - 토스트 표시 여부
  */
 interface Props {
-  /** 표시할 메시지 텍스트 */
   message: string;
-  /** 토스트 표시 여부 */
   show?: boolean;
 }
 
@@ -50,7 +46,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const visible = ref(false);
 
-// show prop 변경 감시
 watch(
   () => props.show,
   (newShow) => {

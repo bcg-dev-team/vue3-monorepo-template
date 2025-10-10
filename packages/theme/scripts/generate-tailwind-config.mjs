@@ -99,6 +99,7 @@ async function addZIndexVariables(cssPath) {
   --z-index-app-bar: 1100;
   --z-index-drawer: 1200;
   --z-index-modal: 1300;
+  --z-index-toast: 1400;
   --z-index-snackbar: 1400;
   --z-index-tooltip: 1500;
   --z-index-max: 9999;
@@ -169,6 +170,7 @@ async function run() {
       'app-bar': 'var(--z-index-app-bar, 1100)',
       drawer: 'var(--z-index-drawer, 1200)',
       modal: 'var(--z-index-modal, 1300)',
+      toast: 'var(--z-index-toast, 1400)',
       snackbar: 'var(--z-index-snackbar, 1400)',
       tooltip: 'var(--z-index-tooltip, 1500)',
       max: 'var(--z-index-max, 9999)',

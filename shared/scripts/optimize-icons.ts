@@ -7,7 +7,7 @@ import fs from 'fs';
 const ICONS_DIR = path.resolve(process.cwd(), 'packages/ui/src/assets/icons');
 const FLAGS_DIR = path.resolve(ICONS_DIR, 'flags');
 
-// 일반 아이콘용 SVGO 설정 (fill, stroke 제거)
+// 일반 아이콘용 SVGO 설정 (fill, stroke를 currentColor로 변환)
 const regularSvgConfig = {
   multipass: true,
   plugins: [
@@ -15,14 +15,20 @@ const regularSvgConfig = {
       name: 'preset-default',
       params: {
         overrides: {
-          removeUselessStrokeAndFill: true, // 불필요한 stroke/fill 제거
+          removeUselessStrokeAndFill: false, // stroke/fill 유지
         },
       },
     },
     {
       name: 'removeAttrs',
       params: {
-        attrs: ['width', 'height', 'fill', 'stroke'],
+        attrs: ['width', 'height'], // width, height만 제거
+      },
+    },
+    {
+      name: 'convertColors',
+      params: {
+        currentColor: true, // 색상을 currentColor로 변환
       },
     },
   ],

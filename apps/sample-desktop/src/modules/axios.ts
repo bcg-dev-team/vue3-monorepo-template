@@ -1,10 +1,8 @@
+import { createAxiosInstance, SecurityErrorCode, type AxiosError } from '@template/api';
 import LocalStorageService from '@/service/localStorage/local-storage.service';
 import LocalStorageKey from '@/service/localStorage/local-storage-key';
-import { createAxiosInstance, AxiosError } from '@template/api';
-import { SecurityErrorCode } from '@template/api';
 import { Logout } from '@/service/auth.service';
 import { authService } from '@/service/api';
-import router from '@/router';
 
 const tokenResolver = () => LocalStorageService.getItem(LocalStorageKey.ACCESS_TOKEN) || undefined;
 

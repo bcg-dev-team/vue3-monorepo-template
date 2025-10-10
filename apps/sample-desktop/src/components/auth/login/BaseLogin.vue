@@ -88,8 +88,8 @@ import { RadioGroup, RadioGroupOption } from '@headlessui/vue';
 import { toastMessage } from '@/constant/toastMessage';
 import { useToastStore } from '@/stores/useToastStore';
 import Anchor from '@/components/common/Anchor.vue';
+import { CustomTypes } from '@template/api';
 import { authService } from '@/service/api';
-import { MemberType } from '@template/api';
 import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
 
@@ -97,7 +97,7 @@ const toastStore = useToastStore();
 const router = useRouter();
 
 interface Props {
-  selectedTabKey: MemberType;
+  selectedTabKey: CustomTypes.MemberType;
 }
 
 const email = ref('');

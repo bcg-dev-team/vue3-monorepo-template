@@ -19,7 +19,9 @@
 <script setup lang="ts">
 import { paymentDetailColumns } from '@/components/transaction/constants/tableColumnDefs';
 import LabelContent from '@/components/common/LabelContent.vue';
-import { TradePaymentsHistoryDetail } from '@template/api';
+import { CustomTypes } from '@template/api';
+
+type TradePaymentsHistoryDetail = CustomTypes.TradePaymentsHistoryDetail;
 import { BaseDataGrid } from '@template/ui';
 import { onMounted } from 'vue';
 

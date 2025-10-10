@@ -18,10 +18,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc --noEmit && tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json",
     "dev": "vite build --watch",
     "clean": "rimraf dist",
-    "type-check": "tsc --noEmit",
+    "type-check": "tsc -p tsconfig.json --noEmit",
     "test": "vitest",
     "test:watch": "vitest --watch",
     "test:coverage": "vitest --coverage",

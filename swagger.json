@@ -1,0 +1,3882 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Moda API Document",
+    "description": "Moda API 명세서 입니다.",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://172.25.1.24:8080/main/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "security": [
+    {
+      "Authorization": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Member",
+      "description": "멤버 관리 API"
+    },
+    {
+      "name": "Account",
+      "description": "계좌 관리 API"
+    },
+    {
+      "name": "Quote",
+      "description": "시세 정보 API"
+    },
+    {
+      "name": "Stock",
+      "description": "종목 관리 API"
+    },
+    {
+      "name": "Terms",
+      "description": "약관 관리 API"
+    },
+    {
+      "name": "Trade",
+      "description": "거래 관리 API"
+    },
+    {
+      "name": "WatchList",
+      "description": "관심종목 관리 API"
+    },
+    {
+      "name": "Asset",
+      "description": "자산 관리 API"
+    },
+    {
+      "name": "Auth",
+      "description": "인증 관리 API"
+    }
+  ],
+  "paths": {
+    "/accounts/info": {
+      "get": {
+        "tags": ["Account"],
+        "summary": "계좌 정보 조회",
+        "description": "회원의 계좌 정보를 조회한다.",
+        "operationId": "getAccountInfo",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataAccountInfoResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Account"],
+        "summary": "계좌 정보 변경",
+        "description": "계좌 정보(별칭, 표시여부, 표시순번)를 변경한다.",
+        "operationId": "updateAccountInfo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountInfoUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/change-pw": {
+      "put": {
+        "tags": ["Account"],
+        "summary": "계좌 비밀번호 변경",
+        "description": "개설한 계좌의 비밀번호를 변경한다.",
+        "operationId": "updatePassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountUpdatePwdRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/watchlist": {
+      "get": {
+        "tags": ["WatchList"],
+        "summary": "관심종목 목록 조회",
+        "description": "사용자의 관심종목 목록을 조회한다. 페이징 파라미터가 없으면 전체 조회한다.",
+        "operationId": "getWatchList",
+        "parameters": [
+          {
+            "name": "pageRequest",
+            "in": "query",
+            "description": "페이징 정보",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/PageRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataPageResponseWatchListResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["WatchList"],
+        "summary": "관심종목 등록",
+        "description": "새로운 관심종목을 등록한다.",
+        "operationId": "addToWatchList",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WatchListAddRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/members/{email}/approve": {
+      "post": {
+        "tags": ["Member"],
+        "summary": "회원승인(추후 BO로 이동)",
+        "description": "회원가입된 아이디의 승인한다. 개인회원(INDIVIDUAL)과 법인회원(CORPORATE)을 모두 지원한다.",
+        "operationId": "approve",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "이메일",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "이메일",
+              "example": "helloworld@blockchainglobal.co.kr"
+            },
+            "example": "helloworld@blockchainglobal.co.kr"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberApproveRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/members/password/change": {
+      "post": {
+        "tags": ["Member"],
+        "summary": "비밀번호 변경",
+        "description": "인증이 완료된 사용자의 비밀번호를 새로운 비밀번호로 변경한다. 이메일 인증이 완료되지 않은 경우 오류를 반환한다.",
+        "operationId": "changePassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberPasswordChangeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/members/join/individual": {
+      "post": {
+        "tags": ["Member"],
+        "summary": "개인회원 가입",
+        "description": "새로운 개인회원을 등록한다.\n\n필수 파일:\n- idCard: 신분증 (필수)\n\n선택 파일:\n- additionalIdDocument: 주민등록초본 or 관공서 납부영수증 (선택사항)\n\t - swagger 내부에서 테스트 시 파일이 없다면, Send empty value 를 해제하고 테스트해야 한다.\n",
+        "operationId": "joinIndividual",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/IndividualMemberJoinRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataMemberJoinResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/members/join/corporate": {
+      "post": {
+        "tags": ["Member"],
+        "summary": "법인회원 가입",
+        "description": "새로운 법인회원을 등록한다.\n\n필수 파일:\n- businessRegistration: 사업자등록증명원 (필수)\n\n- corporateRepresentative: 법인 대표 초본 (필수)\n\n- billPaymentCorporate: 법인명 공과금 납부서 (필수)\n\n- shareholderRegister: 주주 명부 (필수)\n\n- corporateRepresentativePassport: 법인대표 여권 사본 (필수)\n\n선택 파일:\n- additionalCorporateRepresentativePassport: 다른 법인 대표 여권 사본 (선택사항)\n\t - swagger 내부에서 테스트 시 파일이 없다면, Send empty value 를 해제하고 테스트해야 한다.\n",
+        "operationId": "joinCorporate",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CorporateMemberJoinRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataMemberJoinResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/members/find-id": {
+      "post": {
+        "tags": ["Member"],
+        "summary": "아이디 찾기",
+        "description": "SMS 인증이 완료된 사용자의 마스킹된 이메일을 반환한다. SMS 인증이 완료되지 않은 경우 오류를 반환한다.",
+        "operationId": "findId",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberFindIdRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataMemberFindIdResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auths/web/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "웹 jwt 재발급",
+        "description": "access token 만료시 refresh token 유효성 검사 이후 새로운 jwt를 재발급한다.",
+        "operationId": "refreshTokensForWeb",
+        "parameters": [
+          {
+            "name": "refreshToken",
+            "in": "cookie",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthRefreshTokenRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataTokenResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auths/web/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "회원 웹 로그인",
+        "description": "승인된 아이디를 로그인한다. 개인회원(INDIVIDUAL)과 법인회원(CORPORATE)을 모두 지원한다.",
+        "operationId": "loginForWeb",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthLoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataAuthLoginResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auths/sms/verify": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "SMS 인증 코드 검증",
+        "description": "발송된 SMS 인증 코드를 검증한다. useType으로 용도를 구분한다.",
+        "operationId": "verifySmsVerificationCode",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberVerifySmsCodeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auths/sms/send": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "SMS 인증 코드 발송",
+        "description": "이름과 휴대폰 번호로 SMS 인증 코드를 발송한다. useType으로 용도를 구분한다.",
+        "operationId": "sendSmsVerificationCode",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberSendSmsCodeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auths/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "회원 로그아웃",
+        "description": "사용중인 아이디를 로그아웃한다. 개인회원(INDIVIDUAL)과 법인회원(CORPORATE)을 모두 지원한다.",
+        "operationId": "logout",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auths/logout-all": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "모든 세션 로그아웃",
+        "description": "사용중인 아이디를 로그아웃한다. 개인회원(INDIVIDUAL)과 법인회원(CORPORATE)을 모두 지원한다.",
+        "operationId": "logoutAll",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auths/email/verify": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "이메일 인증 코드 검증",
+        "description": "발송된 인증 코드를 검증한다. useType으로 용도를 구분한다.",
+        "operationId": "verifyEmailVerificationCode",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificationCodeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auths/email/send": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "이메일 인증 코드 발송",
+        "description": "회원가입 또는 비밀번호 재설정을 위한 이메일 인증 코드를 발송한다. useType으로 용도를 구분한다.",
+        "operationId": "sendEmailVerificationCode",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auths/app/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "앱 jwt 재발급",
+        "description": "access token 만료시 refresh token 유효성 검사 이후 새로운 jwt를 재발급한다.",
+        "operationId": "refreshTokensForApp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthRefreshTokenRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataTokenResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auths/app/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "회원 앱 로그인",
+        "description": "승인된 아이디를 로그인한다. 개인회원(INDIVIDUAL)과 법인회원(CORPORATE)을 모두 지원한다.",
+        "operationId": "loginForApp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthLoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataAuthLoginResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/create": {
+      "post": {
+        "tags": ["Account"],
+        "summary": "계좌 개설",
+        "description": "회원가입 후 계좌를 개설한다. 기존 계좌의 존재여부와 상관없이 원장서버로 요청을 보낸다.",
+        "operationId": "sendAccountCreate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataAccountCreateResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/presentation/orders": {
+      "get": {
+        "tags": ["presentation-controller"],
+        "operationId": "getOrders",
+        "parameters": [
+          {
+            "name": "actNo",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataOrderResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/v1/presentation/balance": {
+      "get": {
+        "tags": ["presentation-controller"],
+        "operationId": "getBalance",
+        "parameters": [
+          {
+            "name": "actNo",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataBalanceResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/trades": {
+      "get": {
+        "tags": ["Trade"],
+        "summary": "주문 체결 내역 조회",
+        "description": "거래 > 거래내역 > 주문체결 조회시 사용한다.",
+        "operationId": "getTradeOrdersHistory",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/OrderExecutionHistoryRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataOrderExecutionHistoryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trades/payments": {
+      "get": {
+        "tags": ["Trade"],
+        "summary": "결제내역 조회",
+        "description": "거래 > 거래내역 > 결제내역 조회시 사용한다.",
+        "operationId": "getPaymentHistory",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PaymentHistoryRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataPaymentHistoryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trades/liquidation/profit-loss": {
+      "get": {
+        "tags": ["Trade"],
+        "summary": "청산손익 조회",
+        "description": "거래 > 거래내역 > 청산손익 조회시 사용한다.",
+        "operationId": "getLiquidationHistory",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/LiquidationHistoryRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataLiquidationHistoryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stocks/possessions": {
+      "get": {
+        "tags": ["Stock"],
+        "summary": "보유종목 조회",
+        "description": "종목의 보유종목을 확인할 수 있다.(홈화면)",
+        "operationId": "getPossessionStocks",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PossessionStockRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataPossessionStockResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stocks/positions": {
+      "get": {
+        "tags": ["Stock"],
+        "summary": "주문잔고 조회",
+        "description": "종목의 주문잔고를 확인할 수 있다.(홈화면)",
+        "operationId": "getPositionStocks",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PositionStockRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataPositionStockResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stocks/orders": {
+      "get": {
+        "tags": ["Stock"],
+        "summary": "주문종목 조회",
+        "description": "종목의 MetaData 를 확인할 수 있다.(홈화면, 종목쪽 조회 등 쓰임)",
+        "operationId": "getOrderStocks",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/OrderStockRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataOrderStockResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/quote/{stockCode}/order-book": {
+      "get": {
+        "tags": ["Quote"],
+        "summary": "5단계 호가 조회",
+        "description": "종목의 5단계 호가 정보를 조회합니다.",
+        "operationId": "getOrderBook",
+        "parameters": [
+          {
+            "name": "stockCode",
+            "in": "path",
+            "description": "조회할 종목코드",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/StockCode"
+            },
+            "example": "USDCHF"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataResponseListOrderBookResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assets/positions": {
+      "get": {
+        "tags": ["Asset"],
+        "summary": "보유 포지션 조회",
+        "description": "회원의 보유한 포지션 리스트를 조회한다.",
+        "operationId": "getAssetPositions",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/AssetPositionsRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataAssetPositionsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assets/deposits": {
+      "get": {
+        "tags": ["Asset"],
+        "summary": "증거금 내역 조회",
+        "description": "회원의 보유한 증거금 리스트를 조회한다.",
+        "operationId": "getAssetDeposits",
+        "parameters": [
+          {
+            "name": "request",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/AssetDepositsRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataAssetDepositsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/terms": {
+      "get": {
+        "tags": ["Terms"],
+        "summary": "약관 전체 조회",
+        "description": "약관 전체를 조회합니다.",
+        "operationId": "getAllTermsGroupedByTermsName",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataMapTermsNameListResponseTermsByTermsName"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/terms/names": {
+      "get": {
+        "tags": ["Terms"],
+        "summary": "약관 목록 조회",
+        "description": "약관 목록을 조회합니다.",
+        "operationId": "getAllTermsNames",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataResponseTermsList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/terms/name/{termsName}": {
+      "get": {
+        "tags": ["Terms"],
+        "summary": "약관 상세 조회",
+        "description": "약관 내용을 조회합니다.",
+        "operationId": "getTermsByTermsName",
+        "parameters": [
+          {
+            "name": "termsName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["SERVICE_USAGE_TERMS", "PERSONAL_INFO_COLLECTION", "MARKETING_NOTIFICATION"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataResponseListResponseTermsByTermsName"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/watchlist/{stockCode}": {
+      "delete": {
+        "tags": ["WatchList"],
+        "summary": "관심종목 삭제",
+        "description": "등록된 관심종목을 삭제한다.",
+        "operationId": "removeFromWatchList",
+        "parameters": [
+          {
+            "name": "stockCode",
+            "in": "path",
+            "description": "종목 코드",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "AAPL"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDataObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccountInfoUpdateRequest": {
+        "required": ["accountInfos"],
+        "type": "object",
+        "properties": {
+          "accountInfos": {
+            "type": "array",
+            "description": "계좌 정보 목록",
+            "items": {
+              "$ref": "#/components/schemas/ItemDto"
+            }
+          }
+        },
+        "description": "계좌정보 변경 요청 바디"
+      },
+      "ItemDto": {
+        "required": ["accountAlias", "accountNo", "visible"],
+        "type": "object",
+        "properties": {
+          "accountNo": {
+            "type": "string",
+            "description": "계좌번호",
+            "example": "000000000001"
+          },
+          "accountAlias": {
+            "type": "string",
+            "description": "계좌별칭",
+            "example": "나의 계좌1"
+          },
+          "visible": {
+            "type": "string",
+            "description": "표시여부",
+            "example": "Y"
+          }
+        },
+        "description": "계좌 정보 목록"
+      },
+      "ResponseDataString": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "type": "string",
+            "description": "data"
+          }
+        }
+      },
+      "AccountUpdatePwdRequest": {
+        "required": ["accountNo", "afterAccountPassword", "beforeAccountPassword"],
+        "type": "object",
+        "properties": {
+          "accountNo": {
+            "type": "string",
+            "description": "계좌번호",
+            "example": "000000000001"
+          },
+          "beforeAccountPassword": {
+            "pattern": "^[0-9]{6}$",
+            "type": "string",
+            "description": "변경 전 비밀번호",
+            "example": "123456"
+          },
+          "afterAccountPassword": {
+            "pattern": "^[0-9]{6}$",
+            "type": "string",
+            "description": "변경 후 비밀번호",
+            "example": "654321"
+          }
+        },
+        "description": "계좌 비밀번호 변경 요청 바디"
+      },
+      "StockCode": {
+        "required": ["value"],
+        "type": "object",
+        "properties": {
+          "value": {
+            "maxLength": 50,
+            "minLength": 0,
+            "pattern": "^[A-Z0-9]+$",
+            "type": "string"
+          }
+        },
+        "description": "종목 코드",
+        "example": "USDAUD"
+      },
+      "WatchListAddRequest": {
+        "required": ["stockCode"],
+        "type": "object",
+        "properties": {
+          "stockCode": {
+            "$ref": "#/components/schemas/StockCode"
+          }
+        },
+        "description": "관심종목 등록 요청"
+      },
+      "ResponseDataObject": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "description": "data"
+          }
+        }
+      },
+      "MemberApproveRequest": {
+        "required": ["approvedAdminUser", "memberType"],
+        "type": "object",
+        "properties": {
+          "memberType": {
+            "type": "string",
+            "description": "회원 유형",
+            "example": "INDIVIDUAL",
+            "enum": ["INDIVIDUAL", "CORPORATE"]
+          },
+          "approvedAdminUser": {
+            "type": "string",
+            "description": "승인자",
+            "example": "admin@blockchainglobal.co.kr"
+          }
+        },
+        "description": "회원 활성화 승인"
+      },
+      "Email": {
+        "required": ["value"],
+        "type": "object",
+        "properties": {
+          "value": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          }
+        },
+        "description": "비밀번호를 변경할 이메일 주소",
+        "example": "user@blockchainglobal.co.kr"
+      },
+      "MemberPasswordChangeRequest": {
+        "required": ["email", "newPassword"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "$ref": "#/components/schemas/Email"
+          },
+          "newPassword": {
+            "type": "string",
+            "description": "새로 설정할 비밀번호",
+            "example": "newPassword123!"
+          }
+        },
+        "description": "비밀번호 변경 요청"
+      },
+      "IndividualMemberJoinRequest": {
+        "required": [
+          "address",
+          "addressEn",
+          "birth",
+          "detailAddress",
+          "detailAddressEn",
+          "email",
+          "firstNameEn",
+          "lastNameEn",
+          "name",
+          "password",
+          "phoneNo"
+        ],
+        "type": "object",
+        "properties": {
+          "ci": {
+            "type": "string",
+            "description": "투자자를 식별하기 위한 CI (Customer Identification) 값"
+          },
+          "email": {
+            "$ref": "#/components/schemas/Email"
+          },
+          "password": {
+            "type": "string",
+            "description": "비밀번호"
+          },
+          "name": {
+            "type": "string",
+            "description": "이름"
+          },
+          "phoneNo": {
+            "type": "string",
+            "description": "핸드폰 번호"
+          },
+          "birth": {
+            "type": "string",
+            "description": "생년월일 (yyyy-MM-dd 형식)",
+            "format": "date"
+          },
+          "firstNameEn": {
+            "type": "string",
+            "description": "성"
+          },
+          "lastNameEn": {
+            "type": "string",
+            "description": "이름"
+          },
+          "address": {
+            "type": "string",
+            "description": "주소"
+          },
+          "addressEn": {
+            "type": "string",
+            "description": "주소(영문)"
+          },
+          "detailAddress": {
+            "type": "string",
+            "description": "상세주소"
+          },
+          "detailAddressEn": {
+            "type": "string",
+            "description": "상세주소(영문)"
+          },
+          "zipCode": {
+            "type": "string",
+            "description": "우편번호"
+          }
+        },
+        "description": "개인회원 가입"
+      },
+      "IndividualMemberJoinRequestDto": {
+        "required": ["idCard", "individualMember"],
+        "type": "object",
+        "properties": {
+          "individualMember": {
+            "$ref": "#/components/schemas/IndividualMemberJoinRequest"
+          },
+          "idCard": {
+            "type": "string",
+            "format": "binary"
+          },
+          "additionalIdDocument": {
+            "type": "string",
+            "format": "binary"
+          }
+        },
+        "description": "개인회원 가입 요청"
+      },
+      "MemberJoinResponse": {
+        "required": ["id"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "description": "회원가입 응답"
+      },
+      "ResponseDataMemberJoinResponse": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/MemberJoinResponse"
+          }
+        }
+      },
+      "CorporateMemberJoinRequest": {
+        "required": [
+          "address",
+          "businessNumber",
+          "companyName",
+          "detailAddress",
+          "email",
+          "name",
+          "password",
+          "phoneNo",
+          "representativeBirth",
+          "representativeEngFirstName",
+          "representativeEngLastName"
+        ],
+        "type": "object",
+        "properties": {
+          "ci": {
+            "type": "string",
+            "description": "투자자를 식별하기 위한 CI (Customer Identification) 값"
+          },
+          "email": {
+            "$ref": "#/components/schemas/Email"
+          },
+          "password": {
+            "type": "string",
+            "description": "비밀번호"
+          },
+          "name": {
+            "type": "string",
+            "description": "이름"
+          },
+          "phoneNo": {
+            "type": "string",
+            "description": "핸드폰 번호"
+          },
+          "companyName": {
+            "type": "string",
+            "description": "법인명"
+          },
+          "businessNumber": {
+            "type": "string",
+            "description": "법인등록번호"
+          },
+          "address": {
+            "type": "string",
+            "description": "법인주소"
+          },
+          "addressEn": {
+            "type": "string",
+            "description": "법인주소(영문)"
+          },
+          "detailAddressEn": {
+            "type": "string",
+            "description": "법인상세주소(영문)"
+          },
+          "detailAddress": {
+            "type": "string",
+            "description": "법인상세주소"
+          },
+          "zipCode": {
+            "type": "string",
+            "description": "우편번호"
+          },
+          "representativeEngFirstName": {
+            "type": "string",
+            "description": "법인대표 성(영문)"
+          },
+          "representativeEngLastName": {
+            "type": "string",
+            "description": "법인대표 이름(영문)"
+          },
+          "representativeBirth": {
+            "type": "string",
+            "description": "법인대표 생년월일 (yyyy-MM-dd 형식)",
+            "format": "date"
+          }
+        },
+        "description": "법인회원 가입"
+      },
+      "CorporateMemberJoinRequestDto": {
+        "required": [
+          "billPaymentCorporate",
+          "businessRegistration",
+          "corporateMember",
+          "corporateRepresentative",
+          "corporateRepresentativePassport",
+          "shareholderRegister"
+        ],
+        "type": "object",
+        "properties": {
+          "corporateMember": {
+            "$ref": "#/components/schemas/CorporateMemberJoinRequest"
+          },
+          "businessRegistration": {
+            "type": "string",
+            "format": "binary"
+          },
+          "corporateRepresentative": {
+            "type": "string",
+            "format": "binary"
+          },
+          "billPaymentCorporate": {
+            "type": "string",
+            "format": "binary"
+          },
+          "shareholderRegister": {
+            "type": "string",
+            "format": "binary"
+          },
+          "corporateRepresentativePassport": {
+            "type": "string",
+            "format": "binary"
+          },
+          "additionalCorporateRepresentativePassport": {
+            "type": "array",
+            "description": "법인대표 여권 사본",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        },
+        "description": "법인회원 가입 요청"
+      },
+      "MemberFindIdRequest": {
+        "required": ["name", "phoneNo"],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "이름",
+            "example": "김철수"
+          },
+          "phoneNo": {
+            "type": "string",
+            "description": "인증을 완료한 휴대폰 번호",
+            "example": "010-1234-5678"
+          }
+        },
+        "description": "아이디 찾기 요청"
+      },
+      "MemberFindIdResponse": {
+        "required": ["email"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "찾은 이메일",
+            "example": "use@blockchainglobal.co.kr"
+          }
+        },
+        "description": "아이디 찾기 응답"
+      },
+      "ResponseDataMemberFindIdResponse": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/MemberFindIdResponse"
+          }
+        }
+      },
+      "AuthRefreshTokenRequest": {
+        "required": ["expiredAccessToken"],
+        "type": "object",
+        "properties": {
+          "expiredAccessToken": {
+            "type": "string",
+            "description": "만료된 AccessToken",
+            "example": "accessfnkdjls54f5dfds"
+          }
+        },
+        "description": "jwt 재발급을 위한 요청 바디"
+      },
+      "ResponseDataTokenResponse": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/TokenResponse"
+          }
+        }
+      },
+      "TokenResponse": {
+        "required": ["accessToken"],
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          }
+        },
+        "description": "data"
+      },
+      "AuthLoginRequest": {
+        "required": ["email"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "$ref": "#/components/schemas/Email"
+          },
+          "password": {
+            "type": "string",
+            "description": "회원 비밀번호",
+            "example": "passW0rd!"
+          }
+        },
+        "description": "회원 로그인 요청"
+      },
+      "AccountInfo": {
+        "required": [
+          "accountAlias",
+          "accountGrade",
+          "accountNo",
+          "accountSequence",
+          "visible",
+          "visibleSequence"
+        ],
+        "type": "object",
+        "properties": {
+          "accountNo": {
+            "type": "string",
+            "description": "계좌번호",
+            "example": "000000000001"
+          },
+          "accountSequence": {
+            "type": "string",
+            "description": "계좌순번",
+            "example": "0000000001"
+          },
+          "accountGrade": {
+            "type": "string",
+            "description": "등급그룹코드",
+            "example": "G01"
+          },
+          "accountAlias": {
+            "type": "string",
+            "description": "계좌별칭",
+            "example": "나의 계좌1"
+          },
+          "visible": {
+            "type": "string",
+            "description": "표시여부",
+            "example": "Y"
+          },
+          "visibleSequence": {
+            "type": "string",
+            "description": "표시순번",
+            "example": "01"
+          }
+        },
+        "description": "계좌 정보"
+      },
+      "AuthLoginResponse": {
+        "required": ["accountList", "email", "memberId", "memberType", "tokenInfo"],
+        "type": "object",
+        "properties": {
+          "memberId": {
+            "type": "integer",
+            "description": "회원 ID",
+            "format": "int64",
+            "example": 1
+          },
+          "email": {
+            "$ref": "#/components/schemas/Email"
+          },
+          "memberType": {
+            "type": "string",
+            "description": "회원 유형",
+            "example": "INDIVIDUAL",
+            "enum": ["INDIVIDUAL", "CORPORATE"]
+          },
+          "accountList": {
+            "type": "array",
+            "description": "계좌 리스트",
+            "items": {
+              "$ref": "#/components/schemas/AccountInfo"
+            }
+          },
+          "tokenInfo": {
+            "$ref": "#/components/schemas/TokenResponse"
+          }
+        },
+        "description": "회원 로그인 응답"
+      },
+      "ResponseDataAuthLoginResponse": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/AuthLoginResponse"
+          }
+        }
+      },
+      "MemberVerifySmsCodeRequest": {
+        "required": ["name", "phoneNo", "useType", "verificationCode"],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "이름",
+            "example": "김철수"
+          },
+          "phoneNo": {
+            "type": "string",
+            "description": "인증을 진행할 휴대폰 번호",
+            "example": "010-1234-5678"
+          },
+          "verificationCode": {
+            "type": "string",
+            "description": "6자리 숫자 인증 코드",
+            "example": "123456"
+          },
+          "useType": {
+            "type": "string",
+            "description": "인증 용도",
+            "example": "FIND_ID",
+            "enum": ["SIGN_UP", "RESET_PASSWORD", "FIND_ID"]
+          }
+        },
+        "description": "통합 SMS 인증 코드 검증 요청"
+      },
+      "MemberSendSmsCodeRequest": {
+        "required": ["name", "phoneNo", "useType"],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "이름",
+            "example": "김철수"
+          },
+          "phoneNo": {
+            "type": "string",
+            "description": "SMS 인증 코드를 수신할 휴대폰 번호",
+            "example": "010-1234-5678"
+          },
+          "useType": {
+            "type": "string",
+            "description": "인증 용도",
+            "example": "FIND_ID",
+            "enum": ["SIGN_UP", "RESET_PASSWORD", "FIND_ID"]
+          }
+        },
+        "description": "통합 SMS 인증 코드 발송 요청"
+      },
+      "VerificationCodeRequest": {
+        "required": ["email", "useType", "verificationCode"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "$ref": "#/components/schemas/Email"
+          },
+          "verificationCode": {
+            "type": "string",
+            "description": "6자리 숫자 인증 코드",
+            "example": "123456"
+          },
+          "useType": {
+            "type": "string",
+            "description": "인증 용도",
+            "example": "SIGN_UP",
+            "enum": ["SIGN_UP", "RESET_PASSWORD", "FIND_ID"]
+          }
+        },
+        "description": "통합 이메일 인증 코드 검증 요청"
+      },
+      "VerificationRequest": {
+        "required": ["email", "useType"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "$ref": "#/components/schemas/Email"
+          },
+          "useType": {
+            "type": "string",
+            "description": "인증 용도",
+            "example": "SIGN_UP",
+            "enum": ["SIGN_UP", "RESET_PASSWORD", "FIND_ID"]
+          }
+        },
+        "description": "통합 이메일 인증 요청"
+      },
+      "AccountCreateRequest": {
+        "required": ["accountPassword"],
+        "type": "object",
+        "properties": {
+          "accountPassword": {
+            "pattern": "^[0-9]{6}$",
+            "type": "string",
+            "description": "계좌 비밀번호",
+            "example": "123456"
+          },
+          "accountAlias": {
+            "type": "string",
+            "description": "계좌 별칭",
+            "example": "나의 계좌"
+          }
+        },
+        "description": "계좌 개설 요청 바디"
+      },
+      "AccountCreateResponse": {
+        "required": ["accountNo", "accountSequence", "visibleSequence"],
+        "type": "object",
+        "properties": {
+          "accountNo": {
+            "type": "string",
+            "description": "계좌번호",
+            "example": "000000000001"
+          },
+          "accountSequence": {
+            "type": "string",
+            "description": "계좌순번",
+            "example": "0000000001"
+          },
+          "visibleSequence": {
+            "type": "string",
+            "description": "표시순번",
+            "example": "01"
+          }
+        },
+        "description": "계좌 개설 응답 바디"
+      },
+      "ResponseDataAccountCreateResponse": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/AccountCreateResponse"
+          }
+        }
+      },
+      "PageRequest": {
+        "required": ["page", "size"],
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "type": "string"
+          }
+        }
+      },
+      "PageResponseWatchListResponse": {
+        "required": ["contents", "isFirst", "isLast"],
+        "type": "object",
+        "properties": {
+          "contents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WatchListResponse"
+            }
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "총 페이지 갯수",
+            "format": "int32",
+            "example": 10
+          },
+          "totalElements": {
+            "type": "integer",
+            "description": "총 데이터 건수",
+            "format": "int64",
+            "example": 90
+          },
+          "isFirst": {
+            "type": "boolean",
+            "description": "첫번째 페이지 여부",
+            "example": true
+          },
+          "isLast": {
+            "type": "boolean",
+            "description": "마지막 페이지 여부",
+            "example": false
+          }
+        },
+        "description": "data"
+      },
+      "ResponseDataPageResponseWatchListResponse": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageResponseWatchListResponse"
+          }
+        }
+      },
+      "WatchListResponse": {
+        "required": ["stockCode"],
+        "type": "object",
+        "properties": {
+          "stockCode": {
+            "type": "string",
+            "description": "종목 코드",
+            "example": "USDAUD"
+          }
+        },
+        "description": "관심종목 정보"
+      },
+      "OrderResponseDto": {
+        "required": [
+          "copCd",
+          "dataGrp",
+          "empNo",
+          "grdGrcd",
+          "handle",
+          "rcnt",
+          "trCode",
+          "trGb",
+          "user",
+          "userIp"
+        ],
+        "type": "object",
+        "properties": {
+          "trCode": {
+            "type": "string"
+          },
+          "trGb": {
+            "type": "string"
+          },
+          "handle": {
+            "type": "string"
+          },
+          "copCd": {
+            "type": "string"
+          },
+          "empNo": {
+            "type": "string"
+          },
+          "grdGrcd": {
+            "type": "string"
+          },
+          "userIp": {
+            "type": "string"
+          },
+          "dataGrp": {
+            "type": "string"
+          },
+          "user": {
+            "type": "string"
+          },
+          "rcnt": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderResponseItemDto"
+            }
+          }
+        },
+        "description": "data"
+      },
+      "OrderResponseItemDto": {
+        "required": [
+          "isuCd",
+          "lotMtp",
+          "mgnRt",
+          "pipUnt",
+          "potUnt",
+          "ppr",
+          "prMtp",
+          "stdCcyCd",
+          "trdCcyCd"
+        ],
+        "type": "object",
+        "properties": {
+          "isuCd": {
+            "type": "string"
+          },
+          "ppr": {
+            "type": "number",
+            "format": "double"
+          },
+          "mgnRt": {
+            "type": "number",
+            "format": "double"
+          },
+          "stdCcyCd": {
+            "type": "string"
+          },
+          "trdCcyCd": {
+            "type": "string"
+          },
+          "lotMtp": {
+            "type": "number",
+            "format": "double"
+          },
+          "prMtp": {
+            "type": "number",
+            "format": "double"
+          },
+          "potUnt": {
+            "type": "number",
+            "format": "double"
+          },
+          "pipUnt": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "ResponseDataOrderResponseDto": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/OrderResponseDto"
+          }
+        }
+      },
+      "BalanceResponseDto": {
+        "required": [
+          "copCd",
+          "dataGrp",
+          "empNo",
+          "grdGrcd",
+          "handle",
+          "trCode",
+          "trGb",
+          "user",
+          "userIp"
+        ],
+        "type": "object",
+        "properties": {
+          "trCode": {
+            "type": "string"
+          },
+          "trGb": {
+            "type": "string"
+          },
+          "handle": {
+            "type": "string"
+          },
+          "copCd": {
+            "type": "string"
+          },
+          "empNo": {
+            "type": "string"
+          },
+          "grdGrcd": {
+            "type": "string"
+          },
+          "userIp": {
+            "type": "string"
+          },
+          "dataGrp": {
+            "type": "string"
+          },
+          "user": {
+            "type": "string"
+          },
+          "rcnt": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalanceResponseItemDto"
+            }
+          }
+        },
+        "description": "data"
+      },
+      "BalanceResponseItemDto": {
+        "required": [
+          "abkPr",
+          "abkQty",
+          "evlPl",
+          "isuCd",
+          "isuGrcd",
+          "pftRt",
+          "posDvcd",
+          "ppr",
+          "trdCcyCd"
+        ],
+        "type": "object",
+        "properties": {
+          "isuCd": {
+            "type": "string"
+          },
+          "trdCcyCd": {
+            "type": "string"
+          },
+          "posDvcd": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "abkQty": {
+            "type": "number",
+            "format": "double"
+          },
+          "abkPr": {
+            "type": "number",
+            "format": "double"
+          },
+          "ppr": {
+            "type": "number",
+            "format": "double"
+          },
+          "evlPl": {
+            "type": "number",
+            "format": "double"
+          },
+          "pftRt": {
+            "type": "number",
+            "format": "double"
+          },
+          "isuGrcd": {
+            "type": "string"
+          }
+        }
+      },
+      "ResponseDataBalanceResponseDto": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/BalanceResponseDto"
+          }
+        }
+      },
+      "OrderExecutionHistoryRequest": {
+        "required": [
+          "accountNo",
+          "nextKey",
+          "orderCd",
+          "orderEndDate",
+          "orderStartDate",
+          "positionCd"
+        ],
+        "type": "object",
+        "properties": {
+          "accountNo": {
+            "type": "string",
+            "description": "계좌번호",
+            "example": "250815000002"
+          },
+          "orderStartDate": {
+            "type": "string",
+            "description": "주문 시작일자",
+            "format": "date",
+            "example": "2025-08-01"
+          },
+          "orderEndDate": {
+            "type": "string",
+            "description": "주문 종료일자",
+            "format": "date",
+            "example": "2025-08-31"
+          },
+          "orderCd": {
+            "type": "string",
+            "description": "주문구분코드",
+            "example": "TOTAL",
+            "enum": ["TOTAL", "BUY_PURCHASE", "SELL_PURCHASE"]
+          },
+          "positionCd": {
+            "type": "string",
+            "description": "포지션구분코드",
+            "example": "TOTAL",
+            "enum": ["TOTAL", "LONG", "SHORT"]
+          },
+          "nextKey": {
+            "type": "string",
+            "description": "nextKey(초기 요청시 1)",
+            "example": "1"
+          }
+        },
+        "description": "주문 체결내역 요청"
+      },
+      "DetailsOrderExecution": {
+        "required": [
+          "barrierPrice",
+          "executionDate",
+          "executionNo",
+          "executionPrice",
+          "executionQuantity",
+          "lossCutBarrierPrice",
+          "orderBalance",
+          "orderDate",
+          "orderNo",
+          "orderPrice",
+          "orderQuantity",
+          "orderStatusCd",
+          "orderTypeCd",
+          "positionCd",
+          "profitRealizationBarrierPrice",
+          "receptionDate",
+          "rejectReason",
+          "sideCd",
+          "stockCd"
+        ],
+        "type": "object",
+        "properties": {
+          "orderDate": {
+            "type": "string",
+            "description": "주문일자",
+            "format": "date"
+          },
+          "orderNo": {
+            "type": "string",
+            "description": "주문번호"
+          },
+          "executionDate": {
+            "type": "string",
+            "description": "체결일자",
+            "format": "date"
+          },
+          "executionNo": {
+            "type": "string",
+            "description": "체결번호"
+          },
+          "stockCd": {
+            "type": "string",
+            "description": "종목코드"
+          },
+          "positionCd": {
+            "type": "string",
+            "description": "포지션구분코드"
+          },
+          "orderTypeCd": {
+            "type": "string",
+            "description": "주문유형코드"
+          },
+          "sideCd": {
+            "type": "string",
+            "description": "매매구분코드"
+          },
+          "orderQuantity": {
+            "type": "number",
+            "description": "주문수량",
+            "format": "double"
+          },
+          "barrierPrice": {
+            "type": "number",
+            "description": "배리어가격",
+            "format": "double"
+          },
+          "orderPrice": {
+            "type": "number",
+            "description": "주문가격",
+            "format": "double"
+          },
+          "profitRealizationBarrierPrice": {
+            "type": "number",
+            "description": "이익실현배리어가격",
+            "format": "double"
+          },
+          "lossCutBarrierPrice": {
+            "type": "number",
+            "description": "손실제한배리어가격",
+            "format": "double"
+          },
+          "executionQuantity": {
+            "type": "number",
+            "description": "체결수량",
+            "format": "double"
+          },
+          "executionPrice": {
+            "type": "number",
+            "description": "체결가격",
+            "format": "double"
+          },
+          "orderBalance": {
+            "type": "number",
+            "description": "주문잔량",
+            "format": "double"
+          },
+          "orderStatusCd": {
+            "type": "string",
+            "description": "주문상태코드"
+          },
+          "receptionDate": {
+            "type": "string",
+            "description": "접수일시",
+            "format": "date-time"
+          },
+          "rejectReason": {
+            "type": "string",
+            "description": "거부사유명"
+          }
+        },
+        "description": "상세 정보"
+      },
+      "OrderExecutionHistoryResponse": {
+        "required": ["details", "hasNext", "nextKey", "summary"],
+        "type": "object",
+        "properties": {
+          "hasNext": {
+            "type": "boolean",
+            "description": "다음페이지 존재여부"
+          },
+          "nextKey": {
+            "type": "string",
+            "description": "다음페이지 조회키"
+          },
+          "summary": {
+            "type": "array",
+            "description": "요약 정보",
+            "items": {
+              "$ref": "#/components/schemas/SummaryOrderExecution"
+            }
+          },
+          "details": {
+            "type": "array",
+            "description": "상세 정보",
+            "items": {
+              "$ref": "#/components/schemas/DetailsOrderExecution"
+            }
+          }
+        },
+        "description": "주문 체결내역 응답"
+      },
+      "ResponseDataOrderExecutionHistoryResponse": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/OrderExecutionHistoryResponse"
+          }
+        }
+      },
+      "SummaryOrderExecution": {
+        "required": [
+          "longExecutionPrice",
+          "longExecutionQuantity",
+          "reLongExecutionPrice",
+          "reLongExecutionQuantity",
+          "reShortExecutionPrice",
+          "reShortExecutionQuantity",
+          "shortExecutionPrice",
+          "shortExecutionQuantity",
+          "tradeCurrencyCd"
+        ],
+        "type": "object",
+        "properties": {
+          "tradeCurrencyCd": {
+            "type": "string",
+            "description": "거래통화코드"
+          },
+          "longExecutionQuantity": {
+            "type": "number",
+            "description": "매수체결수량",
+            "format": "double"
+          },
+          "longExecutionPrice": {
+            "type": "number",
+            "description": "매수체결금액",
+            "format": "double"
+          },
+          "reShortExecutionQuantity": {
+            "type": "number",
+            "description": "전매체결수량",
+            "format": "double"
+          },
+          "reShortExecutionPrice": {
+            "type": "number",
+            "description": "전매체결금액",
+            "format": "double"
+          },
+          "shortExecutionQuantity": {
+            "type": "number",
+            "description": "매도체결수량",
+            "format": "double"
+          },
+          "shortExecutionPrice": {
+            "type": "number",
+            "description": "매도체결금액",
+            "format": "double"
+          },
+          "reLongExecutionQuantity": {
+            "type": "number",
+            "description": "환매체결수량",
+            "format": "double"
+          },
+          "reLongExecutionPrice": {
+            "type": "number",
+            "description": "환매체결금액",
+            "format": "double"
+          }
+        },
+        "description": "요약 정보"
+      },
+      "PaymentHistoryRequest": {
+        "required": ["accountNo", "nextKey", "orderEndDate", "orderStartDate"],
+        "type": "object",
+        "properties": {
+          "accountNo": {
+            "type": "string",
+            "description": "계좌번호",
+            "example": "000000000001"
+          },
+          "orderStartDate": {
+            "type": "string",
+            "description": "청산 시작일자",
+            "format": "date",
+            "example": "2025-08-01"
+          },
+          "orderEndDate": {
+            "type": "string",
+            "description": "청산 종료일자",
+            "format": "date",
+            "example": "2025-08-31"
+          },
+          "nextKey": {
+            "type": "string",
+            "description": "nextKey(초기 요청시 1)",
+            "example": "1"
+          }
+        },
+        "description": "결제내역 요청"
+      },
+      "PaymentDetail": {
+        "required": [
+          "afterBookQuantity",
+          "afterDeposit",
+          "beforeBookQuantity",
+          "beforeDeposit",
+          "description",
+          "executionAmount",
+          "executionPrice",
+          "executionQuantity",
+          "paymentAmount",
+          "paymentDate",
+          "positionCd",
+          "symbolCd",
+          "tradeCd",
+          "tradeCurrencyCd"
+        ],
+        "type": "object",
+        "properties": {
+          "paymentDate": {
+            "type": "string",
+            "description": "결제일자",
+            "format": "date"
+          },
+          "symbolCd": {
+            "type": "string",
+            "description": "종목코드"
+          },
+          "description": {
+            "type": "string",
+            "description": "적요명"
+          },
+          "tradeCurrencyCd": {
+            "type": "string",
+            "description": "거래통화코드"
+          },
+          "positionCd": {
+            "type": "string",
+            "description": "포지션구분코드",
+            "enum": ["TOTAL", "LONG", "SHORT"]
+          },
+          "tradeCd": {
+            "type": "string",
+            "description": "거래구분코드",
+            "enum": [
+              "BUY_PURCHASE",
+              "SELL_PURCHASE",
+              "DEPOSIT",
+              "WITHDRAWAL",
+              "DESCRIPTION_DEPOSIT",
+              "DESCRIPTION_WITHDRAWAL"
+            ]
+          },
+          "executionQuantity": {
+            "type": "number",
+            "description": "체결수량",
+            "format": "double"
+          },
+          "executionPrice": {
+            "type": "number",
+            "description": "체결가격",
+            "format": "double"
+          },
+          "executionAmount": {
+            "type": "number",
+            "description": "체결금액",
+            "format": "double"
+          },
+          "paymentAmount": {
+            "type": "number",
+            "description": "결제금액($)",
+            "format": "double"
+          },
+          "beforeBookQuantity": {
+            "type": "number",
+            "description": "이전장부수량",
+            "format": "double"
+          },
+          "afterBookQuantity": {
+            "type": "number",
+            "description": "이후장부수량",
+            "format": "double"
+          },
+          "beforeDeposit": {
+            "type": "number",
+            "description": "이전예수금($)",
+            "format": "double"
+          },
+          "afterDeposit": {
+            "type": "number",
+            "description": "이후예수금($)",
+            "format": "double"
+          }
+        },
+        "description": "상세 정보"
+      },
+      "PaymentHistoryResponse": {
+        "required": ["details", "hasNext", "nextKey"],
+        "type": "object",
+        "properties": {
+          "hasNext": {
+            "type": "boolean",
+            "description": "다음페이지 존재여부"
+          },
+          "nextKey": {
+            "type": "string",
+            "description": "다음페이지 조회키"
+          },
+          "details": {
+            "type": "array",
+            "description": "상세 정보",
+            "items": {
+              "$ref": "#/components/schemas/PaymentDetail"
+            }
+          }
+        },
+        "description": "결제내역 응답"
+      },
+      "ResponseDataPaymentHistoryResponse": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/PaymentHistoryResponse"
+          }
+        }
+      },
+      "LiquidationHistoryRequest": {
+        "required": ["accountNo", "nextKey", "orderEndDate", "orderStartDate"],
+        "type": "object",
+        "properties": {
+          "accountNo": {
+            "type": "string",
+            "description": "계좌번호",
+            "example": "000000000001"
+          },
+          "orderStartDate": {
+            "type": "string",
+            "description": "주문 시작일자",
+            "format": "date",
+            "example": "2025-08-01"
+          },
+          "orderEndDate": {
+            "type": "string",
+            "description": "주문 종료일자",
+            "format": "date",
+            "example": "2025-08-31"
+          },
+          "nextKey": {
+            "type": "string",
+            "description": "nextKey(초기 요청시 1)",
+            "example": "1"
+          }
+        },
+        "description": "청산손익 요청"
+      },
+      "LiquidationDetail": {
+        "required": [
+          "liquidationDate",
+          "liquidationNetProfitLoss",
+          "liquidationPrice",
+          "liquidationProfitLoss",
+          "liquidationQuantity",
+          "orderCd",
+          "purchaseDate",
+          "purchasePrice",
+          "swapCharge",
+          "symbolCd",
+          "tradeCharge"
+        ],
+        "type": "object",
+        "properties": {
+          "liquidationDate": {
+            "type": "string",
+            "description": "청산일자",
+            "format": "date-time"
+          },
+          "symbolCd": {
+            "type": "string",
+            "description": "종목코드"
+          },
+          "orderCd": {
+            "type": "string",
+            "description": "포지션 구분",
+            "enum": ["TOTAL", "BUY_PURCHASE", "SELL_PURCHASE"]
+          },
+          "purchasePrice": {
+            "type": "number",
+            "description": "매입가격",
+            "format": "double"
+          },
+          "liquidationPrice": {
+            "type": "number",
+            "description": "청산가격",
+            "format": "double"
+          },
+          "liquidationQuantity": {
+            "type": "number",
+            "description": "청산수량",
+            "format": "double"
+          },
+          "liquidationProfitLoss": {
+            "type": "number",
+            "description": "청산손익",
+            "format": "double"
+          },
+          "swapCharge": {
+            "type": "number",
+            "description": "스왑수수료",
+            "format": "double"
+          },
+          "tradeCharge": {
+            "type": "number",
+            "description": "체결수수료",
+            "format": "double"
+          },
+          "liquidationNetProfitLoss": {
+            "type": "number",
+            "description": "청산순손익",
+            "format": "double"
+          },
+          "purchaseDate": {
+            "type": "string",
+            "description": "매입일시",
+            "format": "date-time"
+          }
+        },
+        "description": "상세 정보"
+      },
+      "LiquidationHistoryResponse": {
+        "required": ["details", "hasNext", "nextKey", "summary"],
+        "type": "object",
+        "properties": {
+          "hasNext": {
+            "type": "boolean",
+            "description": "다음페이지 존재여부"
+          },
+          "nextKey": {
+            "type": "string",
+            "description": "다음페이지 조회키"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/LiquidationSummary"
+          },
+          "details": {
+            "type": "array",
+            "description": "상세 정보",
+            "items": {
+              "$ref": "#/components/schemas/LiquidationDetail"
+            }
+          }
+        },
+        "description": "청산손익 응답"
+      },
+      "LiquidationSummary": {
+        "required": [
+          "longAcquisitionPrice",
+          "longExecutionCharge",
+          "longLiquidationNetProfitLoss",
+          "longLiquidationNetProfitPercent",
+          "longLiquidationPrice",
+          "longLiquidationProfitLoss",
+          "longLiquidationProfitPercent",
+          "longSwapCharge",
+          "nextKey",
+          "shortAcquisitionPrice",
+          "shortExecutionCharge",
+          "shortLiquidationNetProfitLoss",
+          "shortLiquidationNetProfitPercent",
+          "shortLiquidationPrice",
+          "shortLiquidationProfitLoss",
+          "shortLiquidationProfitPercent",
+          "shortSwapCharge"
+        ],
+        "type": "object",
+        "properties": {
+          "longAcquisitionPrice": {
+            "type": "number",
+            "description": "LONG 취득금액($)",
+            "format": "double"
+          },
+          "longLiquidationPrice": {
+            "type": "number",
+            "description": "LONG 청산금액($)",
+            "format": "double"
+          },
+          "longLiquidationProfitLoss": {
+            "type": "number",
+            "description": "LONG 청산손익($)",
+            "format": "double"
+          },
+          "longLiquidationProfitPercent": {
+            "type": "number",
+            "description": "LONG 청산수익율",
+            "format": "double"
+          },
+          "longSwapCharge": {
+            "type": "number",
+            "description": "LONG 스왑수수료($)",
+            "format": "double"
+          },
+          "longExecutionCharge": {
+            "type": "number",
+            "description": "LONG 체결수수료($)",
+            "format": "double"
+          },
+          "longLiquidationNetProfitLoss": {
+            "type": "number",
+            "description": "LONG 청산순손익($)",
+            "format": "double"
+          },
+          "longLiquidationNetProfitPercent": {
+            "type": "number",
+            "description": "LONG 청산순수익율",
+            "format": "double"
+          },
+          "shortAcquisitionPrice": {
+            "type": "number",
+            "description": "SHORT 취득금액($)",
+            "format": "double"
+          },
+          "shortLiquidationPrice": {
+            "type": "number",
+            "description": "SHORT 청산금액($)",
+            "format": "double"
+          },
+          "shortLiquidationProfitLoss": {
+            "type": "number",
+            "description": "SHORT 청산손익($)",
+            "format": "double"
+          },
+          "shortLiquidationProfitPercent": {
+            "type": "number",
+            "description": "SHORT 청산수익율",
+            "format": "double"
+          },
+          "shortSwapCharge": {
+            "type": "number",
+            "description": "SHORT 스왑수수료($)",
+            "format": "double"
+          },
+          "shortExecutionCharge": {
+            "type": "number",
+            "description": "SHORT 체결수수료($)",
+            "format": "double"
+          },
+          "shortLiquidationNetProfitLoss": {
+            "type": "number",
+            "description": "SHORT 청산순손익($)",
+            "format": "double"
+          },
+          "shortLiquidationNetProfitPercent": {
+            "type": "number",
+            "description": "SHORT 청산순수익율",
+            "format": "double"
+          },
+          "nextKey": {
+            "type": "string",
+            "description": "nextKey(초기 요청시 1)",
+            "example": "1"
+          }
+        },
+        "description": "요약 정보"
+      },
+      "ResponseDataLiquidationHistoryResponse": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/LiquidationHistoryResponse"
+          }
+        }
+      },
+      "PossessionStockRequest": {
+        "required": ["accountNo", "nextKey"],
+        "type": "object",
+        "properties": {
+          "accountNo": {
+            "type": "string",
+            "description": "계좌번호",
+            "example": "250815000002"
+          },
+          "nextKey": {
+            "type": "string",
+            "description": "nextKey(초기 요청시 1)",
+            "example": "1"
+          }
+        },
+        "description": "보유종목 조회 요청"
+      },
+      "PossessionStockResponse": {
+        "required": ["hasNext", "nextKey", "symbols"],
+        "type": "object",
+        "properties": {
+          "hasNext": {
+            "type": "boolean",
+            "description": "다음페이지 존재여부"
+          },
+          "nextKey": {
+            "type": "string",
+            "description": "다음페이지 조회키"
+          },
+          "symbols": {
+            "type": "array",
+            "description": "보유종목 코드 목록",
+            "items": {
+              "type": "string",
+              "description": "보유종목 코드 목록"
+            }
+          }
+        },
+        "description": "보유종목 조회 응답"
+      },
+      "ResponseDataPossessionStockResponse": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/PossessionStockResponse"
+          }
+        }
+      },
+      "PositionStockRequest": {
+        "required": ["accountNo", "nextKey", "stockCd"],
+        "type": "object",
+        "properties": {
+          "accountNo": {
+            "type": "string",
+            "description": "계좌번호",
+            "example": "250815000002"
+          },
+          "stockCd": {
+            "type": "string",
+            "description": "종목 코드",
+            "example": ""
+          },
+          "nextKey": {
+            "type": "string",
+            "description": "nextKey(초기 요청시 1)",
+            "example": "1"
+          }
+        },
+        "description": "주문잔고 조회 요청"
+      },
+      "PositionStockData": {
+        "required": [
+          "accountBookPrice",
+          "accountBookQuantity",
+          "assessmentProfitLoss",
+          "currentPrice",
+          "liquidationPossibleQuantity",
+          "positionCd",
+          "positionNo",
+          "purchaseDate",
+          "stockCd",
+          "stockGroupCd",
+          "tradeCurrencyCd"
+        ],
+        "type": "object",
+        "properties": {
+          "stockCd": {
+            "type": "string",
+            "description": "종목코드"
+          },
+          "tradeCurrencyCd": {
+            "type": "string",
+            "description": "거래통화코드"
+          },
+          "positionCd": {
+            "type": "string",
+            "description": "포지션구분코드"
+          },
+          "purchaseDate": {
+            "type": "string",
+            "description": "매입일자",
+            "format": "date"
+          },
+          "accountBookQuantity": {
+            "type": "number",
+            "description": "장부수량",
+            "format": "double"
+          },
+          "liquidationPossibleQuantity": {
+            "type": "number",
+            "description": "청산가능수량",
+            "format": "double"
+          },
+          "accountBookPrice": {
+            "type": "number",
+            "description": "장부가격",
+            "format": "double"
+          },
+          "currentPrice": {
+            "type": "number",
+            "description": "현재가",
+            "format": "double"
+          },
+          "assessmentProfitLoss": {
+            "type": "number",
+            "description": "평가손익",
+            "format": "double"
+          },
+          "stockGroupCd": {
+            "type": "string",
+            "description": "(H) 종목그룹코드"
+          },
+          "positionNo": {
+            "type": "string",
+            "description": "(H) 잔고번호"
+          }
+        },
+        "description": "주문잔고 목록"
+      },
+      "PositionStockResponse": {
+        "required": ["hasNext", "nextKey", "symbols"],
+        "type": "object",
+        "properties": {
+          "hasNext": {
+            "type": "boolean",
+            "description": "다음페이지 존재여부"
+          },
+          "nextKey": {
+            "type": "string",
+            "description": "다음페이지 조회키"
+          },
+          "symbols": {
+            "type": "array",
+            "description": "주문잔고 목록",
+            "items": {
+              "$ref": "#/components/schemas/PositionStockData"
+            }
+          }
+        },
+        "description": "주문잔고 조회 응답"
+      },
+      "ResponseDataPositionStockResponse": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/PositionStockResponse"
+          }
+        }
+      },
+      "OrderStockRequest": {
+        "required": ["stockCd", "symbolGroupCd"],
+        "type": "object",
+        "properties": {
+          "symbolGroupCd": {
+            "type": "string",
+            "description": "종목 그룹코드",
+            "example": "ALL",
+            "enum": ["ALL", "FOREIGN", "INDEX", "COMMODITY", "CRYPTO"]
+          },
+          "stockCd": {
+            "type": "string",
+            "description": "종목 코드",
+            "example": ""
+          }
+        },
+        "description": "주문종목 조회 요청"
+      },
+      "OrderStockResponse": {
+        "required": ["currentPrices", "details", "hasNext", "nextKey"],
+        "type": "object",
+        "properties": {
+          "hasNext": {
+            "type": "boolean",
+            "description": "다음페이지 존재여부"
+          },
+          "nextKey": {
+            "type": "string",
+            "description": "다음페이지 조회키"
+          },
+          "details": {
+            "type": "array",
+            "description": "종목 메타데이터",
+            "items": {
+              "$ref": "#/components/schemas/SymbolMetaData"
+            }
+          },
+          "currentPrices": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "description": "종목별 현재가 정보"
+            },
+            "description": "종목별 현재가 정보"
+          }
+        },
+        "description": "주문종목 조회 응답"
+      },
+      "ResponseDataOrderStockResponse": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/OrderStockResponse"
+          }
+        }
+      },
+      "SymbolMetaData": {
+        "required": [
+          "buySpread",
+          "closePrice",
+          "friTradeEndTime",
+          "friTradeStartTime",
+          "isMarginUsage",
+          "isSpreadUsage",
+          "lotMultiple",
+          "marginRate",
+          "monTradeEndTime",
+          "monTradeStartTime",
+          "pipUnit",
+          "pointUnit",
+          "priceMultiplier",
+          "satTradeEndTime",
+          "satTradeStartTime",
+          "sellSpread",
+          "standardCurrencyCd",
+          "stockCd",
+          "stockGroupCd",
+          "sunTradeEndTime",
+          "sunTradeStartTime",
+          "symbolGroupCd",
+          "thuTradeEndTime",
+          "thuTradeStartTime",
+          "tradeCurrencyCd",
+          "tueTradeEndTime",
+          "tueTradeStartTime",
+          "wedTradeEndTime",
+          "wedTradeStartTime"
+        ],
+        "type": "object",
+        "properties": {
+          "stockCd": {
+            "type": "string",
+            "description": "종목코드"
+          },
+          "standardCurrencyCd": {
+            "type": "string",
+            "description": "(H) 기준통화코드"
+          },
+          "tradeCurrencyCd": {
+            "type": "string",
+            "description": "(H) 거래통화코드"
+          },
+          "lotMultiple": {
+            "type": "number",
+            "description": "(H) Lot승수",
+            "format": "double"
+          },
+          "priceMultiplier": {
+            "type": "number",
+            "description": "(H) Price승수",
+            "format": "double"
+          },
+          "pointUnit": {
+            "type": "number",
+            "description": "(H) Point단위",
+            "format": "double"
+          },
+          "pipUnit": {
+            "type": "number",
+            "description": "(H) Pip단위",
+            "format": "double"
+          },
+          "stockGroupCd": {
+            "type": "string",
+            "description": "(H) 종목그룹코드"
+          },
+          "symbolGroupCd": {
+            "type": "string",
+            "description": "(H) 심볼그룹코드"
+          },
+          "isMarginUsage": {
+            "type": "boolean",
+            "description": "(H) 증거금율사용여부"
+          },
+          "marginRate": {
+            "type": "number",
+            "description": "(H) 증거금율(%)",
+            "format": "double"
+          },
+          "isSpreadUsage": {
+            "type": "boolean",
+            "description": "(H) 스프레드사용여부"
+          },
+          "buySpread": {
+            "type": "number",
+            "description": "(H) 매수스프레드",
+            "format": "double"
+          },
+          "sellSpread": {
+            "type": "number",
+            "description": "(H) 매도스프레드",
+            "format": "double"
+          },
+          "closePrice": {
+            "type": "number",
+            "description": "(H) 전일종가",
+            "format": "double"
+          },
+          "monTradeStartTime": {
+            "type": "string",
+            "description": "Monday 거래시작시각"
+          },
+          "monTradeEndTime": {
+            "type": "string",
+            "description": "Monday 거래종료시각"
+          },
+          "tueTradeStartTime": {
+            "type": "string",
+            "description": "Tuesday 거래시작시각"
+          },
+          "tueTradeEndTime": {
+            "type": "string",
+            "description": "Tuesday 거래종료시각"
+          },
+          "wedTradeStartTime": {
+            "type": "string",
+            "description": "Wednesday 거래시작시각"
+          },
+          "wedTradeEndTime": {
+            "type": "string",
+            "description": "Wednesday 거래종료시각"
+          },
+          "thuTradeStartTime": {
+            "type": "string",
+            "description": "Thursday 거래시작시각"
+          },
+          "thuTradeEndTime": {
+            "type": "string",
+            "description": "Thursday 거래종료시각"
+          },
+          "friTradeStartTime": {
+            "type": "string",
+            "description": "Friday 거래시작시각"
+          },
+          "friTradeEndTime": {
+            "type": "string",
+            "description": "Friday 거래종료시각"
+          },
+          "satTradeStartTime": {
+            "type": "string",
+            "description": "Saturday 거래시작시각"
+          },
+          "satTradeEndTime": {
+            "type": "string",
+            "description": "Saturday 거래종료시각"
+          },
+          "sunTradeStartTime": {
+            "type": "string",
+            "description": "Sunday 거래시작시각"
+          },
+          "sunTradeEndTime": {
+            "type": "string",
+            "description": "Sunday 거래종료시각"
+          }
+        },
+        "description": "종목 메타데이터"
+      },
+      "OrderBookResponse": {
+        "required": ["ask", "askSize", "bid", "bidSize"],
+        "type": "object",
+        "properties": {
+          "bid": {
+            "type": "string",
+            "description": "매수호가",
+            "example": "1.90836"
+          },
+          "ask": {
+            "type": "string",
+            "description": "매도호가",
+            "example": "1.90834"
+          },
+          "bidSize": {
+            "type": "string",
+            "description": "매수호가수량",
+            "example": "1000000"
+          },
+          "askSize": {
+            "type": "string",
+            "description": "매도호가수량",
+            "example": "1000000"
+          }
+        },
+        "description": "OrderBook 호가 정보"
+      },
+      "ResponseDataResponseListOrderBookResponse": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/ResponseListOrderBookResponse"
+          }
+        }
+      },
+      "ResponseListOrderBookResponse": {
+        "required": ["contents"],
+        "type": "object",
+        "properties": {
+          "contents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderBookResponse"
+            }
+          }
+        },
+        "description": "data"
+      },
+      "AssetPositionsRequest": {
+        "required": ["accountNo", "nextKey"],
+        "type": "object",
+        "properties": {
+          "accountNo": {
+            "type": "string",
+            "description": "계좌번호",
+            "example": "250815000002"
+          },
+          "nextKey": {
+            "type": "string",
+            "description": "nextKey(초기 요청시 1)",
+            "example": "1"
+          }
+        },
+        "description": "자산 포지션 조회"
+      },
+      "AssetPositionsResponse": {
+        "required": ["hasNext", "nextKey", "positions"],
+        "type": "object",
+        "properties": {
+          "hasNext": {
+            "type": "boolean",
+            "description": "다음페이지 존재여부"
+          },
+          "nextKey": {
+            "type": "string",
+            "description": "다음페이지 조회키"
+          },
+          "positions": {
+            "type": "array",
+            "description": "보유 포지션 정보",
+            "items": {
+              "$ref": "#/components/schemas/Position"
+            }
+          },
+          "summary": {
+            "type": "array",
+            "description": "자산 구성",
+            "items": {
+              "$ref": "#/components/schemas/AssetSummary"
+            }
+          }
+        },
+        "description": "주문 체결내역 응답"
+      },
+      "AssetSummary": {
+        "required": [
+          "currentPrice",
+          "positionCd",
+          "positionName",
+          "ratePercent",
+          "reLongExecutionPrice",
+          "stockCd"
+        ],
+        "type": "object",
+        "properties": {
+          "stockCd": {
+            "type": "string",
+            "description": "종목코드"
+          },
+          "positionCd": {
+            "type": "string",
+            "description": "포지션구분코드"
+          },
+          "positionName": {
+            "type": "string",
+            "description": "포지션구분명"
+          },
+          "currentPrice": {
+            "type": "number",
+            "description": "현재가",
+            "format": "double"
+          },
+          "reLongExecutionPrice": {
+            "type": "number",
+            "description": "수익률",
+            "format": "double"
+          },
+          "ratePercent": {
+            "type": "number",
+            "description": "비중",
+            "format": "double"
+          }
+        },
+        "description": "자산 구성"
+      },
+      "Position": {
+        "required": [
+          "accountBookPrice",
+          "accountBookQuantity",
+          "assessmentProfitLoss",
+          "currentPrice",
+          "liquidationPossibleQuantity",
+          "positionCd",
+          "positionName",
+          "reLongExecutionPrice",
+          "stockCd",
+          "tradeCurrencyCd"
+        ],
+        "type": "object",
+        "properties": {
+          "stockCd": {
+            "type": "string",
+            "description": "종목코드"
+          },
+          "tradeCurrencyCd": {
+            "type": "string",
+            "description": "거래통화코드"
+          },
+          "positionCd": {
+            "type": "string",
+            "description": "포지션구분코드"
+          },
+          "positionName": {
+            "type": "string",
+            "description": "포지션구분명"
+          },
+          "accountBookQuantity": {
+            "type": "number",
+            "description": "장부수량",
+            "format": "double"
+          },
+          "liquidationPossibleQuantity": {
+            "type": "number",
+            "description": "청산가능수량",
+            "format": "double"
+          },
+          "accountBookPrice": {
+            "type": "number",
+            "description": "장부가격",
+            "format": "double"
+          },
+          "currentPrice": {
+            "type": "number",
+            "description": "현재가",
+            "format": "double"
+          },
+          "assessmentProfitLoss": {
+            "type": "number",
+            "description": "평가손익",
+            "format": "double"
+          },
+          "reLongExecutionPrice": {
+            "type": "number",
+            "description": "수익률",
+            "format": "double"
+          }
+        },
+        "description": "보유 포지션 정보"
+      },
+      "ResponseDataAssetPositionsResponse": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/AssetPositionsResponse"
+          }
+        }
+      },
+      "AssetDepositsRequest": {
+        "required": ["accountNo", "nextKey"],
+        "type": "object",
+        "properties": {
+          "accountNo": {
+            "type": "string",
+            "description": "계좌번호",
+            "example": "250815000002"
+          },
+          "nextKey": {
+            "type": "string",
+            "description": "nextKey(초기 요청시 1)",
+            "example": "1"
+          }
+        },
+        "description": "자산 증거금 조회"
+      },
+      "AssetDepositsResponse": {
+        "required": ["hasNext", "nextKey"],
+        "type": "object",
+        "properties": {
+          "hasNext": {
+            "type": "boolean",
+            "description": "다음페이지 존재여부"
+          },
+          "nextKey": {
+            "type": "string",
+            "description": "다음페이지 조회키"
+          },
+          "positions": {
+            "type": "array",
+            "description": "보유 포지션 정보",
+            "items": {
+              "$ref": "#/components/schemas/AssetPosition"
+            }
+          },
+          "summary": {
+            "type": "array",
+            "description": "보유 주문 구성",
+            "items": {
+              "$ref": "#/components/schemas/AssetOrder"
+            }
+          }
+        },
+        "description": "주문 체결내역 응답"
+      },
+      "AssetOrder": {
+        "required": [
+          "barrierPrice",
+          "orderDepositPrice",
+          "orderPrice",
+          "orderQuantity",
+          "positionCd",
+          "sideCd",
+          "stockCd"
+        ],
+        "type": "object",
+        "properties": {
+          "stockCd": {
+            "type": "string",
+            "description": "종목코드"
+          },
+          "positionCd": {
+            "type": "string",
+            "description": "포지션구분코드"
+          },
+          "sideCd": {
+            "type": "string",
+            "description": "매매구분코드"
+          },
+          "orderQuantity": {
+            "type": "number",
+            "description": "주문수량",
+            "format": "double"
+          },
+          "barrierPrice": {
+            "type": "number",
+            "description": "배리어가격",
+            "format": "double"
+          },
+          "orderPrice": {
+            "type": "number",
+            "description": "주문가격",
+            "format": "double"
+          },
+          "orderDepositPrice": {
+            "type": "number",
+            "description": "주문증거금",
+            "format": "double"
+          }
+        },
+        "description": "보유 주문 구성"
+      },
+      "AssetPosition": {
+        "required": [
+          "accountBookPrice",
+          "accountBookQuantity",
+          "assessmentProfitLoss",
+          "depositPercent",
+          "depositPrice",
+          "positionCd",
+          "stockCd"
+        ],
+        "type": "object",
+        "properties": {
+          "stockCd": {
+            "type": "string",
+            "description": "종목코드"
+          },
+          "positionCd": {
+            "type": "string",
+            "description": "포지션구분코드"
+          },
+          "accountBookQuantity": {
+            "type": "number",
+            "description": "장부수량",
+            "format": "double"
+          },
+          "accountBookPrice": {
+            "type": "number",
+            "description": "장부가격",
+            "format": "double"
+          },
+          "depositPrice": {
+            "type": "number",
+            "description": "포지션증거금",
+            "format": "double"
+          },
+          "assessmentProfitLoss": {
+            "type": "number",
+            "description": "평가손익",
+            "format": "double"
+          },
+          "depositPercent": {
+            "type": "number",
+            "description": "증거금율",
+            "format": "double"
+          }
+        },
+        "description": "보유 포지션 정보"
+      },
+      "ResponseDataAssetDepositsResponse": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/AssetDepositsResponse"
+          }
+        }
+      },
+      "ResponseDataMapTermsNameListResponseTermsByTermsName": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "description": "data",
+              "items": {
+                "$ref": "#/components/schemas/ResponseTermsByTermsName"
+              }
+            },
+            "description": "data"
+          }
+        }
+      },
+      "ResponseTermsByTermsName": {
+        "required": ["detail", "effectiveDate"],
+        "type": "object",
+        "properties": {
+          "effectiveDate": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          }
+        },
+        "description": "data"
+      },
+      "ResponseDataResponseTermsList": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/ResponseTermsList"
+          }
+        }
+      },
+      "ResponseTermsList": {
+        "required": ["optional", "required"],
+        "type": "object",
+        "properties": {
+          "required": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["SERVICE_USAGE_TERMS", "PERSONAL_INFO_COLLECTION", "MARKETING_NOTIFICATION"]
+            }
+          },
+          "optional": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["SERVICE_USAGE_TERMS", "PERSONAL_INFO_COLLECTION", "MARKETING_NOTIFICATION"]
+            }
+          }
+        },
+        "description": "data"
+      },
+      "ResponseDataResponseListResponseTermsByTermsName": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/ResponseListResponseTermsByTermsName"
+          }
+        }
+      },
+      "ResponseListResponseTermsByTermsName": {
+        "required": ["contents"],
+        "type": "object",
+        "properties": {
+          "contents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResponseTermsByTermsName"
+            }
+          }
+        },
+        "description": "data"
+      },
+      "AccountInfoResponse": {
+        "required": ["accountList"],
+        "type": "object",
+        "properties": {
+          "accountList": {
+            "type": "array",
+            "description": "계좌 리스트",
+            "items": {
+              "$ref": "#/components/schemas/AccountInfo"
+            }
+          }
+        },
+        "description": "회원 계좌정보 조회 응답 바디"
+      },
+      "ResponseDataAccountInfoResponse": {
+        "required": ["code", "status"],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "status",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "code",
+            "format": "int32",
+            "example": 200
+          },
+          "data": {
+            "$ref": "#/components/schemas/AccountInfoResponse"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Authorization": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

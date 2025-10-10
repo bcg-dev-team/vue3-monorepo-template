@@ -1,10 +1,14 @@
 <template>
-  <BaseToast
-    v-for="toast in toastStore.toasts"
-    :key="toast.id"
-    :message="toast.message"
-    :show="toast.show"
-  />
+  <Teleport to="#overlay-root">
+    <div class="toast-container">
+      <BaseToast
+        v-for="toast in toastStore.toasts"
+        :key="toast.id"
+        :message="toast.message"
+        :show="toast.show"
+      />
+    </div>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -42,3 +46,17 @@ watch(
   { deep: true, immediate: true }
 );
 </script>
+
+<style scoped>
+.toast-container {
+  position: fixed;
+  top: var(--base-size-size-20);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--base-size-size-12);
+  z-index: var(--z-index-toast);
+  pointer-events: none;
+}
+</style>

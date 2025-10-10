@@ -5,7 +5,7 @@ import {
   UserInfo,
   UserInfoForPass,
 } from '@/types/store/signup.types';
-import { CorporateMemberJoinRequest, IndividualMemberJoinRequest } from '@template/api';
+import { CustomTypes } from '@template/api';
 import { reactive, computed } from 'vue';
 import { defineStore } from 'pinia';
 
@@ -61,7 +61,7 @@ export const useSignupStore = defineStore('signup', () => {
   /**
    * 개인 회원가입에 필요한 정보를 반환합니다.
    */
-  const getIndividualSignupInfo = computed((): IndividualMemberJoinRequest => {
+  const getIndividualSignupInfo = computed((): CustomTypes.IndividualMemberJoinRequest => {
     return {
       ...userInfo,
       ...individualInfo,
@@ -75,7 +75,7 @@ export const useSignupStore = defineStore('signup', () => {
   /**
    * 법인 회원가입에 필요한 정보를 반환합니다.
    */
-  const getCorporateSignupInfo = computed((): CorporateMemberJoinRequest => {
+  const getCorporateSignupInfo = computed((): CustomTypes.CorporateMemberJoinRequest => {
     return {
       ...userInfo,
       ...corporateInfo,

@@ -39,7 +39,10 @@ import {
   profitAndLossSummaryColumns,
   profitAndLossDetailColumns,
 } from '@/components/transaction/constants/tableColumnDefs';
-import { TradeProfitAndLossSummary, TradeProfitAndLossDetail } from '@template/api';
+import { CustomTypes } from '@template/api';
+
+type TradeProfitAndLossSummary = CustomTypes.TradeProfitAndLossSummary;
+type TradeProfitAndLossDetail = CustomTypes.TradeProfitAndLossDetail;
 import LabelContent from '@/components/common/LabelContent.vue';
 import { BaseDataGrid } from '@template/ui';
 import { onMounted, computed } from 'vue';

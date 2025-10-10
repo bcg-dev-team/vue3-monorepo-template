@@ -38,16 +38,16 @@
 </template>
 
 <script setup lang="ts">
-import {
-  OrderSummary,
-  TradeProfitAndLossSummary,
-  TradeProfitAndLossRequest,
-  OrderDetail,
-  TradePaymentsHistoryDetail,
-  TradeProfitAndLossDetail,
-  TradeOrderListRequest,
-  TradePaymentsHistoryRequest,
-} from '@template/api';
+import { CustomTypes } from '@template/api';
+
+type OrderSummary = CustomTypes.OrderSummary;
+type TradeProfitAndLossSummary = CustomTypes.TradeProfitAndLossSummary;
+type TradeProfitAndLossRequest = CustomTypes.TradeProfitAndLossRequest;
+type OrderDetail = CustomTypes.OrderDetail;
+type TradePaymentsHistoryDetail = CustomTypes.TradePaymentsHistoryDetail;
+type TradeProfitAndLossDetail = CustomTypes.TradeProfitAndLossDetail;
+type TradeOrderListRequest = CustomTypes.TradeOrderListRequest;
+type TradePaymentsHistoryRequest = CustomTypes.TradePaymentsHistoryRequest;
 import { initialProfitAndLossSummary } from '@/components/transaction/constants/initialData';
 import HistoryTableContent from '@/components/transaction/history/HistoryTableContent.vue';
 import CardLayoutVertical from '@/components/layout/fragments/CardLayoutVertical.vue';

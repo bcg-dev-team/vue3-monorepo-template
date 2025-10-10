@@ -2,10 +2,30 @@
 export * from './axios';
 export * from './errorcode.types';
 
-// TODO: API 전용 타입들 추가
-export * from './user.types';
-export * from './terms.types';
-export * from './trade.types';
-export * from './auth.types';
-export * from './account.types';
-export * from './stock.types';
+// User 타입들
+export type {
+  MemberType,
+  IndividualMemberJoinRequest,
+  CorporateMemberJoinRequest,
+} from './user.types';
+
+// Trade 타입들
+export type {
+  TradeOrderListRequest,
+  OrderSummary,
+  OrderDetail,
+  TradeOrderListData,
+  TradeOrderListResponse,
+  TradeProfitAndLossRequest,
+  TradeProfitAndLossSummary,
+  TradeProfitAndLossDetail,
+  TradeProfitAndLossData,
+  TradeProfitAndLossResponse,
+  TradePaymentsHistoryRequest,
+  TradePaymentsHistoryDetail,
+  TradePaymentsHistoryData,
+  TradePaymentsHistoryResponse,
+} from './trade.types';
+
+// Stock 타입들
+export type { StockPositionSymbol } from './stock.types';

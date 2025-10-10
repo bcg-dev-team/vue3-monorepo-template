@@ -17,7 +17,9 @@
 <script setup lang="ts">
 import { predefinedStyles, getProfitLossStyle } from '@template/utils';
 import { BaseDataGrid, ColDef, GridOptions } from '@template/ui';
-import { StockPositionSymbol } from '@template/api';
+import { CustomTypes } from '@template/api';
+
+type StockPositionSymbol = CustomTypes.StockPositionSymbol;
 import { ref, onMounted, onUnmounted } from 'vue';
 import { stockService } from '@/service/api';
 

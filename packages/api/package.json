@@ -24,7 +24,8 @@
     "type-check": "tsc --noEmit",
     "test": "vitest",
     "test:watch": "vitest --watch",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "generate:api": "cd ../.. && node scripts/generate-api.js"
   },
   "dependencies": {
     "@template/types": "workspace:*",

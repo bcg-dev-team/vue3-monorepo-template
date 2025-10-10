@@ -1,46 +1,10 @@
-// 인증 관련 타입 정의
+/**
+ * 인증 및 비밀번호 관련 타입 정의
+ */
 
-export interface AuthTokens {
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
-}
-
-export interface LoginRequest {
-  email: string;
-  password: string;
-  rememberMe?: boolean;
-}
-
-export interface RegisterRequest {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-}
-
-export interface RefreshTokenRequest {
-  refreshToken: string;
-}
-
-export interface AuthUser {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  role: string;
-  isActive: boolean;
-}
-
-export interface AuthState {
-  user: AuthUser | null;
-  tokens: AuthTokens | null;
-  isAuthenticated: boolean;
-  loading: boolean;
-}
-
-// zxcvbn 비밀번호 강도 분석 관련 타입 정의
-
+/**
+ * zxcvbn 비밀번호 강도 분석 결과 타입
+ */
 export interface ZxcvbnResult {
   score: 0 | 1 | 2 | 3 | 4;
   feedback: {
@@ -69,6 +33,9 @@ export interface ZxcvbnResult {
   calc_time: number;
 }
 
+/**
+ * 비밀번호 강도 표시 타입
+ */
 export interface PasswordStrengthDisplay {
   score: 0 | 1 | 2 | 3 | 4;
   label: '매우 약함' | '약함' | '보통' | '강함' | '매우 강함';

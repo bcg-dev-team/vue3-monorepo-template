@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import NoneLayout from './components/layout/fragments/NoneLayout.vue';
-import ToastManager from './components/ToastManager.vue';
+import ToastManager from './services/managers/toast/ToastManager.vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();

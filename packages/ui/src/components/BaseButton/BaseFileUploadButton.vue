@@ -20,6 +20,8 @@ import { ref, computed } from 'vue';
  * @emits change - 파일 선택 시
  * @emits remove - 파일 제거 시
  * @emits file-selected - 파일 선택/제거 시 현재 파일 목록
+ * @emits file-size-error - 파일 크기 초과 시
+ * @emits file-type-error - 허용되지 않는 파일 형식 시
  */
 interface Props {
   /**
@@ -51,6 +53,11 @@ interface Props {
    * 허용할 파일 타입
    */
   accept?: string;
+  /**
+   * 최대 파일 크기 (바이트)
+   * @default 10485760 (10MB)
+   */
+  maxFileSize?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -59,7 +66,8 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   showIcon: true,
   multiple: false,
-  accept: '*/*',
+  accept: '.png,.jpg,.jpeg,.pdf',
+  maxFileSize: 10 * 1024 * 1024, // 10MB
 });
 
 const emit = defineEmits<{
@@ -67,6 +75,8 @@ const emit = defineEmits<{
   (e: 'change', files: FileList | null): void;
   (e: 'remove', file: File): void;
   (e: 'file-selected', files: File[]): void;
+  (e: 'file-size-error', file: File, maxSize: number): void;
+  (e: 'file-type-error', file: File, allowedTypes: string[]): void;
 }>();
 
 const inputRef = ref<HTMLInputElement | null>(null);
@@ -122,7 +132,30 @@ function handleClick(e: MouseEvent) {
 function handleChange(e: Event) {
   const files = (e.target as HTMLInputElement).files;
   if (files) {
-    selectedFiles.value = Array.from(files);
+    const fileArray = Array.from(files);
+    const validFiles: File[] = [];
+    const allowedTypes = ['png', 'jpg', 'jpeg', 'pdf'];
+
+    // 파일 유효성 체크
+    for (const file of fileArray) {
+      const fileExtension = file.name.split('.').pop()?.toLowerCase() || '';
+
+      // 파일 형식 체크
+      if (!allowedTypes.includes(fileExtension)) {
+        emit('file-type-error', file, allowedTypes);
+        continue;
+      }
+
+      // 파일 크기 체크
+      if (file.size > props.maxFileSize) {
+        emit('file-size-error', file, props.maxFileSize);
+        continue;
+      }
+
+      validFiles.push(file);
+    }
+
+    selectedFiles.value = validFiles;
     emit('change', files);
     emit('file-selected', selectedFiles.value);
   }

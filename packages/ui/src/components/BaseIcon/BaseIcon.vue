@@ -81,14 +81,9 @@ const iconStyles = computed(() => {
     styles.height = `${props.size}px`;
   }
 
-  // 색상 적용
-  const color = props.color || 'currentColor';
-  const iconType = getIconType(props.name);
-
-  if (iconType === 'fill') {
-    styles.fill = color;
-  } else if (iconType === 'stroke') {
-    styles.stroke = color;
+  // 색상 적용: currentColor를 사용하므로 CSS color 속성으로 제어
+  if (props.color && props.color !== 'currentColor') {
+    styles.color = props.color;
   }
 
   return styles;

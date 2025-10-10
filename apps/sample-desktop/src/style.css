@@ -45,6 +45,19 @@
     transition: background-color 0.3s ease;
   }
 
+  /* 플로팅 요소 포털 레이어 */
+  #overlay-root {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: var(--z-index-max);
+  }
+
+  /* 포털 내부 요소는 pointer-events 복원 */
+  #overlay-root > * {
+    pointer-events: auto;
+  }
+
   /* 테마 전환 시 부드러운 애니메이션 */
   * {
     transition:

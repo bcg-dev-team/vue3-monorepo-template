@@ -10,7 +10,7 @@
     >
       <div
         v-if="visible"
-        class="fixed left-1/2 top-1/2 z-[9999] min-w-[200px] max-w-[400px] -translate-x-1/2 -translate-y-1/2"
+        class="z-toast fixed left-1/2 top-1/2 min-w-[200px] max-w-[400px] -translate-x-1/2 -translate-y-1/2"
         role="alert"
         aria-live="polite"
       >

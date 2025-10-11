@@ -22,8 +22,6 @@ export interface ResponseDataObject {
   data?: object;
 }
 
-
-
 export interface ResponseDataString {
   /** status */
   status: string;
@@ -32,8 +30,6 @@ export interface ResponseDataString {
   /** data */
   data?: string;
 }
-
-
 
 export interface PageRequest {
   /** */
@@ -44,21 +40,15 @@ export interface PageRequest {
   sort?: string;
 }
 
-
-
 export interface Email {
   /** */
   value: string;
 }
 
-
-
 export interface StockCode {
   /** */
   value: string;
 }
-
-
 
 export interface OrderResponseDto {
   /** */
@@ -85,8 +75,6 @@ export interface OrderResponseDto {
   items?: Array<OrderResponseItemDto>;
 }
 
-
-
 export interface OrderResponseItemDto {
   /** */
   isuCd: string;
@@ -107,8 +95,6 @@ export interface OrderResponseItemDto {
   /** */
   pipUnt: number;
 }
-
-
 
 export interface BalanceResponseDto {
   /** */
@@ -135,8 +121,6 @@ export interface BalanceResponseDto {
   items?: Array<BalanceResponseItemDto>;
 }
 
-
-
 export interface BalanceResponseItemDto {
   /** */
   isuCd: string;
@@ -158,11 +142,6 @@ export interface BalanceResponseItemDto {
   isuGrcd: string;
 }
 
-
-
 export interface ResponseDataBalanceResponseDto extends ApiSuccessResponse<BalanceResponseDto> {}
 
-
-
 export interface ResponseDataOrderResponseDto extends ApiSuccessResponse<OrderResponseDto> {}
-

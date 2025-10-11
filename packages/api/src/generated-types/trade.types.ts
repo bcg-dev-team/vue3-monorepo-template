@@ -37,9 +37,6 @@ export type OrderExecutionHistoryRequestOrderCdType = 'TOTAL' | 'BUY_PURCHASE' |
  */
 export type OrderExecutionHistoryRequestPositionCdType = 'TOTAL' | 'LONG' | 'SHORT';
 
-
-
-
 export interface OrderExecutionHistoryResponse {
   /** 다음페이지 존재여부 */
   hasNext: boolean;
@@ -50,8 +47,6 @@ export interface OrderExecutionHistoryResponse {
   /** 상세 정보 */
   details: Array<DetailsOrderExecution>;
 }
-
-
 
 export interface PaymentHistoryRequest {
   /** 계좌번호 */
@@ -64,8 +59,6 @@ export interface PaymentHistoryRequest {
   nextKey: string;
 }
 
-
-
 export interface PaymentHistoryResponse {
   /** 다음페이지 존재여부 */
   hasNext: boolean;
@@ -74,8 +67,6 @@ export interface PaymentHistoryResponse {
   /** 상세 정보 */
   details: Array<PaymentDetail>;
 }
-
-
 
 export interface LiquidationHistoryRequest {
   /** 계좌번호 */
@@ -88,8 +79,6 @@ export interface LiquidationHistoryRequest {
   nextKey: string;
 }
 
-
-
 export interface LiquidationHistoryResponse {
   /** 다음페이지 존재여부 */
   hasNext: boolean;
@@ -100,8 +89,6 @@ export interface LiquidationHistoryResponse {
   /** 상세 정보 */
   details: Array<LiquidationDetail>;
 }
-
-
 
 export interface DetailsOrderExecution {
   /** 주문일자 */
@@ -144,8 +131,6 @@ export interface DetailsOrderExecution {
   rejectReason: string;
 }
 
-
-
 export interface SummaryOrderExecution {
   /** 거래통화코드 */
   tradeCurrencyCd: string;
@@ -166,8 +151,6 @@ export interface SummaryOrderExecution {
   /** 환매체결금액 */
   reLongExecutionPrice: number;
 }
-
-
 
 export interface PaymentDetail {
   /** 결제일자 */
@@ -207,10 +190,13 @@ export type PaymentDetailPositionCdType = 'TOTAL' | 'LONG' | 'SHORT';
 /**
  * @export
  */
-export type PaymentDetailTradeCdType = 'BUY_PURCHASE' | 'SELL_PURCHASE' | 'DEPOSIT' | 'WITHDRAWAL' | 'DESCRIPTION_DEPOSIT' | 'DESCRIPTION_WITHDRAWAL';
-
-
-
+export type PaymentDetailTradeCdType =
+  | 'BUY_PURCHASE'
+  | 'SELL_PURCHASE'
+  | 'DEPOSIT'
+  | 'WITHDRAWAL'
+  | 'DESCRIPTION_DEPOSIT'
+  | 'DESCRIPTION_WITHDRAWAL';
 
 export interface LiquidationDetail {
   /** 청산일자 */
@@ -241,9 +227,6 @@ export interface LiquidationDetail {
  * @export
  */
 export type LiquidationDetailOrderCdType = 'TOTAL' | 'BUY_PURCHASE' | 'SELL_PURCHASE';
-
-
-
 
 export interface LiquidationSummary {
   /** LONG 취득금액($) */
@@ -282,15 +265,11 @@ export interface LiquidationSummary {
   nextKey: string;
 }
 
+export interface ResponseDataOrderExecutionHistoryResponse
+  extends ApiSuccessResponse<OrderExecutionHistoryResponse> {}
 
+export interface ResponseDataPaymentHistoryResponse
+  extends ApiSuccessResponse<PaymentHistoryResponse> {}
 
-export interface ResponseDataOrderExecutionHistoryResponse extends ApiSuccessResponse<OrderExecutionHistoryResponse> {}
-
-
-
-export interface ResponseDataPaymentHistoryResponse extends ApiSuccessResponse<PaymentHistoryResponse> {}
-
-
-
-export interface ResponseDataLiquidationHistoryResponse extends ApiSuccessResponse<LiquidationHistoryResponse> {}
-
+export interface ResponseDataLiquidationHistoryResponse
+  extends ApiSuccessResponse<LiquidationHistoryResponse> {}

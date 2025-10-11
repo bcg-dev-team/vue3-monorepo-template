@@ -20,8 +20,6 @@ export interface AssetDepositsRequest {
   nextKey: string;
 }
 
-
-
 export interface AssetDepositsResponse {
   /** 다음페이지 존재여부 */
   hasNext: boolean;
@@ -33,16 +31,12 @@ export interface AssetDepositsResponse {
   summary?: Array<AssetOrder>;
 }
 
-
-
 export interface AssetPositionsRequest {
   /** 계좌번호 */
   accountNo: string;
   /** nextKey(초기 요청시 1) */
   nextKey: string;
 }
-
-
 
 export interface AssetPositionsResponse {
   /** 다음페이지 존재여부 */
@@ -54,8 +48,6 @@ export interface AssetPositionsResponse {
   /** 자산 구성 */
   summary?: Array<AssetSummary>;
 }
-
-
 
 export interface AssetOrder {
   /** 종목코드 */
@@ -74,8 +66,6 @@ export interface AssetOrder {
   orderDepositPrice: number;
 }
 
-
-
 export interface AssetPosition {
   /** 종목코드 */
   stockCd: string;
@@ -93,8 +83,6 @@ export interface AssetPosition {
   depositPercent: number;
 }
 
-
-
 export interface AssetSummary {
   /** 종목코드 */
   stockCd: string;
@@ -109,8 +97,6 @@ export interface AssetSummary {
   /** 비중 */
   ratePercent: number;
 }
-
-
 
 export interface Position {
   /** 종목코드 */
@@ -135,11 +121,8 @@ export interface Position {
   reLongExecutionPrice: number;
 }
 
+export interface ResponseDataAssetDepositsResponse
+  extends ApiSuccessResponse<AssetDepositsResponse> {}
 
-
-export interface ResponseDataAssetDepositsResponse extends ApiSuccessResponse<AssetDepositsResponse> {}
-
-
-
-export interface ResponseDataAssetPositionsResponse extends ApiSuccessResponse<AssetPositionsResponse> {}
-
+export interface ResponseDataAssetPositionsResponse
+  extends ApiSuccessResponse<AssetPositionsResponse> {}

@@ -19,25 +19,18 @@ export interface ResponseDataMapTermsNameListResponseTermsByTermsName {
   /** code */
   code: number;
   /** data */
-  data?: { [key: string]: Array<ResponseTermsByTermsName>; };
+  data?: { [key: string]: Array<ResponseTermsByTermsName> };
 }
 
-
-
-export interface ResponseDataResponseListResponseTermsByTermsName extends ApiSuccessResponse<ResponseListResponseTermsByTermsName> {}
-
-
+export interface ResponseDataResponseListResponseTermsByTermsName
+  extends ApiSuccessResponse<ResponseListResponseTermsByTermsName> {}
 
 export interface ResponseDataResponseTermsList extends ApiSuccessResponse<ResponseTermsList> {}
-
-
 
 export interface ResponseListResponseTermsByTermsName {
   /** */
   contents: Array<ResponseTermsByTermsName>;
 }
-
-
 
 export interface ResponseTermsByTermsName {
   /** */
@@ -45,8 +38,6 @@ export interface ResponseTermsByTermsName {
   /** */
   detail: string;
 }
-
-
 
 export interface ResponseTermsList {
   /** */
@@ -58,10 +49,14 @@ export interface ResponseTermsList {
 /**
  * @export
  */
-export type ResponseTermsListRequiredType = 'SERVICE_USAGE_TERMS' | 'PERSONAL_INFO_COLLECTION' | 'MARKETING_NOTIFICATION';
+export type ResponseTermsListRequiredType =
+  | 'SERVICE_USAGE_TERMS'
+  | 'PERSONAL_INFO_COLLECTION'
+  | 'MARKETING_NOTIFICATION';
 /**
  * @export
  */
-export type ResponseTermsListOptionalType = 'SERVICE_USAGE_TERMS' | 'PERSONAL_INFO_COLLECTION' | 'MARKETING_NOTIFICATION';
-
-
+export type ResponseTermsListOptionalType =
+  | 'SERVICE_USAGE_TERMS'
+  | 'PERSONAL_INFO_COLLECTION'
+  | 'MARKETING_NOTIFICATION';

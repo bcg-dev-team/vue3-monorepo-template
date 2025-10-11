@@ -20,8 +20,6 @@ export interface AccountCreateRequest {
   accountAlias?: string;
 }
 
-
-
 export interface AccountCreateResponse {
   /** 계좌번호 */
   accountNo: string;
@@ -30,8 +28,6 @@ export interface AccountCreateResponse {
   /** 표시순번 */
   visibleSequence: string;
 }
-
-
 
 export interface AccountInfo {
   /** 계좌번호 */
@@ -48,21 +44,15 @@ export interface AccountInfo {
   visibleSequence: string;
 }
 
-
-
 export interface AccountInfoResponse {
   /** 계좌 리스트 */
   accountList: Array<AccountInfo>;
 }
 
-
-
 export interface AccountInfoUpdateRequest {
   /** 계좌 정보 목록 */
   accountInfos: Array<ItemDto>;
 }
-
-
 
 export interface AccountUpdatePwdRequest {
   /** 계좌번호 */
@@ -73,8 +63,6 @@ export interface AccountUpdatePwdRequest {
   afterAccountPassword: string;
 }
 
-
-
 export interface ItemDto {
   /** 계좌번호 */
   accountNo: string;
@@ -84,11 +72,7 @@ export interface ItemDto {
   visible: string;
 }
 
-
-
-export interface ResponseDataAccountCreateResponse extends ApiSuccessResponse<AccountCreateResponse> {}
-
-
+export interface ResponseDataAccountCreateResponse
+  extends ApiSuccessResponse<AccountCreateResponse> {}
 
 export interface ResponseDataAccountInfoResponse extends ApiSuccessResponse<AccountInfoResponse> {}
-

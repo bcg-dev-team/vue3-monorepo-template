@@ -6,6 +6,7 @@
  */
 
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from 'fs';
+import { execSync } from 'child_process';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -422,5 +423,26 @@ function consolidateTypes() {
   console.log(`📁 출력 위치: ${outputPath}`);
 }
 
+/**
+ * 통합된 파일들 Prettier 포매팅
+ */
+function formatConsolidatedFiles() {
+  try {
+    console.log('\n✨ 통합된 파일 포매팅 중...');
+
+    const command = `prettier --write "${outputPath}/**/*.ts"`;
+
+    execSync(command, {
+      stdio: 'inherit',
+      cwd: projectRoot,
+    });
+
+    console.log('✅ 파일 포매팅 완료!');
+  } catch (error) {
+    console.warn('⚠️  파일 포매팅 중 오류 발생:', (error as Error).message);
+  }
+}
+
 // 스크립트 실행
 consolidateTypes();
+formatConsolidatedFiles();

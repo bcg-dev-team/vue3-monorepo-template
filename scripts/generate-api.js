@@ -125,6 +125,27 @@ function consolidateTypes() {
 }
 
 /**
+ * 생성된 파일들 Prettier 포매팅
+ */
+function formatGeneratedFiles() {
+  try {
+    console.log('✨ 생성된 파일 포매팅 중...');
+    
+    const command = `prettier --write "${config.outputDir}/**/*.{ts,js}"`;
+    
+    execSync(command, { 
+      stdio: 'inherit',
+      cwd: projectRoot
+    });
+    
+    console.log('✅ 파일 포매팅 완료!');
+    
+  } catch (error) {
+    console.warn('⚠️  파일 포매팅 중 오류 발생:', error.message);
+  }
+}
+
+/**
  * 메인 실행 함수
  */
 function main() {
@@ -145,6 +166,9 @@ function main() {
   
   // 5. 타입 파일 통합
   consolidateTypes();
+  
+  // 6. 생성된 파일들 포매팅
+  formatGeneratedFiles();
   
   console.log('================================');
   console.log('🎉 OpenAPI Generator 실행 완료!');

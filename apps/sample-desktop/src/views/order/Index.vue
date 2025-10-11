@@ -1,94 +1,70 @@
 <template>
-  <div class="order-page min-w-[1920px]">
+  <div class="order-page">
     <!-- 실시간 설정 패널 -->
     <!-- <RealtimeConfigPanel /> -->
 
-    <!-- 좌측(15%) + 우측(85%) 분할 -->
-    <BaseTwoWaySplitPane
-      direction="horizontal"
-      :min-sizes="{ first: 15, second: 85 }"
-      :max-sizes="{ first: 15, second: 85 }"
-      :push-other-panes="false"
-    >
-      <!-- 좌측 패널: 종목 리스트 (15%) -->
-      <template #first>
+    <!-- 3단 레이아웃: 좌측(고정) + 중앙(가변) + 우측(고정) -->
+    <div class="order-layout">
+      <!-- 좌측 패널: 종목 리스트 (고정 300px) -->
+      <div class="order-layout__left">
         <div class="order-list-panel">
           <SymbolList
             :selected-symbol="selectedSymbol.selectedSymbol.value"
             @symbol-select="handleSymbolSelect"
           />
         </div>
-      </template>
+      </div>
 
-      <!-- 우측 패널: 중앙과 우측을 포함 (85%) -->
-      <template #second>
-        <!-- 중앙(75%) + 우측(25%) 분할 -->
-        <BaseTwoWaySplitPane
-          direction="horizontal"
-          :min-sizes="{ first: 75, second: 25 }"
-          :max-sizes="{ first: 75, second: 25 }"
-          :push-other-panes="false"
-        >
-          <!-- 중앙 패널: 다중 차트 레이아웃 (75%) -->
-          <template #first>
-            <div class="order-detail-panel">
-              <!-- 다중 차트와 테이블을 8:2 vertical 분할 -->
-              <BaseTwoWaySplitPane
-                direction="vertical"
-                :min-sizes="{ first: 75, second: 25 }"
-                :max-sizes="{ first: 75, second: 25 }"
-                :push-other-panes="false"
-              >
-                <!-- 위쪽: 다중 차트 (75%) -->
-                <template #first>
-                  <div class="chart-panel">
-                    <MultiChartLayout
-                      ref="multiChartLayoutRef"
-                      :initial-symbols="[]"
-                      @chart-select="handleChartSelect"
-                      @symbol-change="handleSymbolChange"
-                    />
-                  </div>
-                </template>
-
-                <!-- 아래쪽: 테이블 (25%) -->
-                <template #second>
-                  <div class="table-panel">
-                    <div class="panel-content">
-                      <BaseTabs v-model="activeTab" :tabs="tabs" size="md" />
-                      <!-- theme: 'quartz' | 'balham' | 'material' | 'alpine' -->
-
-                      <!--TDOO: 동적 데이터 할당은 각 컴포넌트에 적용 필요 (OrderBalanceTable.vue)  -->
-                      <!-- <BaseDataGrid
-                        :columnDefs="columnDefs"
-                        :rowData="rowData"
-                        :defaultColDef="defaultColDef"
-                        :gridOptions="gridOptions"
-                        :sortable="true"
-                        :filterable="false"
-                        :pagination="false"
-                        :resizable="false"
-                        :disalbeColumnAutoSize="false"
-                        theme="alpine"
-                        @grid-ready="onGridReady"
-                        @sort-changed="onSortChanged"
-                      /> -->
-                    </div>
-                  </div>
-                </template>
-              </BaseTwoWaySplitPane>
+      <!-- 중앙 패널: 차트 + 테이블 (가변) -->
+      <div class="order-layout__center">
+        <div class="order-detail-panel">
+          <!-- 차트 영역 (상단 고정 높이) -->
+          <div class="chart-section">
+            <div class="chart-panel">
+              <MultiChartLayout
+                ref="multiChartLayoutRef"
+                :initial-symbols="[]"
+                @chart-select="handleChartSelect"
+                @symbol-change="handleSymbolChange"
+              />
             </div>
-          </template>
+          </div>
 
-          <!-- 우측 패널: 주문 처리 (25%) -->
-          <template #second>
-            <div class="order-action-panel">
-              <RightPanel :selected-symbol="selectedSymbol.selectedSymbol.value" />
+          <!-- 테이블 영역 (하단 고정 높이) -->
+          <div class="table-section">
+            <div class="table-panel">
+              <div class="panel-content">
+                <BaseTabs v-model="activeTab" :tabs="tabs" size="md" />
+                <!-- theme: 'quartz' | 'balham' | 'material' | 'alpine' -->
+
+                <!--TDOO: 동적 데이터 할당은 각 컴포넌트에 적용 필요 (OrderBalanceTable.vue)  -->
+                <!-- <BaseDataGrid
+                  :columnDefs="columnDefs"
+                  :rowData="rowData"
+                  :defaultColDef="defaultColDef"
+                  :gridOptions="gridOptions"
+                  :sortable="true"
+                  :filterable="false"
+                  :pagination="false"
+                  :resizable="false"
+                  :disalbeColumnAutoSize="false"
+                  theme="alpine"
+                  @grid-ready="onGridReady"
+                  @sort-changed="onSortChanged"
+                /> -->
+              </div>
             </div>
-          </template>
-        </BaseTwoWaySplitPane>
-      </template>
-    </BaseTwoWaySplitPane>
+          </div>
+        </div>
+      </div>
+
+      <!-- 우측 패널: 주문 처리 (고정 400px) -->
+      <div class="order-layout__right">
+        <div class="order-action-panel">
+          <RightPanel :selected-symbol="selectedSymbol.selectedSymbol.value" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -100,10 +76,10 @@ import { predefinedStyles, getProfitLossStyle } from '@template/utils';
 import type { TradingSymbol, PositionType } from '@template/types';
 import type { GridOptions, ColDef, GridApi } from '@template/ui';
 import { ref, onMounted, onUnmounted, shallowRef } from 'vue';
-import { BaseTwoWaySplitPane, BaseTabs } from '@template/ui';
 import SymbolList from '@/components/order/SymbolList.vue';
 import RightPanel from '@/components/order/RightPanel.vue';
 import { getOrderData } from '@template/mocks';
+import { BaseTabs } from '@template/ui';
 import './Index.scss';
 
 // 상태 관리

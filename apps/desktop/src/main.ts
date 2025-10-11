@@ -7,7 +7,7 @@ import App from './App.vue';
 import '@template/theme';
 
 // UI 패키지 import (스타일 포함)
-import '@template/ui/style.css';
+import '@template/ui/ui.css';
 import '@template/ui';
 
 // 전역 스타일

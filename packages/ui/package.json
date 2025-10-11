@@ -27,9 +27,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm run build:theme && vue-tsc --noEmit && vite build",
-    "build:theme": "cd ../theme && pnpm build",
-    "dev": "pnpm run build:theme && vite build --watch",
+    "build": "vue-tsc --noEmit && vite build",
+    "dev": "vite build --watch",
     "clean": "rimraf dist",
     "type-check": "vue-tsc --noEmit",
     "storybook": "storybook dev -p 6006",

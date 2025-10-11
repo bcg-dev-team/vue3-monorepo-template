@@ -44,6 +44,7 @@
   "scripts": {
     "build:tokens": "node scripts/generate-tailwind-config.mjs && pnpm prettier-tailwind",
     "build": "pnpm run build:tokens && tsc -p tsconfig.build.json && pnpm run copy-css",
+    "build:skip-tokens": "tsc -p tsconfig.build.json && pnpm run copy-css",
     "copy-css": "mkdir -p dist/styles && cp src/styles/__tokens-light.css dist/styles/ && cp src/styles/__tokens-dark.css dist/styles/",
     "dev": "vite build --watch",
     "clean": "rimraf dist",

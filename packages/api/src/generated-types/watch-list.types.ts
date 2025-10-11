@@ -19,14 +19,10 @@ export interface WatchListAddRequest {
   stockCode: StockCode;
 }
 
-
-
 export interface WatchListResponse {
   /** 종목 코드 */
   stockCode: string;
 }
-
-
 
 export interface PageResponseWatchListResponse {
   /** */
@@ -41,7 +37,5 @@ export interface PageResponseWatchListResponse {
   isLast: boolean;
 }
 
-
-
-export interface ResponseDataPageResponseWatchListResponse extends ApiSuccessResponse<PageResponseWatchListResponse> {}
-
+export interface ResponseDataPageResponseWatchListResponse
+  extends ApiSuccessResponse<PageResponseWatchListResponse> {}

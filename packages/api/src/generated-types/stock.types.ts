@@ -22,8 +22,6 @@ export interface PositionStockRequest {
   nextKey: string;
 }
 
-
-
 export interface PositionStockResponse {
   /** 다음페이지 존재여부 */
   hasNext: boolean;
@@ -33,16 +31,12 @@ export interface PositionStockResponse {
   symbols: Array<PositionStockData>;
 }
 
-
-
 export interface PossessionStockRequest {
   /** 계좌번호 */
   accountNo: string;
   /** nextKey(초기 요청시 1) */
   nextKey: string;
 }
-
-
 
 export interface PossessionStockResponse {
   /** 다음페이지 존재여부 */
@@ -52,8 +46,6 @@ export interface PossessionStockResponse {
   /** 보유종목 코드 목록 */
   symbols: Array<string>;
 }
-
-
 
 export interface OrderStockRequest {
   /** 종목 그룹코드 */
@@ -65,10 +57,12 @@ export interface OrderStockRequest {
 /**
  * @export
  */
-export type OrderStockRequestSymbolGroupCdType = 'ALL' | 'FOREIGN' | 'INDEX' | 'COMMODITY' | 'CRYPTO';
-
-
-
+export type OrderStockRequestSymbolGroupCdType =
+  | 'ALL'
+  | 'FOREIGN'
+  | 'INDEX'
+  | 'COMMODITY'
+  | 'CRYPTO';
 
 export interface OrderStockResponse {
   /** 다음페이지 존재여부 */
@@ -78,10 +72,8 @@ export interface OrderStockResponse {
   /** 종목 메타데이터 */
   details: Array<SymbolMetaData>;
   /** 종목별 현재가 정보 */
-  currentPrices: { [key: string]: string; };
+  currentPrices: { [key: string]: string };
 }
-
-
 
 export interface PositionStockData {
   /** 종목코드 */
@@ -107,8 +99,6 @@ export interface PositionStockData {
   /** (H) 잔고번호 */
   positionNo: string;
 }
-
-
 
 export interface SymbolMetaData {
   /** 종목코드 */
@@ -171,26 +161,18 @@ export interface SymbolMetaData {
   sunTradeEndTime: string;
 }
 
+export interface ResponseDataPositionStockResponse
+  extends ApiSuccessResponse<PositionStockResponse> {}
 
-
-export interface ResponseDataPositionStockResponse extends ApiSuccessResponse<PositionStockResponse> {}
-
-
-
-export interface ResponseDataPossessionStockResponse extends ApiSuccessResponse<PossessionStockResponse> {}
-
-
+export interface ResponseDataPossessionStockResponse
+  extends ApiSuccessResponse<PossessionStockResponse> {}
 
 export interface ResponseDataOrderStockResponse extends ApiSuccessResponse<OrderStockResponse> {}
-
-
 
 export interface ResponseListOrderBookResponse {
   /** */
   contents: Array<OrderBookResponse>;
 }
-
-
 
 export interface OrderBookResponse {
   /** 매수호가 */
@@ -203,7 +185,5 @@ export interface OrderBookResponse {
   askSize: string;
 }
 
-
-
-export interface ResponseDataResponseListOrderBookResponse extends ApiSuccessResponse<ResponseListOrderBookResponse> {}
-
+export interface ResponseDataResponseListOrderBookResponse
+  extends ApiSuccessResponse<ResponseListOrderBookResponse> {}

@@ -26,9 +26,6 @@ export interface MemberApproveRequest {
  */
 export type MemberApproveRequestMemberType = 'INDIVIDUAL' | 'CORPORATE';
 
-
-
-
 export interface MemberFindIdRequest {
   /** 이름 */
   name: string;
@@ -36,21 +33,15 @@ export interface MemberFindIdRequest {
   phoneNo: string;
 }
 
-
-
 export interface MemberFindIdResponse {
   /** 찾은 이메일 */
   email: string;
 }
 
-
-
 export interface MemberJoinResponse {
   /** */
   id: number;
 }
-
-
 
 export interface MemberPasswordChangeRequest {
   /** */
@@ -58,8 +49,6 @@ export interface MemberPasswordChangeRequest {
   /** 새로 설정할 비밀번호 */
   newPassword: string;
 }
-
-
 
 export interface MemberSendSmsCodeRequest {
   /** 이름 */
@@ -74,9 +63,6 @@ export interface MemberSendSmsCodeRequest {
  * @export
  */
 export type MemberSendSmsCodeRequestUseType = 'SIGN_UP' | 'RESET_PASSWORD' | 'FIND_ID';
-
-
-
 
 export interface MemberVerifySmsCodeRequest {
   /** 이름 */
@@ -93,9 +79,6 @@ export interface MemberVerifySmsCodeRequest {
  * @export
  */
 export type MemberVerifySmsCodeRequestUseType = 'SIGN_UP' | 'RESET_PASSWORD' | 'FIND_ID';
-
-
-
 
 export interface IndividualMemberJoinRequest {
   /** 투자자를 식별하기 위한 CI (Customer Identification) 값 */
@@ -125,8 +108,6 @@ export interface IndividualMemberJoinRequest {
   /** 우편번호 */
   zipCode?: string;
 }
-
-
 
 export interface CorporateMemberJoinRequest {
   /** 투자자를 식별하기 위한 CI (Customer Identification) 값 */
@@ -161,11 +142,7 @@ export interface CorporateMemberJoinRequest {
   representativeBirth: Date;
 }
 
-
-
-export interface ResponseDataMemberFindIdResponse extends ApiSuccessResponse<MemberFindIdResponse> {}
-
-
+export interface ResponseDataMemberFindIdResponse
+  extends ApiSuccessResponse<MemberFindIdResponse> {}
 
 export interface ResponseDataMemberJoinResponse extends ApiSuccessResponse<MemberJoinResponse> {}
-

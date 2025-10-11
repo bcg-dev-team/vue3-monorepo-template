@@ -22,8 +22,6 @@ export interface AuthLoginRequest {
   password?: string;
 }
 
-
-
 export interface AuthLoginResponse {
   /** 회원 ID */
   memberId: number;
@@ -42,15 +40,10 @@ export interface AuthLoginResponse {
  */
 export type AuthLoginResponseMemberType = 'INDIVIDUAL' | 'CORPORATE';
 
-
-
-
 export interface AuthRefreshTokenRequest {
   /** 만료된 AccessToken */
   expiredAccessToken: string;
 }
-
-
 
 export interface VerificationRequest {
   /** */
@@ -63,9 +56,6 @@ export interface VerificationRequest {
  * @export
  */
 export type VerificationRequestUseType = 'SIGN_UP' | 'RESET_PASSWORD' | 'FIND_ID';
-
-
-
 
 export interface VerificationCodeRequest {
   /** */
@@ -81,16 +71,9 @@ export interface VerificationCodeRequest {
  */
 export type VerificationCodeRequestUseType = 'SIGN_UP' | 'RESET_PASSWORD' | 'FIND_ID';
 
-
-
-
 export interface ResponseDataAuthLoginResponse extends ApiSuccessResponse<AuthLoginResponse> {}
 
-
-
 export interface ResponseDataTokenResponse extends ApiSuccessResponse<TokenResponse> {}
-
-
 
 export interface TokenResponse {
   /** */
@@ -98,4 +81,3 @@ export interface TokenResponse {
   /** */
   refreshToken?: string;
 }
-

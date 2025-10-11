@@ -8,7 +8,6 @@
 
 import { existsSync, rmSync, readdirSync } from 'fs';
 import { execSync } from 'child_process';
-import { fileURLToPath } from 'url';
 import { join } from 'path';
 
 // 빌드 순서 정의 (의존성 순서)
@@ -57,11 +56,186 @@ const DEPENDENCY_GRAPH = {
     'packages/theme',
     'packages/mocks',
   ],
-  'apps/mobile-native': ['packages/types', 'packages/utils', 'packages/api', 'packages/theme', 'packages/mocks'],
+  'apps/mobile-native': [
+    'packages/types',
+    'packages/utils',
+    'packages/api',
+    'packages/theme',
+    'packages/mocks',
+  ],
 } as const;
 
 // 타입 정의
 type PackagePath = (typeof BUILD_ORDER)[number];
+
+// 빌드 옵션 인터페이스
+interface BuildOptions {
+  skipApiGeneration: boolean;
+  skipTokensGeneration: boolean;
+  skipCircularCheck: boolean;
+  skipIconOptimization: boolean;
+  buildApps: 'sample-desktop' | 'sample-mobile' | 'sample-all' | 'all';
+}
+
+/**
+ * 사용자에게 yes/no 질문하기
+ * Enter 키를 누르면 기본값(defaultValue)으로 처리
+ */
+function askQuestion(question: string, defaultValue: boolean = true): Promise<boolean> {
+  const defaultText = defaultValue ? 'Y/n' : 'y/N';
+  process.stdout.write(`${question} (${defaultText}): `);
+
+  return new Promise((resolve) => {
+    // raw mode로 설정하여 키 하나만 입력받기
+    if (process.stdin.isTTY) {
+      process.stdin.setRawMode(true);
+    }
+    process.stdin.resume();
+
+    const onData = (buffer: Buffer) => {
+      const key = buffer.toString('utf8');
+
+      // Ctrl+C 처리
+      if (key === '\u0003') {
+        process.stdout.write('\n');
+        process.exit(0);
+      }
+
+      // Enter 키 (기본값)
+      if (key === '\r' || key === '\n') {
+        process.stdout.write('\n');
+        cleanup();
+        resolve(defaultValue);
+        return;
+      }
+
+      const normalized = key.toLowerCase();
+
+      // y 또는 n만 허용
+      if (normalized === 'y' || normalized === 'n') {
+        process.stdout.write(key + '\n');
+        cleanup();
+        resolve(normalized === 'y');
+        return;
+      }
+
+      // 다른 키는 무시
+    };
+
+    const cleanup = () => {
+      process.stdin.removeListener('data', onData);
+      process.stdin.pause();
+      if (process.stdin.isTTY) {
+        process.stdin.setRawMode(false);
+      }
+    };
+
+    process.stdin.on('data', onData);
+  });
+}
+
+/**
+ * 사용자에게 선택지를 제공하는 질문 (숫자 키 하나만 눌러도 진행)
+ */
+function askChoice<T extends string>(
+  question: string,
+  choices: Array<{ value: T; label: string }>,
+  defaultValue: T
+): Promise<T> {
+  console.log(question);
+  choices.forEach((choice, index) => {
+    const isDefault = choice.value === defaultValue;
+    const marker = isDefault ? '>' : ' ';
+    console.log(`${marker} ${index + 1}. ${choice.label}${isDefault ? ' (기본)' : ''}`);
+  });
+
+  process.stdout.write(`선택 (1-${choices.length}, Enter=기본값): `);
+
+  return new Promise((resolve) => {
+    // raw mode로 설정하여 키 하나만 입력받기
+    if (process.stdin.isTTY) {
+      process.stdin.setRawMode(true);
+    }
+    process.stdin.resume();
+
+    const onData = (buffer: Buffer) => {
+      const key = buffer.toString('utf8');
+
+      // Ctrl+C 처리
+      if (key === '\u0003') {
+        process.stdout.write('\n');
+        process.exit(0);
+      }
+
+      // Enter 키 (기본값)
+      if (key === '\r' || key === '\n') {
+        process.stdout.write('\n');
+        cleanup();
+        resolve(defaultValue);
+        return;
+      }
+
+      // 숫자 키 체크
+      const choiceNum = parseInt(key, 10);
+      if (!isNaN(choiceNum) && choiceNum >= 1 && choiceNum <= choices.length) {
+        process.stdout.write(key + '\n');
+        cleanup();
+        resolve(choices[choiceNum - 1].value);
+        return;
+      }
+
+      // 잘못된 키는 무시
+    };
+
+    const cleanup = () => {
+      process.stdin.removeListener('data', onData);
+      process.stdin.pause();
+      if (process.stdin.isTTY) {
+        process.stdin.setRawMode(false);
+      }
+    };
+
+    process.stdin.on('data', onData);
+  });
+}
+
+/**
+ * 인터랙티브 모드: 빌드 옵션 선택
+ */
+async function getBuildOptions(): Promise<BuildOptions> {
+  console.log('\n📋 빌드 옵션을 선택하세요:');
+  console.log('   (Enter 키를 누르면 기본값이 선택됩니다)\n');
+
+  const skipApiGeneration = await askQuestion('API 자동 생성을 스킵하시겠습니까?', true);
+  const skipTokensGeneration = await askQuestion('Design Tokens 생성을 스킵하시겠습니까?', true);
+  const skipIconOptimization = await askQuestion('아이콘 최적화를 스킵하시겠습니까?', true);
+  const skipCircularCheck = await askQuestion('순환참조 검사를 스킵하시겠습니까?', true);
+
+  console.log('');
+  const buildApps = await askChoice(
+    '어떤 앱을 빌드하시겠습니까?',
+    [
+      { value: 'sample-desktop', label: 'sample-desktop만' },
+      { value: 'sample-mobile', label: 'sample-desktop + mobile' },
+      { value: 'sample-all', label: 'sample-desktop + mobile + desktop' },
+      { value: 'all', label: '모든 앱 (sample-desktop + mobile + desktop)' },
+    ],
+    'sample-desktop'
+  );
+
+  console.log('\n⚠️  참고: mobile-native 앱은 별도로 빌드해야 합니다.');
+  console.log('   실행: pnpm mobile:build:android 또는 pnpm mobile:build:ios\n');
+
+  console.log('✅ 빌드 옵션 설정 완료!\n');
+
+  return {
+    skipApiGeneration,
+    skipTokensGeneration,
+    skipIconOptimization,
+    skipCircularCheck,
+    buildApps,
+  };
+}
 
 /**
  * Cross-platform 대기 함수
@@ -196,7 +370,12 @@ function isPackageBuilt(packagePath: string): boolean {
 /**
  * 의존성 순환참조 검사
  */
-function checkCircularDependencies(): void {
+function checkCircularDependencies(skip: boolean = false): void {
+  if (skip) {
+    console.log('⏭️  순환참조 검사 스킵됨');
+    return;
+  }
+
   console.log('🔍 순환참조 검사 중...');
 
   try {
@@ -228,10 +407,52 @@ function checkCircularDependencies(): void {
 /**
  * 패키지 빌드
  */
-async function buildPackage(packagePath: PackagePath): Promise<void> {
+async function buildPackage(packagePath: PackagePath, options: BuildOptions): Promise<void> {
   console.log(`📦 빌드 중: ${packagePath}`);
 
   try {
+    // React Native 앱은 별도 빌드 프로세스
+    if (packagePath === 'apps/mobile-native') {
+      console.log(`✅ React Native 앱 빌드 건너뜀 (Expo 빌드는 별도 프로세스)`);
+      return;
+    }
+
+    // packages/theme 패키지의 경우 토큰 생성 스킵 옵션 적용
+    if (packagePath === 'packages/theme' && options.skipTokensGeneration) {
+      // 토큰 파일들이 존재하는지 확인
+      const tokenFiles = [
+        join(process.cwd(), packagePath, 'src/styles/__tokens-light.css'),
+        join(process.cwd(), packagePath, 'src/styles/__tokens-dark.css'),
+        join(process.cwd(), packagePath, 'tailwind.config.cjs'),
+      ];
+
+      const tokensExist = tokenFiles.every((file) => existsSync(file));
+
+      if (tokensExist) {
+        console.log('⏭️  Design Tokens 생성 스킵됨, 기존 토큰 파일 사용하여 TypeScript만 빌드');
+
+        // dist 폴더만 정리하고 토큰 생성 없이 빌드
+        const distPath = join(process.cwd(), packagePath, 'dist');
+        if (existsSync(distPath)) {
+          console.log(`🗑️  ${packagePath} dist 폴더 삭제 중...`);
+          removeDirectory(distPath);
+        }
+
+        // 토큰 생성 없이 TypeScript만 빌드
+        executeCommand('pnpm run build:skip-tokens', {
+          cwd: join(process.cwd(), packagePath),
+          stdio: 'inherit',
+        });
+
+        console.log(`✅ 빌드 완료: ${packagePath}`);
+        return;
+      } else {
+        console.log(
+          '⚠️  토큰 파일이 없어서 토큰 생성 없이 빌드할 수 없습니다. 전체 빌드를 수행합니다.'
+        );
+      }
+    }
+
     // 빌드 전 dist 폴더 정리 (types 패키지는 제외)
     console.log(`🔍 ${packagePath} 빌드 전 dist 폴더 상태 확인...`);
     const distPath = join(process.cwd(), packagePath, 'dist');
@@ -247,12 +468,6 @@ async function buildPackage(packagePath: PackagePath): Promise<void> {
       }
     } else {
       console.log(`✅ ${packagePath} dist 폴더 삭제 건너뜀`);
-    }
-
-    // React Native 앱은 별도 빌드 프로세스
-    if (packagePath === 'apps/mobile-native') {
-      console.log(`✅ React Native 앱 빌드 건너뜀 (Expo 빌드는 별도 프로세스)`);
-      return;
     }
 
     executeCommand('pnpm build', {
@@ -332,8 +547,85 @@ function checkDependencies(packagePath: PackagePath): void {
 /**
  * 빌드 가능한 패키지 필터링
  */
-function getBuildablePackages(): PackagePath[] {
-  return BUILD_ORDER.filter((packagePath) => packageExists(packagePath));
+function getBuildablePackages(appSelection: BuildOptions['buildApps']): PackagePath[] {
+  const allPackages = BUILD_ORDER.filter((packagePath) => packageExists(packagePath));
+
+  // 앱 선택에 따라 필터링
+  const appsToExclude: string[] = [];
+
+  switch (appSelection) {
+    case 'sample-desktop':
+      // sample-desktop만 빌드
+      appsToExclude.push('apps/desktop', 'apps/mobile', 'apps/mobile-native');
+      break;
+    case 'sample-mobile':
+      // sample-desktop + mobile
+      appsToExclude.push('apps/desktop', 'apps/mobile-native');
+      break;
+    case 'sample-all':
+      // sample-desktop + mobile + desktop
+      appsToExclude.push('apps/mobile-native');
+      break;
+    case 'all':
+      // 모든 앱 (mobile-native 제외)
+      appsToExclude.push('apps/mobile-native');
+      break;
+  }
+
+  return allPackages.filter((pkg) => !appsToExclude.includes(pkg));
+}
+
+/**
+ * API 자동 생성
+ */
+function generateApiClient(skip: boolean = false): void {
+  if (skip) {
+    console.log('⏭️  API 자동 생성 스킵됨\n');
+    return;
+  }
+
+  console.log('🔄 API 자동 생성 중...');
+
+  try {
+    executeCommand('pnpm run generate:api', {
+      stdio: 'inherit',
+    });
+    console.log('✅ API 자동 생성 완료!\n');
+  } catch (error) {
+    console.error(
+      '❌ API 자동 생성 실패:',
+      error instanceof Error ? error.message : '알 수 없는 오류'
+    );
+    console.error('💡 swagger.json 파일이 있는지 확인하세요\n');
+    process.exit(1);
+  }
+}
+
+/**
+ * 아이콘 최적화
+ */
+function optimizeIcons(skip: boolean = false): void {
+  if (skip) {
+    console.log('⏭️  아이콘 최적화 스킵됨\n');
+    return;
+  }
+
+  console.log('🎨 아이콘 최적화 중...');
+
+  try {
+    executeCommand('pnpm run optimize-icons', {
+      stdio: 'inherit',
+    });
+    console.log('✅ 아이콘 최적화 완료!\n');
+  } catch (error) {
+    console.error(
+      '❌ 아이콘 최적화 실패:',
+      error instanceof Error ? error.message : '알 수 없는 오류'
+    );
+    console.error('💡 packages/ui/src/assets/icons 폴더를 확인하세요\n');
+    // 아이콘 최적화는 필수가 아니므로 경고만 출력하고 계속 진행
+    console.log('⚠️  아이콘 최적화 없이 빌드를 계속합니다.\n');
+  }
 }
 
 /**
@@ -342,8 +634,34 @@ function getBuildablePackages(): PackagePath[] {
 async function main(): Promise<void> {
   console.log('🚀 모노레포 빌드 시작...\n');
 
+  // CLI 인자 확인: --interactive 또는 -i 플래그가 있으면 인터랙티브 모드
+  const isInteractive = process.argv.includes('--interactive') || process.argv.includes('-i');
+
+  // 빌드 옵션 결정
+  let options: BuildOptions;
+
+  if (isInteractive) {
+    // 인터랙티브 모드: 사용자에게 물어보기
+    options = await getBuildOptions();
+  } else {
+    // 기본 모드: 모든 작업 수행
+    options = {
+      skipApiGeneration: false,
+      skipTokensGeneration: false,
+      skipIconOptimization: false,
+      skipCircularCheck: false,
+      buildApps: 'all', // 기본값: 모든 앱 빌드 (mobile-native 제외)
+    };
+  }
+
+  // API 자동 생성
+  generateApiClient(options.skipApiGeneration);
+
+  // 아이콘 최적화
+  optimizeIcons(options.skipIconOptimization);
+
   // 빌드 가능한 패키지 확인
-  const buildablePackages = getBuildablePackages();
+  const buildablePackages = getBuildablePackages(options.buildApps);
 
   if (buildablePackages.length === 0) {
     console.error('❌ 빌드할 패키지가 없습니다.');
@@ -353,8 +671,8 @@ async function main(): Promise<void> {
 
   console.log(`💡 빌드 대상 패키지: ${buildablePackages.join(', ')}\n`);
 
-  // 순환참조 검사 (빌드 후에 수행)
-  checkCircularDependencies();
+  // 순환참조 검사
+  checkCircularDependencies(options.skipCircularCheck);
 
   // 순서대로 빌드
   for (const packagePath of buildablePackages) {
@@ -362,7 +680,7 @@ async function main(): Promise<void> {
     checkDependencies(packagePath);
 
     // 패키지 빌드
-    await buildPackage(packagePath);
+    await buildPackage(packagePath, options);
     console.log('');
   }
 
@@ -371,6 +689,11 @@ async function main(): Promise<void> {
   buildablePackages.forEach((pkg) => {
     console.log(`   ✅ ${pkg}`);
   });
+
+  console.log('\n💡 참고사항:');
+  console.log('   - mobile-native 앱은 별도로 빌드해야 합니다.');
+  console.log('   - Android: pnpm mobile:build:android');
+  console.log('   - iOS: pnpm mobile:build:ios');
 }
 
 // 스크립트 실행

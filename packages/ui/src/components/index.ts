@@ -9,7 +9,6 @@ export { default as BaseFileUploadButton } from './BaseButton/BaseFileUploadButt
 export { default as BaseStepper } from './BaseStepper/BaseStepper.vue';
 export { default as BaseSwitch } from './BaseSwitch/BaseSwitch.vue';
 export { default as BaseRadioGroup } from './BaseRadioGroup/BaseRadioGroup.vue';
-export { default as BaseTwoWaySplitPane } from './BaseTwoWaySplitPane/BaseTwoWaySplitPane.vue';
 export { default as BaseInputStepper } from './BaseInput/BaseInputStepper.vue';
 export { default as BaseInputSelect } from './BaseInput/BaseInputSelect.vue';
 export { default as BaseInputCalendar } from './BaseInput/BaseInputCalendar.vue';

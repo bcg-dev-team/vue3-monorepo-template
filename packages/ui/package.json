@@ -21,7 +21,7 @@
       "types": "./dist/composables/index.d.ts",
       "import": "./dist/composables/index.js"
     },
-    "./style.css": "./dist/style.css"
+    "./ui.css": "./dist/ui.css"
   },
   "files": [
     "dist"

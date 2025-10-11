@@ -6,6 +6,7 @@
  */
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { execSync } from 'child_process';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -389,6 +390,26 @@ function generateIndexFile(services: ServiceDefinition[]): string {
 }
 
 /**
+ * 생성된 파일들 Prettier 포매팅
+ */
+function formatGeneratedFiles() {
+  try {
+    console.log('✨ 생성된 파일 포매팅 중...');
+
+    const command = `prettier --write "${outputDir}/**/*.ts"`;
+
+    execSync(command, {
+      stdio: 'inherit',
+      cwd: projectRoot,
+    });
+
+    console.log('✅ 파일 포매팅 완료!\n');
+  } catch (error) {
+    console.warn('⚠️  파일 포매팅 중 오류 발생:', (error as Error).message);
+  }
+}
+
+/**
  * 메인 실행
  */
 function main() {
@@ -429,6 +450,9 @@ function main() {
   const indexCode = generateIndexFile(Array.from(services.values()));
   writeFileSync(join(outputDir, 'index.ts'), indexCode, 'utf-8');
   console.log(`✅ index.ts 생성 완료\n`);
+
+  // 생성된 파일들 포매팅
+  formatGeneratedFiles();
 
   console.log('================================');
   console.log(`🎉 서비스 클래스 생성 완료!`);

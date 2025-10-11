@@ -138,12 +138,16 @@ vue3-monorepo-template/
 ### 5. 빌드
 
 ```bash
-# 전체 빌드
+# 인터랙티브 빌드 (권장) - 각 작업을 선택적으로 수행
+pnpm build
+
+# 전체 빌드 (모든 작업 자동 수행)
 pnpm build:all
 
 # 개별 앱 빌드
 pnpm build:desktop
 pnpm build:mobile
+pnpm build:sample-desktop
 
 # Bundle Analyzer와 함께 빌드 (번들 크기 분석)
 pnpm build:analyze:desktop        # 데스크톱 앱 번들 분석
@@ -155,6 +159,30 @@ pnpm mobile:build:android    # Android APK/AAB 빌드
 pnpm mobile:build:ios        # iOS 빌드
 ```
 
+**인터랙티브 빌드 옵션**
+
+`pnpm build` 실행 시 다음 항목들을 선택적으로 실행할 수 있습니다:
+- **API 자동 생성 스킵 여부** (기본: Y - 스킵)
+- **Design Tokens 생성 스킵 여부** (기본: Y - 스킵)
+  - 토큰 파일이 이미 존재하면 TypeScript만 다시 빌드
+  - 토큰 파일이 없으면 전체 빌드 수행
+- **아이콘 최적화 스킵 여부** (기본: Y - 스킵)
+  - SVG 아이콘 최적화 작업
+- **순환참조 검사 스킵 여부** (기본: Y - 스킵)
+- **빌드할 앱 선택** (기본: sample-desktop만)
+  - sample-desktop만
+  - sample-desktop + mobile
+  - sample-desktop + mobile + desktop
+  - 모든 앱
+
+**💡 Tip:** 
+- `y`, `n`, `숫자` 키를 누르면 **Enter 없이 바로 진행**됩니다.
+- Enter 키만 누르면 기본값이 선택됩니다.
+
+**⚠️ 참고:** `mobile-native` 앱은 별도로 빌드해야 합니다.
+- Android: `pnpm mobile:build:android`
+- iOS: `pnpm mobile:build:ios`
+
 ## 🛠️ 개발 도구
 
 ### 스크립트 명령어
@@ -165,9 +193,19 @@ pnpm dev:desktop          # 데스크톱 앱 개발 서버
 pnpm dev:mobile           # 모바일 앱 개발 서버
 
 # 빌드
-pnpm build:all            # 전체 빌드
+pnpm build                # 인터랙티브 빌드 (권장)
+pnpm build:all            # 전체 빌드 (모든 작업 자동 수행)
 pnpm build:desktop        # 데스크톱 앱 빌드
 pnpm build:mobile         # 모바일 앱 빌드
+pnpm build:sample-desktop # 샘플 데스크톱 앱 빌드
+
+# API 및 서비스 생성
+pnpm generate:api         # API 클라이언트 자동 생성
+pnpm generate:services    # 서비스 자동 생성
+pnpm generate:all         # 모든 생성 작업 수행
+
+# 아이콘 최적화
+pnpm optimize-icons       # SVG 아이콘 최적화
 
 # Bundle Analyzer (번들 크기 분석)
 pnpm build:analyze:desktop        # 데스크톱 앱 번들 분석

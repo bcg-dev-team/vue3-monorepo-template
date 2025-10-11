@@ -278,6 +278,5 @@ pnpm build-storybook      # Storybook 빌드
 | 모바일        | [![Expo](https://img.shields.io/badge/Expo-53.0.20-000020?logo=expo&logoColor=white)](https://expo.dev/)                               | React Native 개발 플랫폼                             | MIT        |
 |               | [![React](https://img.shields.io/badge/React-19.1.1-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)                         | 사용자 인터페이스 구축을 위한 JavaScript 라이브러리 | MIT        |
 |               | [![React Native](https://img.shields.io/badge/React_Native-0.80.1-61DAFB?logo=react&logoColor=white)](https://reactnative.dev/)       | 모바일 앱 개발 프레임워크                            | MIT        |
-| UI 컴포넌트   | [![Splitpanes](https://img.shields.io/badge/Splitpanes-4.0.4-000000)](https://github.com/antoniandre/splitpanes)                       | Vue.js용 분할 패널 컴포넌트                          | MIT        |
 
 ---
